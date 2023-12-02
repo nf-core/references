@@ -1,0 +1,2 @@
+genome,fasta,gtf,bed12,readme,mito_name,macs_gsize
+GRCh37,"Homo_sapiens/Ensembl/GRCh37/Sequence/WholeGenomeFasta/genome.fa","Homo_sapiens/Ensembl/GRCh37/Annotation/Genes/genes.gtf","Homo_sapiens/Ensembl/GRCh37/Annotation/Genes/genes.bed","Homo_sapiens/Ensembl/GRCh37/Annotation/README.txt", "MT", "2.7e9"
