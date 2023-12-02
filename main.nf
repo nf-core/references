@@ -20,3 +20,8 @@ workflow INDEX {
     bowtie2_index = BOWTIE2_BUILD.out.index
     star_index = STAR_GENOMEGENERATE.out.index
 }
+
+
+workflow {
+    INDEX ( params.fasta, params.gtf )
+}
