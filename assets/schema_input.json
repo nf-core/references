@@ -10,7 +10,8 @@
       "genome": {
         "type": "string",
         "pattern": "^\\S+$",
-        "errorMessage": "Genome name must be provided and cannot contain spaces"
+        "errorMessage": "Genome name must be provided and cannot contain spaces",
+        "meta": ["id"]
       },
       "fasta": {
         "type": "string",

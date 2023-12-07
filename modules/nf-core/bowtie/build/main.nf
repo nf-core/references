@@ -8,7 +8,7 @@ process BOWTIE_BUILD {
         'nf-core/modules/bowtie_build:bowtie_build--a6833a982c474692' }"
 
     input:
-    path fasta
+    tuple val(meta), path(fasta)
 
     output:
     path 'bowtie'       , emit: index

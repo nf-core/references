@@ -9,22 +9,26 @@ workflow INDEX {
     reference // fasta, gtf
 
     main:
-    meta_fasta = fasta.map{ fasta -> [ [ id:fasta.baseName ], file(fasta) ] }
-    meta_gtf = gtf.map{ gtf -> [ [ id:gtf.baseName ], file(gtf) ] }
+    reference
+        .multiMap { meta, fasta, gtf, bed, readme, mito, size ->
+            fasta: tuple(meta, fasta)
+            gtf:   tuple(meta, gtf)
+            bed:   tuple(meta, bed)
+        }
+        .set { input }
 
-    BOWTIE_BUILD ( file(fasta) )
-    BOWTIE2_BUILD ( meta_fasta )
-    STAR_GENOMEGENERATE ( meta_fasta, meta_gtf )
+    BOWTIE_BUILD ( input.fasta )
+    BOWTIE2_BUILD ( input.fasta )
+    STAR_GENOMEGENERATE ( input.fasta, input.gtf )
 
     emit:
-    bowtie_index = BOWTIE_BUILD.out.index
+    // bowtie_index = BOWTIE_BUILD.out.index
     bowtie2_index = BOWTIE2_BUILD.out.index
     star_index = STAR_GENOMEGENERATE.out.index
 }
 
 
 workflow {
-
     ch_input = Channel.fromSamplesheet("input")
 
     INDEX ( ch_input )
