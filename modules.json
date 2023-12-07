@@ -1,0 +1,30 @@
+{
+  "name": "",
+  "homePage": "",
+  "repos": {
+    "https://github.com/nf-core/modules.git": {
+      "modules": {
+        "nf-core": {
+          "bowtie/build": {
+            "branch": "master",
+            "git_sha": "e745e167c1020928ef20ea1397b6b4d230681b4d",
+            "installed_by": ["modules"]
+          },
+          "bowtie2/build": {
+            "branch": "master",
+            "git_sha": "1fea64f5132a813ec97c1c6d3a74e0aee7142b6d",
+            "installed_by": ["modules"]
+          },
+          "star/genomegenerate": {
+            "branch": "master",
+            "git_sha": "0e98289b5bec6e3f8f588a8a9d05e8aacc1179a0",
+            "installed_by": ["modules"]
+          }
+        }
+      },
+      "subworkflows": {
+        "nf-core": {}
+      }
+    }
+  }
+}
