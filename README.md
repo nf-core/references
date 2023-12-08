@@ -1,4 +1,11 @@
-Some thoughts on reference building:
+# PoC
+
+## How to hack on it
+
+0. Have docker, and Nextflow installed
+1. `nextflow run main.nf`
+
+## Some thoughts on reference building:
 
 - We could use the glob and if you just drop a fasta in s3 bucket it'll get picked up and new resources built
   - Could take this a step further and make it a little config file that has the fasta, gtf, genome_size etc.
