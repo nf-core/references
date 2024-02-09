@@ -7,10 +7,10 @@ include { STAR_GENOMEGENERATE } from "./modules/nf-core/star/genomegenerate/main
 // TODO
 include { HISAT2_EXTRACTSPLICESITES } from "./modules/nf-core/hisat2/extractsplicesites"
 include { HISAT2_BUILD } from "./modules/nf-core/hisat2/build"
-// include { SALMON_INDEX } from "./modules/nf-core/salmon/index"
+include { RSEM_PREPAREREFERENCE as MAKE_TRANSCRIPTS_FASTA } from "./modules/nf-core/rsem/preparereference"
+include { SALMON_INDEX } from "./modules/nf-core/salmon/index"
 // include { KALLISTO_INDEX } from "./modules/nf-core/kallisto/index"
 include { RSEM_PREPAREREFERENCE as RSEM_PREPAREREFERENCE_GENOME } from "./modules/nf-core/rsem/preparereference"
-include { RSEM_PREPAREREFERENCE as MAKE_TRANSCRIPTS_FASTA } from "./modules/nf-core/rsem/preparereference"
 
 workflow RNASEQ {
     take:
@@ -32,12 +32,15 @@ workflow RNASEQ {
 
     ch_transcript_fasta = MAKE_TRANSCRIPTS_FASTA ( input.fasta, input.gtf ).transcript_fasta
 
+    SALMON_INDEX ( input.fasta, ch_transcript_fasta )
+
     RSEM_PREPAREREFERENCE_GENOME ( input.fasta, input.gtf )
 
     emit:
     star_index = STAR_GENOMEGENERATE.out.index
     hisat2_index = HISAT2_BUILD.out.index
     transcript_fasta = ch_transcript_fasta
+    salmon_index = SALMON_INDEX.out.index
     rsem_index = RSEM_PREPAREREFERENCE_GENOME.out.index
 }
 

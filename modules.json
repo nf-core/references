@@ -31,6 +31,12 @@
             "installed_by": ["modules"],
             "patch": "modules/nf-core/rsem/preparereference/rsem-preparereference.diff"
           },
+          "salmon/index": {
+            "branch": "master",
+            "git_sha": "e745e167c1020928ef20ea1397b6b4d230681b4d",
+            "installed_by": ["modules"],
+            "patch": "modules/nf-core/salmon/index/salmon-index.diff"
+          },
           "star/genomegenerate": {
             "branch": "master",
             "git_sha": "0e98289b5bec6e3f8f588a8a9d05e8aacc1179a0",

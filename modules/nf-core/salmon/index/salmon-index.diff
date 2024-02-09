@@ -1,0 +1,14 @@
+Changes in module 'nf-core/salmon/index'
+--- modules/nf-core/salmon/index/main.nf
++++ modules/nf-core/salmon/index/main.nf
+@@ -8,7 +8,7 @@
+         'biocontainers/salmon:1.10.1--h7e5ed60_0' }"
+ 
+     input:
+-    path genome_fasta
++    tuple val(meta), path(genome_fasta)
+
+     output:
+     path "salmon"      , emit: index
+
+************************************************************
