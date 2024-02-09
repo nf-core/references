@@ -25,6 +25,12 @@
             "git_sha": "400037f54de4b0c42712ec5a499d9fd9e66250d1",
             "installed_by": ["modules"]
           },
+          "rsem/preparereference": {
+            "branch": "master",
+            "git_sha": "301b088c7e9e00c4c80686411383f07173b54d69",
+            "installed_by": ["modules"],
+            "patch": "modules/nf-core/rsem/preparereference/rsem-preparereference.diff"
+          },
           "star/genomegenerate": {
             "branch": "master",
             "git_sha": "0e98289b5bec6e3f8f588a8a9d05e8aacc1179a0",
