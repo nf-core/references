@@ -5,8 +5,8 @@ include { BOWTIE2_BUILD } from "./modules/nf-core/bowtie2/build/main"
 // RNASEQ
 include { STAR_GENOMEGENERATE } from "./modules/nf-core/star/genomegenerate/main"
 // TODO
-// include { HISAT2_EXTRACTSPLICESITES } from "./modules/nf-core/hisat2/extractsplicesites"
-// include { HISAT2_BUILD } from "./modules/nf-core/hisat2/build"
+include { HISAT2_EXTRACTSPLICESITES } from "./modules/nf-core/hisat2/extractsplicesites"
+include { HISAT2_BUILD } from "./modules/nf-core/hisat2/build"
 // include { SALMON_INDEX } from "./modules/nf-core/salmon/index"
 // include { KALLISTO_INDEX } from "./modules/nf-core/kallisto/index"
 // include { RSEM_PREPAREREFERENCE as RSEM_PREPAREREFERENCE_GENOME } from "./modules/nf-core/rsem/preparereference"
@@ -27,8 +27,12 @@ workflow RNASEQ {
 
     STAR_GENOMEGENERATE ( input.fasta, input.gtf )
 
+    ch_splicesites = HISAT2_EXTRACTSPLICESITES ( input.gtf ).txt.map { it[1] }
+    HISAT2_BUILD ( input.fasta, input.gtf, ch_splicesites.map { [ [:], it ] } )
+
     emit:
     star_index = STAR_GENOMEGENERATE.out.index
+    hisat2_index = HISAT2_BUILD.out.index
 }
 
 // TODO workflow SAREK {
