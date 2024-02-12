@@ -1,0 +1,61 @@
+type: object
+properties:
+  # Required
+  reference_id:
+    type: string
+    default: GRCm39
+  reference_version:
+    type: string
+    default: 'GCF_000001635.27'
+  created_at:
+    type: string
+    format: date
+    default: Jun 24, 2020
+  site:
+    type: string
+    default: https://www.ncbi.nlm.nih.gov/datasets/genome/GCF_000001635.27/
+
+  # Source specific
+  source_type:
+    type: string
+    enum:
+      - ensembl
+      - ucsc
+      - ncbi
+      - gencode
+      - refseq
+      - encode
+      - custom
+
+  # OR Manually submitted
+  # Each optional, build what we can based on what is provided
+  fasta:
+    type: string
+    default: https://hgdownload.soe.ucsc.edu/goldenPath/mm39/bigZips/mm39.fa.gz
+  gtf:
+    type: string
+    default: https://hgdownload.soe.ucsc.edu/goldenPath/mm39/bigZips/genes/mm39.ncbiRefSeq.gtf.gz
+  mito_name:
+    type: string
+    default: MT
+  macs_gsize:
+    type: string
+    default: 1.2e7
+
+  # Markdown block?
+  description:
+    type: string
+
+  # Generate
+  # - md5 checksums (validate downloads if possible)
+
+  # Track within the pipeline
+  # - software_versions
+  # - copy of command.sh (or just save Nextflow report?)
+  # - Asset input paths
+  # - Show skipped reference types if already existed
+  # - Allow appending to the readme (treat like changelog), in case new asset types added
+
+  # Strategy
+  #   When adding a new asset, build for the latest reference versions only. Do all genomes.
+  #   Optionally backfill old releases on demand if specifically triggered.
