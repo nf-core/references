@@ -4,12 +4,11 @@ include { BOWTIE_BUILD } from "./modules/nf-core/bowtie/build/main"
 include { BOWTIE2_BUILD } from "./modules/nf-core/bowtie2/build/main"
 // RNASEQ
 include { STAR_GENOMEGENERATE } from "./modules/nf-core/star/genomegenerate/main"
-// TODO
 include { HISAT2_EXTRACTSPLICESITES } from "./modules/nf-core/hisat2/extractsplicesites"
 include { HISAT2_BUILD } from "./modules/nf-core/hisat2/build"
 include { RSEM_PREPAREREFERENCE as MAKE_TRANSCRIPTS_FASTA } from "./modules/nf-core/rsem/preparereference"
 include { SALMON_INDEX } from "./modules/nf-core/salmon/index"
-// include { KALLISTO_INDEX } from "./modules/nf-core/kallisto/index"
+include { KALLISTO_INDEX } from "./modules/nf-core/kallisto/index"
 include { RSEM_PREPAREREFERENCE as RSEM_PREPAREREFERENCE_GENOME } from "./modules/nf-core/rsem/preparereference"
 
 workflow RNASEQ {
@@ -34,6 +33,8 @@ workflow RNASEQ {
 
     SALMON_INDEX ( input.fasta, ch_transcript_fasta )
 
+    KALLISTO_INDEX ( ch_transcript_fasta.map{[ [:], it]} )
+
     RSEM_PREPAREREFERENCE_GENOME ( input.fasta, input.gtf )
 
     emit:
@@ -41,6 +42,7 @@ workflow RNASEQ {
     hisat2_index = HISAT2_BUILD.out.index
     transcript_fasta = ch_transcript_fasta
     salmon_index = SALMON_INDEX.out.index
+    kallisto_index = KALLISTO_INDEX.out.index
     rsem_index = RSEM_PREPAREREFERENCE_GENOME.out.index
 }
 

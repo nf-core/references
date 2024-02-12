@@ -25,6 +25,11 @@
             "git_sha": "400037f54de4b0c42712ec5a499d9fd9e66250d1",
             "installed_by": ["modules"]
           },
+          "kallisto/index": {
+            "branch": "master",
+            "git_sha": "de5811dd9ca15af1e131806001bcaae909e42021",
+            "installed_by": ["modules"]
+          },
           "rsem/preparereference": {
             "branch": "master",
             "git_sha": "301b088c7e9e00c4c80686411383f07173b54d69",
