@@ -15,6 +15,33 @@
             "git_sha": "1fea64f5132a813ec97c1c6d3a74e0aee7142b6d",
             "installed_by": ["modules"]
           },
+          "hisat2/build": {
+            "branch": "master",
+            "git_sha": "400037f54de4b0c42712ec5a499d9fd9e66250d1",
+            "installed_by": ["modules"]
+          },
+          "hisat2/extractsplicesites": {
+            "branch": "master",
+            "git_sha": "400037f54de4b0c42712ec5a499d9fd9e66250d1",
+            "installed_by": ["modules"]
+          },
+          "kallisto/index": {
+            "branch": "master",
+            "git_sha": "de5811dd9ca15af1e131806001bcaae909e42021",
+            "installed_by": ["modules"]
+          },
+          "rsem/preparereference": {
+            "branch": "master",
+            "git_sha": "301b088c7e9e00c4c80686411383f07173b54d69",
+            "installed_by": ["modules"],
+            "patch": "modules/nf-core/rsem/preparereference/rsem-preparereference.diff"
+          },
+          "salmon/index": {
+            "branch": "master",
+            "git_sha": "e745e167c1020928ef20ea1397b6b4d230681b4d",
+            "installed_by": ["modules"],
+            "patch": "modules/nf-core/salmon/index/salmon-index.diff"
+          },
           "star/genomegenerate": {
             "branch": "master",
             "git_sha": "0e98289b5bec6e3f8f588a8a9d05e8aacc1179a0",
