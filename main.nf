@@ -4,7 +4,7 @@ include { BOWTIE_BUILD } from "./modules/nf-core/bowtie/build/main"
 include { BOWTIE2_BUILD } from "./modules/nf-core/bowtie2/build/main"
 
 include { RNASEQ } from "./workflows/rnaseq/main"
-// TODO workflow SAREK {
+include { SAREK } from "./workflows/sarek/main"
 
 workflow INDEX {
     take:
@@ -33,4 +33,5 @@ workflow {
 
     INDEX ( ch_input )
     RNASEQ ( ch_input )
+    SAREK ( ch_input )
 }
