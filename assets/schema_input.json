@@ -20,6 +20,7 @@
       },
       "gtf": {
         "type": "string",
+        "pattern": "^\\S+\\.gtf(\\.gz)?$",
         "errorMessage": "TODO"
       },
       "bed12": {
@@ -37,7 +38,7 @@
       "macs_gsize": {
         "type": "string",
         "errorMessage": "TODO"
-      },
+      }
     },
     "required": ["genome", "fasta", "gtf"]
   }
