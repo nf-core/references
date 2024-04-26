@@ -12,6 +12,16 @@
         "errorMessage": "Genome name must be provided and cannot contain spaces",
         "meta": ["id"]
       },
+      "source": {
+        "type": "string",
+        "errorMessage": "Where the references came from",
+        "meta": ["source"]
+      },
+      "species": {
+        "type": "string",
+        "errorMessage": "Species of the reference",
+        "meta": ["species"]
+      },
       "fasta": {
         "type": "string",
         "pattern": "^\\S+\\.f(ast)?a(\\.gz)?$",
