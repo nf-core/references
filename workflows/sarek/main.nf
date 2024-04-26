@@ -23,9 +23,10 @@ workflow SAREK {
     BWAMEM2_INDEX(input.fasta)
     DRAGMAP_HASHTABLE(input.fasta)
 
-    GATK4_CREATESEQUENCEDICTIONARY(fasta)
-    MSISENSORPRO_SCAN(fasta)
-    SAMTOOLS_FAIDX(fasta, [ [ id:fasta.baseName ], [] ] )
+    GATK4_CREATESEQUENCEDICTIONARY(input.fasta)
+    MSISENSORPRO_SCAN(input.fasta)
+    // FIXME
+    // SAMTOOLS_FAIDX(input.fasta, [ [ id: input.meta.id ], [] ] )
 
     emit:
     bwa = BWAMEM1_INDEX.out.index.map{ meta, index -> [index] }.collect()
