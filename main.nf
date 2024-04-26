@@ -11,9 +11,8 @@ if (params.help) {
 // Print summary of supplied parameters
 log.info paramsSummaryLog(workflow)
 
-// Create a new channel of metadata from a sample sheet passed to the pipeline through the --input parameter
-ch_input = Channel.fromList(samplesheetToList(params.input, "assets/schema_input.json"))
-
+// Create a new channel of metadata from sample sheets passed to the pipeline through the --input parameter
+ch_input = Channel.fromPath( params.input ).flatMap { samplesheetToList(it, "assets/schema_input.json") }
 
 include { BOWTIE_BUILD } from "./modules/nf-core/bowtie/build/main"
 include { BOWTIE2_BUILD } from "./modules/nf-core/bowtie2/build/main"
