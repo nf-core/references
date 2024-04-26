@@ -24,7 +24,7 @@
       },
       "fasta": {
         "type": "string",
-        "pattern": "^\\S+\\.f(ast)?a(\\.gz)?$",
+        "pattern": "^\\S+\\.f(ast|n)?a(\\.gz)?$",
         "errorMessage": "TODO"
       },
       "gtf": {
