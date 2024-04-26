@@ -1,3 +1,0 @@
-genome,fasta,gtf,bed12,readme,mito_name,macs_gsize
-R64-1-1,"s3://ngi-igenomes/igenomes/Saccharomyces_cerevisiae/Ensembl/R64-1-1/Sequence/WholeGenomeFasta/genome.fa","s3://ngi-igenomes/igenomes/Saccharomyces_cerevisiae/Ensembl/R64-1-1/Annotation/Genes/genes.gtf","s3://ngi-igenomes/igenomes/Saccharomyces_cerevisiae/Ensembl/R64-1-1/Annotation/Genes/genes.bed","s3://ngi-igenomes/igenomes/Saccharomyces_cerevisiae/Ensembl/R64-1-1/Annotation/README.txt", "MT", "1.2e7"
-nascent,"https://raw.githubusercontent.com/nf-core/test-datasets/nascent/reference/GRCh38_chr21.fa","https://raw.githubusercontent.com/nf-core/test-datasets/nascent/reference/genes_chr21.gtf","","https://raw.githubusercontent.com/nf-core/test-datasets/nascent/README.md", "MT", "1.2e7"
