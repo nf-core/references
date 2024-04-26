@@ -1,4 +1,19 @@
-include { fromSamplesheet } from 'plugin/nf-validation'
+include { validateParameters; paramsHelp; paramsSummaryLog; samplesheetToList } from 'plugin/nf-schema'
+// Print help message, supply typical command line usage for the pipeline
+if (params.help) {
+   log.info paramsHelp("nextflow run my_pipeline --input input_file.csv")
+   exit 0
+}
+
+// Validate input parameters
+// TODO validateParameters()
+
+// Print summary of supplied parameters
+log.info paramsSummaryLog(workflow)
+
+// Create a new channel of metadata from a sample sheet passed to the pipeline through the --input parameter
+ch_input = Channel.fromList(samplesheetToList(params.input, "assets/schema_input.json"))
+
 
 include { BOWTIE_BUILD } from "./modules/nf-core/bowtie/build/main"
 include { BOWTIE2_BUILD } from "./modules/nf-core/bowtie2/build/main"
@@ -29,8 +44,6 @@ workflow INDEX {
 
 
 workflow {
-    ch_input = Channel.fromSamplesheet("input")
-
     INDEX ( ch_input )
     RNASEQ ( ch_input )
     SAREK ( ch_input )
