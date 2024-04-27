@@ -33,7 +33,8 @@ workflow INDEX {
         }
         .set { input }
 
-    BOWTIE_BUILD ( input.fasta )
+    // FIXME Can't access container
+    // BOWTIE_BUILD ( input.fasta )
     BOWTIE2_BUILD ( input.fasta )
 
     emit:
@@ -44,6 +45,7 @@ workflow INDEX {
 
 workflow {
     INDEX ( ch_input )
-    RNASEQ ( ch_input )
+    // FIXME
+    // RNASEQ ( ch_input )
     SAREK ( ch_input )
 }

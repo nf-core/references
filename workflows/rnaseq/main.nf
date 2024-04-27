@@ -21,6 +21,7 @@ workflow RNASEQ {
 
     STAR_GENOMEGENERATE ( input.fasta, input.gtf )
 
+    // FIXME Need to unzip gtf
     ch_splicesites = HISAT2_EXTRACTSPLICESITES ( input.gtf ).txt.map { it[1] }
     HISAT2_BUILD ( input.fasta, input.gtf, ch_splicesites.map { [ [:], it ] } )
 
