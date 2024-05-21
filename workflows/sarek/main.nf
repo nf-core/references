@@ -11,6 +11,7 @@ workflow SAREK {
     reference // fasta, gtf
 
     main:
+    versions = Channel.empty()
     reference
         .multiMap { meta, fasta, gtf, bed, readme, mito, size ->
             fasta: tuple(meta, fasta)
@@ -28,7 +29,14 @@ workflow SAREK {
     // FIXME
     // SAMTOOLS_FAIDX(input.fasta, [ [ id: input.meta.id ], [] ] )
 
+    versions = versions.mix(BWAMEM1_INDEX.out.versions)
+    versions = versions.mix(BWAMEM2_INDEX.out.versions)
+    versions = versions.mix(DRAGMAP_HASHTABLE.out.versions)
+    versions = versions.mix(GATK4_CREATESEQUENCEDICTIONARY.out.versions)
+    versions = versions.mix(MSISENSORPRO_SCAN.out.versions)
+
     emit:
     bwa = BWAMEM1_INDEX.out.index.map{ meta, index -> [index] }.collect()
     bwamem2 = BWAMEM2_INDEX.out.index.map{ meta, index -> [index] }.collect()
+    versions
 }

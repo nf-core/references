@@ -40,7 +40,7 @@ include { SAREK                   } from "./workflows/sarek/main"
 workflow NFCORE_REFERENCES {
 
     take:
-    samplesheet // channel: samplesheet read in from --input
+    ch_input // channel: samplesheet read in from --input
 
     main:
 
@@ -55,11 +55,9 @@ workflow NFCORE_REFERENCES {
     SAREK ( ch_input )
 
     versions = versions.mix(INDEX.out.versions, SAREK.out.versions)
-    reports = reports.mix(INDEX.out.reports, SAREK.out.reports)
 
     emit:
     versions
-    reports
 }
 /*
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -89,7 +87,10 @@ workflow {
     //
     NFCORE_REFERENCES(PIPELINE_INITIALISATION.out.samplesheet)
 
-    ch_multiqc_files = NFCORE_REFERENCES.out.versions.mix(NFCORE_REFERENCES.out.reports)
+    ch_multiqc_files = Channel.empty()
+
+    version_yaml = softwareVersionsToYAML(NFCORE_REFERENCES.out.versions)
+        .collectFile(storeDir: "${params.outdir}/pipeline_info", name: 'nf_core_references_software_mqc_versions.yml', sort: true, newLine: true)
 
     //
     // MODULE: MultiQC
@@ -103,7 +104,6 @@ workflow {
     ch_methods_description                = Channel.value(methodsDescriptionText(ch_multiqc_custom_methods_description))
     ch_multiqc_files                      = ch_multiqc_files.mix(ch_workflow_summary.collectFile(name: 'workflow_summary_mqc.yaml'))
     ch_multiqc_files                      = ch_multiqc_files.mix(version_yaml)
-    ch_multiqc_files                      = ch_multiqc_files.mix(reports)
     ch_multiqc_files                      = ch_multiqc_files.mix(ch_methods_description.collectFile(name: 'methods_description_mqc.yaml', sort: true))
 
     MULTIQC (
