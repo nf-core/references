@@ -4,7 +4,7 @@ on:
     branches:
       - main
     paths:
-      - 'assets/genomes/*.yml'
+      - "assets/genomes/*.yml"
 
 jobs:
   run-tower:
