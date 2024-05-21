@@ -103,6 +103,7 @@ workflow PIPELINE_COMPLETION {
     monochrome_logs // boolean: Disable ANSI colour codes in log output
     hook_url        //  string: hook URL for notifications
     multiqc_report  //  string: Path to MultiQC report
+
     main:
 
     summary_params = paramsSummaryMap(workflow, parameters_schema: "nextflow_schema.json")
@@ -112,7 +113,7 @@ workflow PIPELINE_COMPLETION {
     //
     workflow.onComplete {
         if (email || email_on_fail) {
-            completionEmail(summary_params, email, email_on_fail, plaintext_email, outdir, monochrome_logs)
+            completionEmail(summary_params, email, email_on_fail, plaintext_email, outdir, monochrome_logs, multiqc_report.toList())
         }
 
         completionSummary(monochrome_logs)
