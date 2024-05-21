@@ -63,7 +63,7 @@ workflow PIPELINE_INITIALISATION {
         pre_help_text,
         post_help_text,
         validate_params,
-        ["nextflow_schema.json"]
+        "nextflow_schema.json"
     )
 
     //

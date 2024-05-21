@@ -4,50 +4,52 @@
     "title": "nf-core/references pipeline - params.input schema",
     "description": "Schema for the file provided with params.input",
     "type": "array",
-    "properties": {
-        "genome": {
-          "type": "string",
-          "pattern": "^\\S+$",
-          "errorMessage": "Genome name must be provided and cannot contain spaces",
-          "meta": ["id"]
+    "items": {
+        "type": "object",
+        "properties": {
+            "genome": {
+                "type": "string",
+                "pattern": "^\\S+$",
+                "errorMessage": "Genome name must be provided and cannot contain spaces",
+                "meta": ["id"]
+            },
+            "source": {
+                "type": "string",
+                "errorMessage": "Where the references came from",
+                "meta": ["source"]
+            },
+            "species": {
+                "type": "string",
+                "errorMessage": "Species of the reference",
+                "meta": ["species"]
+            },
+            "fasta": {
+                "type": "string",
+                "pattern": "^\\S+\\.f(ast|n)?a(\\.gz)?$",
+                "errorMessage": "TODO"
+            },
+            "gtf": {
+                "type": "string",
+                "pattern": "^\\S+\\.gtf(\\.gz)?$",
+                "errorMessage": "TODO"
+            },
+            "bed12": {
+                "type": "string",
+                "errorMessage": "TODO"
+            },
+            "readme": {
+                "type": "string",
+                "errorMessage": "TODO"
+            },
+            "mito_name": {
+                "type": "string",
+                "errorMessage": "TODO"
+            },
+            "macs_gsize": {
+                "type": "integer",
+                "errorMessage": "TODO"
+            }
         },
-        "source": {
-          "type": "string",
-          "errorMessage": "Where the references came from",
-          "meta": ["source"]
-        },
-        "species": {
-          "type": "string",
-          "errorMessage": "Species of the reference",
-          "meta": ["species"]
-        },
-        "fasta": {
-          "type": "string",
-          "pattern": "^\\S+\\.f(ast|n)?a(\\.gz)?$",
-          "errorMessage": "TODO"
-        },
-        "gtf": {
-          "type": "string",
-          "pattern": "^\\S+\\.gtf(\\.gz)?$",
-          "errorMessage": "TODO"
-        },
-        "bed12": {
-          "type": "string",
-          "errorMessage": "TODO"
-        },
-        "readme": {
-          "type": "string",
-          "errorMessage": "TODO"
-        },
-        "mito_name": {
-          "type": "string",
-          "errorMessage": "TODO"
-        },
-        "macs_gsize": {
-          "type": "integer",
-          "errorMessage": "TODO"
-        }
-      },
-      "required": ["genome", "fasta", "gtf"]
+        "required": ["genome", "fasta", "gtf"]
     }
 }
