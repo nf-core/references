@@ -7,27 +7,49 @@
     "items": {
         "type": "object",
         "properties": {
-            "sample": {
+            "genome": {
                 "type": "string",
                 "pattern": "^\\S+$",
-                "errorMessage": "Sample name must be provided and cannot contain spaces",
+                "errorMessage": "Genome name must be provided and cannot contain spaces",
                 "meta": ["id"]
             },
-            "fastq_1": {
+            "source": {
                 "type": "string",
-                "format": "file-path",
-                "exists": true,
-                "pattern": "^\\S+\\.f(ast)?q\\.gz$",
-                "errorMessage": "FastQ file for reads 1 must be provided, cannot contain spaces and must have extension '.fq.gz' or '.fastq.gz'"
+                "errorMessage": "Where the references came from",
+                "meta": ["source"]
             },
-            "fastq_2": {
+            "species": {
                 "type": "string",
-                "format": "file-path",
-                "exists": true,
-                "pattern": "^\\S+\\.f(ast)?q\\.gz$",
-                "errorMessage": "FastQ file for reads 2 cannot contain spaces and must have extension '.fq.gz' or '.fastq.gz'"
+                "errorMessage": "Species of the reference",
+                "meta": ["species"]
+            },
+            "fasta": {
+                "type": "string",
+                "pattern": "^\\S+\\.f(ast|n)?a(\\.gz)?$",
+                "errorMessage": "TODO"
+            },
+            "gtf": {
+                "type": "string",
+                "pattern": "^\\S+\\.gtf(\\.gz)?$",
+                "errorMessage": "TODO"
+            },
+            "bed12": {
+                "type": "string",
+                "errorMessage": "TODO"
+            },
+            "readme": {
+                "type": "string",
+                "errorMessage": "TODO"
+            },
+            "mito_name": {
+                "type": "string",
+                "errorMessage": "TODO"
+            },
+            "macs_gsize": {
+                "type": "integer",
+                "errorMessage": "TODO"
             }
         },
-        "required": ["sample", "fastq_1"]
+        "required": ["genome", "fasta", "gtf"]
     }
 }

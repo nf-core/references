@@ -17,22 +17,16 @@ nextflow.enable.dsl = 2
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 */
 
-include { REFERENCES  } from './workflows/references'
-include { PIPELINE_INITIALISATION } from './subworkflows/local/utils_nfcore_references_pipeline'
+include { MULTIQC                 } from './modules/nf-core/multiqc/main'
 include { PIPELINE_COMPLETION     } from './subworkflows/local/utils_nfcore_references_pipeline'
-
-include { getGenomeAttribute      } from './subworkflows/local/utils_nfcore_references_pipeline'
-
-/*
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    GENOME PARAMETER VALUES
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-*/
-
-// TODO nf-core: Remove this line if you don't need a FASTA file
-//   This is an example of how to use getGenomeAttribute() to fetch parameters
-//   from igenomes.config using `--genome`
-params.fasta = getGenomeAttribute('fasta')
+include { PIPELINE_INITIALISATION } from './subworkflows/local/utils_nfcore_references_pipeline'
+include { methodsDescriptionText  } from './subworkflows/local/utils_nfcore_references_pipeline'
+include { paramsSummaryMap        } from 'plugin/nf-validation'
+include { paramsSummaryMultiqc    } from './subworkflows/nf-core/utils_nfcore_pipeline'
+include { softwareVersionsToYAML  } from './subworkflows/nf-core/utils_nfcore_pipeline'
+include { INDEX                   } from "./workflows/index/main"
+include { RNASEQ                  } from "./workflows/rnaseq/main"
+include { SAREK                   } from "./workflows/sarek/main"
 
 /*
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -46,20 +40,24 @@ params.fasta = getGenomeAttribute('fasta')
 workflow NFCORE_REFERENCES {
 
     take:
-    samplesheet // channel: samplesheet read in from --input
+    ch_input // channel: samplesheet read in from --input
 
     main:
 
+    reports = Channel.empty()
+    versions = Channel.empty()
     //
     // WORKFLOW: Run pipeline
     //
-    REFERENCES (
-        samplesheet
-    )
+    INDEX ( ch_input )
+    // FIXME
+    // RNASEQ ( ch_input )
+    SAREK ( ch_input )
+
+    versions = versions.mix(INDEX.out.versions, SAREK.out.versions)
 
     emit:
-    multiqc_report = REFERENCES.out.multiqc_report // channel: /path/to/multiqc_report.html
-
+    versions
 }
 /*
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -87,9 +85,34 @@ workflow {
     //
     // WORKFLOW: Run main workflow
     //
-    NFCORE_REFERENCES (
-        PIPELINE_INITIALISATION.out.samplesheet
+    NFCORE_REFERENCES(PIPELINE_INITIALISATION.out.samplesheet)
+
+    ch_multiqc_files = Channel.empty()
+
+    version_yaml = softwareVersionsToYAML(NFCORE_REFERENCES.out.versions)
+        .collectFile(storeDir: "${params.outdir}/pipeline_info", name: 'nf_core_references_software_mqc_versions.yml', sort: true, newLine: true)
+
+    //
+    // MODULE: MultiQC
+    //
+    ch_multiqc_config                     = Channel.fromPath("$projectDir/assets/multiqc_config.yml", checkIfExists: true)
+    ch_multiqc_custom_config              = params.multiqc_config ? Channel.fromPath(params.multiqc_config, checkIfExists: true) : Channel.empty()
+    ch_multiqc_logo                       = params.multiqc_logo ? Channel.fromPath(params.multiqc_logo, checkIfExists: true) : Channel.empty()
+    summary_params                        = paramsSummaryMap(workflow, parameters_schema: "nextflow_schema.json")
+    ch_workflow_summary                   = Channel.value(paramsSummaryMultiqc(summary_params))
+    ch_multiqc_custom_methods_description = params.multiqc_methods_description ? file(params.multiqc_methods_description, checkIfExists: true) : file("$projectDir/assets/methods_description_template.yml", checkIfExists: true)
+    ch_methods_description                = Channel.value(methodsDescriptionText(ch_multiqc_custom_methods_description))
+    ch_multiqc_files                      = ch_multiqc_files.mix(ch_workflow_summary.collectFile(name: 'workflow_summary_mqc.yaml'))
+    ch_multiqc_files                      = ch_multiqc_files.mix(version_yaml)
+    ch_multiqc_files                      = ch_multiqc_files.mix(ch_methods_description.collectFile(name: 'methods_description_mqc.yaml', sort: true))
+
+    MULTIQC (
+        ch_multiqc_files.collect(),
+        ch_multiqc_config.toList(),
+        ch_multiqc_custom_config.toList(),
+        ch_multiqc_logo.toList()
     )
+    multiqc_report = MULTIQC.out.report.toList()
 
     //
     // SUBWORKFLOW: Run completion tasks
@@ -101,7 +124,7 @@ workflow {
         params.outdir,
         params.monochrome_logs,
         params.hook_url,
-        NFCORE_REFERENCES.out.multiqc_report
+        multiqc_report
     )
 }
 

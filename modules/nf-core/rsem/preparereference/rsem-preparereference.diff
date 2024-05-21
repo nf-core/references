@@ -1,0 +1,16 @@
+Changes in module 'nf-core/rsem/preparereference'
+--- modules/nf-core/rsem/preparereference/main.nf
++++ modules/nf-core/rsem/preparereference/main.nf
+@@ -8,8 +8,8 @@
+         'biocontainers/mulled-v2-cf0123ef83b3c38c13e3b0696a3f285d3f20f15b:64aad4a4e144878400649e71f42105311be7ed87-0' }"
+ 
+     input:
+-    path fasta, stageAs: "rsem/*"
+-    path gtf
++    tuple val(meta), path(fasta, stageAs: "rsem/*")
++    tuple val(meta2), path(gtf)
+ 
+     output:
+     path "rsem"           , emit: index
+
+************************************************************
