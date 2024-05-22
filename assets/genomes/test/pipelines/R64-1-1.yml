@@ -3,7 +3,7 @@
   gtf: s3://ngi-igenomes/igenomes/Saccharomyces_cerevisiae/Ensembl/R64-1-1/Annotation/Genes/genes.gtf
   bed12: s3://ngi-igenomes/igenomes/Saccharomyces_cerevisiae/Ensembl/R64-1-1/Annotation/Genes/genes.bed
   mito_name: MT
-  macs_gsize: 1.2e7
+  # macs_gsize: 1.2e7
   readme: s3://ngi-igenomes/igenomes/Saccharomyces_cerevisiae/Ensembl/R64-1-1/Annotation/README.txt
 # TODO
 # Required
