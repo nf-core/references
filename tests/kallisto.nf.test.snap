@@ -55,7 +55,7 @@
         },
         "timestamp": "2025-03-05T08:54:13.565709002"
     },
-    "-profile test --tools kallisto,rsem_make_transcript_fasta --input assets/test/default_extended.yml": {
+    "-profile test --tools kallisto,rsem_make_transcript_fasta --input assets/test/default_multiple_extended.yml": {
         "content": [
             2,
             {

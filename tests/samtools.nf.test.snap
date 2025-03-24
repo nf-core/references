@@ -30,7 +30,7 @@
         },
         "timestamp": "2025-03-05T09:06:21.888588541"
     },
-    "-profile test --tools faidx,intervals,sizes --input assets/test/default_extended.yml": {
+    "-profile test --tools faidx,intervals,sizes --input assets/test/default_multiple_extended.yml": {
         "content": [
             2,
             {

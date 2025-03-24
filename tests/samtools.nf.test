@@ -37,13 +37,13 @@ nextflow_pipeline {
         }
     }
 
-    test("-profile test --tools faidx,intervals,sizes --input assets/test/default_extended.yml") {
+    test("-profile test --tools faidx,intervals,sizes --input assets/test/default_multiple_extended.yml") {
 
         options "-output-dir $outputDir"
 
         when {
             params {
-                input  = "${projectDir}/assets/test/default_extended.yml"
+                input  = "${projectDir}/assets/test/default_multiple_extended.yml"
                 outdir = "$outputDir"
                 tools  = 'faidx,intervals,sizes'
             }

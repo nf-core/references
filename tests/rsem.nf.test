@@ -4,13 +4,13 @@ nextflow_pipeline {
     script "../main.nf"
     tag "pipeline"
 
-    test("-profile test --tools rsem,rsem_make_transcript_fasta --input assets/test/default_extended.yml") {
+    test("-profile test --tools rsem,rsem_make_transcript_fasta --input assets/test/default_multiple_extended.yml") {
 
         options "-output-dir $outputDir"
 
         when {
             params {
-                input  = "${projectDir}/assets/test/default_extended.yml"
+                input  = "${projectDir}/assets/test/default_multiple_extended.yml"
                 outdir = "$outputDir"
                 tools  = 'rsem,rsem_make_transcript_fasta'
             }
