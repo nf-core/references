@@ -30,7 +30,7 @@
         },
         "timestamp": "2025-03-05T09:07:51.089246407"
     },
-    "-profile test --tools tabix --input assets/test/default_extended.yml": {
+    "-profile test --tools tabix --input assets/test/default_multiple_extended.yml": {
         "content": [
             2,
             {
