@@ -2,6 +2,116 @@
     "name": "nf-core/references",
     "homePage": "https://github.com/nf-core/references",
     "repos": {
+        "git@github.com:nf-side/modules.git": {
+            "modules": {
+                "nf-side": {
+                    "bowtie/build": {
+                        "branch": "main",
+                        "git_sha": "547ea0d88f3830581c2cca1f5fbd4cc008f4af6f",
+                        "installed_by": ["prepare_genome_rnaseq"]
+                    },
+                    "bowtie2/build": {
+                        "branch": "main",
+                        "git_sha": "79c7d3d43438529fb840ef9130896113574605c8",
+                        "installed_by": ["prepare_genome_rnaseq"]
+                    },
+                    "bwa/index": {
+                        "branch": "main",
+                        "git_sha": "79c7d3d43438529fb840ef9130896113574605c8",
+                        "installed_by": ["prepare_genome_dnaseq"]
+                    },
+                    "bwamem2/index": {
+                        "branch": "main",
+                        "git_sha": "79c7d3d43438529fb840ef9130896113574605c8",
+                        "installed_by": ["prepare_genome_dnaseq"]
+                    },
+                    "dragmap/hashtable": {
+                        "branch": "main",
+                        "git_sha": "f642371663b4d6062848c8dc8fa880e543de17fd",
+                        "installed_by": ["prepare_genome_dnaseq"]
+                    },
+                    "gatk4/createsequencedictionary": {
+                        "branch": "main",
+                        "git_sha": "79c7d3d43438529fb840ef9130896113574605c8",
+                        "installed_by": ["prepare_genome_dnaseq"]
+                    },
+                    "gawk": {
+                        "branch": "main",
+                        "git_sha": "79c7d3d43438529fb840ef9130896113574605c8",
+                        "installed_by": ["prepare_genome_dnaseq"]
+                    },
+                    "gffread": {
+                        "branch": "main",
+                        "git_sha": "547ea0d88f3830581c2cca1f5fbd4cc008f4af6f",
+                        "installed_by": ["prepare_genome_rnaseq"]
+                    },
+                    "hisat2/build": {
+                        "branch": "main",
+                        "git_sha": "f642371663b4d6062848c8dc8fa880e543de17fd",
+                        "installed_by": ["prepare_genome_rnaseq"]
+                    },
+                    "hisat2/extractsplicesites": {
+                        "branch": "main",
+                        "git_sha": "79c7d3d43438529fb840ef9130896113574605c8",
+                        "installed_by": ["prepare_genome_rnaseq"]
+                    },
+                    "kallisto/index": {
+                        "branch": "main",
+                        "git_sha": "79c7d3d43438529fb840ef9130896113574605c8",
+                        "installed_by": ["prepare_genome_rnaseq"]
+                    },
+                    "msisensorpro/scan": {
+                        "branch": "main",
+                        "git_sha": "547ea0d88f3830581c2cca1f5fbd4cc008f4af6f",
+                        "installed_by": ["prepare_genome_dnaseq"]
+                    },
+                    "rsem/preparereference": {
+                        "branch": "main",
+                        "git_sha": "f642371663b4d6062848c8dc8fa880e543de17fd",
+                        "installed_by": ["prepare_genome_rnaseq"]
+                    },
+                    "salmon/index": {
+                        "branch": "main",
+                        "git_sha": "547ea0d88f3830581c2cca1f5fbd4cc008f4af6f",
+                        "installed_by": ["prepare_genome_rnaseq"]
+                    },
+                    "samtools/faidx": {
+                        "branch": "main",
+                        "git_sha": "547ea0d88f3830581c2cca1f5fbd4cc008f4af6f",
+                        "installed_by": ["prepare_genome_dnaseq", "prepare_genome_rnaseq"]
+                    },
+                    "star/genomegenerate": {
+                        "branch": "main",
+                        "git_sha": "f642371663b4d6062848c8dc8fa880e543de17fd",
+                        "installed_by": ["prepare_genome_rnaseq"]
+                    },
+                    "tabix/bgziptabix": {
+                        "branch": "main",
+                        "git_sha": "547ea0d88f3830581c2cca1f5fbd4cc008f4af6f",
+                        "installed_by": ["prepare_genome_dnaseq"]
+                    },
+                    "tabix/tabix": {
+                        "branch": "main",
+                        "git_sha": "547ea0d88f3830581c2cca1f5fbd4cc008f4af6f",
+                        "installed_by": ["prepare_genome_dnaseq"]
+                    }
+                }
+            },
+            "subworkflows": {
+                "nf-side": {
+                    "prepare_genome_dnaseq": {
+                        "branch": "main",
+                        "git_sha": "79c7d3d43438529fb840ef9130896113574605c8",
+                        "installed_by": ["subworkflows"]
+                    },
+                    "prepare_genome_rnaseq": {
+                        "branch": "main",
+                        "git_sha": "79c7d3d43438529fb840ef9130896113574605c8",
+                        "installed_by": ["subworkflows"]
+                    }
+                }
+            }
+        },
         "https://github.com/nf-core/modules.git": {
             "modules": {
                 "nf-core": {
@@ -10,119 +120,22 @@
                         "git_sha": "f06465ff69516528b0178b2a2a5f6b1d4287faa9",
                         "installed_by": ["modules"]
                     },
-                    "bowtie/build": {
-                        "branch": "master",
-                        "git_sha": "81880787133db07d9b4c1febd152c090eb8325dc",
-                        "installed_by": ["modules"]
-                    },
-                    "bowtie2/build": {
-                        "branch": "master",
-                        "git_sha": "81880787133db07d9b4c1febd152c090eb8325dc",
-                        "installed_by": ["modules"]
-                    },
-                    "bwa/index": {
-                        "branch": "master",
-                        "git_sha": "b519b07af4ed954827e8cbbed1de3b6751ad2427",
-                        "installed_by": ["modules"]
-                    },
-                    "bwamem2/index": {
-                        "branch": "master",
-                        "git_sha": "b519b07af4ed954827e8cbbed1de3b6751ad2427",
-                        "installed_by": ["modules"]
-                    },
                     "custom/catadditionalfasta": {
                         "branch": "master",
                         "git_sha": "a1abf90966a2a4016d3c3e41e228bfcbd4811ccc",
                         "installed_by": ["modules"]
-                    },
-                    "dragmap/hashtable": {
-                        "branch": "master",
-                        "git_sha": "81880787133db07d9b4c1febd152c090eb8325dc",
-                        "installed_by": ["modules"],
-                        "patch": "modules/nf-core/dragmap/hashtable/dragmap-hashtable.diff"
-                    },
-                    "gatk4/createsequencedictionary": {
-                        "branch": "master",
-                        "git_sha": "81880787133db07d9b4c1febd152c090eb8325dc",
-                        "installed_by": ["modules"]
-                    },
-                    "gawk": {
-                        "branch": "master",
-                        "git_sha": "102e86c93832f5239990b2fa0f59db3b85c83ed3",
-                        "installed_by": ["modules"]
-                    },
-                    "gffread": {
-                        "branch": "master",
-                        "git_sha": "81880787133db07d9b4c1febd152c090eb8325dc",
-                        "installed_by": ["modules"],
-                        "patch": "modules/nf-core/gffread/gffread.diff"
                     },
                     "gunzip": {
                         "branch": "master",
                         "git_sha": "81880787133db07d9b4c1febd152c090eb8325dc",
                         "installed_by": ["archive_extract"]
                     },
-                    "hisat2/build": {
-                        "branch": "master",
-                        "git_sha": "81880787133db07d9b4c1febd152c090eb8325dc",
-                        "installed_by": ["modules"],
-                        "patch": "modules/nf-core/hisat2/build/hisat2-build.diff"
-                    },
-                    "hisat2/extractsplicesites": {
-                        "branch": "master",
-                        "git_sha": "81880787133db07d9b4c1febd152c090eb8325dc",
-                        "installed_by": ["modules"]
-                    },
-                    "kallisto/index": {
-                        "branch": "master",
-                        "git_sha": "81880787133db07d9b4c1febd152c090eb8325dc",
-                        "installed_by": ["modules"]
-                    },
-                    "msisensorpro/scan": {
-                        "branch": "master",
-                        "git_sha": "81880787133db07d9b4c1febd152c090eb8325dc",
-                        "installed_by": ["modules"]
-                    },
                     "multiqc": {
                         "branch": "master",
                         "git_sha": "81880787133db07d9b4c1febd152c090eb8325dc",
                         "installed_by": ["modules"]
                     },
-                    "rsem/preparereference": {
-                        "branch": "master",
-                        "git_sha": "81880787133db07d9b4c1febd152c090eb8325dc",
-                        "installed_by": ["modules"],
-                        "patch": "modules/nf-core/rsem/preparereference/rsem-preparereference.diff"
-                    },
-                    "salmon/index": {
-                        "branch": "master",
-                        "git_sha": "81880787133db07d9b4c1febd152c090eb8325dc",
-                        "installed_by": ["modules"],
-                        "patch": "modules/nf-core/salmon/index/salmon-index.diff"
-                    },
-                    "samtools/faidx": {
-                        "branch": "master",
-                        "git_sha": "b75d04926473d07bb85c08df19531f37bcf5fd4a",
-                        "installed_by": ["modules"],
-                        "patch": "modules/nf-core/samtools/faidx/samtools-faidx.diff"
-                    },
                     "sortmerna": {
-                        "branch": "master",
-                        "git_sha": "81880787133db07d9b4c1febd152c090eb8325dc",
-                        "installed_by": ["modules"]
-                    },
-                    "star/genomegenerate": {
-                        "branch": "master",
-                        "git_sha": "81880787133db07d9b4c1febd152c090eb8325dc",
-                        "installed_by": ["modules"],
-                        "patch": "modules/nf-core/star/genomegenerate/star-genomegenerate.diff"
-                    },
-                    "tabix/bgziptabix": {
-                        "branch": "master",
-                        "git_sha": "81880787133db07d9b4c1febd152c090eb8325dc",
-                        "installed_by": ["modules"]
-                    },
-                    "tabix/tabix": {
                         "branch": "master",
                         "git_sha": "81880787133db07d9b4c1febd152c090eb8325dc",
                         "installed_by": ["modules"]
