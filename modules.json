@@ -7,7 +7,7 @@
                 "nf-side": {
                     "bowtie/build": {
                         "branch": "main",
-                        "git_sha": "547ea0d88f3830581c2cca1f5fbd4cc008f4af6f",
+                        "git_sha": "3fced2bcd1101902fed4602f85e7fb7dad6f05d3",
                         "installed_by": ["prepare_genome_rnaseq"]
                     },
                     "bowtie2/build": {
