@@ -12,7 +12,7 @@
                     },
                     "bowtie2/build": {
                         "branch": "main",
-                        "git_sha": "79c7d3d43438529fb840ef9130896113574605c8",
+                        "git_sha": "12e6c10a221eb6c941997c989433dfa626d13956",
                         "installed_by": ["prepare_genome_rnaseq"]
                     },
                     "bwa/index": {
@@ -27,7 +27,7 @@
                     },
                     "dragmap/hashtable": {
                         "branch": "main",
-                        "git_sha": "f642371663b4d6062848c8dc8fa880e543de17fd",
+                        "git_sha": "12e6c10a221eb6c941997c989433dfa626d13956",
                         "installed_by": ["prepare_genome_dnaseq"]
                     },
                     "gatk4/createsequencedictionary": {
@@ -42,7 +42,7 @@
                     },
                     "gffread": {
                         "branch": "main",
-                        "git_sha": "547ea0d88f3830581c2cca1f5fbd4cc008f4af6f",
+                        "git_sha": "9c62f2977be524e9a5b1346c64c128f253031b3f",
                         "installed_by": ["prepare_genome_rnaseq"]
                     },
                     "hisat2/build": {
@@ -67,32 +67,32 @@
                     },
                     "rsem/preparereference": {
                         "branch": "main",
-                        "git_sha": "f642371663b4d6062848c8dc8fa880e543de17fd",
+                        "git_sha": "12e6c10a221eb6c941997c989433dfa626d13956",
                         "installed_by": ["prepare_genome_rnaseq"]
                     },
                     "salmon/index": {
                         "branch": "main",
-                        "git_sha": "547ea0d88f3830581c2cca1f5fbd4cc008f4af6f",
+                        "git_sha": "9c62f2977be524e9a5b1346c64c128f253031b3f",
                         "installed_by": ["prepare_genome_rnaseq"]
                     },
                     "samtools/faidx": {
                         "branch": "main",
-                        "git_sha": "547ea0d88f3830581c2cca1f5fbd4cc008f4af6f",
+                        "git_sha": "9c62f2977be524e9a5b1346c64c128f253031b3f",
                         "installed_by": ["prepare_genome_dnaseq", "prepare_genome_rnaseq"]
                     },
                     "star/genomegenerate": {
                         "branch": "main",
-                        "git_sha": "f642371663b4d6062848c8dc8fa880e543de17fd",
+                        "git_sha": "12e6c10a221eb6c941997c989433dfa626d13956",
                         "installed_by": ["prepare_genome_rnaseq"]
                     },
                     "tabix/bgziptabix": {
                         "branch": "main",
-                        "git_sha": "547ea0d88f3830581c2cca1f5fbd4cc008f4af6f",
+                        "git_sha": "12e6c10a221eb6c941997c989433dfa626d13956",
                         "installed_by": ["prepare_genome_dnaseq"]
                     },
                     "tabix/tabix": {
                         "branch": "main",
-                        "git_sha": "547ea0d88f3830581c2cca1f5fbd4cc008f4af6f",
+                        "git_sha": "12e6c10a221eb6c941997c989433dfa626d13956",
                         "installed_by": ["prepare_genome_dnaseq"]
                     }
                 }
