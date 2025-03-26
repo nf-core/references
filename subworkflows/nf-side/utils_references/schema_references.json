@@ -11,33 +11,40 @@
                 "meta": ["genome", "id"],
                 "type": "string",
                 "pattern": "^\\S+$",
-                "errorMessage": "Genome name must be provided, cannot contain spaces"
+                "errorMessage": "Genome name must be provided and cannot contain spaces"
             },
             "site": {
                 "meta": ["site"],
                 "type": "string",
-                "pattern": "^\\S+$",
+                "oneOf": [
+                    {
+                        "format": "uri-reference"
+                    },
+                    {
+                        "const": "unknown"
+                    }
+                ],
                 "default": "unknown",
-                "errorMessage": "Website of origin of the reference, cannot contain spaces"
+                "errorMessage": "Website of origin of the reference must be a valid URL or 'unknown'"
             },
             "source": {
                 "meta": ["source"],
                 "type": "string",
                 "pattern": "^\\S+$",
-                "errorMessage": "Source of genome must be provided, cannot contain spaces"
+                "errorMessage": "Source of genome cannot contain spaces"
             },
             "source_version": {
                 "meta": ["source_version"],
                 "type": "string",
                 "pattern": "^\\S+$",
                 "default": "unknown",
-                "errorMessage": "Source version used to create annotation files (gff/gtf related files), cannot contain spaces"
+                "errorMessage": "Source version used to create annotation files (gff/gtf related files) cannot contain spaces"
             },
             "species": {
                 "meta": ["species"],
                 "type": "string",
                 "pattern": "^\\S+$",
-                "errorMessage": "Species of the reference, cannot contain spaces"
+                "errorMessage": "Species of the reference cannot contain spaces"
             },
             "ascat_alleles": {
                 "meta": ["ascat_alleles"],
@@ -66,32 +73,82 @@
             "bowtie1_index": {
                 "meta": ["bowtie1_index"],
                 "type": "string",
-                "pattern": "^\\S+$",
-                "errorMessage": "Bowtie1 index, cannot contain spaces"
+                "oneOf": [
+                    {
+                        "format": "directory-path",
+                        "pattern": "^\\S+$"
+                    },
+                    {
+                        "format": "file-path",
+                        "pattern": "^\\S+\\.tar\\.gz$"
+                    }
+                ],
+                "exists": true,
+                "errorMessage": "Bowtie1 index must be an existing directory or an existing file ending in '.tar.gz' and cannot contain spaces"
             },
             "bowtie2_index": {
                 "meta": ["bowtie2_index"],
                 "type": "string",
-                "pattern": "^\\S+$",
-                "errorMessage": "Bowtie2 index, cannot contain spaces"
+                "oneOf": [
+                    {
+                        "format": "directory-path",
+                        "pattern": "^\\S+$"
+                    },
+                    {
+                        "format": "file-path",
+                        "pattern": "^\\S+\\.tar\\.gz$"
+                    }
+                ],
+                "exists": true,
+                "errorMessage": "Bowtie2 index must be an existing directory or an existing file ending in '.tar.gz' and cannot contain spaces"
             },
             "bwamem1_index": {
                 "meta": ["bwamem1_index"],
                 "type": "string",
-                "pattern": "^\\S+$",
-                "errorMessage": "BWA-MEM index, cannot contain spaces"
+                "oneOf": [
+                    {
+                        "format": "directory-path",
+                        "pattern": "^\\S+$"
+                    },
+                    {
+                        "format": "file-path",
+                        "pattern": "^\\S+\\.tar\\.gz$"
+                    }
+                ],
+                "exists": true,
+                "errorMessage": "BWA-MEM1 index must be an existing directory or an existing file ending in '.tar.gz' and cannot contain spaces"
             },
             "bwamem2_index": {
                 "meta": ["bwamem2_index"],
                 "type": "string",
-                "pattern": "^\\S+$",
-                "errorMessage": "BWA-MEM2 index, cannot contain spaces"
+                "oneOf": [
+                    {
+                        "format": "directory-path",
+                        "pattern": "^\\S+$"
+                    },
+                    {
+                        "format": "file-path",
+                        "pattern": "^\\S+\\.tar\\.gz$"
+                    }
+                ],
+                "exists": true,
+                "errorMessage": "BWA-MEM2 index must be an existing directory or an existing file ending in '.tar.gz' and cannot contain spaces"
             },
             "dragmap_hashtable": {
                 "meta": ["dragmap_hashtable"],
                 "type": "string",
-                "pattern": "^\\S+$",
-                "errorMessage": "DRAGMAP hashtable, cannot contain spaces"
+                "oneOf": [
+                    {
+                        "format": "directory-path",
+                        "pattern": "^\\S+$"
+                    },
+                    {
+                        "format": "file-path",
+                        "pattern": "^\\S+\\.tar\\.gz$"
+                    }
+                ],
+                "exists": true,
+                "errorMessage": "DragMap Hashtable must be an existing directory or an existing file ending in '.tar.gz' and cannot contain spaces"
             },
             "chr_dir": {
                 "meta": ["chr_dir"],
@@ -102,56 +159,81 @@
             "fasta": {
                 "meta": ["fasta"],
                 "type": "string",
+                "format": "file-path",
+                "exists": true,
                 "pattern": "^\\S+\\.f(ast|n)?a(\\.gz)?$",
-                "errorMessage": "Fasta file [required when creating a reference], cannot contain spaces"
+                "errorMessage": "Fasta file [required when creating a reference] must be an existing file ending in '.fa', '.fasta' or '.fna' that does not contain spaces. This file can be gzipped."
             },
             "fasta_dict": {
                 "meta": ["fasta_dict"],
                 "type": "string",
+                "format": "file-path",
+                "exists": true,
                 "pattern": "^\\S+\\.dict(\\.gz)?$",
-                "errorMessage": "Fasta dictionary, cannot contain spaces"
+                "errorMessage": "Fasta dictionary must be an existing file ending in '.dict' that does not contain spaces. The file can be gzipped."
             },
             "fasta_fai": {
                 "meta": ["fasta_fai"],
                 "type": "string",
+                "format": "file-path",
+                "exists": true,
                 "pattern": "^\\S+\\.f(ast|n)?a\\.fai(\\.gz)?$",
-                "errorMessage": "Fasta index, cannot contain spaces"
+                "errorMessage": "Fasta index must be an existing file that ends in one of the valid fasta extension followed by '.fai' and does not contain spaces. This file can be gzipped."
             },
             "fasta_sizes": {
                 "meta": ["fasta_sizes"],
                 "type": "string",
+                "format": "file-path",
+                "exists": true,
                 "pattern": "^\\S+\\.f(ast|n)?a\\.sizes(\\.gz)?$",
-                "errorMessage": "Fasta sizes, cannot contain spaces"
+                "errorMessage": "Fasta sizes must be an existing file that ends in one of the valid fasta extension followed by '.sizes' and does not contain spaces. This file can be gzipped."
             },
             "gff": {
                 "meta": ["gff"],
                 "type": "string",
+                "format": "file-path",
+                "exists": true,
                 "pattern": "^\\S+\\.gff(\\.gz)?$",
-                "errorMessage": "GFF3 file, required when no GTF is provided and wanting to build a reference needing such genes annotation, cannot contain spaces"
+                "errorMessage": "GFF3 file, required when no GTF is provided and wanting to build a reference needing such genes annotation. This file needs to exist, needs to end in '.gff', cannot contain spaces and can be gzipped."
             },
             "gtf": {
                 "meta": ["gtf"],
                 "type": "string",
                 "pattern": "^\\S+\\.gtf(\\.gz)?$",
-                "errorMessage": "GTF file, required when no GFF3 is provided and wanting to build a reference needing such genes annotation, cannot contain spaces"
+                "format": "file-path",
+                "exists": true,
+                "errorMessage": "GTF file, required when no GFF3 is provided and wanting to build a reference needing such genes annotation. This file needs to exist, needs to end in '.gff', cannot contain spaces and can be gzipped."
             },
             "hisat2_index": {
                 "meta": ["hisat2_index"],
                 "type": "string",
-                "pattern": "^\\S+$",
-                "errorMessage": "HISAT2 index, cannot contain spaces"
+                "pattern": "^\\S+\\.ht2$",
+                "format": "file-path",
+                "exists": true,
+                "errorMessage": "HISAT2 index must be an existing file ending in '.ht2' that does not contain spaces"
             },
             "intervals_bed": {
                 "meta": ["intervals_bed"],
                 "type": "string",
                 "pattern": "^\\S+\\.bed$",
-                "errorMessage": "Fasta intervals bed, cannot contain spaces "
+                "format": "file-path",
+                "exists": true,
+                "errorMessage": "Fasta intervals bed must be an existing file ending in '.bed' that does not contain spaces "
             },
             "kallisto_index": {
                 "meta": ["kallisto_index"],
                 "type": "string",
-                "pattern": "^\\S+$",
-                "errorMessage": "Kallisto index, cannot contain spaces"
+                "oneOf": [
+                    {
+                        "format": "directory-path",
+                        "pattern": "^\\S+$"
+                    },
+                    {
+                        "format": "file-path",
+                        "pattern": "^\\S+\\.tar\\.gz$"
+                    }
+                ],
+                "errorMessage": "Kallisto index must be an existing directory or an existing file ending in '.tar.gz' and cannot contain spaces"
             },
             "macs_gsize": {
                 "meta": ["macs_gsize"],
@@ -167,168 +249,239 @@
             "msisensorpro_list": {
                 "meta": ["msisensorpro_list"],
                 "type": "string",
-                "pattern": "^\\S+$",
-                "errorMessage": "MSIsensor-pro list, cannot contain spaces"
+                "format": "file-path",
+                "exists": true,
+                "pattern": "^\\S+\\.list$",
+                "errorMessage": "MSIsensor-pro list must be an existing file ending in '.list' that does not contain spaces"
             },
             "ngscheckmate_bed": {
                 "meta": ["ngscheckmate_bed"],
                 "type": "string",
+                "format": "file-path",
+                "exists": true,
                 "pattern": "^\\S+\\.bed$",
-                "errorMessage": "ngscheckmate bed, cannot contain spaces "
+                "errorMessage": "NGScheckmate bed must be an existing file ending in '.bed' that does not contain spaces"
             },
             "readme": {
                 "type": "string",
-                "pattern": "^\\S+$",
-                "errorMessage": "README file describing the reference, cannot contain spaces"
+                "format": "file-path",
+                "exists": true,
+                "pattern": "^\\S+\\.(md|txt)$",
+                "errorMessage": "README file describing the reference must be an existing file ending in '.md' or '.txt' that does not contain spaces"
             },
             "rsem_index": {
                 "meta": ["rsem_index"],
                 "type": "string",
-                "pattern": "^\\S+$",
-                "errorMessage": "RSEM index, cannot contain spaces"
+                "oneOf": [
+                    {
+                        "format": "directory-path",
+                        "pattern": "^\\S+$"
+                    },
+                    {
+                        "format": "file-path",
+                        "pattern": "^\\S+\\.tar\\.gz$"
+                    }
+                ],
+                "errorMessage": "Rsem index must be an existing directory or an existing file ending in '.tar.gz' and cannot contain spaces"
             },
             "salmon_index": {
                 "meta": ["salmon_index"],
                 "type": "string",
-                "pattern": "^\\S+$",
-                "errorMessage": "Salmon index, cannot contain spaces"
+                "oneOf": [
+                    {
+                        "format": "directory-path",
+                        "pattern": "^\\S+$"
+                    },
+                    {
+                        "format": "file-path",
+                        "pattern": "^\\S+\\.tar\\.gz$"
+                    }
+                ],
+                "errorMessage": "Salmon index must be an existing directory or an existing file ending in '.tar.gz' and cannot contain spaces"
             },
             "splice_sites": {
                 "meta": ["splice_sites"],
                 "type": "string",
                 "pattern": "^\\S+(\\.splice_sites)(\\.txt)?$",
-                "errorMessage": "Splice sites [can be generated with HISAT2], cannot contain spaces"
+                "format": "file-path",
+                "exists": true,
+                "errorMessage": "Splice sites [can be generated with HISAT2] must be an existing file ending in '.splice_sites' or '.splice_sites.txt' that does not contain spaces"
             },
             "star_index": {
                 "meta": ["star_index"],
                 "type": "string",
-                "pattern": "^\\S+$",
-                "errorMessage": "STAR index, cannot contain spaces"
+                "oneOf": [
+                    {
+                        "format": "directory-path",
+                        "pattern": "^\\S+$"
+                    },
+                    {
+                        "format": "file-path",
+                        "pattern": "^\\S+\\.tar\\.gz$"
+                    }
+                ],
+                "errorMessage": "STAR index must be an existing directory or an existing file ending in '.tar.gz' and cannot contain spaces"
             },
             "snpeff_db": {
                 "meta": ["snpeff_db"],
                 "type": "string",
-                "pattern": "^\\S+$",
-                "errorMessage": "SnpEff database, cannot contain spaces"
+                "oneOf": [
+                    {
+                        "format": "directory-path",
+                        "pattern": "^\\S+$"
+                    },
+                    {
+                        "format": "file-path",
+                        "pattern": "^\\S+\\.tar\\.gz$"
+                    }
+                ],
+                "errorMessage": "Snpeff database must be an existing directory or an existing file ending in '.tar.gz' and cannot contain spaces"
             },
             "transcript_fasta": {
                 "meta": ["transcript_fasta"],
                 "type": "string",
+                "format": "file-path",
+                "exist": true,
                 "pattern": "^\\S+\\.f(ast|n)?a(\\.gz)?$",
-                "errorMessage": "Transcript fasta [can be generated with RSEM], cannot contain spaces"
+                "errorMessage": "Transcript fasta [can be generated with RSEM] must be an existing file ending in '.fa', '.fasta' or '.fna' that does contain spaces. This file can be gzipped"
             },
             "vep_cache_version": {
                 "meta": ["vep_cache_version"],
                 "type": "string",
                 "pattern": "^\\S+$",
-                "errorMessage": "VEP cache version, cannot contain spaces"
+                "errorMessage": "VEP cache version needs to be a string value that does not contain spaces"
             },
             "vep_genome": {
                 "meta": ["vep_genome"],
                 "type": "string",
                 "pattern": "^\\S+$",
-                "errorMessage": "VEP genome, cannot contain spaces"
+                "errorMessage": "VEP genome needs to be a string value that does not contain spaces"
             },
             "vep_species": {
                 "meta": ["vep_species"],
                 "type": "string",
                 "pattern": "^\\S+$",
-                "errorMessage": "VEP species, cannot contain spaces"
+                "errorMessage": "VEP species needs to be a string value that does not contain spaces"
             },
             "vcf_dbsnp_vcf": {
                 "meta": ["vcf_dbsnp_vcf"],
                 "type": "string",
+                "format": "file-path",
+                "exists": true,
                 "pattern": "^\\S+\\.vcf(\\.gz)?$",
-                "errorMessage": "VCF file (can be bgzipped), cannot contain spaces"
+                "errorMessage": "DBSNP VCF must be an existing file ending in '.vcf' that does not contain spaces. This file can be bgzipped"
             },
             "vcf_dbsnp_vcf_tbi": {
                 "meta": ["vcf_dbsnp_vcf_tbi"],
                 "type": "string",
                 "pattern": "^\\S+\\.vcf\\.gz\\.tbi?$",
-                "errorMessage": "VCF tabix index, cannot contain spaces"
+                "format": "file-path",
+                "exists": true,
+                "errorMessage": "DBSNP VCF index must be an existing file ending in '.vcf.gz.tbi' that does not contain spaces"
             },
             "vcf_dbsnp_vcf_vqsr": {
                 "meta": ["vcf_dbsnp_vcf_vqsr"],
                 "type": "string",
-                "errorMessage": "VCF VQSR input, can contain spaces"
+                "format": "file-path",
+                "exists": true,
+                "pattern": "^\\S+\\.vcf(\\.gz)?$",
+                "errorMessage": "DBSNP VQSR VCF must be an existing file ending in '.vcf' that does not contain spaces. This file can be bgzipped"
             },
             "vcf_dbsnp_vcf_source": {
                 "meta": ["vcf_dbsnp_vcf_source"],
                 "type": "string",
-                "pattern": "^\\S+$",
-                "errorMessage": "Source of dbsnp, cannot contain spaces"
+                "pattern": "^\\S+\\.vcf\\.gz\\.tbi?$",
+                "format": "file-path",
+                "exists": true,
+                "errorMessage": "DBSNP VQSR VCF index must be an existing file ending in '.vcf.gz.tbi' that does not contain spaces"
             },
             "vcf_germline_resource_vcf": {
                 "meta": ["vcf_germline_resource_vcf"],
                 "type": "string",
+                "format": "file-path",
+                "exists": true,
                 "pattern": "^\\S+\\.vcf(\\.gz)?$",
-                "errorMessage": "VCF file (can be bgzipped), cannot contain spaces"
+                "errorMessage": "Germline Resource VCF must be an existing file ending in '.vcf' that does not contain spaces. This file can be bgzipped"
             },
             "vcf_germline_resource_vcf_tbi": {
                 "meta": ["vcf_germline_resource_vcf_tbi"],
                 "type": "string",
                 "pattern": "^\\S+\\.vcf\\.gz\\.tbi?$",
-                "errorMessage": "VCF tabix index, cannot contain spaces"
+                "format": "file-path",
+                "exists": true,
+                "errorMessage": "Germline Resource VCF index must be an existing file ending in '.vcf.gz.tbi' that does not contain spaces"
             },
             "vcf_germline_resource_vcf_source": {
                 "meta": ["vcf_germline_resource_vcf_source"],
                 "type": "string",
                 "pattern": "^\\S+$",
-                "errorMessage": "Source of germline_resource, cannot contain spaces"
+                "errorMessage": "Source of germline_resource must be a string value that does not contain spaces"
             },
             "vcf_known_indels_vcf": {
                 "meta": ["vcf_known_indels_vcf"],
                 "type": "string",
+                "format": "file-path",
+                "exists": true,
                 "pattern": "^\\S+\\.vcf(\\.gz)?$",
-                "errorMessage": "VCF file (can be bgzipped), cannot contain spaces"
+                "errorMessage": "Known indels VCF must be an existing file ending in '.vcf' that does not contain spaces. This file can be bgzipped"
             },
             "vcf_known_indels_vcf_tbi": {
                 "meta": ["vcf_known_indels_vcf_tbi"],
                 "type": "string",
                 "pattern": "^\\S+\\.vcf\\.gz\\.tbi?$",
-                "errorMessage": "VCF tabix index, cannot contain spaces"
+                "format": "file-path",
+                "exists": true,
+                "errorMessage": "Known indels VCF index must be an existing file ending in '.vcf.gz.tbi' that does not contain spaces"
             },
             "vcf_known_indels_vcf_source": {
                 "meta": ["vcf_known_indels_vcf_source"],
                 "type": "string",
                 "pattern": "^\\S+$",
-                "errorMessage": "Source of known_indels, cannot contain spaces"
+                "errorMessage": "Source of known_indels must be a string value that does not contain spaces"
             },
             "vcf_known_snps_vcf": {
                 "meta": ["vcf_known_snps_vcf"],
                 "type": "string",
+                "format": "file-path",
+                "exists": true,
                 "pattern": "^\\S+\\.vcf(\\.gz)?$",
-                "errorMessage": "VCF file (can be bgzipped), cannot contain spaces"
+                "errorMessage": "Known snps VCF must be an existing file ending in '.vcf' that does not contain spaces. This file can be bgzipped"
             },
             "vcf_known_snps_vcf_tbi": {
                 "meta": ["vcf_known_snps_vcf_tbi"],
                 "type": "string",
                 "pattern": "^\\S+\\.vcf\\.gz\\.tbi?$",
-                "errorMessage": "VCF tabix index, cannot contain spaces"
+                "format": "file-path",
+                "exists": true,
+                "errorMessage": "Known snps VCF index must be an existing file ending in '.vcf.gz.tbi' that does not contain spaces"
             },
             "vcf_known_snps_vcf_source": {
                 "meta": ["vcf_known_snps_vcf_source"],
                 "type": "string",
                 "pattern": "^\\S+$",
-                "errorMessage": "Source of known_snps, cannot contain spaces"
+                "errorMessage": "Source of known_snps must be a string value that does not contain spaces"
             },
             "vcf_pon_vcf": {
                 "meta": ["vcf_pon_vcf"],
                 "type": "string",
+                "format": "file-path",
+                "exists": true,
                 "pattern": "^\\S+\\.vcf(\\.gz)?$",
-                "errorMessage": "VCF file (can be bgzipped), cannot contain spaces"
+                "errorMessage": "PON VCF must be an existing file ending in '.vcf' that does not contain spaces. This file can be bgzipped"
             },
             "vcf_pon_vcf_tbi": {
                 "meta": ["vcf_pon_vcf_tbi"],
                 "type": "string",
                 "pattern": "^\\S+\\.vcf\\.gz\\.tbi?$",
-                "errorMessage": "VCF tabix index, cannot contain spaces"
+                "format": "file-path",
+                "exists": true,
+                "errorMessage": "PON VCF index must be an existing file ending in '.vcf.gz.tbi' that does not contain spaces"
             },
             "vcf_pon_vcf_source": {
                 "meta": ["vcf_pon_vcf_source"],
                 "type": "string",
                 "pattern": "^\\S+$",
-                "errorMessage": "Source of pon, cannot contain spaces"
+                "errorMessage": "Source of pon must be a string value that does not contain spaces"
             }
         },
         "required": ["genome"]

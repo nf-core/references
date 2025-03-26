@@ -3,6 +3,7 @@ nextflow_workflow {
     name "Test Workflow UTILS_REFERENCES"
     script "../main.nf"
     workflow "UTILS_REFERENCES"
+    config './nextflow.config'
 
     test("references_file with params - references_value without params") {
 
