@@ -61,7 +61,7 @@ workflow PIPELINE_INITIALISATION {
     //
     // Create channel from asset file provided through params.asset
     //
-    references = Channel.fromList(samplesheetToList(asset, "${projectDir}/subworkflows/nf-core/utils_references/schema_references.json"))
+    references = Channel.fromList(samplesheetToList(asset, "${projectDir}/subworkflows/nf-side/utils_references/schema_references.json"))
 
     emit:
     references
