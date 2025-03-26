@@ -15,7 +15,18 @@ workflow UTILS_REFERENCES {
     basepath
 
     main:
-    references = Channel.fromList(samplesheetToList(yaml_reference, "${projectDir}/subworkflows/nf-side/utils_references/schema_references.json"))
+    // Change all igenomes base parameter values in the file to the correct value
+    def correct_yaml_file = file(yaml_reference, checkIfExists:true)
+    if(params.igenomes_base) {
+        def yaml_file = file(yaml_reference, checkIfExists:true)
+        def staged_yaml_file = "${workflow.workDir}/tmp/${java.util.UUID.randomUUID().toString()}.${yaml_file.extension}"
+        yaml_file.copyTo(staged_yaml_file)
+        correct_yaml_file = file(staged_yaml_file, checkIfExists:true)
+        def yaml_content = correct_yaml_file.text
+        correct_yaml_file.text = yaml_content.replace('${params.igenomes_base}', params.igenomes_base).replace('$params.igenomes_base', params.igenomes_base)
+    }
+
+    references = Channel.fromList(samplesheetToList(correct_yaml_file, "${projectDir}/subworkflows/nf-side/utils_references/schema_references.json"))
 
     // GIVING up writing a test for the functions, so writing a subworkflow to test it
     references_file = get_references_file(references, param_file, attribute_file, basepath)

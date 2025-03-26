@@ -176,7 +176,7 @@
                     },
                     "utils_references": {
                         "branch": "main",
-                        "git_sha": "2a2fb04ba1954ba0538c2afdd47bdeb040688df4",
+                        "git_sha": "55987c2121156a669652eeef666117169e0da338",
                         "installed_by": ["subworkflows"]
                     }
                 }

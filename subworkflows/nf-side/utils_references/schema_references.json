@@ -382,18 +382,14 @@
             "vcf_dbsnp_vcf_vqsr": {
                 "meta": ["vcf_dbsnp_vcf_vqsr"],
                 "type": "string",
-                "format": "file-path",
-                "exists": true,
-                "pattern": "^\\S+\\.vcf(\\.gz)?$",
-                "errorMessage": "DBSNP VQSR VCF must be an existing file ending in '.vcf' that does not contain spaces. This file can be bgzipped"
+                "pattern": "^\\S+ \\S+\\.vcf(\\.gz)?$",
+                "errorMessage": "VQSR DBSNP string needs to be a comma-separated list of VSQR options followed by the basename of the DBSNP VCF file"
             },
             "vcf_dbsnp_vcf_source": {
                 "meta": ["vcf_dbsnp_vcf_source"],
                 "type": "string",
-                "pattern": "^\\S+\\.vcf\\.gz\\.tbi?$",
-                "format": "file-path",
-                "exists": true,
-                "errorMessage": "DBSNP VQSR VCF index must be an existing file ending in '.vcf.gz.tbi' that does not contain spaces"
+                "pattern": "^\\S+$",
+                "errorMessage": "Source of dbsnp VCF must be a string value that does not contain spaces"
             },
             "vcf_germline_resource_vcf": {
                 "meta": ["vcf_germline_resource_vcf"],

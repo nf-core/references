@@ -8,6 +8,10 @@ nextflow_workflow {
     test("references_file with params - references_value without params") {
 
         when {
+            params {
+                igenomes_base = 's3://ngi-igenomes/igenomes/'
+            }
+
             workflow {
                 """
                 input[0] = 'https://raw.githubusercontent.com/nf-core/references-assets/main/genomes/Homo_sapiens/test/GRCh38_chr22.yml'
