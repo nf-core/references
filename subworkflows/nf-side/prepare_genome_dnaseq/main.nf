@@ -1,12 +1,12 @@
-include { BWAMEM2_INDEX                  } from '../../../modules/nf-core/bwamem2/index'
-include { BWA_INDEX as BWAMEM1_INDEX     } from '../../../modules/nf-core/bwa/index'
-include { DRAGMAP_HASHTABLE              } from '../../../modules/nf-core/dragmap/hashtable'
-include { GATK4_CREATESEQUENCEDICTIONARY } from '../../../modules/nf-core/gatk4/createsequencedictionary'
-include { GAWK as BUILD_INTERVALS        } from '../../../modules/nf-core/gawk'
-include { MSISENSORPRO_SCAN              } from '../../../modules/nf-core/msisensorpro/scan'
-include { SAMTOOLS_FAIDX                 } from '../../../modules/nf-core/samtools/faidx'
-include { TABIX_BGZIPTABIX               } from '../../../modules/nf-core/tabix/bgziptabix'
-include { TABIX_TABIX                    } from '../../../modules/nf-core/tabix/tabix'
+include { BWAMEM2_INDEX                  } from '../../../modules/nf-side/bwamem2/index'
+include { BWA_INDEX as BWAMEM1_INDEX     } from '../../../modules/nf-side/bwa/index'
+include { DRAGMAP_HASHTABLE              } from '../../../modules/nf-side/dragmap/hashtable'
+include { GATK4_CREATESEQUENCEDICTIONARY } from '../../../modules/nf-side/gatk4/createsequencedictionary'
+include { GAWK as BUILD_INTERVALS        } from '../../../modules/nf-side/gawk'
+include { MSISENSORPRO_SCAN              } from '../../../modules/nf-side/msisensorpro/scan'
+include { SAMTOOLS_FAIDX                 } from '../../../modules/nf-side/samtools/faidx'
+include { TABIX_BGZIPTABIX               } from '../../../modules/nf-side/tabix/bgziptabix'
+include { TABIX_TABIX                    } from '../../../modules/nf-side/tabix/tabix'
 
 workflow PREPARE_GENOME_DNASEQ {
     take:

@@ -63,11 +63,6 @@
                         "branch": "master",
                         "git_sha": "2fd2cd6d0e7b273747f32e465fdc6bcc3ae0814e",
                         "installed_by": ["subworkflows"]
-                    },
-                    "utils_references": {
-                        "branch": "master",
-                        "git_sha": "c18de39a419659720e2482df14df21affdc30f47",
-                        "installed_by": ["subworkflows"]
                     }
                 }
             }
@@ -107,7 +102,7 @@
                     },
                     "gawk": {
                         "branch": "main",
-                        "git_sha": "79c7d3d43438529fb840ef9130896113574605c8",
+                        "git_sha": "60ef5bb238eb83e78bea4e9a275e334cc65d36be",
                         "installed_by": ["prepare_genome_dnaseq"]
                     },
                     "gffread": {
@@ -117,7 +112,7 @@
                     },
                     "hisat2/build": {
                         "branch": "main",
-                        "git_sha": "f642371663b4d6062848c8dc8fa880e543de17fd",
+                        "git_sha": "60ef5bb238eb83e78bea4e9a275e334cc65d36be",
                         "installed_by": ["prepare_genome_rnaseq"]
                     },
                     "hisat2/extractsplicesites": {
@@ -132,7 +127,7 @@
                     },
                     "msisensorpro/scan": {
                         "branch": "main",
-                        "git_sha": "547ea0d88f3830581c2cca1f5fbd4cc008f4af6f",
+                        "git_sha": "60ef5bb238eb83e78bea4e9a275e334cc65d36be",
                         "installed_by": ["prepare_genome_dnaseq"]
                     },
                     "rsem/preparereference": {
@@ -171,12 +166,17 @@
                 "nf-side": {
                     "prepare_genome_dnaseq": {
                         "branch": "main",
-                        "git_sha": "79c7d3d43438529fb840ef9130896113574605c8",
+                        "git_sha": "bc3122bf8ada968de886888792978a4d3058d9ab",
                         "installed_by": ["subworkflows"]
                     },
                     "prepare_genome_rnaseq": {
                         "branch": "main",
-                        "git_sha": "79c7d3d43438529fb840ef9130896113574605c8",
+                        "git_sha": "bc3122bf8ada968de886888792978a4d3058d9ab",
+                        "installed_by": ["subworkflows"]
+                    },
+                    "utils_references": {
+                        "branch": "main",
+                        "git_sha": "01c719588d1a5391ba8108a8163ed9386cd70fd2",
                         "installed_by": ["subworkflows"]
                     }
                 }
