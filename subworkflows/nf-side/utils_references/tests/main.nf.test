@@ -5,7 +5,7 @@ nextflow_workflow {
     workflow "UTILS_REFERENCES"
     config './nextflow.config'
 
-    test("references_file with params - references_value without params") {
+    test("references_file with params - references_value without params + replace basepath with s3") {
 
         when {
             params {
@@ -19,7 +19,7 @@ nextflow_workflow {
                 input[2] = null
                 input[3] = 'fasta'
                 input[4] = 'species'
-                input[5] = 'https://raw.githubusercontent.com/nf-core/'
+                input[5] = 's3://nf-core-references/test_data/'
                 """
             }
         }

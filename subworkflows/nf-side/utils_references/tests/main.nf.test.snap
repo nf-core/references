@@ -1,5 +1,5 @@
 {
-    "references_file with params - references_value without params": {
+    "references_file with params - references_value without params + replace basepath with s3": {
         "content": [
             {
                 "0": [
@@ -38,8 +38,8 @@
         ],
         "meta": {
             "nf-test": "0.9.2",
-            "nextflow": "24.10.4"
+            "nextflow": "25.02.1"
         },
-        "timestamp": "2025-02-03T18:21:58.076068554"
+        "timestamp": "2025-03-28T11:16:31.722406802"
     }
 }
