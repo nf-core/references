@@ -14,6 +14,7 @@ include { UTILS_NFSCHEMA_PLUGIN   } from '../../nf-core/utils_nfschema_plugin'
 include { completionEmail         } from '../../nf-core/utils_nfcore_pipeline'
 include { completionSummary       } from '../../nf-core/utils_nfcore_pipeline'
 include { imNotification          } from '../../nf-core/utils_nfcore_pipeline'
+include { update_references_file  } from '../../nf-side/utils_references'
 include { paramsSummaryMap        } from 'plugin/nf-schema'
 include { samplesheetToList       } from 'plugin/nf-schema'
 
@@ -25,11 +26,13 @@ include { samplesheetToList       } from 'plugin/nf-schema'
 
 workflow PIPELINE_INITIALISATION {
     take:
-    version           // boolean: Display version and exit
-    validate_params   // boolean: Boolean whether to validate parameters against the schema at runtime
-    nextflow_cli_args //   array: List of positional nextflow CLI args
-    outdir            //  string: The output directory where the results will be saved
-    asset             //  string: Path to asset yaml file
+    version             // boolean: Display version and exit
+    validate_params     // boolean: Boolean whether to validate parameters against the schema at runtime
+    nextflow_cli_args   //   array: List of positional nextflow CLI args
+    outdir              //  string: The output directory where the results will be saved
+    asset               //  string: Path to asset yaml file
+    basepath_final      //  string: The final basepath to replace in the asset yaml file
+    basepath_to_replace //  array: The basepath to replace in the asset yaml file
 
     main:
     //
@@ -61,7 +64,12 @@ workflow PIPELINE_INITIALISATION {
     //
     // Create channel from asset file provided through params.asset
     //
-    references = Channel.fromList(samplesheetToList(asset, "${projectDir}/subworkflows/nf-side/utils_references/schema_references.json"))
+    references = Channel.fromList(
+        samplesheetToList(
+            update_references_file(asset, basepath_final, basepath_to_replace),
+            "${projectDir}/subworkflows/nf-side/utils_references/schema_references.json",
+        )
+    )
 
     emit:
     references

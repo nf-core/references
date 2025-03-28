@@ -38,7 +38,6 @@ include { REFERENCES              } from "./workflows/references"
 */
 
 workflow {
-
     main:
     // SUBWORKFLOW: Run initialisation tasks
     PIPELINE_INITIALISATION(
@@ -47,6 +46,8 @@ workflow {
         args,
         params.outdir,
         params.input,
+        params.references_basepath,
+        ['${params.igenomes_base}', 's3://ngi-igenomes/igenomes/'],
     )
 
     // WORKFLOW: Run main workflow
