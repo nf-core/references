@@ -64,6 +64,11 @@ workflow PIPELINE_INITIALISATION {
     //
     // Create channel from asset file provided through params.asset
     //
+
+    println("Asset file: ${asset}")
+    println("Basepath final: ${basepath_final}")
+    println("Basepath to replace: ${basepath_to_replace}")
+
     references = Channel.fromList(
         samplesheetToList(
             update_references_file(asset, basepath_final, basepath_to_replace),
