@@ -220,7 +220,7 @@ workflow NFCORE_REFERENCES {
             }
     }
 
-    YAML_TO_CHANNEL(references, params.tools ?: "no_tools")
+    YAML_TO_CHANNEL(references, tools ?: "no_tools")
 
     // References that need to be extracted
     // (VCFs are not extracted)

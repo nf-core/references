@@ -36,6 +36,11 @@
                     "help_text": "Multiple tools separated with commas.",
                     "pattern": "^((bowtie1|bowtie2|bwamem1|bwamem2|createsequencedictionary|dragmap|faidx|gffread|hisat2|hisat2_extractsplicesites|intervals|kallisto|msisensorpro|rsem|rsem_make_transcript_fasta|salmon|sizes|star|tabix)?,?)*(?<!,)$"
                 },
+                "references_basepath": {
+                    "type": "string",
+                    "description": "The basepath to replace in the asset yaml file.",
+                    "fa_icon": "fas fa-folder-open"
+                },
                 "email": {
                     "type": "string",
                     "description": "Email address for completion summary.",
