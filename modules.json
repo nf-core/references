@@ -7,37 +7,37 @@
                 "nf-core": {
                     "bbmap/bbsplit": {
                         "branch": "master",
-                        "git_sha": "f06465ff69516528b0178b2a2a5f6b1d4287faa9",
+                        "git_sha": "05954dab2ff481bcb999f24455da29a5828af08d",
                         "installed_by": ["modules"]
                     },
                     "custom/catadditionalfasta": {
                         "branch": "master",
-                        "git_sha": "a1abf90966a2a4016d3c3e41e228bfcbd4811ccc",
+                        "git_sha": "05954dab2ff481bcb999f24455da29a5828af08d",
                         "installed_by": ["modules"]
                     },
                     "gunzip": {
                         "branch": "master",
-                        "git_sha": "81880787133db07d9b4c1febd152c090eb8325dc",
+                        "git_sha": "05954dab2ff481bcb999f24455da29a5828af08d",
                         "installed_by": ["archive_extract"]
                     },
                     "multiqc": {
                         "branch": "master",
-                        "git_sha": "81880787133db07d9b4c1febd152c090eb8325dc",
+                        "git_sha": "7b50cb7be890e4b28cffb82e438cc6a8d7805d3f",
                         "installed_by": ["modules"]
                     },
                     "sortmerna": {
                         "branch": "master",
-                        "git_sha": "81880787133db07d9b4c1febd152c090eb8325dc",
+                        "git_sha": "05954dab2ff481bcb999f24455da29a5828af08d",
                         "installed_by": ["modules"]
                     },
                     "untar": {
                         "branch": "master",
-                        "git_sha": "81880787133db07d9b4c1febd152c090eb8325dc",
+                        "git_sha": "05954dab2ff481bcb999f24455da29a5828af08d",
                         "installed_by": ["archive_extract"]
                     },
                     "unzip": {
                         "branch": "master",
-                        "git_sha": "81880787133db07d9b4c1febd152c090eb8325dc",
+                        "git_sha": "05954dab2ff481bcb999f24455da29a5828af08d",
                         "installed_by": ["archive_extract"]
                     }
                 }
@@ -72,92 +72,92 @@
                 "nf-side": {
                     "bowtie/build": {
                         "branch": "main",
-                        "git_sha": "3fced2bcd1101902fed4602f85e7fb7dad6f05d3",
+                        "git_sha": "4d329b41d14a20dec31cae811f39e1a52b435220",
                         "installed_by": ["prepare_genome_rnaseq"]
                     },
                     "bowtie2/build": {
                         "branch": "main",
-                        "git_sha": "13cd01214b3415a40896e1a85930252e9c51e30f",
+                        "git_sha": "4d329b41d14a20dec31cae811f39e1a52b435220",
                         "installed_by": ["prepare_genome_rnaseq"]
                     },
                     "bwa/index": {
                         "branch": "main",
-                        "git_sha": "79c7d3d43438529fb840ef9130896113574605c8",
+                        "git_sha": "4d329b41d14a20dec31cae811f39e1a52b435220",
                         "installed_by": ["prepare_genome_dnaseq"]
                     },
                     "bwamem2/index": {
                         "branch": "main",
-                        "git_sha": "79c7d3d43438529fb840ef9130896113574605c8",
+                        "git_sha": "4d329b41d14a20dec31cae811f39e1a52b435220",
                         "installed_by": ["prepare_genome_dnaseq"]
                     },
                     "dragmap/hashtable": {
                         "branch": "main",
-                        "git_sha": "12e6c10a221eb6c941997c989433dfa626d13956",
+                        "git_sha": "4d329b41d14a20dec31cae811f39e1a52b435220",
                         "installed_by": ["prepare_genome_dnaseq"]
                     },
                     "gatk4/createsequencedictionary": {
                         "branch": "main",
-                        "git_sha": "79c7d3d43438529fb840ef9130896113574605c8",
+                        "git_sha": "4d329b41d14a20dec31cae811f39e1a52b435220",
                         "installed_by": ["prepare_genome_dnaseq"]
                     },
                     "gawk": {
                         "branch": "main",
-                        "git_sha": "60ef5bb238eb83e78bea4e9a275e334cc65d36be",
+                        "git_sha": "4d329b41d14a20dec31cae811f39e1a52b435220",
                         "installed_by": ["prepare_genome_dnaseq"]
                     },
                     "gffread": {
                         "branch": "main",
-                        "git_sha": "9c62f2977be524e9a5b1346c64c128f253031b3f",
+                        "git_sha": "4d329b41d14a20dec31cae811f39e1a52b435220",
                         "installed_by": ["prepare_genome_rnaseq"]
                     },
                     "hisat2/build": {
                         "branch": "main",
-                        "git_sha": "ed389613a221261b8f4de8d5100cdec7a1b6d433",
+                        "git_sha": "4d329b41d14a20dec31cae811f39e1a52b435220",
                         "installed_by": ["prepare_genome_rnaseq"]
                     },
                     "hisat2/extractsplicesites": {
                         "branch": "main",
-                        "git_sha": "79c7d3d43438529fb840ef9130896113574605c8",
+                        "git_sha": "4d329b41d14a20dec31cae811f39e1a52b435220",
                         "installed_by": ["prepare_genome_rnaseq"]
                     },
                     "kallisto/index": {
                         "branch": "main",
-                        "git_sha": "79c7d3d43438529fb840ef9130896113574605c8",
+                        "git_sha": "4d329b41d14a20dec31cae811f39e1a52b435220",
                         "installed_by": ["prepare_genome_rnaseq"]
                     },
                     "msisensorpro/scan": {
                         "branch": "main",
-                        "git_sha": "60ef5bb238eb83e78bea4e9a275e334cc65d36be",
+                        "git_sha": "8c1309daf37cd08ec9f98298521abd1f2745288a",
                         "installed_by": ["prepare_genome_dnaseq"]
                     },
                     "rsem/preparereference": {
                         "branch": "main",
-                        "git_sha": "12e6c10a221eb6c941997c989433dfa626d13956",
+                        "git_sha": "4d329b41d14a20dec31cae811f39e1a52b435220",
                         "installed_by": ["prepare_genome_rnaseq"]
                     },
                     "salmon/index": {
                         "branch": "main",
-                        "git_sha": "9c62f2977be524e9a5b1346c64c128f253031b3f",
+                        "git_sha": "4d329b41d14a20dec31cae811f39e1a52b435220",
                         "installed_by": ["prepare_genome_rnaseq"]
                     },
                     "samtools/faidx": {
                         "branch": "main",
-                        "git_sha": "9c62f2977be524e9a5b1346c64c128f253031b3f",
+                        "git_sha": "4d329b41d14a20dec31cae811f39e1a52b435220",
                         "installed_by": ["prepare_genome_dnaseq", "prepare_genome_rnaseq"]
                     },
                     "star/genomegenerate": {
                         "branch": "main",
-                        "git_sha": "12e6c10a221eb6c941997c989433dfa626d13956",
+                        "git_sha": "4d329b41d14a20dec31cae811f39e1a52b435220",
                         "installed_by": ["prepare_genome_rnaseq"]
                     },
                     "tabix/bgziptabix": {
                         "branch": "main",
-                        "git_sha": "12e6c10a221eb6c941997c989433dfa626d13956",
+                        "git_sha": "4d329b41d14a20dec31cae811f39e1a52b435220",
                         "installed_by": ["prepare_genome_dnaseq"]
                     },
                     "tabix/tabix": {
                         "branch": "main",
-                        "git_sha": "12e6c10a221eb6c941997c989433dfa626d13956",
+                        "git_sha": "4d329b41d14a20dec31cae811f39e1a52b435220",
                         "installed_by": ["prepare_genome_dnaseq"]
                     }
                 }
