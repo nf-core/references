@@ -216,7 +216,7 @@ workflow NFCORE_REFERENCES {
         channel
             .map { meta, reference_ -> [meta + [reference: type], reference_] }
             .branch { _meta, reference_ ->
-                to_extract: reference_.toString().endsWith('.gz') || reference_.toString().endsWith('.zip')
+                to_extract: (reference_.toString().endsWith('.gz') || reference_.toString().endsWith('.zip'))
                 not_extracted: true
             }
     }
@@ -267,7 +267,7 @@ workflow NFCORE_REFERENCES {
     }
 
     // This is a confidence check
-    extracted_asset.non_assigned.view { log.warn("Non assigned extracted asset: " + it) }
+    extracted_asset.non_assigned.view { asset -> log.warn("Non assigned extracted asset: " + asset) }
 
     // WORKFLOW: Run pipeline
     // Mix the references that were extracted with the references that did not need to be extracted
