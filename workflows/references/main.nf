@@ -86,6 +86,8 @@ workflow REFERENCES {
     versions = versions.mix(PREPARE_GENOME_DNASEQ.out.versions)
     versions = versions.mix(PREPARE_GENOME_RNASEQ.out.versions)
 
+    // fasta.map { meta, reference_ -> [meta + [file: 'fasta'], reference_] },
+    // gff.map { meta, reference_ -> [meta + [file: 'gff'], reference_] },
     reference = Channel
         .empty()
         .mix(
@@ -99,11 +101,9 @@ workflow REFERENCES {
             bwamem2_index.map { meta, reference_ -> [meta + [file: 'bwamem2_index'], reference_] },
             chr_dir.map { meta, reference_ -> [meta + [file: 'chr_dir'], reference_] },
             dragmap_hashmap.map { meta, reference_ -> [meta + [file: 'dragmap_hashmap'], reference_] },
-            fasta.map { meta, reference_ -> [meta + [file: 'fasta'], reference_] },
             fasta_dict.map { meta, reference_ -> [meta + [file: 'fasta_dict'], reference_] },
             fasta_fai.map { meta, reference_ -> [meta + [file: 'fasta_fai'], reference_] },
             fasta_sizes.map { meta, reference_ -> [meta + [file: 'fasta_sizes'], reference_] },
-            gff.map { meta, reference_ -> [meta + [file: 'gff'], reference_] },
             gtf.map { meta, reference_ -> [meta + [file: 'gtf'], reference_] },
             hisat2_index.map { meta, reference_ -> [meta + [file: 'hisat2_index'], reference_] },
             intervals_bed.map { meta, reference_ -> [meta + [file: 'intervals_bed'], reference_] },
