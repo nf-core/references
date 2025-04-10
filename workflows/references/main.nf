@@ -59,63 +59,109 @@ workflow REFERENCES {
         tools.split(',').contains('tabix'),
     )
 
-    // This works with a mixture of input and computed references
-    fasta_dict = fasta_dict.mix(PREPARE_GENOME_DNASEQ.out.fasta_dict)
-    fasta_fai = fasta_fai.mix(PREPARE_GENOME_DNASEQ.out.fasta_fai, PREPARE_GENOME_RNASEQ.out.fasta_fai)
-    fasta_sizes = fasta_sizes.mix(PREPARE_GENOME_RNASEQ.out.fasta_sizes)
-    gtf = gtf.mix(PREPARE_GENOME_RNASEQ.out.gtf)
-    intervals_bed = intervals_bed.mix(PREPARE_GENOME_DNASEQ.out.intervals_bed)
-    splice_sites = splice_sites.mix(PREPARE_GENOME_RNASEQ.out.splice_sites)
-    transcript_fasta = transcript_fasta.mix(PREPARE_GENOME_RNASEQ.out.transcript_fasta)
-
-    // TODO: This does not work YET with a mixture of input and computed references
-    bowtie1_index = PREPARE_GENOME_RNASEQ.out.bowtie1_index
-    bowtie2_index = PREPARE_GENOME_RNASEQ.out.bowtie2_index
-    bwamem1_index = PREPARE_GENOME_DNASEQ.out.bwamem1_index
-    bwamem2_index = PREPARE_GENOME_DNASEQ.out.bwamem2_index
-    dragmap_hashmap = PREPARE_GENOME_DNASEQ.out.dragmap_hashmap
-    hisat2_index = PREPARE_GENOME_RNASEQ.out.hisat2_index
-    kallisto_index = PREPARE_GENOME_RNASEQ.out.kallisto_index
-    msisensorpro_list = PREPARE_GENOME_DNASEQ.out.msisensorpro_list
-    rsem_index = PREPARE_GENOME_RNASEQ.out.rsem_index
-    salmon_index = PREPARE_GENOME_RNASEQ.out.salmon_index
-    star_index = PREPARE_GENOME_RNASEQ.out.star_index
-    vcf_tbi = PREPARE_GENOME_DNASEQ.out.vcf_tbi
-
+    // Gather all versions
     // TODO: Refactor this with topics
     versions = versions.mix(PREPARE_GENOME_DNASEQ.out.versions)
     versions = versions.mix(PREPARE_GENOME_RNASEQ.out.versions)
 
-    // fasta.map { meta, reference_ -> [meta + [file: 'fasta'], reference_] },
-    // gff.map { meta, reference_ -> [meta + [file: 'gff'], reference_] },
+    // Prepare output
+
+    // This works with a mixture of input and computed references
+    fasta_dict = fasta_dict
+        .mix(PREPARE_GENOME_DNASEQ.out.fasta_dict)
+        .unique()
+        .map { meta, reference_ -> [meta + [file: 'fasta_dict'], reference_] }
+
+    fasta_fai = fasta_fai
+        .mix(PREPARE_GENOME_DNASEQ.out.fasta_fai, PREPARE_GENOME_RNASEQ.out.fasta_fai)
+        .unique()
+        .map { meta, reference_ -> [meta + [file: 'fasta_fai'], reference_] }
+
+    fasta_sizes = fasta_sizes
+        .mix(PREPARE_GENOME_RNASEQ.out.fasta_sizes)
+        .unique()
+        .map { meta, reference_ -> [meta + [file: 'fasta_sizes'], reference_] }
+
+    gtf = gtf
+        .mix(PREPARE_GENOME_RNASEQ.out.gtf)
+        .unique()
+        .map { meta, reference_ -> [meta + [file: 'gtf'], reference_] }
+
+    intervals_bed = intervals_bed
+        .mix(PREPARE_GENOME_DNASEQ.out.intervals_bed)
+        .unique()
+        .map { meta, reference_ -> [meta + [file: 'intervals_bed'], reference_] }
+
+    splice_sites = splice_sites
+        .mix(PREPARE_GENOME_RNASEQ.out.splice_sites)
+        .unique()
+        .map { meta, reference_ -> [meta + [file: 'splice_sites'], reference_] }
+
+    transcript_fasta = transcript_fasta
+        .mix(PREPARE_GENOME_RNASEQ.out.transcript_fasta)
+        .unique()
+        .map { meta, reference_ -> [meta + [file: 'transcript_fasta'], reference_] }
+
+    // TODO: This does not work YET with a mixture of input and computed references
+    bowtie1_index = PREPARE_GENOME_RNASEQ.out.bowtie1_index.map { meta, reference_ -> [meta + [file: 'bowtie1_index'], reference_] }
+    bowtie2_index = PREPARE_GENOME_RNASEQ.out.bowtie2_index.map { meta, reference_ -> [meta + [file: 'bowtie2_index'], reference_] }
+    bwamem1_index = PREPARE_GENOME_DNASEQ.out.bwamem1_index.map { meta, reference_ -> [meta + [file: 'bwamem1_index'], reference_] }
+    bwamem2_index = PREPARE_GENOME_DNASEQ.out.bwamem2_index.map { meta, reference_ -> [meta + [file: 'bwamem2_index'], reference_] }
+    dragmap_hashmap = PREPARE_GENOME_DNASEQ.out.dragmap_hashmap.map { meta, reference_ -> [meta + [file: 'dragmap_hashmap'], reference_] }
+    hisat2_index = PREPARE_GENOME_RNASEQ.out.hisat2_index.map { meta, reference_ -> [meta + [file: 'hisat2_index'], reference_] }
+    kallisto_index = PREPARE_GENOME_RNASEQ.out.kallisto_index.map { meta, reference_ -> [meta + [file: 'kallisto_index'], reference_] }
+    msisensorpro_list = PREPARE_GENOME_DNASEQ.out.msisensorpro_list.map { meta, reference_ -> [meta + [file: 'msisensorpro_list'], reference_] }
+    rsem_index = PREPARE_GENOME_RNASEQ.out.rsem_index.map { meta, reference_ -> [meta + [file: 'rsem_index'], reference_] }
+    salmon_index = PREPARE_GENOME_RNASEQ.out.salmon_index.map { meta, reference_ -> [meta + [file: 'salmon_index'], reference_] }
+    star_index = PREPARE_GENOME_RNASEQ.out.star_index.map { meta, reference_ -> [meta + [file: 'star_index'], reference_] }
+    vcf_tbi = PREPARE_GENOME_DNASEQ.out.vcf_tbi.map { meta, reference_ -> [meta + [file: 'vcf_tbi'], reference_] }
+
+    // ascat_alleles
+    // ascat_loci
+    // ascat_loci_gc
+    // ascat_loci_rt
+    // bowtie1_index
+    // bowtie2_index
+    // bwamem1_index
+    // bwamem2_index
+    // chr_dir
+    // dragmap_hashmap
+    // fasta
+    // fasta_dict
+    // fasta_fai
+    // fasta_sizes
+    // gff
+    // gtf
+    // hisat2_index
+    // intervals_bed
+    // kallisto_index
+    // msisensorpro_list
+    // rsem_index
+    // splice_sites
+    // transcript_fasta
+    // star_index
+    // salmon_index
+    // vcf
+    // vcf_tbi
+
+    fasta.view()
+    gtf.view()
+    gff.view()
+    salmon_index.view()
+
     reference = Channel
         .empty()
         .mix(
-            ascat_alleles.map { meta, reference_ -> [meta + [file: 'ascat_alleles'], reference_] },
-            ascat_loci.map { meta, reference_ -> [meta + [file: 'ascat_loci'], reference_] },
-            ascat_loci_gc.map { meta, reference_ -> [meta + [file: 'ascat_loci_gc'], reference_] },
-            ascat_loci_rt.map { meta, reference_ -> [meta + [file: 'ascat_loci_rt'], reference_] },
-            bowtie1_index.map { meta, reference_ -> [meta + [file: 'bowtie1_index'], reference_] },
-            bowtie2_index.map { meta, reference_ -> [meta + [file: 'bowtie2_index'], reference_] },
-            bwamem1_index.map { meta, reference_ -> [meta + [file: 'bwamem1_index'], reference_] },
-            bwamem2_index.map { meta, reference_ -> [meta + [file: 'bwamem2_index'], reference_] },
-            chr_dir.map { meta, reference_ -> [meta + [file: 'chr_dir'], reference_] },
-            dragmap_hashmap.map { meta, reference_ -> [meta + [file: 'dragmap_hashmap'], reference_] },
-            fasta_dict.map { meta, reference_ -> [meta + [file: 'fasta_dict'], reference_] },
-            fasta_fai.map { meta, reference_ -> [meta + [file: 'fasta_fai'], reference_] },
-            fasta_sizes.map { meta, reference_ -> [meta + [file: 'fasta_sizes'], reference_] },
-            gtf.map { meta, reference_ -> [meta + [file: 'gtf'], reference_] },
-            hisat2_index.map { meta, reference_ -> [meta + [file: 'hisat2_index'], reference_] },
-            intervals_bed.map { meta, reference_ -> [meta + [file: 'intervals_bed'], reference_] },
-            kallisto_index.map { meta, reference_ -> [meta + [file: 'kallisto_index'], reference_] },
-            msisensorpro_list.map { meta, reference_ -> [meta + [file: 'msisensorpro_list'], reference_] },
-            rsem_index.map { meta, reference_ -> [meta + [file: 'rsem_index'], reference_] },
-            salmon_index.map { meta, reference_ -> [meta + [file: 'salmon_index'], reference_] },
-            splice_sites.map { meta, reference_ -> [meta + [file: 'splice_sites'], reference_] },
-            star_index.map { meta, reference_ -> [meta + [file: 'star_index'], reference_] },
-            transcript_fasta.map { meta, reference_ -> [meta + [file: 'transcript_fasta'], reference_] },
-            vcf.map { meta, reference_ -> [meta + [file: "${meta.type}_vcf"], reference_] },
-            vcf_tbi.map { meta, reference_ -> [meta + [file: "${meta.type}_vcf_tbi"], reference_] },
+            bowtie1_index,
+            bowtie2_index,
+            bwamem1_index,
+            bwamem2_index,
+            dragmap_hashmap,
+            hisat2_index,
+            kallisto_index,
+            rsem_index,
+            salmon_index,
+            star_index,
         )
 
     emit:
