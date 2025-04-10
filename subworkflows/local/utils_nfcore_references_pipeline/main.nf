@@ -1,6 +1,4 @@
-//
 // Subworkflow with functionality specific to the nf-core/references pipeline
-//
 
 /*
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -35,9 +33,7 @@ workflow PIPELINE_INITIALISATION {
     basepath_to_replace //  array: The basepath to replace in the asset yaml file
 
     main:
-    //
     // Print version and exit if required and dump pipeline parameters to JSON file
-    //
     UTILS_NEXTFLOW_PIPELINE(
         version,
         true,
@@ -45,30 +41,19 @@ workflow PIPELINE_INITIALISATION {
         workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1,
     )
 
-    //
     // Validate parameters and generate parameter summary to stdout
-    //
     UTILS_NFSCHEMA_PLUGIN(
         workflow,
         validate_params,
         null,
     )
 
-    //
     // Check config provided to the pipeline
-    //
     UTILS_NFCORE_PIPELINE(
         nextflow_cli_args
     )
 
-    //
     // Create channel from asset file provided through params.asset
-    //
-
-    println("Asset file: ${asset}")
-    println("Basepath final: ${basepath_final}")
-    println("Basepath to replace: ${basepath_to_replace}")
-
     references = Channel.fromList(
         samplesheetToList(
             update_references_file(asset, basepath_final, basepath_to_replace),
@@ -100,9 +85,7 @@ workflow PIPELINE_COMPLETION {
     summary_params = paramsSummaryMap(workflow, parameters_schema: "nextflow_schema.json")
     def multiqc_reports = multiqc_report.toList()
 
-    //
     // Completion email and summary
-    //
     workflow.onComplete {
         if (email || email_on_fail) {
             completionEmail(
@@ -132,9 +115,8 @@ workflow PIPELINE_COMPLETION {
     FUNCTIONS
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 */
-//
+
 // Generate methods description for MultiQC
-//
 def toolCitationText() {
     // TODO nf-core: Optionally add in-text citation tools to this list.
     // Can use ternary operators to dynamically construct based conditions, e.g. params["run_xyz"] ? "Tool (Foo et al. 2023)" : "",
@@ -189,7 +171,6 @@ def methodsDescriptionText(mqc_methods_yaml) {
     // TODO nf-core: Only uncomment below if logic in toolCitationText/toolBibliographyText has been filled!
     // meta["tool_citations"] = toolCitationText().replaceAll(", \\.", ".").replaceAll("\\. \\.", ".").replaceAll(", \\.", ".")
     // meta["tool_bibliography"] = toolBibliographyText()
-
 
     def methods_text = mqc_methods_yaml.text
 
