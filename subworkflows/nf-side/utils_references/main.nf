@@ -20,7 +20,7 @@ workflow UTILS_REFERENCES {
     references = Channel.fromList(
         samplesheetToList(
             update_references_file(yaml_reference, basepath_final, basepath_to_replace),
-            "${projectDir}/subworkflows/nf-side/utils_references/schema_references.json",
+            "${projectDir}/subworkflows/nf-side/utils_references/schema_references.json"
         )
     )
 
@@ -48,8 +48,6 @@ def update_references_file(yaml_reference, basepath_final, basepath_to_replace) 
         def staged_yaml_file = "${workflow.workDir}/tmp/${java.util.UUID.randomUUID().toString()}.${correct_yaml_file.extension}"
         correct_yaml_file.copyTo(staged_yaml_file)
         correct_yaml_file = file(staged_yaml_file, checkIfExists: true)
-
-        println("YAML file to update: ${correct_yaml_file}")
 
         // Use a local variable to accumulate changes
         def updated_yaml_content = correct_yaml_file.text
