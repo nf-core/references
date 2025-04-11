@@ -51,12 +51,12 @@
                     },
                     "utils_nextflow_pipeline": {
                         "branch": "master",
-                        "git_sha": "c2b22d85f30a706a3073387f30380704fcae013b",
+                        "git_sha": "05954dab2ff481bcb999f24455da29a5828af08d",
                         "installed_by": ["subworkflows"]
                     },
                     "utils_nfcore_pipeline": {
                         "branch": "master",
-                        "git_sha": "51ae5406a030d4da1e49e4dab49756844fdd6c7a",
+                        "git_sha": "05954dab2ff481bcb999f24455da29a5828af08d",
                         "installed_by": ["subworkflows"]
                     },
                     "utils_nfschema_plugin": {
@@ -171,7 +171,7 @@
                 "nf-side": {
                     "prepare_genome_dnaseq": {
                         "branch": "main",
-                        "git_sha": "bc3122bf8ada968de886888792978a4d3058d9ab",
+                        "git_sha": "f0b7b19760c989b1878688bd4753e349b45b845a",
                         "installed_by": ["subworkflows"]
                     },
                     "prepare_genome_rnaseq": {
