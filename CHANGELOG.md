@@ -32,6 +32,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - [96](https://github.com/nf-core/references/pull/96) - Update all modules
 - [96](https://github.com/nf-core/references/pull/96) - Use nf-core version of `ARCHIVE_EXTRACT`
 - [109](https://github.com/nf-core/references/pull/109) - Improve CI (early failure + [RunsOn](https://runs-on.com/))
+- [110](https://github.com/nf-core/references/pull/110) - POC for official prepare_genome_dnaseq and prepare_genome_rnaseq subworkflows
+- [111](https://github.com/nf-core/references/pull/111) - Fix schema
 
 ### Fixed
 
