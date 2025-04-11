@@ -221,7 +221,7 @@ workflow NFCORE_REFERENCES {
             }
     }
 
-    YAML_TO_CHANNEL(references, tools ?: "no_tools")
+    YAML_TO_CHANNEL(references, tools)
 
     // References that need to be extracted
     // (VCFs are not extracted)
@@ -235,8 +235,7 @@ workflow NFCORE_REFERENCES {
     gtf_input = need_extract(YAML_TO_CHANNEL.out.gtf, 'gtf')
 
     // gather all archived references
-    archive_to_extract = Channel
-        .empty()
+    archive_to_extract = Channel.empty()
         .mix(
             ascat_alleles_input.to_extract,
             ascat_loci_input.to_extract,

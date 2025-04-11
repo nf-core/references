@@ -3,6 +3,7 @@ nextflow_workflow {
     name "Test PREPARE_GENOME_DNASEQ"
     script "../main.nf"
     workflow "PREPARE_GENOME_DNASEQ"
+    config "./nextflow.config"
 
     test(".fasta/.vcf/.vcf.gz - all tools") {
 

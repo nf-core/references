@@ -116,46 +116,35 @@ workflow REFERENCES {
     star_index = PREPARE_GENOME_RNASEQ.out.star_index.map { meta, reference_ -> [meta + [file: 'star_index'], reference_] }
     vcf_tbi = PREPARE_GENOME_DNASEQ.out.vcf_tbi.map { meta, reference_ -> [meta + [file: 'vcf_tbi'], reference_] }
 
-    // ascat_alleles
-    // ascat_loci
-    // ascat_loci_gc
-    // ascat_loci_rt
-    // bowtie1_index
-    // bowtie2_index
-    // bwamem1_index
-    // bwamem2_index
-    // chr_dir
-    // dragmap_hashmap
-    // fasta
-    // fasta_dict
-    // fasta_fai
-    // fasta_sizes
-    // gff
-    // gtf
-    // hisat2_index
-    // intervals_bed
-    // kallisto_index
-    // msisensorpro_list
-    // rsem_index
-    // splice_sites
-    // transcript_fasta
-    // star_index
-    // salmon_index
-    // vcf
-    // vcf_tbi
-
     reference = Channel.empty()
         .mix(
+            ascat_alleles,
+            ascat_loci,
+            ascat_loci_gc,
+            ascat_loci_rt,
             bowtie1_index,
             bowtie2_index,
             bwamem1_index,
             bwamem2_index,
+            chr_dir,
             dragmap_hashmap,
+            fasta,
+            fasta_dict,
+            fasta_fai,
+            fasta_sizes,
+            gff,
+            gtf,
             hisat2_index,
+            intervals_bed,
             kallisto_index,
+            msisensorpro_list,
             rsem_index,
-            salmon_index,
+            splice_sites,
+            transcript_fasta,
             star_index,
+            salmon_index,
+            vcf,
+            vcf_tbi,
         )
 
     emit:
