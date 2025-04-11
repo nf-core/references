@@ -38,7 +38,6 @@ include { REFERENCES              } from "./workflows/references"
 */
 
 workflow {
-
     main:
     // SUBWORKFLOW: Run initialisation tasks
     PIPELINE_INITIALISATION(
@@ -219,7 +218,7 @@ workflow NFCORE_REFERENCES {
             }
     }
 
-    YAML_TO_CHANNEL(references, params.tools ?: "no_tools")
+    YAML_TO_CHANNEL(references, tools)
 
     // References that need to be extracted
     // (VCFs are not extracted)
@@ -233,8 +232,7 @@ workflow NFCORE_REFERENCES {
     gtf_input = need_extract(YAML_TO_CHANNEL.out.gtf, 'gtf')
 
     // gather all archived references
-    archive_to_extract = Channel
-        .empty()
+    archive_to_extract = Channel.empty()
         .mix(
             ascat_alleles_input.to_extract,
             ascat_loci_input.to_extract,
@@ -265,7 +263,7 @@ workflow NFCORE_REFERENCES {
     }
 
     // This is a confidence check
-    extracted_asset.non_assigned.view { log.warn("Non assigned extracted asset: " + it) }
+    extracted_asset.non_assigned.view { asset -> log.warn("Non assigned extracted asset: " + asset) }
 
     // WORKFLOW: Run pipeline
     // Mix the references that were extracted with the references that did not need to be extracted
