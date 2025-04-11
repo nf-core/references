@@ -31,6 +31,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - [93](https://github.com/nf-core/references/pull/93) - Only one meta for all references that belongs to the same genome
 - [96](https://github.com/nf-core/references/pull/96) - Update all modules
 - [96](https://github.com/nf-core/references/pull/96) - Use nf-core version of `ARCHIVE_EXTRACT`
+- [109](https://github.com/nf-core/references/pull/109) - Improve CI (early failure + [RunsOn](https://runs-on.com/))
 
 ### Fixed
 
