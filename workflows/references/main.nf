@@ -144,13 +144,7 @@ workflow REFERENCES {
     // vcf
     // vcf_tbi
 
-    fasta.view()
-    gtf.view()
-    gff.view()
-    salmon_index.view()
-
-    reference = Channel
-        .empty()
+    reference = Channel.empty()
         .mix(
             bowtie1_index,
             bowtie2_index,
