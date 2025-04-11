@@ -171,12 +171,12 @@
                 "nf-side": {
                     "prepare_genome_dnaseq": {
                         "branch": "main",
-                        "git_sha": "f0b7b19760c989b1878688bd4753e349b45b845a",
+                        "git_sha": "54a64244d279aeb3ad0ea1ebc2315db5878639cb",
                         "installed_by": ["subworkflows"]
                     },
                     "prepare_genome_rnaseq": {
                         "branch": "main",
-                        "git_sha": "bc3122bf8ada968de886888792978a4d3058d9ab",
+                        "git_sha": "54a64244d279aeb3ad0ea1ebc2315db5878639cb",
                         "installed_by": ["subworkflows"]
                     }
                 }
