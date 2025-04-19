@@ -89,7 +89,7 @@
         },
         "timestamp": "2025-03-05T09:00:11.125489238"
     },
-        "-profile test --tools rsem,rsem_make_transcript_fasta --input GRCh38_chr21.yml": {
+    "-profile test --tools rsem,rsem_make_transcript_fasta --input GRCh38_chr21.yml": {
         "content": [
             4,
             {
