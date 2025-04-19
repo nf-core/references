@@ -20,7 +20,7 @@
                     "mimetype": "text/csv",
                     "pattern": "^\\S+\\.(yaml|yml)$",
                     "description": "Path to yaml file containing information about the genome(s) and files to use for building references.",
-                    "help_text": "You will need to create an asset file with information about the genome(s) before running the pipeline. Use this parameter to specify its location. It has to be a yaml file. See [usage docs](https://nf-co.re/references/usage#asset).",
+                    "help_text": "You will need to create a datasheet with information about the genome(s) before running the pipeline. Use this parameter to specify its location. It has to be a yaml file. See [usage docs](https://nf-co.re/references/usage#datasheet).",
                     "fa_icon": "fas fa-file-csv"
                 },
                 "outdir": {

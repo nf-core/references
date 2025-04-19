@@ -1,76 +1,76 @@
-workflow YAML_TO_CHANNEL {
+workflow DATASHEET_TO_CHANNEL {
     take:
-    asset // channel: [meta, fasta]
-    tools // List: Can contain any combination of tools of the list of available tools, or just no_tools
+    datasheet // channel: [meta, fasta]
+    tools     // List: Can contain any combination of tools of the list of available tools, or just no_tools
 
     main:
     // All the files and meta data are contained in the meta map (except for fasta)
     // They are extracted out of the meta map in their own channel in this subworkflow
-    // When adding a new field in the assets/schema_input.json, also add it in the meta map
-    // And in this scrip, add a new branch and a new output corresponding to this input
+    // When adding a new field in the subworkflows/nf-core/utils_references/schema_references.json, also add it in the meta map
+    // And in this script, add a new branch and a new output corresponding to this input
     // And in the emit, add the new output to the channel
 
     // Only keep the actual meta data in the meta map
     // Add a field here if it is a relevant meta data
     def reduce = { meta -> meta.subMap(['genome', 'id', 'source', 'source_version', 'species']) }
 
-    ascat_alleles_branch = asset.branch { meta, _readme ->
+    ascat_alleles_branch = datasheet.branch { meta, _readme ->
         file: meta.ascat_alleles
         return [reduce(meta), meta.ascat_alleles]
         other: true
-        // If the asset doesn't exist, then we return nothing
+        // If the reference doesn't exist, then we return nothing
         return null
     }
     ascat_alleles = ascat_alleles_branch.file
 
-    ascat_loci_branch = asset.branch { meta, _readme ->
+    ascat_loci_branch = datasheet.branch { meta, _readme ->
         file: meta.ascat_loci
         return [reduce(meta), meta.ascat_loci]
         other: true
-        // If the asset doesn't exist, then we return nothing
+        // If the reference doesn't exist, then we return nothing
         return null
     }
     ascat_loci = ascat_loci_branch.file
 
-    ascat_loci_gc_branch = asset.branch { meta, _readme ->
+    ascat_loci_gc_branch = datasheet.branch { meta, _readme ->
         file: meta.ascat_loci_gc
         return [reduce(meta), meta.ascat_loci_gc]
         other: true
-        // If the asset doesn't exist, then we return nothing
+        // If the reference doesn't exist, then we return nothing
         return null
     }
     ascat_loci_gc = ascat_loci_gc_branch.file
 
-    ascat_loci_rt_branch = asset.branch { meta, _readme ->
+    ascat_loci_rt_branch = datasheet.branch { meta, _readme ->
         file: meta.ascat_loci_rt
         return [reduce(meta), meta.ascat_loci_rt]
         other: true
-        // If the asset doesn't exist, then we return nothing
+        // If the reference doesn't exist, then we return nothing
         return null
     }
     ascat_loci_rt = ascat_loci_rt_branch.file
 
-    chr_dir_branch = asset.branch { meta, _readme ->
+    chr_dir_branch = datasheet.branch { meta, _readme ->
         file: meta.chr_dir
         return [reduce(meta), meta.chr_dir]
         other: true
-        // If the asset doesn't exist, then we return nothing
+        // If the reference doesn't exist, then we return nothing
         return null
     }
     chr_dir = chr_dir_branch.file
 
-    intervals_bed_branch = asset.branch { meta, _readme ->
+    intervals_bed_branch = datasheet.branch { meta, _readme ->
         file: meta.intervals_bed
         return [reduce(meta), meta.intervals_bed]
         other: true
-        // If the asset doesn't exist, then we return nothing
+        // If the reference doesn't exist, then we return nothing
         return null
     }
     intervals_bed = intervals_bed_branch.file
 
-    fasta_branch = asset.branch { meta, _readme ->
+    fasta_branch = datasheet.branch { meta, _readme ->
         file: meta.fasta
-        // If any of the asset exists, then adding run_tools to false and skip the asset creation from the fasta file
+        // If any of the reference exists, then adding run_tools to false and skip the reference creation from the fasta file
         def meta_extra = [run_bowtie1: meta.bowtie1_index ? false : true]
         meta_extra += [run_bowtie2: meta.bowtie2_index ? false : true]
         meta_extra += [run_bwamem1: meta.bwamem1_index ? false : true]
@@ -88,78 +88,78 @@ workflow YAML_TO_CHANNEL {
         meta_extra += [run_star: meta.star_index ? false : true]
         return [reduce(meta) + meta_extra, meta.fasta]
         other: true
-        // If the asset doesn't exist, then we return nothing
+        // If the reference doesn't exist, then we return nothing
         return null
     }
     fasta = fasta_branch.file
 
-    fasta_dict_branch = asset.branch { meta, _readme ->
+    fasta_dict_branch = datasheet.branch { meta, _readme ->
         file: meta.fasta_dict
         return [reduce(meta), meta.fasta_dict]
         other: true
-        // If the asset doesn't exist, then we return nothing
+        // If the reference doesn't exist, then we return nothing
         return null
     }
     fasta_dict = fasta_dict_branch.file
 
     // If we have intervals_bed, then we don't need to run faidx
-    fasta_fai_branch = asset.branch { meta, _readme ->
+    fasta_fai_branch = datasheet.branch { meta, _readme ->
         file: meta.fasta_fai
         // If we have intervals_bed, then we don't need to run faidx
         def meta_extra = [run_intervals: meta.intervals_bed ? false : true]
         return [reduce(meta) + meta_extra, meta.fasta_fai]
         other: true
-        // If the asset doesn't exist, then we return nothing
+        // If the reference doesn't exist, then we return nothing
         return null
     }
     fasta_fai = fasta_fai_branch.file
 
-    fasta_sizes_branch = asset.branch { meta, _readme ->
+    fasta_sizes_branch = datasheet.branch { meta, _readme ->
         file: meta.fasta_sizes
         return [reduce(meta), meta.fasta_sizes]
         other: true
-        // If the asset doesn't exist, then we return nothing
+        // If the reference doesn't exist, then we return nothing
         return null
     }
     fasta_sizes = fasta_sizes_branch.file
 
-    gff_branch = asset.branch { meta, _readme ->
+    gff_branch = datasheet.branch { meta, _readme ->
         file: meta.gff
-        // If any of the asset exists, then adding run_tools to false and skip the asset creation from the annotation derived file
+        // If any of the reference exists, then adding run_tools to false and skip the reference creation from the annotation derived file
         // (gff, gtf or transcript_fasta)
         def meta_extra = [run_gffread: meta.fasta && !meta.gtf ?: false]
         meta_extra += [run_hisat2: meta.splice_sites ? false : true]
         return [reduce(meta) + meta_extra, meta.gff]
         other: true
-        // If the asset doesn't exist, then we return nothing
+        // If the reference doesn't exist, then we return nothing
         return null
     }
     gff = gff_branch.file
 
-    gtf_branch = asset.branch { meta, _readme ->
+    gtf_branch = datasheet.branch { meta, _readme ->
         file: meta.gtf
-        // If any of the asset exists, then adding run_tools to false and skip the asset creation from the annotation derived file
+        // If any of the reference exists, then adding run_tools to false and skip the reference creation from the annotation derived file
         // (gff, gtf or transcript_fasta)
         def meta_extra = [run_hisat2: meta.splice_sites ? false : true]
         return [reduce(meta) + meta_extra, meta.gtf]
         other: true
-        // If the asset doesn't exist, then we return nothing
+        // If the reference doesn't exist, then we return nothing
         return null
     }
     gtf = gtf_branch.file
 
-    splice_sites_branch = asset.branch { meta, _readme ->
+    splice_sites_branch = datasheet.branch { meta, _readme ->
         file: meta.splice_sites
         return [reduce(meta), meta.splice_sites]
         other: true
-        // If the asset doesn't exist, then we return nothing
+        // If the reference doesn't exist, then we return nothing
         return null
     }
     splice_sites = splice_sites_branch.file
 
-    transcript_fasta_branch = asset.branch { meta, _readme ->
+    transcript_fasta_branch = datasheet.branch { meta, _readme ->
         file: meta.transcript_fasta
-        // If any of the asset exists, then adding run_tools to false and skip the asset creation from the annotation derived file
+        // If any of the reference exists, then adding run_tools to false and skip the reference creation from the annotation derived file
         // (gff, gtf or transcript_fasta)
         def meta_extra = [run_hisat2: meta.hisat2_index ? false : true]
         meta_extra += [run_kallisto: meta.kallisto_index ? false : true]
@@ -168,14 +168,14 @@ workflow YAML_TO_CHANNEL {
         meta_extra += [run_star: meta.star_index ? false : true]
         return [reduce(meta) + meta_extra, meta.transcript_fasta]
         other: true
-        // If the asset doesn't exist, then we return nothing
+        // If the reference doesn't exist, then we return nothing
         return null
     }
     transcript_fasta = transcript_fasta_branch.file
 
     // HANDLING OF VCF
 
-    dbsnp_branch = asset.branch { meta, _readme ->
+    dbsnp_branch = datasheet.branch { meta, _readme ->
         file: meta.vcf_dbsnp_vcf
 
         // If we already have the vcf_tbi, then we don't need to index the vcf
@@ -184,11 +184,11 @@ workflow YAML_TO_CHANNEL {
         meta_extra += [type: 'dbsnp', source_vcf: meta.vcf_dbsnp_vcf_source]
         return [reduce(meta) + meta_extra, meta.vcf_dbsnp_vcf.contains('{') ? file(meta.vcf_dbsnp_vcf) : meta.vcf_dbsnp_vcf]
         other: true
-        // If the asset doesn't exist, then we return nothing
+        // If the reference doesn't exist, then we return nothing
         return null
     }
 
-    germline_resource_branch = asset.branch { meta, _readme ->
+    germline_resource_branch = datasheet.branch { meta, _readme ->
         file: meta.vcf_germline_resource_vcf
         // If we already have the vcf_tbi, then we don't need to index the vcf
         def meta_extra = [run_tabix: meta.vcf_germline_resource_vcf_tbi || meta.vcf_germline_resource_vcf.endsWith('.vcf') ? false : true]
@@ -196,11 +196,11 @@ workflow YAML_TO_CHANNEL {
         meta_extra += [type: 'germline_resource', source_vcf: meta.vcf_germline_resource_vcf_source]
         return [reduce(meta) + meta_extra, meta.vcf_germline_resource_vcf]
         other: true
-        // If the asset doesn't exist, then we return nothing
+        // If the reference doesn't exist, then we return nothing
         return null
     }
 
-    known_indels_branch = asset.branch { meta, _readme ->
+    known_indels_branch = datasheet.branch { meta, _readme ->
         file: meta.vcf_known_indels_vcf
         // If we already have the vcf_tbi, then we don't need to index the vcf
         def meta_extra = [run_tabix: meta.vcf_known_indels_vcf_tbi || meta.vcf_known_indels_vcf.endsWith('.vcf') ? false : true]
@@ -208,11 +208,11 @@ workflow YAML_TO_CHANNEL {
         meta_extra += [type: 'known_indels', source_vcf: meta.vcf_known_indels_vcf_source]
         return [reduce(meta) + meta_extra, meta.vcf_known_indels_vcf]
         other: true
-        // If the asset doesn't exist, then we return nothing
+        // If the reference doesn't exist, then we return nothing
         return null
     }
 
-    known_snps_branch = asset.branch { meta, _readme ->
+    known_snps_branch = datasheet.branch { meta, _readme ->
         file: meta.vcf_known_snps_vcf
         // If we already have the vcf_tbi, then we don't need to index the vcf
         def meta_extra = [run_tabix: meta.vcf_known_snps_vcf_tbi || meta.vcf_known_snps_vcf.endsWith('.vcf') ? false : true]
@@ -220,11 +220,11 @@ workflow YAML_TO_CHANNEL {
         meta_extra += [type: 'known_snps', source_vcf: meta.vcf_known_snps_vcf_source]
         return [reduce(meta) + meta_extra, meta.vcf_known_snps_vcf]
         other: true
-        // If the asset doesn't exist, then we return nothing
+        // If the reference doesn't exist, then we return nothing
         return null
     }
 
-    pon_branch = asset.branch { meta, _readme ->
+    pon_branch = datasheet.branch { meta, _readme ->
         file: meta.vcf_pon_vcf
         // If we already have the vcf_tbi, then we don't need to index the vcf
         def meta_extra = [run_tabix: meta.vcf_pon_vcf_tbi || meta.vcf_pon_vcf.endsWith('.vcf') ? false : true]
@@ -232,7 +232,7 @@ workflow YAML_TO_CHANNEL {
         meta_extra += [type: 'pon', source_vcf: meta.vcf_pon_vcf_source]
         return [reduce(meta) + meta_extra, meta.vcf_pon_vcf]
         other: true
-        // If the asset doesn't exist, then we return nothing
+        // If the reference doesn't exist, then we return nothing
         return null
     }
 
