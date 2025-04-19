@@ -1,5 +1,47 @@
 {
-    "-profile test --tools bwamem1,bwamem2,createsequencedictionary,dragmap,faidx,intervals,msisensorpro,tabix --input references/assets GRCh38_chr22_source.yml": {
+    "-profile test --tools bwamem1,bwamem2,createsequencedictionary,dragmap,faidx,intervals,msisensorpro,tabix --input references-datasheets/latest/genomes/Homo_sapiens/test/GRCh38_chr22.yml": {
+        "content": [
+            2,
+            {
+                "MSISENSORPRO_SCAN": {
+                    "msisensor-pro": "1.2.0"
+                },
+                "Workflow": {
+                    "nf-core/references": "v1.0.0dev"
+                }
+            },
+            [
+                "Homo_sapiens",
+                "Homo_sapiens/nf-core",
+                "Homo_sapiens/nf-core/references",
+                "Homo_sapiens/nf-core/references/GRCh38_chr22",
+                "Homo_sapiens/nf-core/references/GRCh38_chr22/Annotation",
+                "Homo_sapiens/nf-core/references/GRCh38_chr22/Annotation/msisensorpro",
+                "Homo_sapiens/nf-core/references/GRCh38_chr22/Annotation/msisensorpro/GRCh38_chr22.msisensor_scan.list",
+                "index.json",
+                "multiqc",
+                "multiqc/multiqc_data",
+                "multiqc/multiqc_data/multiqc.log",
+                "multiqc/multiqc_data/multiqc_citations.txt",
+                "multiqc/multiqc_data/multiqc_data.json",
+                "multiqc/multiqc_data/multiqc_software_versions.txt",
+                "multiqc/multiqc_data/multiqc_sources.txt",
+                "multiqc/multiqc_report.html",
+                "pipeline_info",
+                "pipeline_info/nf_core_references_software_mqc_versions.yml"
+            ],
+            [
+                "GRCh38_chr22.msisensor_scan.list:md5,a7886e7a56a1d7e3be6b4496753fd743",
+                "multiqc_citations.txt:md5,4c806e63a283ec1b7e78cdae3a923d4f"
+            ]
+        ],
+        "meta": {
+            "nf-test": "0.9.2",
+            "nextflow": "24.10.5"
+        },
+        "timestamp": "2025-04-19T18:35:01.726207529"
+    },
+    "-profile test --tools bwamem1,bwamem2,createsequencedictionary,dragmap,faidx,intervals,msisensorpro,tabix --input references-datasheets/latest/genomes_source/Homo_sapiens/test/GRCh38_chr22_source.yml": {
         "content": [
             11,
             {
@@ -115,48 +157,6 @@
             "nf-test": "0.9.2",
             "nextflow": "24.10.5"
         },
-        "timestamp": "2025-04-11T20:58:29.574238177"
-    },
-    "-profile test --tools bwamem1,bwamem2,createsequencedictionary,dragmap,faidx,intervals,msisensorpro,tabix --input references/assets GRCh38_chr22_published.yml": {
-        "content": [
-            2,
-            {
-                "MSISENSORPRO_SCAN": {
-                    "msisensor-pro": "1.2.0"
-                },
-                "Workflow": {
-                    "nf-core/references": "v1.0.0dev"
-                }
-            },
-            [
-                "Homo_sapiens",
-                "Homo_sapiens/nf-core",
-                "Homo_sapiens/nf-core/references",
-                "Homo_sapiens/nf-core/references/GRCh38_chr22",
-                "Homo_sapiens/nf-core/references/GRCh38_chr22/Annotation",
-                "Homo_sapiens/nf-core/references/GRCh38_chr22/Annotation/msisensorpro",
-                "Homo_sapiens/nf-core/references/GRCh38_chr22/Annotation/msisensorpro/GRCh38_chr22.msisensor_scan.list",
-                "index.json",
-                "multiqc",
-                "multiqc/multiqc_data",
-                "multiqc/multiqc_data/multiqc.log",
-                "multiqc/multiqc_data/multiqc_citations.txt",
-                "multiqc/multiqc_data/multiqc_data.json",
-                "multiqc/multiqc_data/multiqc_software_versions.txt",
-                "multiqc/multiqc_data/multiqc_sources.txt",
-                "multiqc/multiqc_report.html",
-                "pipeline_info",
-                "pipeline_info/nf_core_references_software_mqc_versions.yml"
-            ],
-            [
-                "GRCh38_chr22.msisensor_scan.list:md5,a7886e7a56a1d7e3be6b4496753fd743",
-                "multiqc_citations.txt:md5,4c806e63a283ec1b7e78cdae3a923d4f"
-            ]
-        ],
-        "meta": {
-            "nf-test": "0.9.2",
-            "nextflow": "25.01.0"
-        },
-        "timestamp": "2025-03-07T12:36:50.359451536"
+        "timestamp": "2025-04-19T18:32:55.408208514"
     }
 }
