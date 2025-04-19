@@ -86,7 +86,7 @@ workflow REFERENCES {
     versions = versions.mix(PREPARE_GENOME_DNASEQ.out.versions)
     versions = versions.mix(PREPARE_GENOME_RNASEQ.out.versions)
 
-    reference = Channel.empty()
+    references = Channel.empty()
         .mix(
             ascat_alleles.map { meta, reference_ -> [meta + [file: 'ascat_alleles'], reference_] },
             ascat_loci.map { meta, reference_ -> [meta + [file: 'ascat_loci'], reference_] },
@@ -118,9 +118,9 @@ workflow REFERENCES {
         )
 
     emit:
-    reference // channel: [meta, *]
-    versions  // channel: [versions.yml]
+    references // channel: [meta, *]
+    versions   // channel: [versions.yml]
 
     publish:
-    reference >> 'reference'
+    references >> 'references'
 }
