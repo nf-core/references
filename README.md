@@ -54,9 +54,9 @@ With an additional annotation file describing the genes (either GFF3 or GTF), it
 
 With a vcf file, it will compress it, if it was not already compressed, and tabix index it.
 
-## Assets
+## Datasheets
 
-Assets are stored in [references-assets](https://github.com/nf-core/references-assets).
+Datasheets are stored in [references-datasheets](https://github.com/nf-core/references-datasheets).
 
 ## Running
 
@@ -84,7 +84,7 @@ Now, you can run the pipeline using:
 ```bash
 nextflow run nf-core/references \
    -profile <docker/singularity/.../institute> \
-   --input asset.yml \
+   --input datasheet.yml \
    --outdir <OUTDIR>
 ```
 

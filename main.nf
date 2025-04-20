@@ -27,7 +27,7 @@ include { MULTIQC                 } from './modules/nf-core/multiqc'
 include { ARCHIVE_EXTRACT         } from './subworkflows/nf-core/archive_extract'
 include { PIPELINE_COMPLETION     } from './subworkflows/local/utils_nfcore_references_pipeline'
 include { PIPELINE_INITIALISATION } from './subworkflows/local/utils_nfcore_references_pipeline'
-include { YAML_TO_CHANNEL         } from './subworkflows/local/yaml_to_channel'
+include { DATASHEET_TO_CHANNEL    } from './subworkflows/local/datasheet_to_channel'
 
 include { REFERENCES              } from "./workflows/references"
 
@@ -102,7 +102,7 @@ output {
     'multiqc' {
         path "multiqc"
     }
-    'reference' {
+    'references' {
         path { meta, _file ->
             { file ->
                 if (meta.file == "bowtie1_index") {
@@ -199,7 +199,7 @@ output {
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 */
 
-// WORKFLOW: Build references depending on type of asset and the tools specified
+// WORKFLOW: Build references depending on type of reference and the tools specified
 workflow NFCORE_REFERENCES {
     take:
     references
@@ -218,18 +218,18 @@ workflow NFCORE_REFERENCES {
             }
     }
 
-    YAML_TO_CHANNEL(references, tools)
+    DATASHEET_TO_CHANNEL(references, tools)
 
     // References that need to be extracted
     // (VCFs are not extracted)
-    ascat_alleles_input = need_extract(YAML_TO_CHANNEL.out.ascat_alleles, 'ascat_alleles')
-    ascat_loci_input = need_extract(YAML_TO_CHANNEL.out.ascat_loci, 'ascat_loci')
-    ascat_loci_gc_input = need_extract(YAML_TO_CHANNEL.out.ascat_loci_gc, 'ascat_loci_gc')
-    ascat_loci_rt_input = need_extract(YAML_TO_CHANNEL.out.ascat_loci_rt, 'ascat_loci_rt')
-    chr_dir_input = need_extract(YAML_TO_CHANNEL.out.chr_dir, 'chr_dir')
-    fasta_input = need_extract(YAML_TO_CHANNEL.out.fasta, 'fasta')
-    gff_input = need_extract(YAML_TO_CHANNEL.out.gff, 'gff')
-    gtf_input = need_extract(YAML_TO_CHANNEL.out.gtf, 'gtf')
+    ascat_alleles_input = need_extract(DATASHEET_TO_CHANNEL.out.ascat_alleles, 'ascat_alleles')
+    ascat_loci_input = need_extract(DATASHEET_TO_CHANNEL.out.ascat_loci, 'ascat_loci')
+    ascat_loci_gc_input = need_extract(DATASHEET_TO_CHANNEL.out.ascat_loci_gc, 'ascat_loci_gc')
+    ascat_loci_rt_input = need_extract(DATASHEET_TO_CHANNEL.out.ascat_loci_rt, 'ascat_loci_rt')
+    chr_dir_input = need_extract(DATASHEET_TO_CHANNEL.out.chr_dir, 'chr_dir')
+    fasta_input = need_extract(DATASHEET_TO_CHANNEL.out.fasta, 'fasta')
+    gff_input = need_extract(DATASHEET_TO_CHANNEL.out.gff, 'gff')
+    gtf_input = need_extract(DATASHEET_TO_CHANNEL.out.gtf, 'gtf')
 
     // gather all archived references
     archive_to_extract = Channel.empty()
@@ -250,7 +250,7 @@ workflow NFCORE_REFERENCES {
     )
 
     // return to the appropriate channels
-    extracted_asset = ARCHIVE_EXTRACT.out.extracted.branch { meta_, _extracted_asset ->
+    extracted_reference = ARCHIVE_EXTRACT.out.extracted.branch { meta_, _extracted_reference ->
         ascat_alleles: meta_.reference == 'ascat_alleles'
         ascat_loci: meta_.reference == 'ascat_loci'
         ascat_loci_gc: meta_.reference == 'ascat_loci_gc'
@@ -263,32 +263,32 @@ workflow NFCORE_REFERENCES {
     }
 
     // This is a confidence check
-    extracted_asset.non_assigned.view { asset -> log.warn("Non assigned extracted asset: " + asset) }
+    extracted_reference.non_assigned.view { reference -> log.warn("Non assigned extracted reference: " + reference) }
 
     // WORKFLOW: Run pipeline
     // Mix the references that were extracted with the references that did not need to be extracted
     // Some references are not extracted because they are usually not stored in an archived format
     // TODO: check if more references need to be extracted
     REFERENCES(
-        ascat_alleles_input.not_extracted.mix(extracted_asset.ascat_alleles),
-        ascat_loci_input.not_extracted.mix(extracted_asset.ascat_loci),
-        ascat_loci_gc_input.not_extracted.mix(extracted_asset.ascat_loci_gc),
-        ascat_loci_rt_input.not_extracted.mix(extracted_asset.ascat_loci_rt),
-        chr_dir_input.not_extracted.mix(extracted_asset.chr_dir),
-        fasta_input.not_extracted.mix(extracted_asset.fasta),
-        YAML_TO_CHANNEL.out.fasta_dict,
-        YAML_TO_CHANNEL.out.fasta_fai,
-        YAML_TO_CHANNEL.out.fasta_sizes,
-        gff_input.not_extracted.mix(extracted_asset.gff),
-        gtf_input.not_extracted.mix(extracted_asset.gtf),
-        YAML_TO_CHANNEL.out.intervals_bed,
-        YAML_TO_CHANNEL.out.splice_sites,
-        YAML_TO_CHANNEL.out.transcript_fasta,
-        YAML_TO_CHANNEL.out.vcf,
+        ascat_alleles_input.not_extracted.mix(extracted_reference.ascat_alleles),
+        ascat_loci_input.not_extracted.mix(extracted_reference.ascat_loci),
+        ascat_loci_gc_input.not_extracted.mix(extracted_reference.ascat_loci_gc),
+        ascat_loci_rt_input.not_extracted.mix(extracted_reference.ascat_loci_rt),
+        chr_dir_input.not_extracted.mix(extracted_reference.chr_dir),
+        fasta_input.not_extracted.mix(extracted_reference.fasta),
+        DATASHEET_TO_CHANNEL.out.fasta_dict,
+        DATASHEET_TO_CHANNEL.out.fasta_fai,
+        DATASHEET_TO_CHANNEL.out.fasta_sizes,
+        gff_input.not_extracted.mix(extracted_reference.gff),
+        gtf_input.not_extracted.mix(extracted_reference.gtf),
+        DATASHEET_TO_CHANNEL.out.intervals_bed,
+        DATASHEET_TO_CHANNEL.out.splice_sites,
+        DATASHEET_TO_CHANNEL.out.transcript_fasta,
+        DATASHEET_TO_CHANNEL.out.vcf,
         tools,
     )
 
     emit:
-    reference = REFERENCES.out.reference
-    versions  = REFERENCES.out.versions.mix(ARCHIVE_EXTRACT.out.versions)
+    references = REFERENCES.out.references
+    versions   = REFERENCES.out.versions.mix(ARCHIVE_EXTRACT.out.versions)
 }
