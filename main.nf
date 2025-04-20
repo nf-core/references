@@ -46,6 +46,8 @@ workflow {
         args,
         params.outdir,
         params.input,
+        params.references_basepath,
+        ['s3://ngi-igenomes/igenomes/'],
     )
 
     // WORKFLOW: Run main workflow

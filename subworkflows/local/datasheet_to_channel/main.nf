@@ -6,7 +6,7 @@ workflow DATASHEET_TO_CHANNEL {
     main:
     // All the files and meta data are contained in the meta map (except for fasta)
     // They are extracted out of the meta map in their own channel in this subworkflow
-    // When adding a new field in the subworkflows/nf-core/utils_references/schema_references.json, also add it in the meta map
+    // When adding a new field in the utils_references/schema_references.json, also add it in the meta map
     // And in this script, add a new branch and a new output corresponding to this input
     // And in the emit, add the new output to the channel
 
