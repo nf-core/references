@@ -4,13 +4,13 @@ nextflow_pipeline {
     script "../main.nf"
     tag "pipeline"
 
-    test("-profile test --tools tabix --input assets/test/default_multiple_extended.yml") {
+    test("-profile test --tools tabix --input references-datasheets/latest/genomes_source/Homo_sapiens/nf-core/GRCh38_chr21_chr22.yml") {
 
         options "-output-dir $outputDir"
 
         when {
             params {
-                input  = "${projectDir}/assets/test/default_multiple_extended.yml"
+                input  = "https://raw.githubusercontent.com/nf-core/references-datasheets/latest/genomes_source/Homo_sapiens/nf-core/GRCh38_chr21_chr22.yml"
                 outdir = "$outputDir"
                 tools  = 'tabix'
             }
@@ -37,13 +37,13 @@ nextflow_pipeline {
         }
     }
 
-    test("-profile test --tools tabix --input assets/test/default_full.yml") {
+    test("-profile test --tools tabix --input references-datasheets/latest/genomes_source/Homo_sapiens/nf-core/GRCh38_chr21_MT.yml") {
 
         options "-output-dir $outputDir"
 
         when {
             params {
-                input  = "${projectDir}/assets/test/default_full.yml"
+                input  = "https://raw.githubusercontent.com/nf-core/references-datasheets/latest/genomes_source/Homo_sapiens/nf-core/GRCh38_chr21_MT.yml"
                 outdir = "$outputDir"
                 tools  = 'tabix'
             }

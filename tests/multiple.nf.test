@@ -4,13 +4,13 @@ nextflow_pipeline {
     script "../main.nf"
     tag "pipeline"
 
-    test("-profile test --tools bwamem1,createsequencedictionary,faidx,intervals --input assets/test/default_multiple.yml") {
+    test("-profile test --tools bwamem1,createsequencedictionary,faidx,intervals --input references-datasheets/latest/genomes_source/Homo_sapiens/nf-core/GRCh38_chr21_chr22.yml") {
 
         options "-output-dir $outputDir"
 
         when {
             params {
-                input  = "${projectDir}/assets/test/default_multiple.yml"
+                input  = "https://raw.githubusercontent.com/nf-core/references-datasheets/latest/genomes_source/Homo_sapiens/nf-core/GRCh38_chr21_chr22.yml"
                 outdir = "$outputDir"
                 tools  = 'bwamem1,createsequencedictionary,faidx,intervals'
             }
@@ -37,13 +37,13 @@ nextflow_pipeline {
         }
     }
 
-    test("-profile test --tools tabix --input assets/test/pipelines/sarek_s3_muliple_glob.yml") {
+    test("-profile test --tools tabix --input references-datasheets/latest/genomes_source/Homo_sapiens/GATK/GRCh37_GRCh38_multiple_dbsnps_globs.yml") {
 
         options "-output-dir $outputDir"
 
         when {
             params {
-                input  = "${projectDir}/assets/test/pipelines/sarek_s3_muliple_glob.yml"
+                input  = "https://raw.githubusercontent.com/nf-core/references-datasheets/latest/genomes_source/Homo_sapiens/GATK/GRCh37_GRCh38_multiple_dbsnps_globs.yml"
                 outdir = "$outputDir"
                 tools  = 'tabix'
             }

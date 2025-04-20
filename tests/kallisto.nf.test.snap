@@ -1,5 +1,5 @@
 {
-    "-profile test --tools kallisto,rsem_make_transcript_fasta --input GRCh38_chr21.yml": {
+    "-profile test --tools kallisto,rsem_make_transcript_fasta": {
         "content": [
             4,
             {
@@ -20,17 +20,16 @@
             [
                 "Homo_sapiens",
                 "Homo_sapiens/nf-core",
-                "Homo_sapiens/nf-core/references",
-                "Homo_sapiens/nf-core/references/GRCh38_chr21",
-                "Homo_sapiens/nf-core/references/GRCh38_chr21/Annotation",
-                "Homo_sapiens/nf-core/references/GRCh38_chr21/Annotation/Genes",
-                "Homo_sapiens/nf-core/references/GRCh38_chr21/Annotation/Genes/GRCh38_chr21.gtf",
-                "Homo_sapiens/nf-core/references/GRCh38_chr21/Sequence",
-                "Homo_sapiens/nf-core/references/GRCh38_chr21/Sequence/KallistoIndex",
-                "Homo_sapiens/nf-core/references/GRCh38_chr21/Sequence/KallistoIndex/version0.51.1",
-                "Homo_sapiens/nf-core/references/GRCh38_chr21/Sequence/KallistoIndex/version0.51.1/kallisto",
-                "Homo_sapiens/nf-core/references/GRCh38_chr21/Sequence/TranscriptFasta",
-                "Homo_sapiens/nf-core/references/GRCh38_chr21/Sequence/TranscriptFasta/genome.transcripts.fa",
+                "Homo_sapiens/nf-core/GRCh38_chr21",
+                "Homo_sapiens/nf-core/GRCh38_chr21/Annotation",
+                "Homo_sapiens/nf-core/GRCh38_chr21/Annotation/Genes",
+                "Homo_sapiens/nf-core/GRCh38_chr21/Annotation/Genes/GRCh38_chr21.gtf",
+                "Homo_sapiens/nf-core/GRCh38_chr21/Sequence",
+                "Homo_sapiens/nf-core/GRCh38_chr21/Sequence/KallistoIndex",
+                "Homo_sapiens/nf-core/GRCh38_chr21/Sequence/KallistoIndex/version0.51.1",
+                "Homo_sapiens/nf-core/GRCh38_chr21/Sequence/KallistoIndex/version0.51.1/kallisto",
+                "Homo_sapiens/nf-core/GRCh38_chr21/Sequence/TranscriptFasta",
+                "Homo_sapiens/nf-core/GRCh38_chr21/Sequence/TranscriptFasta/genome.transcripts.fa",
                 "index.json",
                 "multiqc",
                 "multiqc/multiqc_data",
@@ -51,11 +50,11 @@
         ],
         "meta": {
             "nf-test": "0.9.2",
-            "nextflow": "25.01.0"
+            "nextflow": "24.10.5"
         },
-        "timestamp": "2025-03-05T08:54:13.565709002"
+        "timestamp": "2025-04-20T11:04:31.757413462"
     },
-    "-profile test --tools kallisto,rsem_make_transcript_fasta --input assets/test/default_multiple_extended.yml": {
+    "-profile test --tools kallisto,rsem_make_transcript_fasta --input references-datasheets/latest/genomes/Homo_sapiens/nf-core/GRCh38_chr21_MT.yml": {
         "content": [
             2,
             {
@@ -69,13 +68,12 @@
             [
                 "Homo_sapiens",
                 "Homo_sapiens/nf-core",
-                "Homo_sapiens/nf-core/references",
-                "Homo_sapiens/nf-core/references/GRCh38_chr21",
-                "Homo_sapiens/nf-core/references/GRCh38_chr21/Sequence",
-                "Homo_sapiens/nf-core/references/GRCh38_chr21/Sequence/KallistoIndex",
-                "Homo_sapiens/nf-core/references/GRCh38_chr21/Sequence/KallistoIndex/CUSTOM",
-                "Homo_sapiens/nf-core/references/GRCh38_chr21/Sequence/KallistoIndex/CUSTOM/version0.51.1",
-                "Homo_sapiens/nf-core/references/GRCh38_chr21/Sequence/KallistoIndex/CUSTOM/version0.51.1/kallisto",
+                "Homo_sapiens/nf-core/GRCh38_chr21",
+                "Homo_sapiens/nf-core/GRCh38_chr21/Sequence",
+                "Homo_sapiens/nf-core/GRCh38_chr21/Sequence/KallistoIndex",
+                "Homo_sapiens/nf-core/GRCh38_chr21/Sequence/KallistoIndex/CUSTOM",
+                "Homo_sapiens/nf-core/GRCh38_chr21/Sequence/KallistoIndex/CUSTOM/version0.51.1",
+                "Homo_sapiens/nf-core/GRCh38_chr21/Sequence/KallistoIndex/CUSTOM/version0.51.1/kallisto",
                 "index.json",
                 "multiqc",
                 "multiqc/multiqc_data",
@@ -94,8 +92,8 @@
         ],
         "meta": {
             "nf-test": "0.9.2",
-            "nextflow": "25.01.0"
+            "nextflow": "24.10.5"
         },
-        "timestamp": "2025-03-05T08:52:53.613029106"
+        "timestamp": "2025-04-20T11:04:13.173779157"
     }
 }
