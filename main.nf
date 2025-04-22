@@ -19,8 +19,6 @@ nextflow.preview.output = true
 
 include { paramsSummaryMap        } from 'plugin/nf-schema'
 include { methodsDescriptionText  } from './subworkflows/local/utils_nfcore_references_pipeline'
-include { paramsSummaryMultiqc    } from './subworkflows/nf-core/utils_nfcore_pipeline'
-include { softwareVersionsToYAML  } from './subworkflows/nf-core/utils_nfcore_pipeline'
 
 include { UTILS_MULTIQC           } from './subworkflows/local/utils_multiqc'
 
@@ -55,16 +53,16 @@ workflow {
 
     NFCORE_REFERENCES(PIPELINE_INITIALISATION.out.references, params.tools ?: "no_tools")
 
-    ch_multiqc_custom_methods_description = params.multiqc_methods_description ? file(params.multiqc_methods_description, checkIfExists: true) : file("${projectDir}/assets/methods_description_template.yml", checkIfExists: true)
-    ch_methods_description = Channel.value(methodsDescriptionText(ch_multiqc_custom_methods_description))
+    path_methods_description = params.multiqc_methods_description ?: "${projectDir}/assets/methods_description_template.yml"
 
     UTILS_MULTIQC(
         "${projectDir}/assets/multiqc_config.yml",
         params.multiqc_config,
         params.multiqc_logo,
-        Channel.value(paramsSummaryMultiqc(paramsSummaryMap(workflow, parameters_schema: "nextflow_schema.json"))),
-        ch_methods_description,
-        softwareVersionsToYAML(NFCORE_REFERENCES.out.versions).collectFile(storeDir: "${params.outdir}/pipeline_info", name: 'nf_core_references_software_mqc_versions.yml', sort: true, newLine: true),
+        paramsSummaryMap(workflow, parameters_schema: "nextflow_schema.json"),
+        Channel.value(methodsDescriptionText(file(path_methods_description, checkIfExists: true))),
+        NFCORE_REFERENCES.out.versions,
+        'nf_core_references',
     )
 
     // SUBWORKFLOW: Run completion tasks
