@@ -22,7 +22,7 @@ include { methodsDescriptionText  } from './subworkflows/local/utils_nfcore_refe
 include { paramsSummaryMultiqc    } from './subworkflows/nf-core/utils_nfcore_pipeline'
 include { softwareVersionsToYAML  } from './subworkflows/nf-core/utils_nfcore_pipeline'
 
-include { MULTIQC                 } from './modules/nf-core/multiqc'
+include { UTILS_MULTIQC           } from './subworkflows/local/utils_multiqc'
 
 include { ARCHIVE_EXTRACT         } from './subworkflows/nf-core/archive_extract'
 include { PIPELINE_COMPLETION     } from './subworkflows/local/utils_nfcore_references_pipeline'
@@ -55,31 +55,17 @@ workflow {
 
     NFCORE_REFERENCES(PIPELINE_INITIALISATION.out.references, params.tools ?: "no_tools")
 
-    ch_multiqc_files = Channel.empty()
-
-    // MODULE: MultiQC
-    ch_multiqc_config = Channel.fromPath("${projectDir}/assets/multiqc_config.yml", checkIfExists: true)
-    ch_multiqc_custom_config = params.multiqc_config ? Channel.fromPath(params.multiqc_config, checkIfExists: true) : Channel.empty()
-    ch_multiqc_logo = params.multiqc_logo ? Channel.fromPath(params.multiqc_logo, checkIfExists: true) : Channel.empty()
-    ch_workflow_summary = Channel.value(paramsSummaryMultiqc(paramsSummaryMap(workflow, parameters_schema: "nextflow_schema.json")))
     ch_multiqc_custom_methods_description = params.multiqc_methods_description ? file(params.multiqc_methods_description, checkIfExists: true) : file("${projectDir}/assets/methods_description_template.yml", checkIfExists: true)
     ch_methods_description = Channel.value(methodsDescriptionText(ch_multiqc_custom_methods_description))
-    ch_multiqc_files = ch_multiqc_files.mix(ch_workflow_summary.collectFile(name: 'workflow_summary_mqc.yaml'))
-    ch_multiqc_files = ch_multiqc_files.mix(softwareVersionsToYAML(NFCORE_REFERENCES.out.versions).collectFile(storeDir: "${params.outdir}/pipeline_info", name: 'nf_core_references_software_mqc_versions.yml', sort: true, newLine: true))
-    ch_multiqc_files = ch_multiqc_files.mix(ch_methods_description.collectFile(name: 'methods_description_mqc.yaml', sort: true))
 
-    MULTIQC(
-        ch_multiqc_files.collect(),
-        ch_multiqc_config.toList(),
-        ch_multiqc_custom_config.toList(),
-        ch_multiqc_logo.toList(),
-        [],
-        [],
+    UTILS_MULTIQC(
+        "${projectDir}/assets/multiqc_config.yml",
+        params.multiqc_config,
+        params.multiqc_logo,
+        Channel.value(paramsSummaryMultiqc(paramsSummaryMap(workflow, parameters_schema: "nextflow_schema.json"))),
+        ch_methods_description,
+        softwareVersionsToYAML(NFCORE_REFERENCES.out.versions).collectFile(storeDir: "${params.outdir}/pipeline_info", name: 'nf_core_references_software_mqc_versions.yml', sort: true, newLine: true),
     )
-
-    multiqc_data = MULTIQC.out.data
-    multiqc_plots = MULTIQC.out.plots
-    multiqc_report = MULTIQC.out.report
 
     // SUBWORKFLOW: Run completion tasks
     PIPELINE_COMPLETION(
@@ -89,13 +75,13 @@ workflow {
         params.outdir,
         params.monochrome_logs,
         params.hook_url,
-        MULTIQC.out.report.toList(),
+        UTILS_MULTIQC.out.report.toList(),
     )
 
+    multiqc_output = UTILS_MULTIQC.out.data.mix(UTILS_MULTIQC.out.plots, UTILS_MULTIQC.out.report)
+
     publish:
-    multiqc_data >> 'multiqc'
-    multiqc_plots >> 'multiqc'
-    multiqc_report >> 'multiqc'
+    multiqc_output >> 'multiqc'
 }
 
 output {
