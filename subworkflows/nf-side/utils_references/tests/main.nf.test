@@ -3,10 +3,15 @@ nextflow_workflow {
     name "Test Workflow UTILS_REFERENCES"
     script "../main.nf"
     workflow "UTILS_REFERENCES"
+    config './nextflow.config'
 
-    test("references_file with params - references_value without params") {
+    test("references_file with params - references_value without params + replace basepath with s3") {
 
         when {
+            params {
+                igenomes_base = 's3://ngi-igenomes/igenomes/'
+            }
+
             workflow {
                 """
                 input[0] = 'https://raw.githubusercontent.com/nf-core/references-assets/main/genomes/Homo_sapiens/test/GRCh38_chr22.yml'
@@ -14,7 +19,8 @@ nextflow_workflow {
                 input[2] = null
                 input[3] = 'fasta'
                 input[4] = 'species'
-                input[5] = 'https://raw.githubusercontent.com/nf-core/'
+                input[5] = 's3://nf-core-references/test_data/'
+                input[6] = ['\${params.igenomes_base}', 's3://ngi-igenomes/igenomes/']
                 """
             }
         }

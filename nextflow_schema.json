@@ -16,7 +16,7 @@
                     "type": "string",
                     "format": "file-path",
                     "exists": true,
-                    "schema": "subworkflows/nf-core/utils_references/schema_references.json",
+                    "schema": "subworkflows/nf-side/utils_references/schema_references.json",
                     "mimetype": "text/csv",
                     "pattern": "^\\S+\\.(yaml|yml)$",
                     "description": "Path to yaml file containing information about the genome(s) and files to use for building references.",
@@ -35,6 +35,12 @@
                     "description": "Tools to use for building references.",
                     "help_text": "Multiple tools separated with commas.",
                     "pattern": "^((bowtie1|bowtie2|bwamem1|bwamem2|createsequencedictionary|dragmap|faidx|gffread|hisat2|hisat2_extractsplicesites|intervals|kallisto|msisensorpro|rsem|rsem_make_transcript_fasta|salmon|sizes|star|tabix)?,?)*(?<!,)$"
+                },
+                "references_base_path": {
+                    "type": "string",
+                    "format": "directory-path",
+                    "description": "The base path to the reference files",
+                    "fa_icon": "fas fa-ban"
                 },
                 "email": {
                     "type": "string",
