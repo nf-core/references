@@ -1,12 +1,13 @@
 lint:
   actions_awsfulltest: false
   files_exist:
+    - .github/workflows/ci.yml
     - conf/igenomes.config
     - conf/igenomes_ignored.config
   files_unchanged:
-    - .github/workflows/branch.yml
+    - .github/PULL_REQUEST_TEMPLATE.md
     - .github/workflows/linting.yml
-nf_core_version: 3.2.0
+nf_core_version: 3.2.1
 repository_type: pipeline
 template:
   author: "@maxulysse"
