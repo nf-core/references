@@ -95,103 +95,102 @@ workflow {
     )
 
     publish:
-    multiqc_data >> 'multiqc'
-    multiqc_plots >> 'multiqc'
-    multiqc_report >> 'multiqc'
+    multiqc     = multiqc_data.mix(multiqc_plots, multiqc_report)
+    references  = NFCORE_REFERENCES.out.references
+                    .filter { _meta, file -> !(file instanceof String) } // Skip files that have not been produced by the pipeline
+                    .map { meta, file -> // Filter out the run_ keys from the meta for a clearer index file
+                        def invalid_keys = meta.keySet().findAll { key -> key.startsWith('run_') }
+                        [ meta - meta.subMap(invalid_keys), file ]
+                    }
 }
 
 output {
-    'multiqc' {
+    multiqc {
         path "multiqc"
     }
-    'references' {
-        path { meta, _file ->
-            { file ->
-                if (meta.file == "bowtie1_index") {
-                    "${meta.species}/${meta.source}/${meta.genome}/Sequence/BowtieIndex/version1.3.1"
-                }
-                else if (meta.file == "bowtie2_index") {
-                    "${meta.species}/${meta.source}/${meta.genome}/Sequence/Bowtie2Index/version2.5.2"
-                }
-                else if (meta.file == "bwamem1_index") {
-                    "${meta.species}/${meta.source}/${meta.genome}/Sequence/BWAIndex/version0.7.18"
-                }
-                else if (meta.file == "bwamem2_index") {
-                    "${meta.species}/${meta.source}/${meta.genome}/Sequence/BWAmem2Index/version2.2.1"
-                }
-                else if (meta.file == "dragmap_hashmap") {
-                    "${meta.species}/${meta.source}/${meta.genome}/Sequence/dragmap/version1.2.1"
-                }
-                else if (meta.file == "fasta") {
-                    "${meta.species}/${meta.source}/${meta.genome}/Sequence/WholeGenomeFasta/${file}"
-                }
-                else if (meta.file == "fasta_dict") {
-                    "${meta.species}/${meta.source}/${meta.genome}/Sequence/WholeGenomeFasta/${file}"
-                }
-                else if (meta.file == "fasta_fai") {
-                    "${meta.species}/${meta.source}/${meta.genome}/Sequence/WholeGenomeFasta/${file}"
-                }
-                else if (meta.file == "fasta_sizes") {
-                    "${meta.species}/${meta.source}/${meta.genome}/Sequence/WholeGenomeFasta/${file}"
-                }
-                else if (meta.file == "gff") {
-                    "${meta.species}/${meta.source}/${meta.genome}/Annotation/Genes/${file}"
-                }
-                else if (meta.file == "gtf") {
-                    "${meta.species}/${meta.source}/${meta.genome}/Annotation/Genes/${file}"
-                }
-                else if (meta.file == "hisat2_index") {
-                    meta.source_version == "unknown"
-                        ? "${meta.species}/${meta.source}/${meta.genome}/Sequence/Hisat2Index/version2.2.1"
-                        : "${meta.species}/${meta.source}/${meta.genome}/Sequence/Hisat2Index/${meta.source_version}/version2.2.1"
-                }
-                else if (meta.file == "intervals_bed") {
-                    "${meta.species}/${meta.source}/${meta.genome}/Annotation/intervals/${file}"
-                }
-                else if (meta.file == "kallisto_index") {
-                    meta.source_version == "unknown"
-                        ? "${meta.species}/${meta.source}/${meta.genome}/Sequence/KallistoIndex/version0.51.1/${file}"
-                        : "${meta.species}/${meta.source}/${meta.genome}/Sequence/KallistoIndex/${meta.source_version}/version0.51.1/${file}"
-                }
-                else if (meta.file == "msisensorpro_list") {
-                    "${meta.species}/${meta.source}/${meta.genome}/Annotation/msisensorpro/${file}"
-                }
-                else if (meta.file == "rsem_index") {
-                    meta.source_version == "unknown"
-                        ? "${meta.species}/${meta.source}/${meta.genome}/Sequence/RSEMIndex/version1.3.1/"
-                        : "${meta.species}/${meta.source}/${meta.genome}/Sequence/RSEMIndex/${meta.source_version}/version1.3.1/"
-                }
-                else if (meta.file == "salmon_index") {
-                    meta.source_version == "unknown"
-                        ? "${meta.species}/${meta.source}/${meta.genome}/Sequence/SalmonIndex/version1.10.3/"
-                        : "${meta.species}/${meta.source}/${meta.genome}/Sequence/SalmonIndex/${meta.source_version}/version1.10.3/"
-                }
-                else if (meta.file == "splice_sites") {
-                    "${meta.species}/${meta.source}/${meta.genome}/Sequence/SpliceSites/${file}"
-                }
-                else if (meta.file == "star_index") {
-                    meta.source_version == "unknown"
-                        ? "${meta.species}/${meta.source}/${meta.genome}/Sequence/STARIndex/version2.7.11b/"
-                        : "${meta.species}/${meta.source}/${meta.genome}/Sequence/STARIndex/${meta.source_version}/version2.7.11b/"
-                }
-                else if (meta.file == "transcript_fasta") {
-                    "${meta.species}/${meta.source}/${meta.genome}/Sequence/TranscriptFasta/${file}"
-                }
-                else if (meta.file == "${meta.type}_vcf") {
-                    "${meta.species}/${meta.source}/${meta.genome}/Annotation/${meta.source_vcf}/${file}"
-                }
-                else if (meta.file == "${meta.type}_vcf_tbi") {
-                    "${meta.species}/${meta.source}/${meta.genome}/Annotation/${meta.source_vcf}/${file}"
-                }
-                else {
-                    null
-                }
+    references {
+        path { meta, file ->
+            if (meta.file == "bowtie1_index") {
+                file >> "${meta.species}/${meta.source}/${meta.genome}/Sequence/BowtieIndex/version1.3.1"
+            }
+            else if (meta.file == "bowtie2_index") {
+                file >> "${meta.species}/${meta.source}/${meta.genome}/Sequence/Bowtie2Index/version2.5.2"
+            }
+            else if (meta.file == "bwamem1_index") {
+                file >> "${meta.species}/${meta.source}/${meta.genome}/Sequence/BWAIndex/version0.7.18"
+            }
+            else if (meta.file == "bwamem2_index") {
+                file >> "${meta.species}/${meta.source}/${meta.genome}/Sequence/BWAmem2Index/version2.2.1"
+            }
+            else if (meta.file == "dragmap_hashmap") {
+                file >> "${meta.species}/${meta.source}/${meta.genome}/Sequence/dragmap/version1.2.1"
+            }
+            else if (meta.file == "fasta") {
+                file >> "${meta.species}/${meta.source}/${meta.genome}/Sequence/WholeGenomeFasta/${file}"
+            }
+            else if (meta.file == "fasta_dict") {
+                file >> "${meta.species}/${meta.source}/${meta.genome}/Sequence/WholeGenomeFasta/${file}"
+            }
+            else if (meta.file == "fasta_fai") {
+                file >> "${meta.species}/${meta.source}/${meta.genome}/Sequence/WholeGenomeFasta/${file}"
+            }
+            else if (meta.file == "fasta_sizes") {
+                file >> "${meta.species}/${meta.source}/${meta.genome}/Sequence/WholeGenomeFasta/${file}"
+            }
+            else if (meta.file == "gff") {
+                file >> "${meta.species}/${meta.source}/${meta.genome}/Annotation/Genes/${file}"
+            }
+            else if (meta.file == "gtf") {
+                file >> "${meta.species}/${meta.source}/${meta.genome}/Annotation/Genes/${file}"
+            }
+            else if (meta.file == "hisat2_index") {
+                meta.source_version == "unknown"
+                    ? file >> "${meta.species}/${meta.source}/${meta.genome}/Sequence/Hisat2Index/version2.2.1"
+                    : file >> "${meta.species}/${meta.source}/${meta.genome}/Sequence/Hisat2Index/${meta.source_version}/version2.2.1"
+            }
+            else if (meta.file == "intervals_bed") {
+                file >> "${meta.species}/${meta.source}/${meta.genome}/Annotation/intervals/${file}"
+            }
+            else if (meta.file == "kallisto_index") {
+                meta.source_version == "unknown"
+                    ? file >> "${meta.species}/${meta.source}/${meta.genome}/Sequence/KallistoIndex/version0.51.1/${file}"
+                    : file >> "${meta.species}/${meta.source}/${meta.genome}/Sequence/KallistoIndex/${meta.source_version}/version0.51.1/${file}"
+            }
+            else if (meta.file == "msisensorpro_list") {
+                file >> "${meta.species}/${meta.source}/${meta.genome}/Annotation/msisensorpro/${file}"
+            }
+            else if (meta.file == "rsem_index") {
+                meta.source_version == "unknown"
+                    ? file >> "${meta.species}/${meta.source}/${meta.genome}/Sequence/RSEMIndex/version1.3.1/"
+                    : file >> "${meta.species}/${meta.source}/${meta.genome}/Sequence/RSEMIndex/${meta.source_version}/version1.3.1/"
+            }
+            else if (meta.file == "salmon_index") {
+                meta.source_version == "unknown"
+                    ? file >> "${meta.species}/${meta.source}/${meta.genome}/Sequence/SalmonIndex/version1.10.3/"
+                    : file >> "${meta.species}/${meta.source}/${meta.genome}/Sequence/SalmonIndex/${meta.source_version}/version1.10.3/"
+            }
+            else if (meta.file == "splice_sites") {
+                file >> "${meta.species}/${meta.source}/${meta.genome}/Sequence/SpliceSites/${file}"
+            }
+            else if (meta.file == "star_index") {
+                meta.source_version == "unknown"
+                    ? file >> "${meta.species}/${meta.source}/${meta.genome}/Sequence/STARIndex/version2.7.11b/"
+                    : file >> "${meta.species}/${meta.source}/${meta.genome}/Sequence/STARIndex/${meta.source_version}/version2.7.11b/"
+            }
+            else if (meta.file == "transcript_fasta") {
+                file >> "${meta.species}/${meta.source}/${meta.genome}/Sequence/TranscriptFasta/${file}"
+            }
+            else if (meta.file == "${meta.type}_vcf") {
+                file >> "${meta.species}/${meta.source}/${meta.genome}/Annotation/${meta.source_vcf}/${file}"
+            }
+            else if (meta.file == "${meta.type}_vcf_tbi") {
+                file >> "${meta.species}/${meta.source}/${meta.genome}/Annotation/${meta.source_vcf}/${file}"
             }
         }
 
         index {
             path "index.json"
-            mapper { meta, reference -> ["${meta.file}:${reference}"] }
+            sep ":"
         }
     }
 }
