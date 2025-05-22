@@ -122,6 +122,7 @@ We thank the following people for their extensive assistance in the development 
 - [Adam Talbot](https://github.com/adamrtalbot)
 - [Friederike Hanssen](https://github.com/FriederikeHanssen)
 - [Harshil Patel](https://github.com/drpatelh)
+- [James Fellows Yates](https://github.com/jfy133)
 - [Jonathan Manning](https://github.com/pinin4fjords)
 - [Nicolas Vannieuwkerke](https://github.com/nvnieuwk)
 
