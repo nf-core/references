@@ -26,7 +26,6 @@
 
 **nf-core/references** is a bioinformatics pipeline that build references, for multiple use cases.
 
-It is primarily designed to build references.
 For most common organisms the plan is to build the references and store them in the cloud, similar to [AWS iGenomes](https://github.com/ewels/AWS-iGenomes/).
 
 ![nf-core/references metro map](docs/images/nf-core-references_metro_map_color.png)
