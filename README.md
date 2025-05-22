@@ -24,35 +24,51 @@
 
 ## Introduction
 
-**nf-core/references** is a bioinformatics pipeline that build references, for multiple use cases.
+**nf-core/references** is a bioinformatics pipeline that build references.
 
-It is primarily designed to build references for common organisms and store it on [AWS iGenomes](https://github.com/ewels/AWS-iGenomes/).
+For most common organisms references will be stored them in the cloud, similar to [AWS iGenomes](https://github.com/ewels/AWS-iGenomes/), to allow for fast and simple access and better reproducibility.
+References can also be built locally for any organisms.
 
-From a fasta file, it will be able to build the following references:
+![nf-core/references metro map](docs/images/nf-core-references_metro_map_color.png)
 
-- Bowtie1 index
-- Bowtie2 index
-- BWA-MEM index
-- BWA-MEM2 index
-- DRAGMAP hashtable
-- Fasta dictionary (with GATK4)
-- Fasta fai (with SAMtools)
-- Fasta sizes (with SAMtools)
-- Fasta intervals bed (with GATK4)
-- MSIsensor-pro list
+## DNASEQ
 
-With an additional annotation file describing the genes (either GFF3 or GTF), it will be able to build the following references:
+For DNASEQ pipelines (ie [nf-core/sarek](https://nf-co.re/sarek)), needing only a fasta file, it will be able to build the following references:
 
-- GTF (from GFF3 with GFFREAD)
-- HISAT2 index
-- Kallisto index
-- RSEM index
-- Salmon index
-- Splice sites (with HISAT2)
-- STAR index
-- Transcript fasta (with RSEM)
+- [BWA-MEM](https://arxiv.org/abs/1303.3997v2) index
+- [BWA-MEM2](https://ieeexplore.ieee.org/document/8820962) index
+- [DragMap](https://github.com/Illumina/DRAGMAP) hashtable
+- Fasta dictionary (with [GATK4](https://pubmed.ncbi.nlm.nih.gov/20644199/))
+- Fasta fai (with [SAMtools](https://pubmed.ncbi.nlm.nih.gov/19505943/))
+- Fasta intervals bed (with [GATK4](https://pubmed.ncbi.nlm.nih.gov/20644199/))
+- [MSISensorPro](https://www.sciencedirect.com/science/article/pii/S1672022920300218) list
+- [SNAP](https://www.biorxiv.org/content/10.1101/2021.11.23.469039v1/) index
 
-With a vcf file, it will compress it, if it was not already compressed, and tabix index it.
+It will compress VCF files, if it was not already compressed, and tabix index it.
+
+- [Tabix](https://academic.oup.com/bioinformatics/article/27/5/718/262743)
+
+And with metadata, it will be able to download annotation caches from:
+
+- [EnsemblVEP](https://pubmed.ncbi.nlm.nih.gov/27268795/)
+- [snpEff](https://pcingola.github.io/SnpEff/)
+
+## RNASEQ
+
+For RNASEQ pipelines (ie [nf-core/rnaseq](https://nf-co.re/rnaseq) or [nf-core/rnavar](https://nf-co.re/rnavar)), providing additional files describing genes' structures (either GFF3 or GTF), it will be able to build the following references:
+
+- [Bowtie1](http://genomebiology.com/2009/10/3/R25) index
+- [Bowtie2](https://www.nature.com/articles/nmeth.1923) index
+- Fasta dictionary (with [GATK4](https://pubmed.ncbi.nlm.nih.gov/20644199/))
+- Fasta sizes (with [SAMtools](https://pubmed.ncbi.nlm.nih.gov/19505943/))
+- GTF (from GFF3 with [GffRead](https://pubmed.ncbi.nlm.nih.gov/32489650/))
+- [HISAT2](https://pubmed.ncbi.nlm.nih.gov/31375807/) index
+- [Kallisto](https://pachterlab.github.io/kallisto/) index
+- [RSEM](https://pubmed.ncbi.nlm.nih.gov/21816040/) index
+- [STAR](https://pubmed.ncbi.nlm.nih.gov/23104886/) index
+- [Salmon](https://pubmed.ncbi.nlm.nih.gov/28263959/) index
+- Splice sites (with [HISAT2](https://pubmed.ncbi.nlm.nih.gov/31375807/))
+- Transcript fasta (with [RSEM](https://pubmed.ncbi.nlm.nih.gov/21816040/))
 
 ## Datasheets
 
@@ -108,41 +124,15 @@ We thank the following people for their extensive assistance in the development 
 - [Adam Talbot](https://github.com/adamrtalbot)
 - [Friederike Hanssen](https://github.com/FriederikeHanssen)
 - [Harshil Patel](https://github.com/drpatelh)
+- [James Fellows Yates](https://github.com/jfy133)
 - [Jonathan Manning](https://github.com/pinin4fjords)
+- [Nicolas Vannieuwkerke](https://github.com/nvnieuwk)
 
 ## Contributions and Support
 
 If you would like to contribute to this pipeline, please see the [contributing guidelines](.github/CONTRIBUTING.md).
 
 For further information or help, don't hesitate to get in touch on the [Slack `#references` channel](https://nfcore.slack.com/channels/references) (you can join with [this invite](https://nf-co.re/join/slack)).
-
-### How to hack on it
-
-0. Have docker, and Nextflow installed
-1. `nextflow run main.nf`
-
-### Some thoughts on reference building
-
-- We could use the glob and if you just drop a fasta in s3 bucket it'll get picked up and new resources built
-  - Could take this a step further and make it a little config file that has the fasta, gtf, genome_size etc.
-- How do we avoid rebuilding? Ideally we should build once on a new minor release of an aligner/reference. IMO kinda low priority because the main cost is going to be egress, not compute.
-- How much effort is too much effort?
-  - Should it be as easy as adding a file on s3?
-    - No that shouldn't be a requirement, should be able to link to a reference externally (A "source of truth" ie an FTP link), and the workflow will build the references
-    - So like mulled biocontainers, just make a PR to the samplesheet and boom new reference in the s3 bucket if it's approved?
-
-### Roadmap
-
-PoC for v1.0:
-
-- Replace aws-igenomes
-  - bwa, bowtie2, star, bismark need to be built
-  - fasta, gtf, bed12, mito_name, macs_gsize, blacklist, copied over
-
-Other nice things to have:
-
-- Building our test-datasets
-- Down-sampling for a unified genomics test dataset creation, (Thinking about viralitegration/rnaseq/wgs) and spiking in test cases of interest (Specific variants for example)
 
 ## Citations
 
