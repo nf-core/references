@@ -35,38 +35,40 @@ References can also be built locally for any organisms.
 
 For DNASEQ pipelines (ie [nf-core/sarek](https://nf-co.re/sarek)), needing only a fasta file, it will be able to build the following references:
 
-- BWA-MEM index
-- BWA-MEM2 index
-- DRAGMAP hashtable
-- Fasta dictionary (with GATK4)
-- Fasta fai (with SAMtools)
-- Fasta intervals bed (with GATK4)
-- MSIsensor-pro list
-- SNAP aligner index
+- [BWA-MEM](https://arxiv.org/abs/1303.3997v2) index
+- [BWA-MEM2](https://ieeexplore.ieee.org/document/8820962) index
+- [DragMap](https://github.com/Illumina/DRAGMAP) hashtable
+- Fasta dictionary (with [GATK4](https://pubmed.ncbi.nlm.nih.gov/20644199/))
+- Fasta fai (with [SAMtools](https://pubmed.ncbi.nlm.nih.gov/19505943/))
+- Fasta intervals bed (with [GATK4](https://pubmed.ncbi.nlm.nih.gov/20644199/))
+- [MSISensorPro](https://www.sciencedirect.com/science/article/pii/S1672022920300218) list
+- [SNAP](https://www.biorxiv.org/content/10.1101/2021.11.23.469039v1/) index
 
 It will compress VCF files, if it was not already compressed, and tabix index it.
 
+- [Tabix](https://academic.oup.com/bioinformatics/article/27/5/718/262743)
+
 And with metadata, it will be able to download annotation caches from:
 
-- [Ensembl](https://www.ensembl.org/index.html)
+- [EnsemblVEP](https://pubmed.ncbi.nlm.nih.gov/27268795/)
 - [snpEff](https://pcingola.github.io/SnpEff/)
 
 ## RNASEQ
 
 For RNASEQ pipelines (ie [nf-core/rnaseq](https://nf-co.re/rnaseq) or [nf-core/rnavar](https://nf-co.re/rnavar)), providing additional files describing genes' structures (either GFF3 or GTF), it will be able to build the following references:
 
-- Bowtie1 index
-- Bowtie2 index
-- Fasta dictionary (with GATK4)
-- Fasta sizes (with SAMtools)
-- GTF (from GFF3 with GFFREAD)
-- HISAT2 index
-- Kallisto index
-- RSEM index
-- STAR index
-- Salmon index
-- Splice sites (with HISAT2)
-- Transcript fasta (with RSEM)
+- [Bowtie1](http://genomebiology.com/2009/10/3/R25) index
+- [Bowtie2](https://www.nature.com/articles/nmeth.1923) index
+- Fasta dictionary (with [GATK4](https://pubmed.ncbi.nlm.nih.gov/20644199/))
+- Fasta sizes (with [SAMtools](https://pubmed.ncbi.nlm.nih.gov/19505943/))
+- GTF (from GFF3 with [GffRead](https://pubmed.ncbi.nlm.nih.gov/32489650/))
+- [HISAT2](https://pubmed.ncbi.nlm.nih.gov/31375807/) index
+- [Kallisto](https://pachterlab.github.io/kallisto/) index
+- [RSEM](https://pubmed.ncbi.nlm.nih.gov/21816040/) index
+- [STAR](https://pubmed.ncbi.nlm.nih.gov/23104886/) index
+- [Salmon](https://pubmed.ncbi.nlm.nih.gov/28263959/) index
+- Splice sites (with [HISAT2](https://pubmed.ncbi.nlm.nih.gov/31375807/))
+- Transcript fasta (with [RSEM](https://pubmed.ncbi.nlm.nih.gov/21816040/))
 
 ## Datasheets
 
