@@ -24,9 +24,10 @@
 
 ## Introduction
 
-**nf-core/references** is a bioinformatics pipeline that build references, for multiple use cases.
+**nf-core/references** is a bioinformatics pipeline that build references.
 
-For most common organisms the plan is to build the references and store them in the cloud, similar to [AWS iGenomes](https://github.com/ewels/AWS-iGenomes/).
+For most common organisms references will be stored them in the cloud, similar to [AWS iGenomes](https://github.com/ewels/AWS-iGenomes/), to allow for fast andsimple access and better reproducibility.
+References can also be built locally for any organisms.
 
 ![nf-core/references metro map](docs/images/nf-core-references_metro_map_color.png)
 
@@ -45,7 +46,7 @@ For DNASEQ pipelines (ie [nf-core/sarek](https://nf-co.re/sarek)), needing only 
 
 It will compress VCF files, if it was not already compressed, and tabix index it.
 
-And with metadata, it will be able to download annotation cache from:
+And with metadata, it will be able to download annotation caches from:
 
 - [Ensembl](https://www.ensembl.org/index.html)
 - [snpEff](https://pcingola.github.io/SnpEff/)
