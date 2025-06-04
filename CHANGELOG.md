@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - [90](https://github.com/nf-core/references/pull/90) - Added link to Bluesky
 - [92](https://github.com/nf-core/references/pull/92) - Added tests for prepare_genome_dnaseq and prepare_genome_rnaseq
 - [118](https://github.com/nf-core/references/pull/118) - Added metro map
+- [119](https://github.com/nf-core/references/pull/119) - Added logo
 
 ### Changed
 
