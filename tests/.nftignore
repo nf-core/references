@@ -5,6 +5,7 @@
 **/Index/*/salmon*/**/ref_indexing.log
 **/Index/*/salmon*/**/seq.bin
 **/Index/*/star*/**/Log.out
+**/Index/*/star*/**/genomeParameters.txt
 **/Index/dragmap*/**/hash_table.cfg
 **/Index/dragmap*/**/hash_table.cfg.bin
 **/Index/dragmap*/**/hash_table_stats.txt
@@ -15,6 +16,7 @@
 **/Index/salmon*/**/ref_indexing.log
 **/Index/salmon*/**/seq.bin
 **/Index/star*/**/Log.out
+**/Index/star*/**/genomeParameters.txt
 **/kallisto
 .DS_Store
 index.json
