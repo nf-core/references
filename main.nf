@@ -79,6 +79,10 @@ workflow {
         [],
     )
 
+    multiqc_data = MULTIQC.out.data
+    multiqc_plots = MULTIQC.out.plots
+    multiqc_report = MULTIQC.out.report
+
     // SUBWORKFLOW: Run completion tasks
     PIPELINE_COMPLETION(
         params.email,
@@ -91,109 +95,103 @@ workflow {
     )
 
     publish:
-    multiqc = MULTIQC.out.data.mix(MULTIQC.out.plots, MULTIQC.out.report)
-    references = NFCORE_REFERENCES.out.references
-        .filter { _meta, file -> !(file instanceof String) }
-        .map { meta, file ->
-            // Filter out the run_ keys from the meta for a clearer index file
-            def invalid_keys = meta.keySet().findAll { key -> key.startsWith('run_') }
-
-            def path = ""
-            def version = null
-
-            if (meta.file == "bowtie1_index") {
-                path = "Sequence/Index"
-                version = "1.3.1"
-            }
-            else if (meta.file == "bowtie2_index") {
-                path = "Sequence/Index"
-                version = "2.5.2"
-            }
-            else if (meta.file == "bwamem1_index") {
-                path = "Sequence/Index"
-                version = "0.7.18"
-            }
-            else if (meta.file == "bwamem2_index") {
-                path = "Sequence/Index"
-                version = "2.2.1"
-            }
-            else if (meta.file == "dragmap_hashmap") {
-                path = "Sequence/Index"
-                version = "1.2.1"
-            }
-            else if (meta.file == "fasta" || meta.file == "fasta_dict" || meta.file == "fasta_fai" || meta.file == "fasta_sizes") {
-                path = "Sequence/WholeGenomeFasta"
-            }
-            else if (meta.file == "gff" || meta.file == "gtf") {
-                path = "Annotation/Genes"
-            }
-            else if (meta.file == "hisat2_index") {
-                version = "2.2.1"
-                path = meta.source_version == "unknown"
-                    ? "Sequence/Index"
-                    : "Sequence/Index/${meta.source_version}"
-            }
-            else if (meta.file == "intervals_bed") {
-                path = "Annotation/intervals"
-            }
-            else if (meta.file == "kallisto_index") {
-                version = "0.51.1"
-                path = meta.source_version == "unknown"
-                    ? "Sequence/Index"
-                    : "Sequence/Index/${meta.source_version}"
-            }
-            else if (meta.file == "msisensorpro_list") {
-                path = "Annotation/msisensorpro"
-            }
-            else if (meta.file == "rsem_index") {
-                version = "1.3.1"
-                path = meta.source_version == "unknown"
-                    ? "Sequence/Index"
-                    : "Sequence/Index/${meta.source_version}"
-            }
-            else if (meta.file == "salmon_index") {
-                version = "1.10.3"
-                path = meta.source_version == "unknown"
-                    ? "Sequence/Index"
-                    : "Sequence/Index/${meta.source_version}"
-            }
-            else if (meta.file == "splice_sites") {
-                path = "Sequence/SpliceSites"
-            }
-            else if (meta.file == "star_index") {
-                version = "2.7.11b"
-                path = meta.source_version == "unknown"
-                    ? "Sequence/Index"
-                    : "Sequence/Index/${meta.source_version}"
-            }
-            else if (meta.file == "transcript_fasta") {
-                path = "Sequence/TranscriptFasta"
-            }
-            else if (meta.file == "${meta.type}_vcf" || meta.file == "${meta.type}_vcf_tbi") {
-                path = "Annotation/${meta.source_vcf}"
-            }
-
-            meta + [file: file, path: "${meta.species}/${meta.source}/${meta.genome}/${path}", version: version] - meta.subMap(invalid_keys)
-        }
+    multiqc_data >> 'multiqc'
+    multiqc_plots >> 'multiqc'
+    multiqc_report >> 'multiqc'
 }
 
 output {
-    multiqc {
+    'multiqc' {
         path "multiqc"
     }
-    references {
-        path { reference ->
-            if (reference.version) {
-                "${reference.path}/${reference.file.baseName}_v${reference.version}"
-            }
-            else {
-                "${reference.path}"
+    'references' {
+        path { meta, _file ->
+            { file ->
+                if (meta.file == "bowtie1_index") {
+                    "${meta.species}/${meta.source}/${meta.genome}/Sequence/BowtieIndex/version1.3.1"
+                }
+                else if (meta.file == "bowtie2_index") {
+                    "${meta.species}/${meta.source}/${meta.genome}/Sequence/Bowtie2Index/version2.5.2"
+                }
+                else if (meta.file == "bwamem1_index") {
+                    "${meta.species}/${meta.source}/${meta.genome}/Sequence/BWAIndex/version0.7.18"
+                }
+                else if (meta.file == "bwamem2_index") {
+                    "${meta.species}/${meta.source}/${meta.genome}/Sequence/BWAmem2Index/version2.2.1"
+                }
+                else if (meta.file == "dragmap_hashmap") {
+                    "${meta.species}/${meta.source}/${meta.genome}/Sequence/dragmap/version1.2.1"
+                }
+                else if (meta.file == "fasta") {
+                    "${meta.species}/${meta.source}/${meta.genome}/Sequence/WholeGenomeFasta/${file}"
+                }
+                else if (meta.file == "fasta_dict") {
+                    "${meta.species}/${meta.source}/${meta.genome}/Sequence/WholeGenomeFasta/${file}"
+                }
+                else if (meta.file == "fasta_fai") {
+                    "${meta.species}/${meta.source}/${meta.genome}/Sequence/WholeGenomeFasta/${file}"
+                }
+                else if (meta.file == "fasta_sizes") {
+                    "${meta.species}/${meta.source}/${meta.genome}/Sequence/WholeGenomeFasta/${file}"
+                }
+                else if (meta.file == "gff") {
+                    "${meta.species}/${meta.source}/${meta.genome}/Annotation/Genes/${file}"
+                }
+                else if (meta.file == "gtf") {
+                    "${meta.species}/${meta.source}/${meta.genome}/Annotation/Genes/${file}"
+                }
+                else if (meta.file == "hisat2_index") {
+                    meta.source_version == "unknown"
+                        ? "${meta.species}/${meta.source}/${meta.genome}/Sequence/Hisat2Index/version2.2.1"
+                        : "${meta.species}/${meta.source}/${meta.genome}/Sequence/Hisat2Index/${meta.source_version}/version2.2.1"
+                }
+                else if (meta.file == "intervals_bed") {
+                    "${meta.species}/${meta.source}/${meta.genome}/Annotation/intervals/${file}"
+                }
+                else if (meta.file == "kallisto_index") {
+                    meta.source_version == "unknown"
+                        ? "${meta.species}/${meta.source}/${meta.genome}/Sequence/KallistoIndex/version0.51.1/${file}"
+                        : "${meta.species}/${meta.source}/${meta.genome}/Sequence/KallistoIndex/${meta.source_version}/version0.51.1/${file}"
+                }
+                else if (meta.file == "msisensorpro_list") {
+                    "${meta.species}/${meta.source}/${meta.genome}/Annotation/msisensorpro/${file}"
+                }
+                else if (meta.file == "rsem_index") {
+                    meta.source_version == "unknown"
+                        ? "${meta.species}/${meta.source}/${meta.genome}/Sequence/RSEMIndex/version1.3.1/"
+                        : "${meta.species}/${meta.source}/${meta.genome}/Sequence/RSEMIndex/${meta.source_version}/version1.3.1/"
+                }
+                else if (meta.file == "salmon_index") {
+                    meta.source_version == "unknown"
+                        ? "${meta.species}/${meta.source}/${meta.genome}/Sequence/SalmonIndex/version1.10.3/"
+                        : "${meta.species}/${meta.source}/${meta.genome}/Sequence/SalmonIndex/${meta.source_version}/version1.10.3/"
+                }
+                else if (meta.file == "splice_sites") {
+                    "${meta.species}/${meta.source}/${meta.genome}/Sequence/SpliceSites/${file}"
+                }
+                else if (meta.file == "star_index") {
+                    meta.source_version == "unknown"
+                        ? "${meta.species}/${meta.source}/${meta.genome}/Sequence/STARIndex/version2.7.11b/"
+                        : "${meta.species}/${meta.source}/${meta.genome}/Sequence/STARIndex/${meta.source_version}/version2.7.11b/"
+                }
+                else if (meta.file == "transcript_fasta") {
+                    "${meta.species}/${meta.source}/${meta.genome}/Sequence/TranscriptFasta/${file}"
+                }
+                else if (meta.file == "${meta.type}_vcf") {
+                    "${meta.species}/${meta.source}/${meta.genome}/Annotation/${meta.source_vcf}/${file}"
+                }
+                else if (meta.file == "${meta.type}_vcf_tbi") {
+                    "${meta.species}/${meta.source}/${meta.genome}/Annotation/${meta.source_vcf}/${file}"
+                }
+                else {
+                    null
+                }
             }
         }
 
         index {
             path "index.json"
-            sep ":"
+            mapper { meta, reference -> ["${meta.file}:${reference}"] }
         }
     }
 }
@@ -203,18 +201,6 @@ output {
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 */
 
-// Helper function to check if a reference needs to be extracted
-// Add the reference type to the meta
-// Depending on the extension, return the appropriate channel
-def need_extract(channel, type) {
-    return channel
-        .map { meta, reference_ -> [meta + [reference: type], reference_] }
-        .branch { _meta, reference_ ->
-            to_extract: reference_.toString().endsWith('.gz') || reference_.toString().endsWith('.zip')
-            not_extracted: true
-        }
-}
-
 // WORKFLOW: Build references depending on type of reference and the tools specified
 workflow NFCORE_REFERENCES {
     take:
@@ -222,6 +208,17 @@ workflow NFCORE_REFERENCES {
     tools      // list of tools to use to build references
 
     main:
+    // Helper closure to check if a reference needs to be extracted
+    // Add the reference type to the meta
+    // Depending on the extension, return the appropriate channel
+    def need_extract = { channel, type ->
+        channel
+            .map { meta, reference_ -> [meta + [reference: type], reference_] }
+            .branch { _meta, reference_ ->
+                to_extract: reference_.toString().endsWith('.gz') || reference_.toString().endsWith('.zip')
+                not_extracted: true
+            }
+    }
 
     DATASHEET_TO_CHANNEL(references, tools)
 
