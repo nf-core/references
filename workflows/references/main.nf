@@ -120,7 +120,4 @@ workflow REFERENCES {
     emit:
     references // channel: [meta, *]
     versions   // channel: [versions.yml]
-
-    publish:
-    references >> 'references'
 }
