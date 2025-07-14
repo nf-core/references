@@ -51,6 +51,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 | --------------------------------- | ----------- | ----------- |
 | bbmap                             | 39.10       | 39.18       |
 | gunzip                            | 1.1         | 1.13        |
+| multiqc                           | 1.28        | 1.30        |
 | pigz (in bbmap/bbsplit)           |             | 2.8         |
 | samtools (in star/genomegenerate) | 1.20        | 1.21        |
 | untar                             |             | 1.34        |
