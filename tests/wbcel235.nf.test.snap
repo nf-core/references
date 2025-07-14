@@ -116,7 +116,6 @@
                 "WBcel235.bed:md5,84cb3d6e8ed7c8475fc9735b19b66908",
                 "GCF_000002985.6_WBcel235_genomic.fna:md5,2fa2b1575d9e722f076bafcf3b755fed",
                 "Genome:md5,e6d3834ba86456a397baec1c273086e7",
-                "Log.out:md5,7f0da613ad295922f9533d676a7577eb",
                 "SA:md5,6ae6d6d9afeff86d9a481466a424a64e",
                 "SAindex:md5,d4c4d74b6965ae9ecd8b21e135f35a88",
                 "chrLength.txt:md5,f05097b2e861d6c4ba7aabd9ab3adb57",
@@ -139,7 +138,6 @@
                 "sjdbList.out.tab:md5,d4caeebcbfec65f6883b97655e1f1764",
                 "transcriptInfo.tab:md5,7ee366482363d8a6da59855c23c87309",
                 "Genome:md5,e6d3834ba86456a397baec1c273086e7",
-                "Log.out:md5,1d8b9b5d11dd4961b7e50a9f9a459267",
                 "SA:md5,6ae6d6d9afeff86d9a481466a424a64e",
                 "SAindex:md5,aee5c61dd63b08430e5b27783cc069fa",
                 "chrLength.txt:md5,f05097b2e861d6c4ba7aabd9ab3adb57",
@@ -169,6 +167,6 @@
             "nf-test": "0.9.2",
             "nextflow": "25.04.6"
         },
-        "timestamp": "2025-07-14T18:10:06.652369546"
+        "timestamp": "2025-07-14T18:49:58.18657422"
     }
 }
