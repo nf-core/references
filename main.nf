@@ -99,21 +99,27 @@ workflow {
             def invalid_keys = meta.keySet().findAll { key -> key.startsWith('run_') }
 
             def path = ""
+            def version = null
 
             if (meta.file == "bowtie1_index") {
-                path = "Sequence/BowtieIndex/version1.3.1"
+                path = "Sequence/Index"
+                version = "1.3.1"
             }
             else if (meta.file == "bowtie2_index") {
-                path = "Sequence/Bowtie2Index/version2.5.2"
+                path = "Sequence/Index"
+                version = "2.5.2"
             }
             else if (meta.file == "bwamem1_index") {
-                path = "Sequence/BWAIndex/version0.7.18"
+                path = "Sequence/Index"
+                version = "0.7.18"
             }
             else if (meta.file == "bwamem2_index") {
-                path = "Sequence/BWAmem2Index/version2.2.1"
+                path = "Sequence/Index"
+                version = "2.2.1"
             }
             else if (meta.file == "dragmap_hashmap") {
-                path = "Sequence/dragmap/version1.2.1"
+                path = "Sequence/Index"
+                version = "1.2.1"
             }
             else if (meta.file == "fasta" || meta.file == "fasta_dict" || meta.file == "fasta_fai" || meta.file == "fasta_sizes") {
                 path = "Sequence/WholeGenomeFasta"
@@ -122,38 +128,43 @@ workflow {
                 path = "Annotation/Genes"
             }
             else if (meta.file == "hisat2_index") {
+                version = "2.2.1"
                 path = meta.source_version == "unknown"
-                    ? "Sequence/Hisat2Index/version2.2.1"
-                    : "Sequence/Hisat2Index/${meta.source_version}/version2.2.1"
+                    ? "Sequence/Index"
+                    : "Sequence/Index/${meta.source_version}"
             }
             else if (meta.file == "intervals_bed") {
                 path = "Annotation/intervals"
             }
             else if (meta.file == "kallisto_index") {
+                version = "0.51.1"
                 path = meta.source_version == "unknown"
-                    ? "Sequence/KallistoIndex/version0.51.1"
-                    : "Sequence/KallistoIndex/${meta.source_version}/version0.51.1"
+                    ? "Sequence/Index"
+                    : "Sequence/Index/${meta.source_version}"
             }
             else if (meta.file == "msisensorpro_list") {
                 path = "Annotation/msisensorpro"
             }
             else if (meta.file == "rsem_index") {
+                version = "1.3.1"
                 path = meta.source_version == "unknown"
-                    ? "Sequence/RSEMIndex/version1.3.1"
-                    : "Sequence/RSEMIndex/${meta.source_version}/version1.3.1"
+                    ? "Sequence/Index"
+                    : "Sequence/Index/${meta.source_version}"
             }
             else if (meta.file == "salmon_index") {
+                version = "1.10.3"
                 path = meta.source_version == "unknown"
-                    ? "Sequence/SalmonIndex/version1.10.3"
-                    : "Sequence/SalmonIndex/${meta.source_version}/version1.10.3"
+                    ? "Sequence/Index"
+                    : "Sequence/Index/${meta.source_version}"
             }
             else if (meta.file == "splice_sites") {
                 path = "Sequence/SpliceSites"
             }
             else if (meta.file == "star_index") {
+                version = "2.7.11b"
                 path = meta.source_version == "unknown"
-                    ? "Sequence/STARIndex/version2.7.11b"
-                    : "Sequence/STARIndex/${meta.source_version}/version2.7.11b"
+                    ? "Sequence/Index"
+                    : "Sequence/Index/${meta.source_version}"
             }
             else if (meta.file == "transcript_fasta") {
                 path = "Sequence/TranscriptFasta"
@@ -162,7 +173,7 @@ workflow {
                 path = "Annotation/${meta.source_vcf}"
             }
 
-            meta + [file: file, path: "${meta.species}/${meta.source}/${meta.genome}/${path}"] - meta.subMap(invalid_keys)
+            meta + [file: file, path: "${meta.species}/${meta.source}/${meta.genome}/${path}", version: version] - meta.subMap(invalid_keys)
         }
 }
 
@@ -172,7 +183,12 @@ output {
     }
     references {
         path { reference ->
-            "${reference.path}"
+            if (reference.version) {
+                "${reference.path}/${reference.file.baseName}_v${reference.version}"
+            }
+            else {
+                "${reference.path}"
+            }
         }
 
         index {
