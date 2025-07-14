@@ -38,6 +38,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - [111](https://github.com/nf-core/references/pull/111) - Fix schema
 - [121](https://github.com/nf-core/references/pull/121) - Template update for nf-core/tools v3.3.2
 - [121](https://github.com/nf-core/references/pull/121) - Switch to workflow output syntax v3 (thanks to @nvnieuwk)
+- [123](https://github.com/nf-core/references/pull/123) - Prepare release 0.2
 
 ### Fixed
 
