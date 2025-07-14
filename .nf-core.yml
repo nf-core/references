@@ -7,7 +7,10 @@ lint:
   files_unchanged:
     - .github/PULL_REQUEST_TEMPLATE.md
     - .github/workflows/linting.yml
-nf_core_version: 3.2.1
+    - assets/nf-core-references_logo_light.png
+    - docs/images/nf-core-references_logo_light.png
+    - docs/images/nf-core-references_logo_dark.png
+nf_core_version: 3.3.2
 repository_type: pipeline
 template:
   author: "@maxulysse"
