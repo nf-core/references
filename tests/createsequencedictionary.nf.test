@@ -26,7 +26,7 @@ nextflow_pipeline {
                     // Number of successful tasks
                     workflow.trace.succeeded().size(),
                     // pipeline versions.yml file for multiqc from which Nextflow and pipeline versions are removed (all from the workflow key)
-                    removeFromYamlMap("$outputDir/pipeline_info/nf_core_references_software_mqc_versions.yml", 'Workflow'),
+                    removeFromYamlMap("${params.outdir}/pipeline_info/nf_core_references_software_mqc_versions.yml", 'Workflow'),
                     // All stable path name, with a relative path
                     stable_name,
                     // All files with stable contents
