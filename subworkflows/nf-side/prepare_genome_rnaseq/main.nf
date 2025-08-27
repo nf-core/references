@@ -31,22 +31,6 @@ workflow PREPARE_GENOME_RNASEQ {
     run_star                       // boolean: true/false
 
     main:
-    def join_by_meta_id = { channel1, channel2, channel3 = null ->
-        if (channel3) {
-            channel1
-                .map { meta, content1_ -> [meta.id, content1_, meta] }
-                .join(channel2.map { meta, content2_ -> [meta.id, content2_, meta] })
-                .join(channel3.map { meta, content3_ -> [meta.id, content3_, meta] })
-                .map { _id, content1_, meta1, content2_, meta2, content3_, meta3 -> [meta3 + meta2 + meta1, content1_, content2_, content3_] }
-        }
-        else {
-            channel1
-                .map { meta, content1_ -> [meta.id, content1_, meta] }
-                .join(channel2.map { meta, content2_ -> [meta.id, content2_, meta] })
-                .map { _id, content1_, meta1, content2_, meta2 -> [meta2 + meta1, content1_, content2_] }
-        }
-    }
-
     bowtie1_index = Channel.empty()
     bowtie2_index = Channel.empty()
     hisat2_index = Channel.empty()
@@ -156,4 +140,26 @@ workflow PREPARE_GENOME_RNASEQ {
     star_index       // channel: [meta, STARIndex/]
     transcript_fasta // channel: [meta, *.transcripts.fasta]
     versions         // channel: [versions.yml]
+}
+
+/*
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    UTILITY FUNCTIONS
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+*/
+
+def join_by_meta_id(channel1, channel2, channel3 = null) {
+    if (channel3) {
+        return channel1
+            .map { meta, content1_ -> [meta.id, content1_, meta] }
+            .join(channel2.map { meta, content2_ -> [meta.id, content2_, meta] })
+            .join(channel3.map { meta, content3_ -> [meta.id, content3_, meta] })
+            .map { _id, content1_, meta1, content2_, meta2, content3_, meta3 -> [meta3 + meta2 + meta1, content1_, content2_, content3_] }
+    }
+    else {
+        return channel1
+            .map { meta, content1_ -> [meta.id, content1_, meta] }
+            .join(channel2.map { meta, content2_ -> [meta.id, content2_, meta] })
+            .map { _id, content1_, meta1, content2_, meta2 -> [meta2 + meta1, content1_, content2_] }
+    }
 }

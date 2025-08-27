@@ -3,6 +3,7 @@ include { PREPARE_GENOME_RNASEQ } from '../../subworkflows/nf-side/prepare_genom
 
 workflow REFERENCES {
     take:
+    altliftoverfile
     ascat_alleles
     ascat_loci
     ascat_loci_gc
@@ -49,6 +50,7 @@ workflow REFERENCES {
         fasta,
         fasta_fai.mix(PREPARE_GENOME_RNASEQ.out.fasta_fai).unique(),
         vcf,
+        altliftoverfile,
         tools.split(',').contains('bwamem1'),
         tools.split(',').contains('bwamem2'),
         tools.split(',').contains('createsequencedictionary'),
@@ -57,6 +59,7 @@ workflow REFERENCES {
         tools.split(',').contains('intervals'),
         tools.split(',').contains('msisensorpro'),
         tools.split(',').contains('tabix'),
+        tools.split(',').contains('snapaligner'),
     )
 
     // This works with a mixture of input and computed references
