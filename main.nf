@@ -274,7 +274,10 @@ workflow NFCORE_REFERENCES {
     // Mix the references that were extracted with the references that did not need to be extracted
     // Some references are not extracted because they are usually not stored in an archived format
     // TODO: check if more references need to be extracted
+    altliftoverfile = Channel.empty()
+
     REFERENCES(
+        altliftoverfile,
         ascat_alleles_input.not_extracted.mix(extracted_reference.ascat_alleles),
         ascat_loci_input.not_extracted.mix(extracted_reference.ascat_loci),
         ascat_loci_gc_input.not_extracted.mix(extracted_reference.ascat_loci_gc),

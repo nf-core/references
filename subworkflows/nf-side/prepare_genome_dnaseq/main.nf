@@ -7,12 +7,14 @@ include { MSISENSORPRO_SCAN              } from '../../../modules/nf-side/msisen
 include { SAMTOOLS_FAIDX                 } from '../../../modules/nf-side/samtools/faidx'
 include { TABIX_BGZIPTABIX               } from '../../../modules/nf-side/tabix/bgziptabix'
 include { TABIX_TABIX                    } from '../../../modules/nf-side/tabix/tabix'
+include { SNAPALIGNER_INDEX              } from '../../../modules/nf-side/snapaligner/index'
 
 workflow PREPARE_GENOME_DNASEQ {
     take:
     fasta                        // channel: [meta, fasta]
     fasta_fai                    // channel: [meta, fasta_fai]
     vcf                          // channel: [meta, vcf]
+    altliftoverfile              // channel: altliftoverfile
     run_bwamem1                  // boolean: true/false
     run_bwamem2                  // boolean: true/false
     run_createsequencedictionary // boolean: true/false
@@ -21,6 +23,7 @@ workflow PREPARE_GENOME_DNASEQ {
     run_intervals                // boolean: true/false
     run_msisensorpro             // boolean: true/false
     run_tabix                    // boolean: true/false
+    run_snapaligner              // boolean: true/false
 
     main:
     bwamem1_index = Channel.empty()
@@ -31,6 +34,7 @@ workflow PREPARE_GENOME_DNASEQ {
     msisensorpro_list = Channel.empty()
     vcf_gz = Channel.empty()
     vcf_tbi = Channel.empty()
+    snapaligner_index = Channel.empty()
 
     versions = Channel.empty()
 
@@ -104,6 +108,16 @@ workflow PREPARE_GENOME_DNASEQ {
         versions = versions.mix(TABIX_TABIX.out.versions)
     }
 
+    if (run_snapaligner) {
+        def snap_input = fasta.combine(altliftoverfile).map { meta, fasta_, altliftoverfile_ ->
+            [meta, fasta_, [], [], altliftoverfile_]
+        }
+        SNAPALIGNER_INDEX(snap_input)
+
+        snapaligner_index = snapaligner_index.mix(SNAPALIGNER_INDEX.out.index)
+        versions = versions.mix(SNAPALIGNER_INDEX.out.versions)
+    }
+
     emit:
     bwamem1_index     // channel: [meta, BWAmemIndex/]
     bwamem2_index     // channel: [meta, BWAmem2memIndex/]
@@ -114,5 +128,6 @@ workflow PREPARE_GENOME_DNASEQ {
     msisensorpro_list // channel: [meta, *.list]
     vcf_gz            // channel: [meta, *.vcf.gz]
     vcf_tbi           // channel: [meta, *.vcf.gz.tbi]
+    snapaligner_index // channel: [meta, snap/]
     versions          // channel: [versions.yml]
 }
