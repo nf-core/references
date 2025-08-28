@@ -109,11 +109,9 @@ workflow PREPARE_GENOME_DNASEQ {
     }
 
     if (run_snapaligner) {
-        def snap_input = fasta
-            .combine(altliftoverfile)
-            .map { meta, fasta_, altliftoverfile_ ->
-                [meta, fasta_, [], [], altliftoverfile_]
-            }
+        def snap_input = fasta.combine(altliftoverfile).map { meta, fasta_, altliftoverfile_ ->
+            [meta, fasta_, [], [], altliftoverfile_]
+        }
         SNAPALIGNER_INDEX(snap_input)
 
         snapaligner_index = snapaligner_index.mix(SNAPALIGNER_INDEX.out.index)

@@ -20,7 +20,7 @@ workflow UTILS_REFERENCES {
     references = Channel.fromList(
         samplesheetToList(
             update_references_file(yaml_reference, basepath_final, basepath_to_replace),
-            "${projectDir}/subworkflows/nf-side/utils_references/schema_references.json"
+            "${projectDir}/subworkflows/nf-side/utils_references/schema_references.json",
         )
     )
 

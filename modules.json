@@ -137,7 +137,7 @@
                     },
                     "star/genomegenerate": {
                         "branch": "main",
-                        "git_sha": "4d329b41d14a20dec31cae811f39e1a52b435220",
+                        "git_sha": "5c580db443878c702f9ec63c62c18951fe06ab0a",
                         "installed_by": ["prepare_genome_rnaseq"]
                     },
                     "tabix/bgziptabix": {
@@ -166,7 +166,7 @@
                     },
                     "utils_references": {
                         "branch": "main",
-                        "git_sha": "4ec95caec3353de5944ee72b5889906da3acc937",
+                        "git_sha": "3f81209f8ae9b11925da2a9a8bc57bfdb5028eef",
                         "installed_by": ["subworkflows"]
                     }
                 }
