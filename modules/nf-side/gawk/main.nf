@@ -14,7 +14,7 @@ process GAWK {
 
     output:
     tuple val(meta), path("*.${suffix}"), emit: output
-    path "versions.yml", emit: versions
+    tuple val("${task.process}"), val('gawk'), eval("awk -Wversion | sed '1!d; s/.*Awk //; s/,.*//'"), topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -50,11 +50,6 @@ process GAWK {
         ${output}
 
     ${cleanup}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        gawk: \$(awk -Wversion | sed '1!d; s/.*Awk //; s/,.*//')
-    END_VERSIONS
     """
 
     stub:
@@ -64,10 +59,5 @@ process GAWK {
 
     """
     ${create_cmd} ${prefix}.${suffix}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        gawk: \$(awk -Wversion | sed '1!d; s/.*Awk //; s/,.*//')
-    END_VERSIONS
     """
 }

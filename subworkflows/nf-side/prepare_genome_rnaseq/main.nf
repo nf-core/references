@@ -40,20 +40,14 @@ workflow PREPARE_GENOME_RNASEQ {
     star_index = Channel.empty()
     fasta_sizes = Channel.empty()
 
-    versions = Channel.empty()
-
     if (run_bowtie1) {
         BOWTIE1_BUILD(fasta)
-
         bowtie1_index = BOWTIE1_BUILD.out.index
-        versions = versions.mix(BOWTIE1_BUILD.out.versions)
     }
 
     if (run_bowtie2) {
         BOWTIE2_BUILD(fasta)
-
         bowtie2_index = BOWTIE2_BUILD.out.index
-        versions = versions.mix(BOWTIE2_BUILD.out.versions)
     }
 
     if (run_faidx || run_sizes) {
@@ -61,13 +55,10 @@ workflow PREPARE_GENOME_RNASEQ {
 
         fasta_fai = fasta_fai.mix(SAMTOOLS_FAIDX.out.fai)
         fasta_sizes = SAMTOOLS_FAIDX.out.sizes
-        versions = versions.mix(SAMTOOLS_FAIDX.out.versions)
     }
 
     if (run_hisat2 || run_kallisto || run_rsem || run_rsem_make_transcript_fasta || run_salmon || run_star) {
         GFFREAD(gff.map { meta, gff_ -> [meta, [], gff_] })
-
-        versions = versions.mix(GFFREAD.out.versions)
 
         gtf = gtf
             .mix(GFFREAD.out.gtf)
@@ -77,22 +68,17 @@ workflow PREPARE_GENOME_RNASEQ {
         if (run_hisat2 || run_hisat2_extractsplicesites) {
             HISAT2_EXTRACTSPLICESITES(gtf)
 
-            versions = versions.mix(HISAT2_EXTRACTSPLICESITES.out.versions)
             splice_sites = splice_sites.mix(HISAT2_EXTRACTSPLICESITES.out.txt)
 
             if (run_hisat2) {
                 HISAT2_BUILD(join_by_meta_id(fasta, gtf, splice_sites))
 
                 hisat2_index = HISAT2_BUILD.out.index
-
-                versions = versions.mix(HISAT2_BUILD.out.versions)
             }
         }
 
         if (run_kallisto || run_rsem_make_transcript_fasta || run_salmon) {
             MAKE_TRANSCRIPTS_FASTA(join_by_meta_id(fasta, gtf))
-
-            versions = versions.mix(MAKE_TRANSCRIPTS_FASTA.out.versions)
 
             transcript_fasta = transcript_fasta.mix(MAKE_TRANSCRIPTS_FASTA.out.transcript_fasta)
 
@@ -100,14 +86,12 @@ workflow PREPARE_GENOME_RNASEQ {
                 KALLISTO_INDEX(transcript_fasta)
 
                 kallisto_index = KALLISTO_INDEX.out.index
-                versions = versions.mix(KALLISTO_INDEX.out.versions)
             }
 
             if (run_salmon) {
                 SALMON_INDEX(join_by_meta_id(fasta, transcript_fasta))
 
                 salmon_index = SALMON_INDEX.out.index
-                versions = versions.mix(SALMON_INDEX.out.versions)
             }
         }
 
@@ -115,14 +99,12 @@ workflow PREPARE_GENOME_RNASEQ {
             RSEM_PREPAREREFERENCE_GENOME(join_by_meta_id(fasta, gtf))
 
             rsem_index = RSEM_PREPAREREFERENCE_GENOME.out.index
-            versions = versions.mix(RSEM_PREPAREREFERENCE_GENOME.out.versions)
         }
 
         if (run_star) {
             STAR_GENOMEGENERATE(join_by_meta_id(fasta, gtf))
 
             star_index = STAR_GENOMEGENERATE.out.index
-            versions = versions.mix(STAR_GENOMEGENERATE.out.versions)
         }
     }
 
@@ -139,7 +121,7 @@ workflow PREPARE_GENOME_RNASEQ {
     splice_sites     // channel: [meta, *.splice_sites.txt]
     star_index       // channel: [meta, STARIndex/]
     transcript_fasta // channel: [meta, *.transcripts.fasta]
-    versions         // channel: [versions.yml]
+    topic_versions   = channel.topic('versions')
 }
 
 /*

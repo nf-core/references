@@ -8,15 +8,21 @@
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 */
 
-include { UTILS_NFSCHEMA_PLUGIN   } from '../../nf-core/utils_nfschema_plugin'
-include { paramsSummaryMap        } from 'plugin/nf-schema'
-include { samplesheetToList       } from 'plugin/nf-schema'
-include { completionEmail         } from '../../nf-core/utils_nfcore_pipeline'
-include { completionSummary       } from '../../nf-core/utils_nfcore_pipeline'
-include { imNotification          } from '../../nf-core/utils_nfcore_pipeline'
-include { UTILS_NFCORE_PIPELINE   } from '../../nf-core/utils_nfcore_pipeline'
-include { UTILS_NEXTFLOW_PIPELINE } from '../../nf-core/utils_nextflow_pipeline'
-include { update_references_file  } from '../../nf-side/utils_references'
+include { update_references_file } from '../../nf-side/utils_references'
+
+include { checkCondaChannels     } from 'plugin/nf-core-utils'
+include { checkConfigProvided    } from 'plugin/nf-core-utils'
+include { checkProfileProvided   } from 'plugin/nf-core-utils'
+include { completionEmail        } from 'plugin/nf-core-utils'
+include { completionSummary      } from 'plugin/nf-core-utils'
+include { dumpParametersToJSON   } from 'plugin/nf-core-utils'
+include { getWorkflowVersion     } from 'plugin/nf-core-utils'
+include { imNotification         } from 'plugin/nf-core-utils'
+
+include { paramsSummaryLog       } from 'plugin/nf-schema'
+include { paramsSummaryMap       } from 'plugin/nf-schema'
+include { samplesheetToList      } from 'plugin/nf-schema'
+include { validateParameters     } from 'plugin/nf-schema'
 
 /*
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -35,35 +41,34 @@ workflow PIPELINE_INITIALISATION {
     basepath_to_replace //  array: The basepath to replace in the asset yaml file
 
     main:
-    //
-    // Print version and exit if required and dump pipeline parameters to JSON file
-    //
-    UTILS_NEXTFLOW_PIPELINE(
-        version,
-        true,
-        outdir,
-        workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1,
-    )
 
-    //
+    // Print workflow version and exit on --version
+    if (version) {
+        log.info("${workflow.manifest.name} ${getWorkflowVersion()}")
+        System.exit(0)
+    }
+
+    // Dump pipeline parameters to a JSON file
+    if (outdir) {
+        dumpParametersToJSON(outdir, params)
+    }
+
+    // When running with Conda, warn if channels have not been set-up appropriately
+    if (workflow.profile.tokenize(',').intersect(['conda', 'mamba']).size() >= 1) {
+        checkCondaChannels()
+    }
+
     // Validate parameters and generate parameter summary to stdout
-    //
-    UTILS_NFSCHEMA_PLUGIN(
-        workflow,
-        validate_params,
-        null,
-    )
+    log.info(paramsSummaryLog(workflow))
+    if (validate_params) {
+        validateParameters()
+    }
 
-    //
     // Check config provided to the pipeline
-    //
-    UTILS_NFCORE_PIPELINE(
-        nextflow_cli_args
-    )
+    checkConfigProvided()
+    checkProfileProvided(nextflow_cli_args)
 
-    //
     // Create channel from asset file provided through params.asset
-    //
     references = Channel.fromList(
         samplesheetToList(
             update_references_file(asset, basepath_final, basepath_to_replace),

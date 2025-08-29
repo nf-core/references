@@ -10,7 +10,7 @@
                     "bwa": "0.7.18-r1243-dirty"
                 },
                 "GATK4_CREATESEQUENCEDICTIONARY": {
-                    "gatk4": "4.6.1.0"
+                    "gatk": "4.6.1.0"
                 },
                 "SAMTOOLS_FAIDX": {
                     "samtools": 1.21
@@ -89,7 +89,7 @@
             "nf-test": "0.9.2",
             "nextflow": "25.04.6"
         },
-        "timestamp": "2025-07-14T17:50:18.048001417"
+        "timestamp": "2025-08-29T12:27:53.449668882"
     },
     "-profile test --tools tabix --input references-datasheets/latest/genomes_source/Homo_sapiens/GATK/GRCh37_GRCh38_multiple_dbsnps_globs.yml": {
         "content": [

@@ -22,8 +22,6 @@ workflow REFERENCES {
     tools            // List: Can contain any combination of tools of the list of available tools, or just no_tools
 
     main:
-    versions = Channel.empty()
-
     // Create references for rnaseq based pipelines such as nf-core/riboseq, nf-core/rnaseq, nf-core/rnavar
     PREPARE_GENOME_RNASEQ(
         fasta,
@@ -85,10 +83,6 @@ workflow REFERENCES {
     star_index = PREPARE_GENOME_RNASEQ.out.star_index
     vcf_tbi = PREPARE_GENOME_DNASEQ.out.vcf_tbi
 
-    // TODO: Refactor this with topics
-    versions = versions.mix(PREPARE_GENOME_DNASEQ.out.versions)
-    versions = versions.mix(PREPARE_GENOME_RNASEQ.out.versions)
-
     references = Channel.empty()
         .mix(
             ascat_alleles.map { meta, reference_ -> [meta + [file: 'ascat_alleles'], reference_] },
@@ -121,6 +115,6 @@ workflow REFERENCES {
         )
 
     emit:
-    references // channel: [meta, *]
-    versions   // channel: [versions.yml]
+    references     // channel: [meta, *]
+    topic_versions = channel.topic('versions')
 }
