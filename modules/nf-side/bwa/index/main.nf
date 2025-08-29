@@ -14,7 +14,7 @@ process BWA_INDEX {
 
     output:
     tuple val(meta), path("bwa"), emit: index
-    path "versions.yml", emit: versions
+    tuple val("${task.process}"), val('bwa'), eval("bwa 2>&1 | grep 'Version:' | sed 's/Version: //'"), topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -29,11 +29,6 @@ process BWA_INDEX {
         ${args} \\
         -p bwa/${prefix} \\
         ${fasta}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        bwa: \$(echo \$(bwa 2>&1) | sed 's/^.*Version: //; s/Contact:.*\$//')
-    END_VERSIONS
     """
 
     stub:
@@ -46,10 +41,5 @@ process BWA_INDEX {
     touch bwa/${prefix}.bwt
     touch bwa/${prefix}.pac
     touch bwa/${prefix}.sa
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        bwa: \$(echo \$(bwa 2>&1) | sed 's/^.*Version: //; s/Contact:.*\$//')
-    END_VERSIONS
     """
 }

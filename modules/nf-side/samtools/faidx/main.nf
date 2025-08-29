@@ -16,7 +16,7 @@ process SAMTOOLS_FAIDX {
     tuple val(meta), path("*.sizes"), emit: sizes, optional: true
     tuple val(meta), path("*.fai"), emit: fai, optional: true
     tuple val(meta), path("*.gzi"), emit: gzi, optional: true
-    path "versions.yml", emit: versions
+    tuple val("${task.process}"), val('samtools'), eval("samtools --version 2>&1 | head -1 | sed 's/^.*samtools //'"), topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -31,11 +31,6 @@ process SAMTOOLS_FAIDX {
         ${args}
 
     ${get_sizes_command}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        samtools: \$(echo \$(samtools --version 2>&1) | sed 's/^.*samtools //; s/Using.*\$//')
-    END_VERSIONS
     """
 
     stub:
@@ -50,11 +45,5 @@ process SAMTOOLS_FAIDX {
     fi
 
     ${get_sizes_command}
-
-    cat <<-END_VERSIONS > versions.yml
-
-    "${task.process}":
-        samtools: \$(echo \$(samtools --version 2>&1) | sed 's/^.*samtools //; s/Using.*\$//')
-    END_VERSIONS
     """
 }

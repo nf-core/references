@@ -13,7 +13,8 @@ process RSEM_PREPAREREFERENCE {
     output:
     tuple val(meta), path("rsem"), emit: index
     tuple val(meta), path("*transcripts.fa"), emit: transcript_fasta
-    path "versions.yml", emit: versions
+    tuple val("${task.process}"), val('rsem'), eval("rsem-calculate-expression --version | sed -e 's/Current version: RSEM v//g'"), topic: versions
+    tuple val("${task.process}"), val('star'), eval("STAR --version | sed -e 's/STAR_//g'"), topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -43,12 +44,6 @@ process RSEM_PREPAREREFERENCE {
             rsem/genome
 
         cp rsem/genome.transcripts.fa .
-
-        cat <<-END_VERSIONS > versions.yml
-        "${task.process}":
-            rsem: \$(rsem-calculate-expression --version | sed -e "s/Current version: RSEM v//g")
-            star: \$(STAR --version | sed -e "s/STAR_//g")
-        END_VERSIONS
         """
     }
     else {
@@ -61,23 +56,11 @@ process RSEM_PREPAREREFERENCE {
             rsem/genome
 
         cp rsem/genome.transcripts.fa .
-
-        cat <<-END_VERSIONS > versions.yml
-        "${task.process}":
-            rsem: \$(rsem-calculate-expression --version | sed -e "s/Current version: RSEM v//g")
-            star: \$(STAR --version | sed -e "s/STAR_//g")
-        END_VERSIONS
         """
     }
 
     stub:
     """
     touch genome.transcripts.fa
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        rsem: \$(rsem-calculate-expression --version | sed -e "s/Current version: RSEM v//g")
-        star: \$(STAR --version | sed -e "s/STAR_//g")
-    END_VERSIONS
     """
 }

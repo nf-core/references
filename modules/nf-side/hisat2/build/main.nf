@@ -13,7 +13,7 @@ process HISAT2_BUILD {
 
     output:
     tuple val(meta), path("hisat2"), emit: index
-    path "versions.yml", emit: versions
+    tuple val("${task.process}"), val('hisat2'), eval("hisat2 --version 2>&1 | grep -o 'version [^ ]*' | cut -d ' ' -f 2"), topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -53,20 +53,10 @@ process HISAT2_BUILD {
         ${args} \\
         ${fasta} \\
         hisat2/${fasta.baseName}
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        hisat2: \$(hisat2 --version | grep -o 'version [^ ]*' | cut -d ' ' -f 2)
-    END_VERSIONS
     """
 
     stub:
     """
     mkdir hisat2
-
-    cat <<-END_VERSIONS > versions.yml
-    "${task.process}":
-        hisat2: \$(hisat2 --version | grep -o 'version [^ ]*' | cut -d ' ' -f 2)
-    END_VERSIONS
     """
 }

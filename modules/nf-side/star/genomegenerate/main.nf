@@ -12,7 +12,9 @@ process STAR_GENOMEGENERATE {
 
     output:
     tuple val(meta), path("star"), emit: index
-    path "versions.yml", emit: versions
+    tuple val("${task.process}"), val('gawk'), eval("awk -Wversion | sed '1!d; s/.*Awk //; s/,.*//'"), topic: versions
+    tuple val("${task.process}"), val('samtools'), eval("samtools --version 2>&1 | head -1 | sed 's/^.*samtools //'"), topic: versions
+    tuple val("${task.process}"), val('star'), eval("STAR --version | sed -e 's/STAR_//g'"), topic: versions
 
     when:
     task.ext.when == null || task.ext.when
@@ -33,13 +35,6 @@ process STAR_GENOMEGENERATE {
             --runThreadN ${task.cpus} \\
             ${memory} \\
             ${args}
-
-        cat <<-END_VERSIONS > versions.yml
-        "${task.process}":
-            star: \$(STAR --version | sed -e "s/STAR_//g")
-            samtools: \$(echo \$(samtools --version 2>&1) | sed 's/^.*samtools //; s/Using.*\$//')
-            gawk: \$(echo \$(gawk --version 2>&1) | sed 's/^.*GNU Awk //; s/, .*\$//')
-        END_VERSIONS
         """
     }
     else {
@@ -57,13 +52,6 @@ process STAR_GENOMEGENERATE {
             --genomeSAindexNbases \$NUM_BASES \\
             ${memory} \\
             ${args}
-
-        cat <<-END_VERSIONS > versions.yml
-        "${task.process}":
-            star: \$(STAR --version | sed -e "s/STAR_//g")
-            samtools: \$(echo \$(samtools --version 2>&1) | sed 's/^.*samtools //; s/Using.*\$//')
-            gawk: \$(echo \$(gawk --version 2>&1) | sed 's/^.*GNU Awk //; s/, .*\$//')
-        END_VERSIONS
         """
     }
 
@@ -79,21 +67,15 @@ process STAR_GENOMEGENERATE {
         touch star/chrName.txt
         touch star/chrNameLength.txt
         touch star/chrStart.txt
+        touch star/genomeParameters.txt
+
         touch star/exonGeTrInfo.tab
         touch star/exonInfo.tab
         touch star/geneInfo.tab
-        touch star/genomeParameters.txt
         touch star/sjdbInfo.txt
         touch star/sjdbList.fromGTF.out.tab
         touch star/sjdbList.out.tab
         touch star/transcriptInfo.tab
-
-        cat <<-END_VERSIONS > versions.yml
-        "${task.process}":
-            star: \$(STAR --version | sed -e "s/STAR_//g")
-            samtools: \$(echo \$(samtools --version 2>&1) | sed 's/^.*samtools //; s/Using.*\$//')
-            gawk: \$(echo \$(gawk --version 2>&1) | sed 's/^.*GNU Awk //; s/, .*\$//')
-        END_VERSIONS
         """
     }
     else {
@@ -108,13 +90,6 @@ process STAR_GENOMEGENERATE {
         touch star/chrNameLength.txt
         touch star/chrStart.txt
         touch star/genomeParameters.txt
-
-        cat <<-END_VERSIONS > versions.yml
-        "${task.process}":
-            star: \$(STAR --version | sed -e "s/STAR_//g")
-            samtools: \$(echo \$(samtools --version 2>&1) | sed 's/^.*samtools //; s/Using.*\$//')
-            gawk: \$(echo \$(gawk --version 2>&1) | sed 's/^.*GNU Awk //; s/, .*\$//')
-        END_VERSIONS
         """
     }
 }

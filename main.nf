@@ -17,19 +17,18 @@ nextflow.preview.output = true
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 */
 
-include { paramsSummaryMap        } from 'plugin/nf-schema'
-include { methodsDescriptionText  } from './subworkflows/local/utils_nfcore_references_pipeline'
-include { paramsSummaryMultiqc    } from './subworkflows/nf-core/utils_nfcore_pipeline'
-include { softwareVersionsToYAML  } from './subworkflows/nf-core/utils_nfcore_pipeline'
-
-include { MULTIQC                 } from './modules/nf-core/multiqc'
-
 include { ARCHIVE_EXTRACT         } from './subworkflows/nf-core/archive_extract'
+include { DATASHEET_TO_CHANNEL    } from './subworkflows/local/datasheet_to_channel'
 include { PIPELINE_COMPLETION     } from './subworkflows/local/utils_nfcore_references_pipeline'
 include { PIPELINE_INITIALISATION } from './subworkflows/local/utils_nfcore_references_pipeline'
-include { DATASHEET_TO_CHANNEL    } from './subworkflows/local/datasheet_to_channel'
-
 include { REFERENCES              } from "./workflows/references"
+
+// MULTIQC & versions
+include { MULTIQC                 } from './modules/nf-core/multiqc'
+include { getWorkflowVersion      } from 'plugin/nf-core-utils'
+include { processVersionsFromFile } from 'plugin/nf-core-utils'
+include { methodsDescriptionText  } from './subworkflows/local/utils_nfcore_references_pipeline'
+include { paramsSummaryMap        } from 'plugin/nf-schema'
 
 /*
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -57,18 +56,30 @@ workflow {
 
     NFCORE_REFERENCES(PIPELINE_INITIALISATION.out.references, params.tools ?: "no_tools")
 
+    // MULTIQC
+
+    // Collate and save software versions
+    def collated_versions = softwareVersionsToYAML(
+        NFCORE_REFERENCES.out.versions,
+        channel.topic('versions'),
+        channel.of(workflowVersionToYAML()),
+    ).collectFile(storeDir: "${params.outdir}/pipeline_info", name: 'nf_core_references_software_mqc_versions.yml', sort: true, newLine: true)
+
+    // methods description
+    ch_multiqc_custom_methods_description = params.multiqc_methods_description ? file(params.multiqc_methods_description, checkIfExists: true) : file("${projectDir}/assets/methods_description_template.yml", checkIfExists: true)
+    ch_methods_description = Channel.value(methodsDescriptionText(ch_multiqc_custom_methods_description)).collectFile(name: 'methods_description_mqc.yaml', sort: true)
+
+    // workflow summary
+    ch_workflow_summary = Channel.value(paramsSummaryMultiqc(paramsSummaryMap(workflow, parameters_schema: "nextflow_schema.json"))).collectFile(name: 'workflow_summary_mqc.yaml')
+
     ch_multiqc_files = Channel.empty()
 
-    // MODULE: MultiQC
     ch_multiqc_config = Channel.fromPath("${projectDir}/assets/multiqc_config.yml", checkIfExists: true)
     ch_multiqc_custom_config = params.multiqc_config ? Channel.fromPath(params.multiqc_config, checkIfExists: true) : Channel.empty()
     ch_multiqc_logo = params.multiqc_logo ? Channel.fromPath(params.multiqc_logo, checkIfExists: true) : Channel.empty()
-    ch_workflow_summary = Channel.value(paramsSummaryMultiqc(paramsSummaryMap(workflow, parameters_schema: "nextflow_schema.json")))
-    ch_multiqc_custom_methods_description = params.multiqc_methods_description ? file(params.multiqc_methods_description, checkIfExists: true) : file("${projectDir}/assets/methods_description_template.yml", checkIfExists: true)
-    ch_methods_description = Channel.value(methodsDescriptionText(ch_multiqc_custom_methods_description))
-    ch_multiqc_files = ch_multiqc_files.mix(ch_workflow_summary.collectFile(name: 'workflow_summary_mqc.yaml'))
-    ch_multiqc_files = ch_multiqc_files.mix(softwareVersionsToYAML(NFCORE_REFERENCES.out.versions).collectFile(storeDir: "${params.outdir}/pipeline_info", name: 'nf_core_references_software_mqc_versions.yml', sort: true, newLine: true))
-    ch_multiqc_files = ch_multiqc_files.mix(ch_methods_description.collectFile(name: 'methods_description_mqc.yaml', sort: true))
+    ch_multiqc_files = ch_multiqc_files.mix(ch_workflow_summary)
+    ch_multiqc_files = ch_multiqc_files.mix(ch_methods_description)
+    ch_multiqc_files = ch_multiqc_files.mix(collated_versions)
 
     MULTIQC(
         ch_multiqc_files.collect(),
@@ -298,5 +309,84 @@ workflow NFCORE_REFERENCES {
 
     emit:
     references = REFERENCES.out.references
-    versions   = REFERENCES.out.versions.mix(ARCHIVE_EXTRACT.out.versions)
+    versions   = ARCHIVE_EXTRACT.out.versions
+}
+
+/*
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    FUNCTIONS
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+*/
+
+//
+// Get workflow summary for MultiQC
+//
+def paramsSummaryMultiqc(summary_params) {
+    def summary_section = ''
+    summary_params
+        .keySet()
+        .each { group ->
+            def group_params = summary_params.get(group)
+            // This gets the parameters of that particular group
+            if (group_params) {
+                summary_section += "    <p style=\"font-size:110%\"><b>${group}</b></p>\n"
+                summary_section += "    <dl class=\"dl-horizontal\">\n"
+                group_params
+                    .keySet()
+                    .sort()
+                    .each { param ->
+                        summary_section += "        <dt>${param}</dt><dd><samp>${group_params.get(param) ?: '<span style=\"color:#999999;\">N/A</a>'}</samp></dd>\n"
+                    }
+                summary_section += "    </dl>\n"
+            }
+        }
+
+    def yaml_file_text = "id: '${workflow.manifest.name.replace('/', '-')}-summary'\n" as String
+    yaml_file_text += "description: ' - this information is collected when the pipeline is started.'\n"
+    yaml_file_text += "section_name: '${workflow.manifest.name} Workflow Summary'\n"
+    yaml_file_text += "section_href: 'https://github.com/${workflow.manifest.name}'\n"
+    yaml_file_text += "plot_type: 'html'\n"
+    yaml_file_text += "data: |\n"
+    yaml_file_text += "${summary_section}"
+
+    return yaml_file_text
+}
+
+//
+// Get channel of software versions used in pipeline in YAML format using nf-core-utils plugin
+//
+def softwareVersionsToYAML(ch_versions_legacy, ch_versions_topic, ch_versions_workflow) {
+    def versions_legacy = ch_versions_legacy.unique().map { version -> processVersionsFromFile([version.toString()]) }
+    def versions_topic = ch_versions_topic
+        .unique()
+        .groupTuple(by: 0)
+        .map { topic -> topicVersionToYAML(topic[0], topic[1], topic[2]) }
+
+    def versions_workflow = ch_versions_workflow
+
+    return versions_legacy.mix(versions_topic, versions_workflow)
+}
+
+//
+// Process versions from topic channel
+//
+def topicVersionToYAML(taskProcess, tools, versions) {
+    def toolsVersions = [tools, versions]
+        .transpose()
+        .collect { k, v -> "${k}: ${v}" }
+    return """
+    |${taskProcess.tokenize(':').last()}:
+    |  ${toolsVersions.join('\n|  ')}
+    """.stripMargin().trim()
+}
+
+//
+// Get workflow version for pipeline using nf-core-utils plugin
+//
+def workflowVersionToYAML() {
+    return """
+    Workflow:
+        ${workflow.manifest.name}: ${getWorkflowVersion()}
+        Nextflow: ${workflow.nextflow.version}
+    """.stripIndent().trim()
 }
