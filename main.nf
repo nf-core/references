@@ -110,81 +110,70 @@ workflow {
             def invalid_keys = meta.keySet().findAll { key -> key.startsWith('run_') }
 
             def path = ""
-            def version = null
 
             if (meta.file == "bowtie1_index") {
-                path = "Sequence/Index"
-                version = "1.3.1"
+                path = "Sequence/BowtieIndex/1.3.1"
             }
             else if (meta.file == "bowtie2_index") {
-                path = "Sequence/Index"
-                version = "2.5.2"
+                path = "Sequence/Bowtie2Index/2.5.2"
             }
             else if (meta.file == "bwamem1_index") {
-                path = "Sequence/Index"
-                version = "0.7.18"
+                path = "Sequence/BWAIndex/0.7.18"
             }
             else if (meta.file == "bwamem2_index") {
-                path = "Sequence/Index"
-                version = "2.2.1"
+                path = "Sequence/BWAmem2Index/2.2.1"
             }
             else if (meta.file == "dragmap_hashmap") {
-                path = "Sequence/Index"
-                version = "1.2.1"
+                path = "Sequence/dragmap/1.2.1"
             }
             else if (meta.file == "fasta" || meta.file == "fasta_dict" || meta.file == "fasta_fai" || meta.file == "fasta_sizes") {
-                path = "Sequence/WholeGenomeFasta"
+                path = "Sequence/WholeGenomeFasta/${file.fileName}"
             }
             else if (meta.file == "gff" || meta.file == "gtf") {
-                path = "Annotation/Genes"
+                path = "Annotation/Genes/${file.fileName}"
             }
             else if (meta.file == "hisat2_index") {
-                version = "2.2.1"
                 path = meta.source_version == "unknown"
-                    ? "Sequence/Index"
-                    : "Sequence/Index/${meta.source_version}"
+                    ? "Sequence/Hisat2Index/2.2.1"
+                    : "Sequence/Hisat2Index/${meta.source_version}/2.2.1"
             }
             else if (meta.file == "intervals_bed") {
-                path = "Annotation/intervals"
+                path = "Annotation/intervals/${file.fileName}"
             }
             else if (meta.file == "kallisto_index") {
-                version = "0.51.1"
                 path = meta.source_version == "unknown"
-                    ? "Sequence/Index"
-                    : "Sequence/Index/${meta.source_version}"
+                    ? "Sequence/KallistoIndex/0.51.1/${file.fileName}"
+                    : "Sequence/KallistoIndex/${meta.source_version}/0.51.1/${file.fileName}"
             }
             else if (meta.file == "msisensorpro_list") {
-                path = "Annotation/msisensorpro"
+                path = "Annotation/msisensorpro/${file.fileName}"
             }
             else if (meta.file == "rsem_index") {
-                version = "1.3.1"
                 path = meta.source_version == "unknown"
-                    ? "Sequence/Index"
-                    : "Sequence/Index/${meta.source_version}"
+                    ? "Sequence/RSEMIndex/1.3.1"
+                    : "Sequence/RSEMIndex/${meta.source_version}/1.3.1"
             }
             else if (meta.file == "salmon_index") {
-                version = "1.10.3"
                 path = meta.source_version == "unknown"
-                    ? "Sequence/Index"
-                    : "Sequence/Index/${meta.source_version}"
+                    ? "Sequence/SalmonIndex/1.10.3"
+                    : "Sequence/SalmonIndex/${meta.source_version}/1.10.3"
             }
             else if (meta.file == "splice_sites") {
-                path = "Sequence/SpliceSites"
+                path = "Sequence/SpliceSites/${file.fileName}"
             }
             else if (meta.file == "star_index") {
-                version = "2.7.11b"
                 path = meta.source_version == "unknown"
-                    ? "Sequence/Index"
-                    : "Sequence/Index/${meta.source_version}"
+                    ? "Sequence/STARIndex/2.7.11b"
+                    : "Sequence/STARIndex/${meta.source_version}/2.7.11b"
             }
             else if (meta.file == "transcript_fasta") {
-                path = "Sequence/TranscriptFasta"
+                path = "Sequence/TranscriptFasta/${file.fileName}"
             }
             else if (meta.file == "${meta.type}_vcf" || meta.file == "${meta.type}_vcf_tbi") {
-                path = "Annotation/${meta.source_vcf}"
+                path = "Annotation/${meta.source_vcf}/${file.fileName}"
             }
 
-            meta + [file: file, path: "${meta.species}/${meta.source}/${meta.genome}/${path}", version: version] - meta.subMap(invalid_keys)
+            [meta + [path: "${meta.species}/${meta.source}/${meta.genome}/${path}"] - meta.subMap(invalid_keys), file]
         }
 }
 
@@ -193,14 +182,7 @@ output {
         path "multiqc"
     }
     references {
-        path { reference ->
-            if (reference.version) {
-                "${reference.path}/${reference.file.baseName}_v${reference.version}"
-            }
-            else {
-                "${reference.path}"
-            }
-        }
+        path { meta, path -> path >> meta.path }
 
         index {
             path "index.json"

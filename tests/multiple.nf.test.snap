@@ -1,7 +1,6 @@
 {
     "-profile test --tools bwamem1,createsequencedictionary,faidx,intervals --input references-datasheets/latest/genomes_source/Homo_sapiens/nf-core/GRCh38_chr21_chr22.yml": {
         "content": [
-            9,
             {
                 "BUILD_INTERVALS": {
                     "gawk": "5.3.0"
@@ -24,14 +23,13 @@
                 "Homo_sapiens/nf-core/GRCh38_chr21/Annotation/intervals",
                 "Homo_sapiens/nf-core/GRCh38_chr21/Annotation/intervals/GRCh38_chr21.bed",
                 "Homo_sapiens/nf-core/GRCh38_chr21/Sequence",
-                "Homo_sapiens/nf-core/GRCh38_chr21/Sequence/Index",
-                "Homo_sapiens/nf-core/GRCh38_chr21/Sequence/Index/bwa_v0.7.18",
-                "Homo_sapiens/nf-core/GRCh38_chr21/Sequence/Index/bwa_v0.7.18/bwa",
-                "Homo_sapiens/nf-core/GRCh38_chr21/Sequence/Index/bwa_v0.7.18/bwa/GRCh38_chr21.amb",
-                "Homo_sapiens/nf-core/GRCh38_chr21/Sequence/Index/bwa_v0.7.18/bwa/GRCh38_chr21.ann",
-                "Homo_sapiens/nf-core/GRCh38_chr21/Sequence/Index/bwa_v0.7.18/bwa/GRCh38_chr21.bwt",
-                "Homo_sapiens/nf-core/GRCh38_chr21/Sequence/Index/bwa_v0.7.18/bwa/GRCh38_chr21.pac",
-                "Homo_sapiens/nf-core/GRCh38_chr21/Sequence/Index/bwa_v0.7.18/bwa/GRCh38_chr21.sa",
+                "Homo_sapiens/nf-core/GRCh38_chr21/Sequence/BWAIndex",
+                "Homo_sapiens/nf-core/GRCh38_chr21/Sequence/BWAIndex/0.7.18",
+                "Homo_sapiens/nf-core/GRCh38_chr21/Sequence/BWAIndex/0.7.18/GRCh38_chr21.amb",
+                "Homo_sapiens/nf-core/GRCh38_chr21/Sequence/BWAIndex/0.7.18/GRCh38_chr21.ann",
+                "Homo_sapiens/nf-core/GRCh38_chr21/Sequence/BWAIndex/0.7.18/GRCh38_chr21.bwt",
+                "Homo_sapiens/nf-core/GRCh38_chr21/Sequence/BWAIndex/0.7.18/GRCh38_chr21.pac",
+                "Homo_sapiens/nf-core/GRCh38_chr21/Sequence/BWAIndex/0.7.18/GRCh38_chr21.sa",
                 "Homo_sapiens/nf-core/GRCh38_chr21/Sequence/WholeGenomeFasta",
                 "Homo_sapiens/nf-core/GRCh38_chr21/Sequence/WholeGenomeFasta/GRCh38_chr21.dict",
                 "Homo_sapiens/nf-core/GRCh38_chr21/Sequence/WholeGenomeFasta/GRCh38_chr21.fa.fai",
@@ -40,14 +38,13 @@
                 "Homo_sapiens/nf-core/GRCh38_chr22/Annotation/intervals",
                 "Homo_sapiens/nf-core/GRCh38_chr22/Annotation/intervals/GRCh38_chr22.bed",
                 "Homo_sapiens/nf-core/GRCh38_chr22/Sequence",
-                "Homo_sapiens/nf-core/GRCh38_chr22/Sequence/Index",
-                "Homo_sapiens/nf-core/GRCh38_chr22/Sequence/Index/bwa_v0.7.18",
-                "Homo_sapiens/nf-core/GRCh38_chr22/Sequence/Index/bwa_v0.7.18/bwa",
-                "Homo_sapiens/nf-core/GRCh38_chr22/Sequence/Index/bwa_v0.7.18/bwa/genome.amb",
-                "Homo_sapiens/nf-core/GRCh38_chr22/Sequence/Index/bwa_v0.7.18/bwa/genome.ann",
-                "Homo_sapiens/nf-core/GRCh38_chr22/Sequence/Index/bwa_v0.7.18/bwa/genome.bwt",
-                "Homo_sapiens/nf-core/GRCh38_chr22/Sequence/Index/bwa_v0.7.18/bwa/genome.pac",
-                "Homo_sapiens/nf-core/GRCh38_chr22/Sequence/Index/bwa_v0.7.18/bwa/genome.sa",
+                "Homo_sapiens/nf-core/GRCh38_chr22/Sequence/BWAIndex",
+                "Homo_sapiens/nf-core/GRCh38_chr22/Sequence/BWAIndex/0.7.18",
+                "Homo_sapiens/nf-core/GRCh38_chr22/Sequence/BWAIndex/0.7.18/genome.amb",
+                "Homo_sapiens/nf-core/GRCh38_chr22/Sequence/BWAIndex/0.7.18/genome.ann",
+                "Homo_sapiens/nf-core/GRCh38_chr22/Sequence/BWAIndex/0.7.18/genome.bwt",
+                "Homo_sapiens/nf-core/GRCh38_chr22/Sequence/BWAIndex/0.7.18/genome.pac",
+                "Homo_sapiens/nf-core/GRCh38_chr22/Sequence/BWAIndex/0.7.18/genome.sa",
                 "Homo_sapiens/nf-core/GRCh38_chr22/Sequence/WholeGenomeFasta",
                 "Homo_sapiens/nf-core/GRCh38_chr22/Sequence/WholeGenomeFasta/genome.dict",
                 "Homo_sapiens/nf-core/GRCh38_chr22/Sequence/WholeGenomeFasta/genome.fasta.fai",
@@ -86,14 +83,13 @@
             ]
         ],
         "meta": {
-            "nf-test": "0.9.2",
-            "nextflow": "25.04.6"
+            "nf-test": "0.9.3",
+            "nextflow": "25.08.0"
         },
-        "timestamp": "2025-08-29T12:27:53.449668882"
+        "timestamp": "2025-10-02T12:15:45.401225225"
     },
     "-profile test --tools tabix --input references-datasheets/latest/genomes_source/Homo_sapiens/GATK/GRCh37_GRCh38_multiple_dbsnps_globs.yml": {
         "content": [
-            5,
             {
                 "TABIX_TABIX": {
                     "tabix": 1.21
@@ -135,9 +131,9 @@
             ]
         ],
         "meta": {
-            "nf-test": "0.9.2",
-            "nextflow": "24.10.5"
+            "nf-test": "0.9.3",
+            "nextflow": "25.08.0"
         },
-        "timestamp": "2025-04-20T11:31:26.190941974"
+        "timestamp": "2025-10-02T15:00:50.646978988"
     }
 }
