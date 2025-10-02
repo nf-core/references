@@ -83,6 +83,9 @@ workflow REFERENCES {
     star_index = PREPARE_GENOME_RNASEQ.out.star_index
     vcf_tbi = PREPARE_GENOME_DNASEQ.out.vcf_tbi
 
+    // TODO: need to rescue the vcf files
+    // vcf.map { meta, reference_ -> [meta + [file: "${meta.type}_vcf"], reference_] },
+
     references = Channel.empty()
         .mix(
             ascat_alleles.map { meta, reference_ -> [meta + [file: 'ascat_alleles'], reference_] },
@@ -110,7 +113,6 @@ workflow REFERENCES {
             splice_sites.map { meta, reference_ -> [meta + [file: 'splice_sites'], reference_] },
             star_index.map { meta, reference_ -> [meta + [file: 'star_index'], reference_] },
             transcript_fasta.map { meta, reference_ -> [meta + [file: 'transcript_fasta'], reference_] },
-            vcf.map { meta, reference_ -> [meta + [file: "${meta.type}_vcf"], reference_] },
             vcf_tbi.map { meta, reference_ -> [meta + [file: "${meta.type}_vcf_tbi"], reference_] },
         )
 
