@@ -52,6 +52,7 @@
                 "rank.bin:md5,e2ee4a817caa0614c7cfa732358aa829",
                 "refAccumLengths.bin:md5,f79c13f67c09f87982ff1503826d6350",
                 "reflengths.bin:md5,ec4126a76984f26dc11baa2aaec7c325",
+                "refseq.bin:md5,dbe45319a08f3ea4b9eed98787b683ba",
                 "versionInfo.json:md5,d2c799050e81aa6e282ac8a73e773941",
                 "multiqc_citations.txt:md5,4c806e63a283ec1b7e78cdae3a923d4f"
             ]
@@ -127,6 +128,7 @@
                 "rank.bin:md5,e2ee4a817caa0614c7cfa732358aa829",
                 "refAccumLengths.bin:md5,f79c13f67c09f87982ff1503826d6350",
                 "reflengths.bin:md5,ec4126a76984f26dc11baa2aaec7c325",
+                "refseq.bin:md5,dbe45319a08f3ea4b9eed98787b683ba",
                 "versionInfo.json:md5,d2c799050e81aa6e282ac8a73e773941",
                 "genome.transcripts.fa:md5,fd4e06fc250a19351a611a44861b9aea",
                 "multiqc_citations.txt:md5,4c806e63a283ec1b7e78cdae3a923d4f"
