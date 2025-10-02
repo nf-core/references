@@ -45,19 +45,13 @@
             ],
             [
                 "complete_ref_lens.bin:md5,ec4126a76984f26dc11baa2aaec7c325",
-                "ctable.bin:md5,8895b6cb9c5d861f2bd48783bc8346eb",
                 "ctg_offsets.bin:md5,6f41c3fe64790ba0399be18d30436bb6",
                 "duplicate_clusters.tsv:md5,b65592e6f604234ac3cf45f8cafd8d27",
                 "info.json:md5,e13f6500d048a7f72bcc385ce54bd50a",
                 "mphf.bin:md5,9651ab954dccca304b6dcddf50fbae61",
-                "pos.bin:md5,48e44f075cc1a7cfce8a6221f2533002",
-                "pre_indexing.log:md5,2f4a2d2c0930a72484eeb2d59b1bbf8b",
                 "rank.bin:md5,e2ee4a817caa0614c7cfa732358aa829",
                 "refAccumLengths.bin:md5,f79c13f67c09f87982ff1503826d6350",
-                "ref_indexing.log:md5,c612b1ab3aa1424c0c8d2d1308205226",
                 "reflengths.bin:md5,ec4126a76984f26dc11baa2aaec7c325",
-                "refseq.bin:md5,dbe45319a08f3ea4b9eed98787b683ba",
-                "seq.bin:md5,960f4e3ba5aad122b1601b4b5ade1ec8",
                 "versionInfo.json:md5,d2c799050e81aa6e282ac8a73e773941",
                 "multiqc_citations.txt:md5,4c806e63a283ec1b7e78cdae3a923d4f"
             ]
@@ -133,7 +127,6 @@
                 "rank.bin:md5,e2ee4a817caa0614c7cfa732358aa829",
                 "refAccumLengths.bin:md5,f79c13f67c09f87982ff1503826d6350",
                 "reflengths.bin:md5,ec4126a76984f26dc11baa2aaec7c325",
-                "refseq.bin:md5,dbe45319a08f3ea4b9eed98787b683ba",
                 "versionInfo.json:md5,d2c799050e81aa6e282ac8a73e773941",
                 "genome.transcripts.fa:md5,fd4e06fc250a19351a611a44861b9aea",
                 "multiqc_citations.txt:md5,4c806e63a283ec1b7e78cdae3a923d4f"
