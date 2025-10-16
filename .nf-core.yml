@@ -1,7 +1,6 @@
 lint:
   actions_awsfulltest: false
   files_exist:
-    - .github/workflows/ci.yml
     - conf/igenomes.config
     - conf/igenomes_ignored.config
   files_unchanged:
@@ -10,7 +9,7 @@ lint:
     - assets/nf-core-references_logo_light.png
     - docs/images/nf-core-references_logo_light.png
     - docs/images/nf-core-references_logo_dark.png
-nf_core_version: 3.3.2
+nf_core_version: 3.4.1
 repository_type: pipeline
 template:
   author: "@maxulysse"
@@ -23,4 +22,4 @@ template:
   skip_features:
     - fastqc
     - igenomes
-  version: 1.0dev
+  version: "0.2"
