@@ -63,7 +63,7 @@ nextflow run nf-core/references -profile docker -params-file params.yaml
 with:
 
 ```yaml title="params.yaml"
-input: './asset.yml'
+input: './samplesheet.csv'
 outdir: './results/'
 <...>
 ```
@@ -124,7 +124,7 @@ If `-profile` is not specified, the pipeline will run locally and expect all sof
 - `shifter`
   - A generic configuration profile to be used with [Shifter](https://nersc.gitlab.io/development/shifter/how-to-use/)
 - `charliecloud`
-  - A generic configuration profile to be used with [Charliecloud](https://hpc.github.io/charliecloud/)
+  - A generic configuration profile to be used with [Charliecloud](https://charliecloud.io/)
 - `apptainer`
   - A generic configuration profile to be used with [Apptainer](https://apptainer.org/)
 - `wave`

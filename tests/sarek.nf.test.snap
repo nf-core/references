@@ -71,9 +71,9 @@
                 "index.json",
                 "multiqc",
                 "multiqc/multiqc_data",
-                "multiqc/multiqc_data/BETA-multiqc.parquet",
                 "multiqc/multiqc_data/llms-full.txt",
                 "multiqc/multiqc_data/multiqc.log",
+                "multiqc/multiqc_data/multiqc.parquet",
                 "multiqc/multiqc_data/multiqc_citations.txt",
                 "multiqc/multiqc_data/multiqc_data.json",
                 "multiqc/multiqc_data/multiqc_software_versions.txt",
@@ -110,9 +110,9 @@
         ],
         "meta": {
             "nf-test": "0.9.3",
-            "nextflow": "25.08.0"
+            "nextflow": "25.04.8"
         },
-        "timestamp": "2025-10-02T12:26:07.323683849"
+        "timestamp": "2025-10-22T13:58:31.006273823"
     },
     "-profile test --tools bwamem1,bwamem2,createsequencedictionary,dragmap,faidx,intervals,msisensorpro,tabix --input references-datasheets/latest/genomes/Homo_sapiens/GATK/GRCh38_chr22.yml": {
         "content": [
@@ -131,9 +131,9 @@
                 "index.json",
                 "multiqc",
                 "multiqc/multiqc_data",
-                "multiqc/multiqc_data/BETA-multiqc.parquet",
                 "multiqc/multiqc_data/llms-full.txt",
                 "multiqc/multiqc_data/multiqc.log",
+                "multiqc/multiqc_data/multiqc.parquet",
                 "multiqc/multiqc_data/multiqc_citations.txt",
                 "multiqc/multiqc_data/multiqc_data.json",
                 "multiqc/multiqc_data/multiqc_software_versions.txt",
@@ -149,8 +149,8 @@
         ],
         "meta": {
             "nf-test": "0.9.3",
-            "nextflow": "25.08.0"
+            "nextflow": "25.04.8"
         },
-        "timestamp": "2025-10-02T12:26:45.048639069"
+        "timestamp": "2025-10-22T13:58:49.531702963"
     }
 }

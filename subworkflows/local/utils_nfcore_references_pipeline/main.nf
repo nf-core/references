@@ -19,6 +19,7 @@ include { dumpParametersToJSON   } from 'plugin/nf-core-utils'
 include { getWorkflowVersion     } from 'plugin/nf-core-utils'
 include { imNotification         } from 'plugin/nf-core-utils'
 
+include { paramsHelp             } from 'plugin/nf-schema'
 include { paramsSummaryLog       } from 'plugin/nf-schema'
 include { paramsSummaryMap       } from 'plugin/nf-schema'
 include { samplesheetToList      } from 'plugin/nf-schema'
@@ -32,13 +33,16 @@ include { validateParameters     } from 'plugin/nf-schema'
 
 workflow PIPELINE_INITIALISATION {
     take:
-    version             // boolean: Display version and exit
-    validate_params     // boolean: Boolean whether to validate parameters against the schema at runtime
-    nextflow_cli_args   //   array: List of positional nextflow CLI args
-    outdir              //  string: The output directory where the results will be saved
-    asset               //  string: Path to asset yaml file
-    basepath_final      //  string: The final basepath to replace in the asset yaml file
+    version // boolean: Display version and exit
+    validate_params // boolean: Boolean whether to validate parameters against the schema at runtime
+    nextflow_cli_args //   array: List of positional nextflow CLI args
+    outdir //  string: The output directory where the results will be saved
+    asset //  string: Path to asset yaml file
+    basepath_final //  string: The final basepath to replace in the asset yaml file
     basepath_to_replace //  array: The basepath to replace in the asset yaml file
+    help // boolean: Display help message and exit
+    help_full // boolean: Show the full help message
+    show_hidden // boolean: Show hidden parameters in the help message
 
     main:
 
@@ -59,9 +63,69 @@ workflow PIPELINE_INITIALISATION {
     }
 
     // Validate parameters and generate parameter summary to stdout
-    log.info(paramsSummaryLog(workflow))
+    //
+    before_text = """
+-\033[2m----------------------------------------------------\033[0m-
+                                        \033[0;32m,--.\033[0;30m/\033[0;32m,-.\033[0m
+\033[0;34m        ___     __   __   __   ___     \033[0;32m/,-._.--~\'\033[0m
+\033[0;34m  |\\ | |__  __ /  ` /  \\ |__) |__         \033[0;33m}  {\033[0m
+\033[0;34m  | \\| |       \\__, \\__/ |  \\ |___     \033[0;32m\\`-._,-`-,\033[0m
+                                        \033[0;32m`._,._,\'\033[0m
+\033[0;35m  nf-core/references ${workflow.manifest.version}\033[0m
+-\033[2m----------------------------------------------------\033[0m-
+"""
+    after_text = """${workflow.manifest.doi ? "\n* The pipeline\n" : ""}${workflow.manifest.doi.tokenize(",").collect { doi -> "    https://doi.org/${doi.trim().replace('https://doi.org/', '')}" }.join("\n")}${workflow.manifest.doi ? "\n" : ""}
+* The nf-core framework
+    https://doi.org/10.1038/s41587-020-0439-x
+
+* Software dependencies
+    https://github.com/nf-core/references/blob/main/CITATIONS.md
+"""
+    command = "nextflow run ${workflow.manifest.name} -profile <docker/singularity/.../institute> --input samplesheet.csv --outdir <OUTDIR>"
+
+    if (help || help_full) {
+        help_options = [
+            beforeText: before_text,
+            afterText: after_text,
+            command: command,
+            showHidden: show_hidden,
+            fullHelp: help_full,
+        ]
+        if (null) {
+            help_options << [parametersSchema: null]
+        }
+        log.info(
+            paramsHelp(
+                help_options,
+                params.help instanceof String ? params.help : "",
+            )
+        )
+        exit(0)
+    }
+
+    //
+    // Print parameter summary to stdout. This will display the parameters
+    // that differ from the default given in the JSON schema
+    //
+
+    summary_options = [:]
+    if (null) {
+        summary_options << [parametersSchema: null]
+    }
+    log.info(before_text)
+    log.info(paramsSummaryLog(summary_options, workflow))
+    log.info(after_text)
+
+    //
+    // Validate the parameters using nextflow_schema.json or the schema
+    // given via the validation.parametersSchema configuration option
+    //
     if (validate_params) {
-        validateParameters()
+        validateOptions = [:]
+        if (null) {
+            validateOptions << [parametersSchema: null]
+        }
+        validateParameters(validateOptions)
     }
 
     // Check config provided to the pipeline
@@ -69,7 +133,7 @@ workflow PIPELINE_INITIALISATION {
     checkProfileProvided(nextflow_cli_args)
 
     // Create channel from asset file provided through params.asset
-    references = Channel.fromList(
+    references = channel.fromList(
         samplesheetToList(
             update_references_file(asset, basepath_final, basepath_to_replace),
             "${projectDir}/subworkflows/nf-side/utils_references/schema_references.json",
@@ -88,13 +152,13 @@ workflow PIPELINE_INITIALISATION {
 
 workflow PIPELINE_COMPLETION {
     take:
-    email           //  string: email address
-    email_on_fail   //  string: email address sent on pipeline failure
+    email //  string: email address
+    email_on_fail //  string: email address sent on pipeline failure
     plaintext_email // boolean: Send plain-text email instead of HTML
-    outdir          //    path: Path to output directory where results will be published
+    outdir //    path: Path to output directory where results will be published
     monochrome_logs // boolean: Disable ANSI colour codes in log output
-    hook_url        //  string: hook URL for notifications
-    multiqc_report  //  string: Path to MultiQC report
+    hook_url //  string: hook URL for notifications
+    multiqc_report //  string: Path to MultiQC report
 
     main:
     summary_params = paramsSummaryMap(workflow, parameters_schema: "nextflow_schema.json")

@@ -8,9 +8,9 @@
                 "index.json",
                 "multiqc",
                 "multiqc/multiqc_data",
-                "multiqc/multiqc_data/BETA-multiqc.parquet",
                 "multiqc/multiqc_data/llms-full.txt",
                 "multiqc/multiqc_data/multiqc.log",
+                "multiqc/multiqc_data/multiqc.parquet",
                 "multiqc/multiqc_data/multiqc_citations.txt",
                 "multiqc/multiqc_data/multiqc_data.json",
                 "multiqc/multiqc_data/multiqc_software_versions.txt",
@@ -25,9 +25,9 @@
         ],
         "meta": {
             "nf-test": "0.9.3",
-            "nextflow": "25.08.0"
+            "nextflow": "25.04.8"
         },
-        "timestamp": "2025-10-02T12:33:49.733621271"
+        "timestamp": "2025-10-22T13:59:06.940925897"
     },
     "-profile test --tools tabix --input references-datasheets/latest/genomes_source/Homo_sapiens/nf-core/GRCh38_chr21_MT.yml": {
         "content": [
@@ -55,9 +55,9 @@
                 "index.json",
                 "multiqc",
                 "multiqc/multiqc_data",
-                "multiqc/multiqc_data/BETA-multiqc.parquet",
                 "multiqc/multiqc_data/llms-full.txt",
                 "multiqc/multiqc_data/multiqc.log",
+                "multiqc/multiqc_data/multiqc.parquet",
                 "multiqc/multiqc_data/multiqc_citations.txt",
                 "multiqc/multiqc_data/multiqc_data.json",
                 "multiqc/multiqc_data/multiqc_software_versions.txt",
@@ -76,8 +76,8 @@
         ],
         "meta": {
             "nf-test": "0.9.3",
-            "nextflow": "25.08.0"
+            "nextflow": "25.04.8"
         },
-        "timestamp": "2025-10-02T12:34:15.4202492"
+        "timestamp": "2025-10-22T13:59:23.77725581"
     }
 }

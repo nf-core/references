@@ -98,9 +98,9 @@
                 "index.json",
                 "multiqc",
                 "multiqc/multiqc_data",
-                "multiqc/multiqc_data/BETA-multiqc.parquet",
                 "multiqc/multiqc_data/llms-full.txt",
                 "multiqc/multiqc_data/multiqc.log",
+                "multiqc/multiqc_data/multiqc.parquet",
                 "multiqc/multiqc_data/multiqc_citations.txt",
                 "multiqc/multiqc_data/multiqc_data.json",
                 "multiqc/multiqc_data/multiqc_software_versions.txt",
@@ -162,8 +162,8 @@
         ],
         "meta": {
             "nf-test": "0.9.3",
-            "nextflow": "25.08.0"
+            "nextflow": "25.04.8"
         },
-        "timestamp": "2025-10-02T12:43:42.544208654"
+        "timestamp": "2025-10-22T14:04:10.151638485"
     }
 }

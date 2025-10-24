@@ -9,8 +9,6 @@
 ----------------------------------------------------------------------------------------
 */
 
-nextflow.preview.output = true
-
 /*
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     IMPORT FUNCTIONS / MODULES / SUBWORKFLOWS / WORKFLOWS
@@ -37,6 +35,7 @@ include { paramsSummaryMap        } from 'plugin/nf-schema'
 */
 
 workflow {
+
     main:
     // SUBWORKFLOW: Run initialisation tasks
     PIPELINE_INITIALISATION(
@@ -45,6 +44,9 @@ workflow {
         args,
         params.outdir,
         params.input,
+        params.help,
+        params.help_full,
+        params.show_hidden,
         params.references_base_path,
         ['s3://ngi-igenomes/igenomes/'],
     )
@@ -67,16 +69,16 @@ workflow {
 
     // methods description
     ch_multiqc_custom_methods_description = params.multiqc_methods_description ? file(params.multiqc_methods_description, checkIfExists: true) : file("${projectDir}/assets/methods_description_template.yml", checkIfExists: true)
-    ch_methods_description = Channel.value(methodsDescriptionText(ch_multiqc_custom_methods_description)).collectFile(name: 'methods_description_mqc.yaml', sort: true)
+    ch_methods_description = channel.value(methodsDescriptionText(ch_multiqc_custom_methods_description)).collectFile(name: 'methods_description_mqc.yaml', sort: true)
 
     // workflow summary
-    ch_workflow_summary = Channel.value(paramsSummaryMultiqc(paramsSummaryMap(workflow, parameters_schema: "nextflow_schema.json"))).collectFile(name: 'workflow_summary_mqc.yaml')
+    ch_workflow_summary = channel.value(paramsSummaryMultiqc(paramsSummaryMap(workflow, parameters_schema: "nextflow_schema.json"))).collectFile(name: 'workflow_summary_mqc.yaml')
 
-    ch_multiqc_files = Channel.empty()
+    ch_multiqc_files = channel.empty()
 
-    ch_multiqc_config = Channel.fromPath("${projectDir}/assets/multiqc_config.yml", checkIfExists: true)
-    ch_multiqc_custom_config = params.multiqc_config ? Channel.fromPath(params.multiqc_config, checkIfExists: true) : Channel.empty()
-    ch_multiqc_logo = params.multiqc_logo ? Channel.fromPath(params.multiqc_logo, checkIfExists: true) : Channel.empty()
+    ch_multiqc_config = channel.fromPath("${projectDir}/assets/multiqc_config.yml", checkIfExists: true)
+    ch_multiqc_custom_config = params.multiqc_config ? channel.fromPath(params.multiqc_config, checkIfExists: true) : channel.empty()
+    ch_multiqc_logo = params.multiqc_logo ? channel.fromPath(params.multiqc_logo, checkIfExists: true) : channel.empty()
     ch_multiqc_files = ch_multiqc_files.mix(ch_workflow_summary)
     ch_multiqc_files = ch_multiqc_files.mix(ch_methods_description)
     ch_multiqc_files = ch_multiqc_files.mix(collated_versions)
@@ -102,79 +104,77 @@ workflow {
     )
 
     publish:
-    multiqc = MULTIQC.out.data.mix(MULTIQC.out.plots, MULTIQC.out.report)
-    references = NFCORE_REFERENCES.out.references
-        .filter { _meta, file -> !(file instanceof String) }
-        .map { meta, file ->
-            // Filter out the run_ keys from the meta for a clearer index file
-            def invalid_keys = meta.keySet().findAll { key -> key.startsWith('run_') }
+    multiqc    = MULTIQC.out.data.mix(MULTIQC.out.plots, MULTIQC.out.report)
+    references = NFCORE_REFERENCES.out.references.filter { _meta, file -> !(file instanceof String) }.map { meta, file ->
+        // Filter out the run_ keys from the meta for a clearer index file
+        def invalid_keys = meta.keySet().findAll { key -> key.startsWith('run_') }
 
-            def path = ""
+        def path = ""
 
-            if (meta.file == "bowtie1_index") {
-                path = "Sequence/BowtieIndex/1.3.1"
-            }
-            else if (meta.file == "bowtie2_index") {
-                path = "Sequence/Bowtie2Index/2.5.2"
-            }
-            else if (meta.file == "bwamem1_index") {
-                path = "Sequence/BWAIndex/0.7.18"
-            }
-            else if (meta.file == "bwamem2_index") {
-                path = "Sequence/BWAmem2Index/2.2.1"
-            }
-            else if (meta.file == "dragmap_hashmap") {
-                path = "Sequence/dragmap/1.2.1"
-            }
-            else if (meta.file == "fasta" || meta.file == "fasta_dict" || meta.file == "fasta_fai" || meta.file == "fasta_sizes") {
-                path = "Sequence/WholeGenomeFasta/${file.fileName}"
-            }
-            else if (meta.file == "gff" || meta.file == "gtf") {
-                path = "Annotation/Genes/${file.fileName}"
-            }
-            else if (meta.file == "hisat2_index") {
-                path = meta.source_version == "unknown"
-                    ? "Sequence/Hisat2Index/2.2.1"
-                    : "Sequence/Hisat2Index/${meta.source_version}/2.2.1"
-            }
-            else if (meta.file == "intervals_bed") {
-                path = "Annotation/intervals/${file.fileName}"
-            }
-            else if (meta.file == "kallisto_index") {
-                path = meta.source_version == "unknown"
-                    ? "Sequence/KallistoIndex/0.51.1/${file.fileName}"
-                    : "Sequence/KallistoIndex/${meta.source_version}/0.51.1/${file.fileName}"
-            }
-            else if (meta.file == "msisensorpro_list") {
-                path = "Annotation/msisensorpro/${file.fileName}"
-            }
-            else if (meta.file == "rsem_index") {
-                path = meta.source_version == "unknown"
-                    ? "Sequence/RSEMIndex/1.3.1"
-                    : "Sequence/RSEMIndex/${meta.source_version}/1.3.1"
-            }
-            else if (meta.file == "salmon_index") {
-                path = meta.source_version == "unknown"
-                    ? "Sequence/SalmonIndex/1.10.3"
-                    : "Sequence/SalmonIndex/${meta.source_version}/1.10.3"
-            }
-            else if (meta.file == "splice_sites") {
-                path = "Sequence/SpliceSites/${file.fileName}"
-            }
-            else if (meta.file == "star_index") {
-                path = meta.source_version == "unknown"
-                    ? "Sequence/STARIndex/2.7.11b"
-                    : "Sequence/STARIndex/${meta.source_version}/2.7.11b"
-            }
-            else if (meta.file == "transcript_fasta") {
-                path = "Sequence/TranscriptFasta/${file.fileName}"
-            }
-            else if (meta.file == "${meta.type}_vcf" || meta.file == "${meta.type}_vcf_tbi") {
-                path = "Annotation/${meta.source_vcf}/${file.fileName}"
-            }
-
-            [meta + [path: "${meta.species}/${meta.source}/${meta.genome}/${path}"] - meta.subMap(invalid_keys), file]
+        if (meta.file == "bowtie1_index") {
+            path = "Sequence/BowtieIndex/1.3.1"
         }
+        else if (meta.file == "bowtie2_index") {
+            path = "Sequence/Bowtie2Index/2.5.2"
+        }
+        else if (meta.file == "bwamem1_index") {
+            path = "Sequence/BWAIndex/0.7.18"
+        }
+        else if (meta.file == "bwamem2_index") {
+            path = "Sequence/BWAmem2Index/2.2.1"
+        }
+        else if (meta.file == "dragmap_hashmap") {
+            path = "Sequence/dragmap/1.2.1"
+        }
+        else if (meta.file == "fasta" || meta.file == "fasta_dict" || meta.file == "fasta_fai" || meta.file == "fasta_sizes") {
+            path = "Sequence/WholeGenomeFasta/${file.fileName}"
+        }
+        else if (meta.file == "gff" || meta.file == "gtf") {
+            path = "Annotation/Genes/${file.fileName}"
+        }
+        else if (meta.file == "hisat2_index") {
+            path = meta.source_version == "unknown"
+                ? "Sequence/Hisat2Index/2.2.1"
+                : "Sequence/Hisat2Index/${meta.source_version}/2.2.1"
+        }
+        else if (meta.file == "intervals_bed") {
+            path = "Annotation/intervals/${file.fileName}"
+        }
+        else if (meta.file == "kallisto_index") {
+            path = meta.source_version == "unknown"
+                ? "Sequence/KallistoIndex/0.51.1/${file.fileName}"
+                : "Sequence/KallistoIndex/${meta.source_version}/0.51.1/${file.fileName}"
+        }
+        else if (meta.file == "msisensorpro_list") {
+            path = "Annotation/msisensorpro/${file.fileName}"
+        }
+        else if (meta.file == "rsem_index") {
+            path = meta.source_version == "unknown"
+                ? "Sequence/RSEMIndex/1.3.1"
+                : "Sequence/RSEMIndex/${meta.source_version}/1.3.1"
+        }
+        else if (meta.file == "salmon_index") {
+            path = meta.source_version == "unknown"
+                ? "Sequence/SalmonIndex/1.10.3"
+                : "Sequence/SalmonIndex/${meta.source_version}/1.10.3"
+        }
+        else if (meta.file == "splice_sites") {
+            path = "Sequence/SpliceSites/${file.fileName}"
+        }
+        else if (meta.file == "star_index") {
+            path = meta.source_version == "unknown"
+                ? "Sequence/STARIndex/2.7.11b"
+                : "Sequence/STARIndex/${meta.source_version}/2.7.11b"
+        }
+        else if (meta.file == "transcript_fasta") {
+            path = "Sequence/TranscriptFasta/${file.fileName}"
+        }
+        else if (meta.file == "${meta.type}_vcf" || meta.file == "${meta.type}_vcf_tbi") {
+            path = "Annotation/${meta.source_vcf}/${file.fileName}"
+        }
+
+        [meta + [path: "${meta.species}/${meta.source}/${meta.genome}/${path}"] - meta.subMap(invalid_keys), file]
+    }
 }
 
 output {
@@ -212,7 +212,7 @@ def need_extract(channel, type) {
 workflow NFCORE_REFERENCES {
     take:
     references
-    tools      // list of tools to use to build references
+    tools // list of tools to use to build references
 
     main:
 
@@ -230,7 +230,7 @@ workflow NFCORE_REFERENCES {
     gtf_input = need_extract(DATASHEET_TO_CHANNEL.out.gtf, 'gtf')
 
     // gather all archived references
-    archive_to_extract = Channel.empty()
+    archive_to_extract = channel.empty()
         .mix(
             ascat_alleles_input.to_extract,
             ascat_loci_input.to_extract,
@@ -267,7 +267,7 @@ workflow NFCORE_REFERENCES {
     // Mix the references that were extracted with the references that did not need to be extracted
     // Some references are not extracted because they are usually not stored in an archived format
     // TODO: check if more references need to be extracted
-    altliftoverfile = Channel.empty()
+    altliftoverfile = channel.empty()
 
     REFERENCES(
         altliftoverfile,
