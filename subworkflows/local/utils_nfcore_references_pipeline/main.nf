@@ -33,16 +33,16 @@ include { validateParameters     } from 'plugin/nf-schema'
 
 workflow PIPELINE_INITIALISATION {
     take:
-    version             // boolean: Display version and exit
-    validate_params     // boolean: Boolean whether to validate parameters against the schema at runtime
-    nextflow_cli_args   //   array: List of positional nextflow CLI args
-    outdir              //  string: The output directory where the results will be saved
-    asset               //  string: Path to asset yaml file
-    basepath_final      //  string: The final basepath to replace in the asset yaml file
+    version // boolean: Display version and exit
+    validate_params // boolean: Boolean whether to validate parameters against the schema at runtime
+    nextflow_cli_args //   array: List of positional nextflow CLI args
+    outdir //  string: The output directory where the results will be saved
+    asset //  string: Path to asset yaml file
+    basepath_final //  string: The final basepath to replace in the asset yaml file
     basepath_to_replace //  array: The basepath to replace in the asset yaml file
-    help                // boolean: Display help message and exit
-    help_full           // boolean: Show the full help message
-    show_hidden         // boolean: Show hidden parameters in the help message
+    help // boolean: Display help message and exit
+    help_full // boolean: Show the full help message
+    show_hidden // boolean: Show hidden parameters in the help message
 
     main:
 
@@ -74,7 +74,7 @@ workflow PIPELINE_INITIALISATION {
 \033[0;35m  nf-core/references ${workflow.manifest.version}\033[0m
 -\033[2m----------------------------------------------------\033[0m-
 """
-    after_text = """${workflow.manifest.doi ? "\n* The pipeline\n" : ""}${workflow.manifest.doi.tokenize(",").collect { "    https://doi.org/${it.trim().replace('https://doi.org/', '')}" }.join("\n")}${workflow.manifest.doi ? "\n" : ""}
+    after_text = """${workflow.manifest.doi ? "\n* The pipeline\n" : ""}${workflow.manifest.doi.tokenize(",").collect { doi -> "    https://doi.org/${doi.trim().replace('https://doi.org/', '')}" }.join("\n")}${workflow.manifest.doi ? "\n" : ""}
 * The nf-core framework
     https://doi.org/10.1038/s41587-020-0439-x
 
@@ -133,7 +133,7 @@ workflow PIPELINE_INITIALISATION {
     checkProfileProvided(nextflow_cli_args)
 
     // Create channel from asset file provided through params.asset
-    references = Channel.fromList(
+    references = channel.fromList(
         samplesheetToList(
             update_references_file(asset, basepath_final, basepath_to_replace),
             "${projectDir}/subworkflows/nf-side/utils_references/schema_references.json",
@@ -152,13 +152,13 @@ workflow PIPELINE_INITIALISATION {
 
 workflow PIPELINE_COMPLETION {
     take:
-    email           //  string: email address
-    email_on_fail   //  string: email address sent on pipeline failure
+    email //  string: email address
+    email_on_fail //  string: email address sent on pipeline failure
     plaintext_email // boolean: Send plain-text email instead of HTML
-    outdir          //    path: Path to output directory where results will be published
+    outdir //    path: Path to output directory where results will be published
     monochrome_logs // boolean: Disable ANSI colour codes in log output
-    hook_url        //  string: hook URL for notifications
-    multiqc_report  //  string: Path to MultiQC report
+    hook_url //  string: hook URL for notifications
+    multiqc_report //  string: Path to MultiQC report
 
     main:
     summary_params = paramsSummaryMap(workflow, parameters_schema: "nextflow_schema.json")

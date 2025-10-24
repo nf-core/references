@@ -1,7 +1,7 @@
 workflow DATASHEET_TO_CHANNEL {
     take:
     datasheet // channel: [meta, fasta]
-    tools     // List: Can contain any combination of tools of the list of available tools, or just no_tools
+    tools // List: Can contain any combination of tools of the list of available tools, or just no_tools
 
     main:
     // All the files and meta data are contained in the meta map (except for fasta)
@@ -232,24 +232,24 @@ workflow DATASHEET_TO_CHANNEL {
         return null
     }
 
-    vcf = Channel.empty().mix(dbsnp_branch.file, germline_resource_branch.file, known_indels_branch.file, known_snps_branch.file, pon_branch.file).transpose()
+    vcf = channel.empty().mix(dbsnp_branch.file, germline_resource_branch.file, known_indels_branch.file, known_snps_branch.file, pon_branch.file).transpose()
 
     emit:
-    ascat_alleles    // channel: [meta, *.ascat_alleles.txt]
-    ascat_loci       // channel: [meta, *.ascat_loci.txt]
-    ascat_loci_gc    // channel: [meta, *.ascat_loci_gc.txt]
-    ascat_loci_rt    // channel: [meta, *.ascat_loci_rt.txt]
-    chr_dir          // channel: [meta, *.chr_dir]
-    intervals_bed    // channel: [meta, *.bed]
-    fasta            // channel: [meta, *.f(ast|n)?a]
-    fasta_dict       // channel: [meta, *.f(ast|n)?a.dict]
-    fasta_fai        // channel: [meta, *.f(ast|n)?a.fai]
-    fasta_sizes      // channel: [meta, *.f(ast|n)?a.sizes]
-    gff              // channel: [meta, gff]
-    gtf              // channel: [meta, gtf]
-    splice_sites     // channel: [meta, *.splice_sites.txt]
+    ascat_alleles // channel: [meta, *.ascat_alleles.txt]
+    ascat_loci // channel: [meta, *.ascat_loci.txt]
+    ascat_loci_gc // channel: [meta, *.ascat_loci_gc.txt]
+    ascat_loci_rt // channel: [meta, *.ascat_loci_rt.txt]
+    chr_dir // channel: [meta, *.chr_dir]
+    intervals_bed // channel: [meta, *.bed]
+    fasta // channel: [meta, *.f(ast|n)?a]
+    fasta_dict // channel: [meta, *.f(ast|n)?a.dict]
+    fasta_fai // channel: [meta, *.f(ast|n)?a.fai]
+    fasta_sizes // channel: [meta, *.f(ast|n)?a.sizes]
+    gff // channel: [meta, gff]
+    gtf // channel: [meta, gtf]
+    splice_sites // channel: [meta, *.splice_sites.txt]
     transcript_fasta // channel: [meta, *.transcripts.fasta]
-    vcf              // channel: [meta, *.vcf.gz]
+    vcf // channel: [meta, *.vcf.gz]
 }
 
 /*

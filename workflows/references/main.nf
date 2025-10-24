@@ -19,7 +19,7 @@ workflow REFERENCES {
     splice_sites
     transcript_fasta
     vcf
-    tools            // List: Can contain any combination of tools of the list of available tools, or just no_tools
+    tools // List: Can contain any combination of tools of the list of available tools, or just no_tools
 
     main:
     // Create references for rnaseq based pipelines such as nf-core/riboseq, nf-core/rnaseq, nf-core/rnavar
@@ -86,7 +86,7 @@ workflow REFERENCES {
     // TODO: need to rescue the vcf files
     // vcf.map { meta, reference_ -> [meta + [file: "${meta.type}_vcf"], reference_] },
 
-    references = Channel.empty()
+    references = channel.empty()
         .mix(
             ascat_alleles.map { meta, reference_ -> [meta + [file: 'ascat_alleles'], reference_] },
             ascat_loci.map { meta, reference_ -> [meta + [file: 'ascat_loci'], reference_] },
@@ -117,6 +117,5 @@ workflow REFERENCES {
         )
 
     emit:
-    references     // channel: [meta, *]
-    topic_versions = channel.topic('versions')
+    references // channel: [meta, *]
 }
