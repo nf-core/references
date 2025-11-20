@@ -5,6 +5,10 @@ nextflow_pipeline {
     tag "pipeline"
 
     test("-profile test") {
+<<<<<<< HEAD
+=======
+        options "-output-dir $outputDir"
+>>>>>>> dev
 
         when {
             params {
@@ -17,11 +21,19 @@ nextflow_pipeline {
             def stable_name = getAllFilesFromDir(params.outdir, relative: true, includeDir: true, ignore: ['pipeline_info/*.{html,json,txt}'])
             // stable_path: All files in ${params.outdir}/ with stable content
             def stable_path = getAllFilesFromDir(params.outdir, ignoreFile: 'tests/.nftignore')
+<<<<<<< HEAD
             assertAll(
                 { assert workflow.success},
                 { assert snapshot(
                     // pipeline versions.yml file for multiqc from which Nextflow version is removed because we test pipelines on multiple Nextflow versions
                     removeNextflowVersion("$outputDir/pipeline_info/nf_core_references_software_mqc_versions.yml"),
+=======
+            assert workflow.success
+            assertAll(
+                { assert snapshot(
+                    // pipeline versions.yml file for multiqc from which Nextflow and pipeline versions are removed (all from the workflow key)
+                    removeFromYamlMap("${params.outdir}/pipeline_info/nf_core_references_software_mqc_versions.yml", 'Workflow'),
+>>>>>>> dev
                     // All stable path name, with a relative path
                     stable_name,
                     // All files with stable contents
