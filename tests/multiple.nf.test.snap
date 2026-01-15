@@ -12,7 +12,7 @@
                     "gatk": "4.6.1.0"
                 },
                 "SAMTOOLS_FAIDX": {
-                    "samtools": 1.21
+                    "samtools": "1.21"
                 }
             },
             [
@@ -84,15 +84,15 @@
         ],
         "meta": {
             "nf-test": "0.9.3",
-            "nextflow": "25.04.8"
+            "nextflow": "25.10.2"
         },
-        "timestamp": "2025-10-22T13:51:15.238491372"
+        "timestamp": "2026-01-15T13:32:53.633810585"
     },
     "-profile test --tools tabix --input references-datasheets/latest/genomes_source/Homo_sapiens/GATK/GRCh37_GRCh38_multiple_dbsnps_globs.yml": {
         "content": [
             {
                 "TABIX_TABIX": {
-                    "tabix": 1.21
+                    "tabix": "1.21"
                 }
             },
             [
@@ -132,8 +132,8 @@
         ],
         "meta": {
             "nf-test": "0.9.3",
-            "nextflow": "25.10.0"
+            "nextflow": "25.10.2"
         },
-        "timestamp": "2025-10-24T13:10:08.952522602"
+        "timestamp": "2026-01-15T13:33:25.90199516"
     }
 }
