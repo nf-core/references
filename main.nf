@@ -23,10 +23,101 @@ include { REFERENCES              } from "./workflows/references"
 
 // MULTIQC & versions
 include { MULTIQC                 } from './modules/nf-core/multiqc'
-include { getWorkflowVersion      } from 'plugin/nf-core-utils'
-include { processVersionsFromFile } from 'plugin/nf-core-utils'
+include { softwareVersionsToYAML  } from 'plugin/nf-core-utils'
 include { methodsDescriptionText  } from './subworkflows/local/utils_nfcore_references_pipeline'
 include { paramsSummaryMap        } from 'plugin/nf-schema'
+
+/*
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    NAMED WORKFLOWS FOR PIPELINE
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+*/
+
+// WORKFLOW: Build references depending on type of reference and the tools specified
+workflow NFCORE_REFERENCES {
+    take:
+    references
+    tools // list of tools to use to build references
+
+    main:
+
+    DATASHEET_TO_CHANNEL(references, tools)
+
+    // References that need to be extracted
+    // (VCFs are not extracted)
+    ascat_alleles_input = need_extract(DATASHEET_TO_CHANNEL.out.ascat_alleles, 'ascat_alleles')
+    ascat_loci_input = need_extract(DATASHEET_TO_CHANNEL.out.ascat_loci, 'ascat_loci')
+    ascat_loci_gc_input = need_extract(DATASHEET_TO_CHANNEL.out.ascat_loci_gc, 'ascat_loci_gc')
+    ascat_loci_rt_input = need_extract(DATASHEET_TO_CHANNEL.out.ascat_loci_rt, 'ascat_loci_rt')
+    chr_dir_input = need_extract(DATASHEET_TO_CHANNEL.out.chr_dir, 'chr_dir')
+    fasta_input = need_extract(DATASHEET_TO_CHANNEL.out.fasta, 'fasta')
+    gff_input = need_extract(DATASHEET_TO_CHANNEL.out.gff, 'gff')
+    gtf_input = need_extract(DATASHEET_TO_CHANNEL.out.gtf, 'gtf')
+
+    // gather all archived references
+    archive_to_extract = channel.empty()
+        .mix(
+            ascat_alleles_input.to_extract,
+            ascat_loci_input.to_extract,
+            ascat_loci_gc_input.to_extract,
+            ascat_loci_rt_input.to_extract,
+            chr_dir_input.to_extract,
+            fasta_input.to_extract,
+            gff_input.to_extract,
+            gtf_input.to_extract,
+        )
+
+    // Extract references from any archive format
+    ARCHIVE_EXTRACT(
+        archive_to_extract
+    )
+
+    // return to the appropriate channels
+    extracted_reference = ARCHIVE_EXTRACT.out.extracted.branch { meta_, _extracted_reference ->
+        ascat_alleles: meta_.reference == 'ascat_alleles'
+        ascat_loci: meta_.reference == 'ascat_loci'
+        ascat_loci_gc: meta_.reference == 'ascat_loci_gc'
+        ascat_loci_rt: meta_.reference == 'ascat_loci_rt'
+        chr_dir: meta_.reference == 'chr_dir'
+        fasta: meta_.reference == 'fasta'
+        gff: meta_.reference == 'gff'
+        gtf: meta_.reference == 'gtf'
+        non_assigned: true
+    }
+
+    // This is a confidence check
+    extracted_reference.non_assigned.view { reference -> log.warn("Non assigned extracted reference: " + reference) }
+
+    // WORKFLOW: Run pipeline
+    // Mix the references that were extracted with the references that did not need to be extracted
+    // Some references are not extracted because they are usually not stored in an archived format
+    // TODO: check if more references need to be extracted
+    altliftoverfile = channel.empty()
+
+    REFERENCES(
+        altliftoverfile,
+        ascat_alleles_input.not_extracted.mix(extracted_reference.ascat_alleles),
+        ascat_loci_input.not_extracted.mix(extracted_reference.ascat_loci),
+        ascat_loci_gc_input.not_extracted.mix(extracted_reference.ascat_loci_gc),
+        ascat_loci_rt_input.not_extracted.mix(extracted_reference.ascat_loci_rt),
+        chr_dir_input.not_extracted.mix(extracted_reference.chr_dir),
+        fasta_input.not_extracted.mix(extracted_reference.fasta),
+        DATASHEET_TO_CHANNEL.out.fasta_dict,
+        DATASHEET_TO_CHANNEL.out.fasta_fai,
+        DATASHEET_TO_CHANNEL.out.fasta_sizes,
+        gff_input.not_extracted.mix(extracted_reference.gff),
+        gtf_input.not_extracted.mix(extracted_reference.gtf),
+        DATASHEET_TO_CHANNEL.out.intervals_bed,
+        DATASHEET_TO_CHANNEL.out.splice_sites,
+        DATASHEET_TO_CHANNEL.out.transcript_fasta,
+        DATASHEET_TO_CHANNEL.out.vcf,
+        tools,
+    )
+
+    emit:
+    references = REFERENCES.out.references
+    versions   = ARCHIVE_EXTRACT.out.versions
+}
 
 /*
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -60,12 +151,15 @@ workflow {
 
     // MULTIQC
 
-    // Collate and save software versions
     def collated_versions = softwareVersionsToYAML(
-        NFCORE_REFERENCES.out.versions,
-        channel.topic('versions'),
-        channel.of(workflowVersionToYAML()),
-    ).collectFile(storeDir: "${params.outdir}/pipeline_info", name: 'nf_core_references_software_mqc_versions.yml', sort: true, newLine: true)
+        softwareVersions: NFCORE_REFERENCES.out.versions.mix(channel.topic("versions")),
+        nextflowVersion: workflow.nextflow.version,
+    ).collectFile(
+        storeDir: "${params.outdir}/pipeline_info",
+        name: 'nf_core_' + 'rnavar_software_' + 'mqc_' + 'versions.yml',
+        sort: true,
+        newLine: true,
+    )
 
     // methods description
     ch_multiqc_custom_methods_description = params.multiqc_methods_description ? file(params.multiqc_methods_description, checkIfExists: true) : file("${projectDir}/assets/methods_description_template.yml", checkIfExists: true)
@@ -190,109 +284,6 @@ output {
         }
     }
 }
-/*
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    NAMED WORKFLOWS FOR PIPELINE
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-*/
-
-// Helper function to check if a reference needs to be extracted
-// Add the reference type to the meta
-// Depending on the extension, return the appropriate channel
-def need_extract(channel, type) {
-    return channel
-        .map { meta, reference_ -> [meta + [reference: type], reference_] }
-        .branch { _meta, reference_ ->
-            to_extract: reference_.toString().endsWith('.gz') || reference_.toString().endsWith('.zip')
-            not_extracted: true
-        }
-}
-
-// WORKFLOW: Build references depending on type of reference and the tools specified
-workflow NFCORE_REFERENCES {
-    take:
-    references
-    tools // list of tools to use to build references
-
-    main:
-
-    DATASHEET_TO_CHANNEL(references, tools)
-
-    // References that need to be extracted
-    // (VCFs are not extracted)
-    ascat_alleles_input = need_extract(DATASHEET_TO_CHANNEL.out.ascat_alleles, 'ascat_alleles')
-    ascat_loci_input = need_extract(DATASHEET_TO_CHANNEL.out.ascat_loci, 'ascat_loci')
-    ascat_loci_gc_input = need_extract(DATASHEET_TO_CHANNEL.out.ascat_loci_gc, 'ascat_loci_gc')
-    ascat_loci_rt_input = need_extract(DATASHEET_TO_CHANNEL.out.ascat_loci_rt, 'ascat_loci_rt')
-    chr_dir_input = need_extract(DATASHEET_TO_CHANNEL.out.chr_dir, 'chr_dir')
-    fasta_input = need_extract(DATASHEET_TO_CHANNEL.out.fasta, 'fasta')
-    gff_input = need_extract(DATASHEET_TO_CHANNEL.out.gff, 'gff')
-    gtf_input = need_extract(DATASHEET_TO_CHANNEL.out.gtf, 'gtf')
-
-    // gather all archived references
-    archive_to_extract = channel.empty()
-        .mix(
-            ascat_alleles_input.to_extract,
-            ascat_loci_input.to_extract,
-            ascat_loci_gc_input.to_extract,
-            ascat_loci_rt_input.to_extract,
-            chr_dir_input.to_extract,
-            fasta_input.to_extract,
-            gff_input.to_extract,
-            gtf_input.to_extract,
-        )
-
-    // Extract references from any archive format
-    ARCHIVE_EXTRACT(
-        archive_to_extract
-    )
-
-    // return to the appropriate channels
-    extracted_reference = ARCHIVE_EXTRACT.out.extracted.branch { meta_, _extracted_reference ->
-        ascat_alleles: meta_.reference == 'ascat_alleles'
-        ascat_loci: meta_.reference == 'ascat_loci'
-        ascat_loci_gc: meta_.reference == 'ascat_loci_gc'
-        ascat_loci_rt: meta_.reference == 'ascat_loci_rt'
-        chr_dir: meta_.reference == 'chr_dir'
-        fasta: meta_.reference == 'fasta'
-        gff: meta_.reference == 'gff'
-        gtf: meta_.reference == 'gtf'
-        non_assigned: true
-    }
-
-    // This is a confidence check
-    extracted_reference.non_assigned.view { reference -> log.warn("Non assigned extracted reference: " + reference) }
-
-    // WORKFLOW: Run pipeline
-    // Mix the references that were extracted with the references that did not need to be extracted
-    // Some references are not extracted because they are usually not stored in an archived format
-    // TODO: check if more references need to be extracted
-    altliftoverfile = channel.empty()
-
-    REFERENCES(
-        altliftoverfile,
-        ascat_alleles_input.not_extracted.mix(extracted_reference.ascat_alleles),
-        ascat_loci_input.not_extracted.mix(extracted_reference.ascat_loci),
-        ascat_loci_gc_input.not_extracted.mix(extracted_reference.ascat_loci_gc),
-        ascat_loci_rt_input.not_extracted.mix(extracted_reference.ascat_loci_rt),
-        chr_dir_input.not_extracted.mix(extracted_reference.chr_dir),
-        fasta_input.not_extracted.mix(extracted_reference.fasta),
-        DATASHEET_TO_CHANNEL.out.fasta_dict,
-        DATASHEET_TO_CHANNEL.out.fasta_fai,
-        DATASHEET_TO_CHANNEL.out.fasta_sizes,
-        gff_input.not_extracted.mix(extracted_reference.gff),
-        gtf_input.not_extracted.mix(extracted_reference.gtf),
-        DATASHEET_TO_CHANNEL.out.intervals_bed,
-        DATASHEET_TO_CHANNEL.out.splice_sites,
-        DATASHEET_TO_CHANNEL.out.transcript_fasta,
-        DATASHEET_TO_CHANNEL.out.vcf,
-        tools,
-    )
-
-    emit:
-    references = REFERENCES.out.references
-    versions   = ARCHIVE_EXTRACT.out.versions
-}
 
 /*
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -334,41 +325,14 @@ def paramsSummaryMultiqc(summary_params) {
     return yaml_file_text
 }
 
-//
-// Get channel of software versions used in pipeline in YAML format using nf-core-utils plugin
-//
-def softwareVersionsToYAML(ch_versions_legacy, ch_versions_topic, ch_versions_workflow) {
-    def versions_legacy = ch_versions_legacy.unique().map { version -> processVersionsFromFile([version.toString()]) }
-    def versions_topic = ch_versions_topic
-        .unique()
-        .groupTuple(by: 0)
-        .map { topic -> topicVersionToYAML(topic[0], topic[1], topic[2]) }
-
-    def versions_workflow = ch_versions_workflow
-
-    return versions_legacy.mix(versions_topic, versions_workflow)
-}
-
-//
-// Process versions from topic channel
-//
-def topicVersionToYAML(taskProcess, tools, versions) {
-    def toolsVersions = [tools, versions]
-        .transpose()
-        .collect { k, v -> "${k}: ${v}" }
-    return """
-    |${taskProcess.tokenize(':').last()}:
-    |  ${toolsVersions.join('\n|  ')}
-    """.stripMargin().trim()
-}
-
-//
-// Get workflow version for pipeline using nf-core-utils plugin
-//
-def workflowVersionToYAML() {
-    return """
-    Workflow:
-        ${workflow.manifest.name}: ${getWorkflowVersion()}
-        Nextflow: ${workflow.nextflow.version}
-    """.stripIndent().trim()
+// Helper function to check if a reference needs to be extracted
+// Add the reference type to the meta
+// Depending on the extension, return the appropriate channel
+def need_extract(channel, type) {
+    return channel
+        .map { meta, reference_ -> [meta + [reference: type], reference_] }
+        .branch { _meta, reference_ ->
+            to_extract: reference_.toString().endsWith('.gz') || reference_.toString().endsWith('.zip')
+            not_extracted: true
+        }
 }
