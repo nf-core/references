@@ -156,7 +156,7 @@ workflow {
         nextflowVersion: workflow.nextflow.version,
     ).collectFile(
         storeDir: "${params.outdir}/pipeline_info",
-        name: 'nf_core_' + 'rnavar_software_' + 'mqc_' + 'versions.yml',
+        name: 'nf_core_' + 'references_software_' + 'mqc_' + 'versions.yml',
         sort: true,
         newLine: true,
     )
