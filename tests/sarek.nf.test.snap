@@ -21,10 +21,10 @@
                     "msisensor-pro": "1.3.0"
                 },
                 "SAMTOOLS_FAIDX": {
-                    "samtools": 1.21
+                    "samtools": "1.21"
                 },
                 "TABIX_TABIX": {
-                    "tabix": 1.21
+                    "tabix": "1.21"
                 }
             },
             [
@@ -110,9 +110,9 @@
         ],
         "meta": {
             "nf-test": "0.9.3",
-            "nextflow": "25.04.8"
+            "nextflow": "25.10.2"
         },
-        "timestamp": "2025-10-22T13:58:31.006273823"
+        "timestamp": "2026-01-15T13:40:39.747672409"
     },
     "-profile test --tools bwamem1,bwamem2,createsequencedictionary,dragmap,faidx,intervals,msisensorpro,tabix --input references-datasheets/latest/genomes/Homo_sapiens/GATK/GRCh38_chr22.yml": {
         "content": [

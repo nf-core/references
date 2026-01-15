@@ -12,11 +12,11 @@
                     "gffread": "0.12.7"
                 },
                 "SAMTOOLS_FAIDX": {
-                    "samtools": 1.21
+                    "samtools": "1.21"
                 },
                 "STAR_GENOMEGENERATE": {
                     "gawk": "5.1.0",
-                    "samtools": 1.21,
+                    "samtools": "1.21",
                     "star": "2.7.11b"
                 }
             },
@@ -114,8 +114,8 @@
         ],
         "meta": {
             "nf-test": "0.9.3",
-            "nextflow": "25.04.8"
+            "nextflow": "25.10.2"
         },
-        "timestamp": "2025-10-22T13:45:55.393025547"
+        "timestamp": "2026-01-15T13:26:42.652887516"
     }
 }
