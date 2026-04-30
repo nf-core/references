@@ -178,7 +178,7 @@ workflow DATASHEET_TO_CHANNEL {
         def meta_extra = [run_tabix: meta.vcf_dbsnp_vcf_tbi || meta.vcf_dbsnp_vcf.endsWith('.vcf') ? false : true]
         meta_extra += [run_bgziptabix: meta.vcf_dbsnp_vcf.endsWith('.vcf') ?: false]
         meta_extra += [type: 'dbsnp', source_vcf: meta.vcf_dbsnp_vcf_source]
-        return [reduceMeta(meta) + meta_extra, meta.vcf_dbsnp_vcf.contains('{') ? file(meta.vcf_dbsnp_vcf) : meta.vcf_dbsnp_vcf]
+        return [reduceMeta(meta) + meta_extra, meta.vcf_dbsnp_vcf.contains('{') ? files(meta.vcf_dbsnp_vcf) : meta.vcf_dbsnp_vcf]
         other: true
         // If the reference doesn't exist, then we return nothing
         return null
