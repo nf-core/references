@@ -15,17 +15,20 @@
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 */
 
-include { ARCHIVE_EXTRACT         } from './subworkflows/nf-core/archive_extract'
-include { DATASHEET_TO_CHANNEL    } from './subworkflows/local/datasheet_to_channel'
-include { PIPELINE_COMPLETION     } from './subworkflows/local/utils_nfcore_references_pipeline'
-include { PIPELINE_INITIALISATION } from './subworkflows/local/utils_nfcore_references_pipeline'
-include { REFERENCES              } from "./workflows/references"
+include { ARCHIVE_EXTRACT                                } from './subworkflows/nf-core/archive_extract'
+include { NCBIDATASETSCLI_DATASETS as NCBIDOWNLOAD_FASTA } from './modules/local/ncbidatasetscli/datasets'
+include { NCBIDATASETSCLI_DATASETS as NCBIDOWNLOAD_GFF   } from './modules/local/ncbidatasetscli/datasets'
+include { NCBIDATASETSCLI_DATASETS as NCBIDOWNLOAD_GTF   } from './modules/local/ncbidatasetscli/datasets'
+include { DATASHEET_TO_CHANNEL                           } from './subworkflows/local/datasheet_to_channel'
+include { PIPELINE_COMPLETION                            } from './subworkflows/local/utils_nfcore_references_pipeline'
+include { PIPELINE_INITIALISATION                        } from './subworkflows/local/utils_nfcore_references_pipeline'
+include { REFERENCES                                     } from "./workflows/references"
 
 // MULTIQC & versions
-include { MULTIQC                 } from './modules/nf-core/multiqc'
-include { softwareVersionsToYAML  } from 'plugin/nf-core-utils'
-include { methodsDescriptionText  } from './subworkflows/local/utils_nfcore_references_pipeline'
-include { paramsSummaryMap        } from 'plugin/nf-schema'
+include { MULTIQC                                        } from './modules/nf-core/multiqc'
+include { softwareVersionsToYAML                         } from 'plugin/nf-core-utils'
+include { methodsDescriptionText                         } from './subworkflows/local/utils_nfcore_references_pipeline'
+include { paramsSummaryMap                               } from 'plugin/nf-schema'
 
 /*
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -50,9 +53,18 @@ workflow NFCORE_REFERENCES {
     ascat_loci_gc_input = need_extract(DATASHEET_TO_CHANNEL.out.ascat_loci_gc, 'ascat_loci_gc')
     ascat_loci_rt_input = need_extract(DATASHEET_TO_CHANNEL.out.ascat_loci_rt, 'ascat_loci_rt')
     chr_dir_input = need_extract(DATASHEET_TO_CHANNEL.out.chr_dir, 'chr_dir')
-    fasta_input = need_extract(DATASHEET_TO_CHANNEL.out.fasta, 'fasta')
-    gff_input = need_extract(DATASHEET_TO_CHANNEL.out.gff, 'gff')
-    gtf_input = need_extract(DATASHEET_TO_CHANNEL.out.gtf, 'gtf')
+
+    fasta_download_input = need_ncbi_download(DATASHEET_TO_CHANNEL.out.fasta, 'fasta')
+    gff_download_input = need_ncbi_download(DATASHEET_TO_CHANNEL.out.gff, 'gff')
+    gtf_download_input = need_ncbi_download(DATASHEET_TO_CHANNEL.out.gtf, 'gtf')
+
+    NCBIDOWNLOAD_FASTA(fasta_download_input.to_download.map { meta, _file -> [meta + [accession: meta.source_version], 'genome'] })
+    NCBIDOWNLOAD_GFF(gff_download_input.to_download.map { meta, _file -> [meta + [accession: meta.source_version], 'gff3'] })
+    NCBIDOWNLOAD_GTF(gtf_download_input.to_download.map { meta, _file -> [meta + [accession: meta.source_version], 'gtf'] })
+
+    fasta_input = need_extract(fasta_download_input.not_downloaded, 'fasta')
+    gff_input = need_extract(gff_download_input.not_downloaded, 'gff')
+    gtf_input = need_extract(gtf_download_input.not_downloaded, 'gtf')
 
     // gather all archived references
     archive_to_extract = channel.empty()
@@ -101,12 +113,12 @@ workflow NFCORE_REFERENCES {
         ascat_loci_gc_input.not_extracted.mix(extracted_reference.ascat_loci_gc),
         ascat_loci_rt_input.not_extracted.mix(extracted_reference.ascat_loci_rt),
         chr_dir_input.not_extracted.mix(extracted_reference.chr_dir),
-        fasta_input.not_extracted.mix(extracted_reference.fasta),
+        fasta_input.not_extracted.mix(extracted_reference.fasta, NCBIDOWNLOAD_FASTA.out.fna),
         DATASHEET_TO_CHANNEL.out.fasta_dict,
         DATASHEET_TO_CHANNEL.out.fasta_fai,
         DATASHEET_TO_CHANNEL.out.fasta_sizes,
-        gff_input.not_extracted.mix(extracted_reference.gff),
-        gtf_input.not_extracted.mix(extracted_reference.gtf),
+        gff_input.not_extracted.mix(extracted_reference.gff, NCBIDOWNLOAD_GFF.out.gff),
+        gtf_input.not_extracted.mix(extracted_reference.gtf, NCBIDOWNLOAD_GTF.out.gtf),
         DATASHEET_TO_CHANNEL.out.intervals_bed,
         DATASHEET_TO_CHANNEL.out.splice_sites,
         DATASHEET_TO_CHANNEL.out.transcript_fasta,
@@ -274,8 +286,6 @@ workflow {
             path = "Annotation/${meta.source_vcf}/${file.fileName}"
         }
 
-        println(path)
-
         [meta + [path: path] - meta.subMap(invalid_keys), file]
     }
 }
@@ -345,5 +355,17 @@ def need_extract(channel, type) {
         .branch { _meta, reference_ ->
             to_extract: reference_.toString().endsWith('.gz') || reference_.toString().endsWith('.zip')
             not_extracted: true
+        }
+}
+
+// Helper function to check if a reference needs to be downloaded from ncbi
+// Add the reference type to the meta
+// Depending on the extension, return the appropriate channel
+def need_ncbi_download(channel, type) {
+    return channel
+        .map { meta, reference_ -> [meta + [reference: type], reference_] }
+        .branch { _meta, reference_ ->
+            to_download: reference_.toString().contains('ncbi.nlm.nih.gov')
+            not_downloaded: true
         }
 }

@@ -12,7 +12,7 @@ workflow DATASHEET_TO_CHANNEL {
 
     ascat_alleles_branch = datasheet.branch { meta, _readme ->
         file: meta.ascat_alleles
-        return [reduceMeta(meta), meta.ascat_alleles]
+        return [reduceMeta(meta), file(meta.ascat_alleles, checkIfExists: true)]
         other: true
         // If the reference doesn't exist, then we return nothing
         return null
@@ -21,7 +21,7 @@ workflow DATASHEET_TO_CHANNEL {
 
     ascat_loci_branch = datasheet.branch { meta, _readme ->
         file: meta.ascat_loci
-        return [reduceMeta(meta), meta.ascat_loci]
+        return [reduceMeta(meta), file(meta.ascat_loci, checkIfExists: true)]
         other: true
         // If the reference doesn't exist, then we return nothing
         return null
@@ -30,7 +30,7 @@ workflow DATASHEET_TO_CHANNEL {
 
     ascat_loci_gc_branch = datasheet.branch { meta, _readme ->
         file: meta.ascat_loci_gc
-        return [reduceMeta(meta), meta.ascat_loci_gc]
+        return [reduceMeta(meta), file(meta.ascat_loci_gc, checkIfExists: true)]
         other: true
         // If the reference doesn't exist, then we return nothing
         return null
@@ -39,7 +39,7 @@ workflow DATASHEET_TO_CHANNEL {
 
     ascat_loci_rt_branch = datasheet.branch { meta, _readme ->
         file: meta.ascat_loci_rt
-        return [reduceMeta(meta), meta.ascat_loci_rt]
+        return [reduceMeta(meta), file(meta.ascat_loci_rt, checkIfExists: true)]
         other: true
         // If the reference doesn't exist, then we return nothing
         return null
@@ -48,7 +48,7 @@ workflow DATASHEET_TO_CHANNEL {
 
     chr_dir_branch = datasheet.branch { meta, _readme ->
         file: meta.chr_dir
-        return [reduceMeta(meta), meta.chr_dir]
+        return [reduceMeta(meta), file(meta.chr_dir, checkIfExists: true)]
         other: true
         // If the reference doesn't exist, then we return nothing
         return null
@@ -57,7 +57,7 @@ workflow DATASHEET_TO_CHANNEL {
 
     intervals_bed_branch = datasheet.branch { meta, _readme ->
         file: meta.intervals_bed
-        return [reduceMeta(meta), meta.intervals_bed]
+        return [reduceMeta(meta), file(meta.intervals_bed, checkIfExists: true)]
         other: true
         // If the reference doesn't exist, then we return nothing
         return null
@@ -82,7 +82,7 @@ workflow DATASHEET_TO_CHANNEL {
         meta_extra += [run_rsem_make_transcript_fasta: meta.transcript_fasta ? false : true]
         meta_extra += [run_salmon: meta.salmon_index ? false : true]
         meta_extra += [run_star: meta.star_index ? false : true]
-        return [reduceMeta(meta) + meta_extra, file(meta.fasta, checkIfExists: true)]
+        return [reduceMeta(meta) + meta_extra, meta.fasta.contains('ncbi.nlm.nih.gov') ? meta.fasta : file(meta.fasta, checkIfExists: true)]
         other: true
         // If the reference doesn't exist, then we return nothing
         return null
@@ -125,7 +125,7 @@ workflow DATASHEET_TO_CHANNEL {
         // (gff, gtf or transcript_fasta)
         def meta_extra = [run_gffread: meta.fasta && !meta.gtf ?: false]
         meta_extra += [run_hisat2: meta.splice_sites ? false : true]
-        return [reduceMeta(meta) + meta_extra, file(meta.gff, checkIfExists: true)]
+        return [reduceMeta(meta) + meta_extra, meta.gtf.contains('ncbi.nlm.nih.gov') ? meta.gff : file(meta.gff, checkIfExists: true)]
         other: true
         // If the reference doesn't exist, then we return nothing
         return null
@@ -137,7 +137,7 @@ workflow DATASHEET_TO_CHANNEL {
         // If any of the reference exists, then adding run_tools to false and skip the reference creation from the annotation derived file
         // (gff, gtf or transcript_fasta)
         def meta_extra = [run_hisat2: meta.splice_sites ? false : true]
-        return [reduceMeta(meta) + meta_extra, file(meta.gtf, checkIfExists: true)]
+        return [reduceMeta(meta) + meta_extra, meta.gtf.contains('ncbi.nlm.nih.gov') ? meta.gtf : file(meta.gtf, checkIfExists: true)]
         other: true
         // If the reference doesn't exist, then we return nothing
         return null
