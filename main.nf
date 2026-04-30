@@ -163,22 +163,12 @@ workflow {
     )
 
     // MODULE: MultiQC
-    // Present summary of reads, alignment, duplicates, BSQR stats for all samples as well as workflow summary/parameters as single report
-    def collated_reports = channel.empty()
-        .mix(
-            channel.topic("multiqc_files").map { _meta, _process, _tool, reports -> reports },
-            NFCORE_REFERENCES.out.reports,
-        )
-
-    // MODULE: MultiQC
-    // Present summary of reads, alignment, duplicates, BSQR stats for all samples as well as workflow summary/parameters as single report
     def multiqc_report = channel.empty()
 
     // MULTIQC
     def multiqc_files = channel.empty()
 
     multiqc_files = multiqc_files.mix(collated_versions)
-    multiqc_files = multiqc_files.mix(collated_reports)
 
     def summary_params = paramsSummaryMap(workflow, parameters_schema: "nextflow_schema.json")
     def workflow_summary = channel.value(paramsSummaryMultiqc(summary_params))
