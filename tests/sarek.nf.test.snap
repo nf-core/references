@@ -108,11 +108,11 @@
                 "multiqc_citations.txt:md5,4c806e63a283ec1b7e78cdae3a923d4f"
             ]
         ],
+        "timestamp": "2026-01-15T13:40:39.747672409",
         "meta": {
             "nf-test": "0.9.3",
             "nextflow": "25.10.2"
-        },
-        "timestamp": "2026-01-15T13:40:39.747672409"
+        }
     },
     "-profile test --tools bwamem1,bwamem2,createsequencedictionary,dragmap,faidx,intervals,msisensorpro,tabix --input references-datasheets/latest/genomes/Homo_sapiens/GATK/GRCh38_chr22.yml": {
         "content": [
@@ -122,13 +122,6 @@
                 }
             },
             [
-                "Homo_sapiens",
-                "Homo_sapiens/nf-core",
-                "Homo_sapiens/nf-core/GRCh38_chr22",
-                "Homo_sapiens/nf-core/GRCh38_chr22/Annotation",
-                "Homo_sapiens/nf-core/GRCh38_chr22/Annotation/msisensorpro",
-                "Homo_sapiens/nf-core/GRCh38_chr22/Annotation/msisensorpro/GRCh38_chr22.msisensor_scan.list",
-                "index.json",
                 "multiqc",
                 "multiqc/multiqc_data",
                 "multiqc/multiqc_data/llms-full.txt",
@@ -143,14 +136,13 @@
                 "pipeline_info/nf_core_references_software_mqc_versions.yml"
             ],
             [
-                "GRCh38_chr22.msisensor_scan.list:md5,1c670ac986f5e6d7a9d11e45231d5417",
                 "multiqc_citations.txt:md5,4c806e63a283ec1b7e78cdae3a923d4f"
             ]
         ],
+        "timestamp": "2026-04-30T15:33:33.140511215",
         "meta": {
-            "nf-test": "0.9.3",
-            "nextflow": "25.04.8"
-        },
-        "timestamp": "2025-10-22T13:58:49.531702963"
+            "nf-test": "0.9.5",
+            "nextflow": "26.03.4"
+        }
     }
 }
