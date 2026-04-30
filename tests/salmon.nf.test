@@ -25,7 +25,7 @@ nextflow_pipeline {
             assertAll(
                 { assert snapshot(
                     // pipeline versions.yml file for multiqc from which Nextflow and pipeline versions are removed (all from the workflow key)
-                    removeFromYamlMap("${params.outdir}/pipeline_info/nf_core_references_software_mqc_versions.yml", 'Workflow'),
+                    removeFromYamlMap("${outputDir}/pipeline_info/nf_core_references_software_mqc_versions.yml", 'Workflow'),
                     // All stable path name, with a relative path
                     stable_name,
                     // All files with stable contents
@@ -37,11 +37,11 @@ nextflow_pipeline {
 
     test("-profile test --tools salmon,rsem_make_transcript_fasta") {
 
-        options "-output-dir $outputDir"
+        options "-output-dir ${outputDir}"
 
         when {
             params {
-                outdir = "$outputDir"
+                outdir = "${outputDir}"
                 tools  = 'salmon,rsem_make_transcript_fasta'
             }
         }
@@ -55,7 +55,7 @@ nextflow_pipeline {
             assertAll(
                 { assert snapshot(
                     // pipeline versions.yml file for multiqc from which Nextflow and pipeline versions are removed (all from the workflow key)
-                    removeFromYamlMap("${params.outdir}/pipeline_info/nf_core_references_software_mqc_versions.yml", 'Workflow'),
+                    removeFromYamlMap("${outputDir}/pipeline_info/nf_core_references_software_mqc_versions.yml", 'Workflow'),
                     // All stable path name, with a relative path
                     stable_name,
                     // All files with stable contents
