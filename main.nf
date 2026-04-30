@@ -274,7 +274,9 @@ workflow {
             path = "Annotation/${meta.source_vcf}/${file.fileName}"
         }
 
-        [meta + [path: "${meta.species}/${meta.source}/${meta.genome}/${path}"] - meta.subMap(invalid_keys), file]
+        println(path)
+
+        [meta + [path: path] - meta.subMap(invalid_keys), file]
     }
 }
 
@@ -283,7 +285,9 @@ output {
         path "multiqc"
     }
     references {
-        path { meta, path -> path >> meta.path }
+        path { meta, path ->
+            path >> "${meta.species}/${meta.source}/${meta.genome}/${meta.path}"
+        }
 
         index {
             path "index.json"

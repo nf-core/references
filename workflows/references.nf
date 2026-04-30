@@ -60,31 +60,30 @@ workflow REFERENCES {
         tools.split(',').contains('snapaligner'),
     )
 
-    // This works with a mixture of input and computed references
-    fasta_dict = fasta_dict.mix(PREPARE_GENOME_DNASEQ.out.fasta_dict)
-    fasta_fai = fasta_fai.mix(PREPARE_GENOME_DNASEQ.out.fasta_fai, PREPARE_GENOME_RNASEQ.out.fasta_fai)
-    fasta_sizes = fasta_sizes.mix(PREPARE_GENOME_RNASEQ.out.fasta_sizes)
-    gtf = gtf.mix(PREPARE_GENOME_RNASEQ.out.gtf)
-    intervals_bed = intervals_bed.mix(PREPARE_GENOME_DNASEQ.out.intervals_bed)
-    splice_sites = splice_sites.mix(PREPARE_GENOME_RNASEQ.out.splice_sites)
-    transcript_fasta = transcript_fasta.mix(PREPARE_GENOME_RNASEQ.out.transcript_fasta)
-
-    // TODO: This does not work YET with a mixture of input and computed references
     bowtie1_index = PREPARE_GENOME_RNASEQ.out.bowtie1_index
     bowtie2_index = PREPARE_GENOME_RNASEQ.out.bowtie2_index
     bwamem1_index = PREPARE_GENOME_DNASEQ.out.bwamem1_index
     bwamem2_index = PREPARE_GENOME_DNASEQ.out.bwamem2_index
     dragmap_hashmap = PREPARE_GENOME_DNASEQ.out.dragmap_hashmap
+    fasta_dict = PREPARE_GENOME_DNASEQ.out.fasta_dict
+    fasta_fai = channel.empty().mix(PREPARE_GENOME_DNASEQ.out.fasta_fai, PREPARE_GENOME_RNASEQ.out.fasta_fai)
+    fasta_sizes = PREPARE_GENOME_RNASEQ.out.fasta_sizes
+    gtf = PREPARE_GENOME_RNASEQ.out.gtf
     hisat2_index = PREPARE_GENOME_RNASEQ.out.hisat2_index
+    intervals_bed = PREPARE_GENOME_DNASEQ.out.intervals_bed
     kallisto_index = PREPARE_GENOME_RNASEQ.out.kallisto_index
     msisensorpro_list = PREPARE_GENOME_DNASEQ.out.msisensorpro_list
     rsem_index = PREPARE_GENOME_RNASEQ.out.rsem_index
     salmon_index = PREPARE_GENOME_RNASEQ.out.salmon_index
+    splice_sites = PREPARE_GENOME_RNASEQ.out.splice_sites
     star_index = PREPARE_GENOME_RNASEQ.out.star_index
+    transcript_fasta = PREPARE_GENOME_RNASEQ.out.transcript_fasta
     vcf_tbi = PREPARE_GENOME_DNASEQ.out.vcf_tbi
 
-    // TODO: need to rescue the vcf files
+    // TODO: need to rescue these files
+    // fasta.map { meta, reference_ -> [meta + [file: 'fasta'], reference_] },
     // vcf.map { meta, reference_ -> [meta + [file: "${meta.type}_vcf"], reference_] },
+    // gff.map { meta, reference_ -> [meta + [file: 'gff'], reference_] },
 
     references = channel.empty()
         .mix(
@@ -98,11 +97,9 @@ workflow REFERENCES {
             bwamem2_index.map { meta, reference_ -> [meta + [file: 'bwamem2_index'], reference_] },
             chr_dir.map { meta, reference_ -> [meta + [file: 'chr_dir'], reference_] },
             dragmap_hashmap.map { meta, reference_ -> [meta + [file: 'dragmap_hashmap'], reference_] },
-            fasta.map { meta, reference_ -> [meta + [file: 'fasta'], reference_] },
             fasta_dict.map { meta, reference_ -> [meta + [file: 'fasta_dict'], reference_] },
             fasta_fai.map { meta, reference_ -> [meta + [file: 'fasta_fai'], reference_] },
             fasta_sizes.map { meta, reference_ -> [meta + [file: 'fasta_sizes'], reference_] },
-            gff.map { meta, reference_ -> [meta + [file: 'gff'], reference_] },
             gtf.map { meta, reference_ -> [meta + [file: 'gtf'], reference_] },
             hisat2_index.map { meta, reference_ -> [meta + [file: 'hisat2_index'], reference_] },
             intervals_bed.map { meta, reference_ -> [meta + [file: 'intervals_bed'], reference_] },

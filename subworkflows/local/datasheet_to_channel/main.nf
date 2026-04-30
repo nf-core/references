@@ -82,7 +82,7 @@ workflow DATASHEET_TO_CHANNEL {
         meta_extra += [run_rsem_make_transcript_fasta: meta.transcript_fasta ? false : true]
         meta_extra += [run_salmon: meta.salmon_index ? false : true]
         meta_extra += [run_star: meta.star_index ? false : true]
-        return [reduceMeta(meta) + meta_extra, meta.fasta]
+        return [reduceMeta(meta) + meta_extra, file(meta.fasta, checkIfExists: true)]
         other: true
         // If the reference doesn't exist, then we return nothing
         return null
@@ -103,7 +103,7 @@ workflow DATASHEET_TO_CHANNEL {
         file: meta.fasta_fai
         // If we have intervals_bed, then we don't need to run faidx
         def meta_extra = [run_intervals: meta.intervals_bed ? false : true]
-        return [reduceMeta(meta) + meta_extra, meta.fasta_fai]
+        return [reduceMeta(meta) + meta_extra, file(meta.fasta_fai, checkIfExists: true)]
         other: true
         // If the reference doesn't exist, then we return nothing
         return null
@@ -125,7 +125,7 @@ workflow DATASHEET_TO_CHANNEL {
         // (gff, gtf or transcript_fasta)
         def meta_extra = [run_gffread: meta.fasta && !meta.gtf ?: false]
         meta_extra += [run_hisat2: meta.splice_sites ? false : true]
-        return [reduceMeta(meta) + meta_extra, meta.gff]
+        return [reduceMeta(meta) + meta_extra, file(meta.gff, checkIfExists: true)]
         other: true
         // If the reference doesn't exist, then we return nothing
         return null
@@ -137,7 +137,7 @@ workflow DATASHEET_TO_CHANNEL {
         // If any of the reference exists, then adding run_tools to false and skip the reference creation from the annotation derived file
         // (gff, gtf or transcript_fasta)
         def meta_extra = [run_hisat2: meta.splice_sites ? false : true]
-        return [reduceMeta(meta) + meta_extra, meta.gtf]
+        return [reduceMeta(meta) + meta_extra, file(meta.gtf, checkIfExists: true)]
         other: true
         // If the reference doesn't exist, then we return nothing
         return null
@@ -162,7 +162,7 @@ workflow DATASHEET_TO_CHANNEL {
         meta_extra += [run_rsem: meta.rsem_index ? false : true]
         meta_extra += [run_salmon: meta.salmon_index ? false : true]
         meta_extra += [run_star: meta.star_index ? false : true]
-        return [reduceMeta(meta) + meta_extra, meta.transcript_fasta]
+        return [reduceMeta(meta) + meta_extra, file(meta.transcript_fasta, checkIfExists: true)]
         other: true
         // If the reference doesn't exist, then we return nothing
         return null
@@ -178,7 +178,7 @@ workflow DATASHEET_TO_CHANNEL {
         def meta_extra = [run_tabix: meta.vcf_dbsnp_vcf_tbi || meta.vcf_dbsnp_vcf.endsWith('.vcf') ? false : true]
         meta_extra += [run_bgziptabix: meta.vcf_dbsnp_vcf.endsWith('.vcf') ?: false]
         meta_extra += [type: 'dbsnp', source_vcf: meta.vcf_dbsnp_vcf_source]
-        return [reduceMeta(meta) + meta_extra, meta.vcf_dbsnp_vcf.contains('{') ? files(meta.vcf_dbsnp_vcf) : meta.vcf_dbsnp_vcf]
+        return [reduceMeta(meta) + meta_extra, files(meta.vcf_dbsnp_vcf, checkIfExists: true)]
         other: true
         // If the reference doesn't exist, then we return nothing
         return null
@@ -190,7 +190,7 @@ workflow DATASHEET_TO_CHANNEL {
         def meta_extra = [run_tabix: meta.vcf_germline_resource_vcf_tbi || meta.vcf_germline_resource_vcf.endsWith('.vcf') ? false : true]
         meta_extra += [run_bgziptabix: meta.vcf_germline_resource_vcf.endsWith('.vcf') ?: false]
         meta_extra += [type: 'germline_resource', source_vcf: meta.vcf_germline_resource_vcf_source]
-        return [reduceMeta(meta) + meta_extra, meta.vcf_germline_resource_vcf]
+        return [reduceMeta(meta) + meta_extra, file(meta.vcf_germline_resource_vcf, checkIfExists: true)]
         other: true
         // If the reference doesn't exist, then we return nothing
         return null
@@ -202,7 +202,7 @@ workflow DATASHEET_TO_CHANNEL {
         def meta_extra = [run_tabix: meta.vcf_known_indels_vcf_tbi || meta.vcf_known_indels_vcf.endsWith('.vcf') ? false : true]
         meta_extra += [run_bgziptabix: meta.vcf_known_indels_vcf.endsWith('.vcf') ?: false]
         meta_extra += [type: 'known_indels', source_vcf: meta.vcf_known_indels_vcf_source]
-        return [reduceMeta(meta) + meta_extra, meta.vcf_known_indels_vcf]
+        return [reduceMeta(meta) + meta_extra, file(meta.vcf_known_indels_vcf, checkIfExists: true)]
         other: true
         // If the reference doesn't exist, then we return nothing
         return null
@@ -214,7 +214,7 @@ workflow DATASHEET_TO_CHANNEL {
         def meta_extra = [run_tabix: meta.vcf_known_snps_vcf_tbi || meta.vcf_known_snps_vcf.endsWith('.vcf') ? false : true]
         meta_extra += [run_bgziptabix: meta.vcf_known_snps_vcf.endsWith('.vcf') ?: false]
         meta_extra += [type: 'known_snps', source_vcf: meta.vcf_known_snps_vcf_source]
-        return [reduceMeta(meta) + meta_extra, meta.vcf_known_snps_vcf]
+        return [reduceMeta(meta) + meta_extra, file(meta.vcf_known_snps_vcf, checkIfExists: true)]
         other: true
         // If the reference doesn't exist, then we return nothing
         return null
@@ -226,7 +226,7 @@ workflow DATASHEET_TO_CHANNEL {
         def meta_extra = [run_tabix: meta.vcf_pon_vcf_tbi || meta.vcf_pon_vcf.endsWith('.vcf') ? false : true]
         meta_extra += [run_bgziptabix: meta.vcf_pon_vcf.endsWith('.vcf') ?: false]
         meta_extra += [type: 'pon', source_vcf: meta.vcf_pon_vcf_source]
-        return [reduceMeta(meta) + meta_extra, meta.vcf_pon_vcf]
+        return [reduceMeta(meta) + meta_extra, file(meta.vcf_pon_vcf, checkIfExists: true)]
         other: true
         // If the reference doesn't exist, then we return nothing
         return null
