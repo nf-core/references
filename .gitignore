@@ -8,3 +8,9 @@ testing*
 *.pyc
 null/
 .lineage/
+.idea
+*.log
+tmp/
+.nf-test
+.vscode
+modules/nf
