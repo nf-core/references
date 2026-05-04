@@ -13,12 +13,15 @@
                     "gatk": "4.6.1.0"
                 },
                 "NCBIDOWNLOAD_FASTA": {
+                    "gunzip": "1.12",
                     "ncbidatasetscli": "datasets version: 18.25.0"
                 },
                 "NCBIDOWNLOAD_GFF": {
+                    "gunzip": "1.12",
                     "ncbidatasetscli": "datasets version: 18.25.0"
                 },
                 "NCBIDOWNLOAD_GTF": {
+                    "gunzip": "1.12",
                     "ncbidatasetscli": "datasets version: 18.25.0"
                 },
                 "RSEM_PREPAREREFERENCE_GENOME": {
@@ -167,7 +170,7 @@
                 "multiqc_citations.txt:md5,4c806e63a283ec1b7e78cdae3a923d4f"
             ]
         ],
-        "timestamp": "2026-05-04T16:16:02.502102917",
+        "timestamp": "2026-05-04T16:26:31.767288789",
         "meta": {
             "nf-test": "0.9.5",
             "nextflow": "26.04.0"

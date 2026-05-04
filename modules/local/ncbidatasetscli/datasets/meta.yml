@@ -1,11 +1,9 @@
-name: gunzip
+name: ncbi-datasets-cli
 description: Compresses and decompresses files.
 keywords:
-  - gunzip
-  - compression
-  - decompression
+  - ncbi-datasets-cli
 tools:
-  - gunzip:
+  - ncbi-datasets-cli:
       description: |
         gzip is a file format and a software application used for file compression and decompression.
       documentation: https://www.gnu.org/software/gzip/manual/gzip.html
@@ -17,9 +15,9 @@ input:
         description: |
           Optional groovy Map containing meta information
           e.g. [ id:'test', single_end:false ]
-    - archive:
-        type: file
-        description: File to be compressed/uncompressed
+    - reference:
+        type: string
+        description: reference to download
         pattern: "*.*"
         ontologies: []
 output:

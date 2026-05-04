@@ -11,21 +11,11 @@ process NCBIDATASETSCLI_DATASETS {
     tuple val(meta), val(reference)
 
     output:
-    tuple val(meta), path("*enomic.gbff"), emit: gbk, optional: true
     tuple val(meta), path("*enomic.fna"), emit: fna, optional: true
-    tuple val(meta), path("*_rm.out"), emit: rm, optional: true
-    tuple val(meta), path("*_feature_table.txt"), emit: features, optional: true
     tuple val(meta), path("*enomic.gff"), emit: gff, optional: true
     tuple val(meta), path("*enomic.gtf"), emit: gtf, optional: true
-    tuple val(meta), path("*rotein.faa"), emit: faa, optional: true
-    tuple val(meta), path("*rotein.gpff"), emit: gpff, optional: true
-    tuple val(meta), path("*_wgsmaster.gbff"), emit: wgs_gbk, optional: true
-    tuple val(meta), path("*_cds_from_genomic.fna"), emit: cds, optional: true
-    tuple val(meta), path("*_rna.fna"), emit: rna, optional: true
-    tuple val(meta), path("*_rna_from_genomic.fna"), emit: rna_fna, optional: true
-    tuple val(meta), path("*_assembly_report.txt"), emit: report, optional: true
-    tuple val(meta), path("*_assembly_stats.txt"), emit: stats, optional: true
     tuple val("${task.process}"), val('ncbidatasetscli'), eval('datasets --version'), topic: versions, emit: versions_ncbidatasetscli
+    tuple val("${task.process}"), val('gunzip'), eval('gunzip --version 2>&1 | head -1 | sed "s/^.*(gzip) //; s/ Copyright.*//"'), topic: versions, emit: versions_gunzip
 
     when:
     task.ext.when == null || task.ext.when
