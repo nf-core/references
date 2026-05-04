@@ -218,7 +218,7 @@ workflow {
 
     publish:
     multiqc    = MULTIQC.out.data.mix(MULTIQC.out.plots, MULTIQC.out.report)
-    references = NFCORE_REFERENCES.out.references.filter { _meta, file -> !(file instanceof String) }.map { meta, file ->
+    references = NFCORE_REFERENCES.out.references.filter { _meta, file -> !(file instanceof String) }.filter { _meta, file -> !(file.toString().startsWith('/nf-core')) }.map { meta, file ->
         // Filter out the run_ keys from the meta for a clearer index file
         def invalid_keys = meta.keySet().findAll { key -> key.startsWith('run_') }
 
@@ -295,13 +295,12 @@ output {
         path "multiqc"
     }
     references {
-        path { meta, path ->
-            path >> "${meta.species}/${meta.source}/${meta.genome}/${meta.path}"
-        }
-
         index {
             path "index.json"
             sep ":"
+        }
+        path { meta, path ->
+            path >> "${meta.species}/${meta.source}/${meta.genome}/${meta.path}"
         }
     }
 }

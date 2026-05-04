@@ -8,6 +8,13 @@
                 }
             },
             [
+                "Homo_sapiens",
+                "Homo_sapiens/nf-core",
+                "Homo_sapiens/nf-core/GRCh38_chr21",
+                "Homo_sapiens/nf-core/GRCh38_chr21/Annotation",
+                "Homo_sapiens/nf-core/GRCh38_chr21/Annotation/intervals",
+                "Homo_sapiens/nf-core/GRCh38_chr21/Annotation/intervals/GRCh38_chr21.bed",
+                "index.json",
                 "multiqc",
                 "multiqc/multiqc_data",
                 "multiqc/multiqc_data/llms-full.txt",
@@ -22,13 +29,14 @@
                 "pipeline_info/nf_core_references_software_mqc_versions.yml"
             ],
             [
+                "GRCh38_chr21.bed:md5,472d213cfcde96565699779d5bfc0e32",
                 "multiqc_citations.txt:md5,4c806e63a283ec1b7e78cdae3a923d4f"
             ]
         ],
-        "timestamp": "2026-05-04T13:40:47.675835575",
+        "timestamp": "2026-05-04T16:10:30.34680381",
         "meta": {
             "nf-test": "0.9.5",
-            "nextflow": "26.03.4"
+            "nextflow": "26.04.0"
         }
     },
     "-profile test --tools faidx,intervals,sizes --input references-datasheets/latest/genomes/Homo_sapiens/nf-core/GRCh38_chr21.yml": {
@@ -38,6 +46,7 @@
                 
             },
             [
+                "index.json",
                 "multiqc",
                 "multiqc/multiqc_data",
                 "multiqc/multiqc_data/llms-full.txt",
@@ -55,10 +64,10 @@
                 "multiqc_citations.txt:md5,4c806e63a283ec1b7e78cdae3a923d4f"
             ]
         ],
-        "timestamp": "2026-05-04T13:41:05.353083125",
+        "timestamp": "2026-05-04T16:10:43.92484123",
         "meta": {
             "nf-test": "0.9.5",
-            "nextflow": "26.03.4"
+            "nextflow": "26.04.0"
         }
     },
     "-profile test --tools faidx,intervals,sizes": {

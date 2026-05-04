@@ -8,6 +8,29 @@
                 }
             },
             [
+                "Homo_sapiens",
+                "Homo_sapiens/nf-core",
+                "Homo_sapiens/nf-core/GRCh38_chr21",
+                "Homo_sapiens/nf-core/GRCh38_chr21/Sequence",
+                "Homo_sapiens/nf-core/GRCh38_chr21/Sequence/SalmonIndex",
+                "Homo_sapiens/nf-core/GRCh38_chr21/Sequence/SalmonIndex/CUSTOM",
+                "Homo_sapiens/nf-core/GRCh38_chr21/Sequence/SalmonIndex/CUSTOM/1.10.3",
+                "Homo_sapiens/nf-core/GRCh38_chr21/Sequence/SalmonIndex/CUSTOM/1.10.3/complete_ref_lens.bin",
+                "Homo_sapiens/nf-core/GRCh38_chr21/Sequence/SalmonIndex/CUSTOM/1.10.3/ctable.bin",
+                "Homo_sapiens/nf-core/GRCh38_chr21/Sequence/SalmonIndex/CUSTOM/1.10.3/ctg_offsets.bin",
+                "Homo_sapiens/nf-core/GRCh38_chr21/Sequence/SalmonIndex/CUSTOM/1.10.3/duplicate_clusters.tsv",
+                "Homo_sapiens/nf-core/GRCh38_chr21/Sequence/SalmonIndex/CUSTOM/1.10.3/info.json",
+                "Homo_sapiens/nf-core/GRCh38_chr21/Sequence/SalmonIndex/CUSTOM/1.10.3/mphf.bin",
+                "Homo_sapiens/nf-core/GRCh38_chr21/Sequence/SalmonIndex/CUSTOM/1.10.3/pos.bin",
+                "Homo_sapiens/nf-core/GRCh38_chr21/Sequence/SalmonIndex/CUSTOM/1.10.3/pre_indexing.log",
+                "Homo_sapiens/nf-core/GRCh38_chr21/Sequence/SalmonIndex/CUSTOM/1.10.3/rank.bin",
+                "Homo_sapiens/nf-core/GRCh38_chr21/Sequence/SalmonIndex/CUSTOM/1.10.3/refAccumLengths.bin",
+                "Homo_sapiens/nf-core/GRCh38_chr21/Sequence/SalmonIndex/CUSTOM/1.10.3/ref_indexing.log",
+                "Homo_sapiens/nf-core/GRCh38_chr21/Sequence/SalmonIndex/CUSTOM/1.10.3/reflengths.bin",
+                "Homo_sapiens/nf-core/GRCh38_chr21/Sequence/SalmonIndex/CUSTOM/1.10.3/refseq.bin",
+                "Homo_sapiens/nf-core/GRCh38_chr21/Sequence/SalmonIndex/CUSTOM/1.10.3/seq.bin",
+                "Homo_sapiens/nf-core/GRCh38_chr21/Sequence/SalmonIndex/CUSTOM/1.10.3/versionInfo.json",
+                "index.json",
                 "multiqc",
                 "multiqc/multiqc_data",
                 "multiqc/multiqc_data/llms-full.txt",
@@ -22,13 +45,23 @@
                 "pipeline_info/nf_core_references_software_mqc_versions.yml"
             ],
             [
+                "complete_ref_lens.bin:md5,ec4126a76984f26dc11baa2aaec7c325",
+                "ctg_offsets.bin:md5,6f41c3fe64790ba0399be18d30436bb6",
+                "duplicate_clusters.tsv:md5,b65592e6f604234ac3cf45f8cafd8d27",
+                "info.json:md5,e13f6500d048a7f72bcc385ce54bd50a",
+                "mphf.bin:md5,9651ab954dccca304b6dcddf50fbae61",
+                "rank.bin:md5,e2ee4a817caa0614c7cfa732358aa829",
+                "refAccumLengths.bin:md5,f79c13f67c09f87982ff1503826d6350",
+                "reflengths.bin:md5,ec4126a76984f26dc11baa2aaec7c325",
+                "refseq.bin:md5,dbe45319a08f3ea4b9eed98787b683ba",
+                "versionInfo.json:md5,d2c799050e81aa6e282ac8a73e773941",
                 "multiqc_citations.txt:md5,4c806e63a283ec1b7e78cdae3a923d4f"
             ]
         ],
-        "timestamp": "2026-05-04T13:39:03.494523804",
+        "timestamp": "2026-05-04T16:09:11.675553276",
         "meta": {
             "nf-test": "0.9.5",
-            "nextflow": "26.03.4"
+            "nextflow": "26.04.0"
         }
     },
     "-profile test --tools salmon,rsem_make_transcript_fasta": {

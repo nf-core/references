@@ -13,4 +13,5 @@ null/
 tmp/
 .nf-test
 .vscode
-modules/nf
+modules/nf-*/**/tests/
+subworkflows/nf-*/**/tests/
