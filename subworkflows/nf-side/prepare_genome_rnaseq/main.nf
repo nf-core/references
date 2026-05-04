@@ -12,23 +12,23 @@ include { STAR_GENOMEGENERATE                                   } from '../../..
 
 workflow PREPARE_GENOME_RNASEQ {
     take:
-    fasta // channel: [meta, fasta]
-    fasta_fai // channel: [meta, fasta_fai]
-    gff // channel: [meta, gff]
-    gtf // channel: [meta, gtf]
-    splice_sites // channel: [meta, splice_sites]
-    transcript_fasta // channel: [meta, transcript_fasta]
-    run_bowtie1 // boolean: true/false
-    run_bowtie2 // boolean: true/false
-    run_faidx // boolean: true/false
-    run_hisat2 // boolean: true/false
-    run_hisat2_extractsplicesites // boolean: true/false
-    run_kallisto // boolean: true/false
-    run_rsem // boolean: true/false
+    fasta                          // channel: [meta, fasta]
+    fasta_fai                      // channel: [meta, fasta_fai]
+    gff                            // channel: [meta, gff]
+    gtf                            // channel: [meta, gtf]
+    splice_sites                   // channel: [meta, splice_sites]
+    transcript_fasta               // channel: [meta, transcript_fasta]
+    run_bowtie1                    // boolean: true/false
+    run_bowtie2                    // boolean: true/false
+    run_faidx                      // boolean: true/false
+    run_hisat2                     // boolean: true/false
+    run_hisat2_extractsplicesites  // boolean: true/false
+    run_kallisto                   // boolean: true/false
+    run_rsem                       // boolean: true/false
     run_rsem_make_transcript_fasta // boolean: true/false
-    run_salmon // boolean: true/false
-    run_sizes // boolean: true/false
-    run_star // boolean: true/false
+    run_salmon                     // boolean: true/false
+    run_sizes                      // boolean: true/false
+    run_star                       // boolean: true/false
 
     main:
     bowtie1_index = Channel.empty()
@@ -109,17 +109,17 @@ workflow PREPARE_GENOME_RNASEQ {
     }
 
     emit:
-    bowtie1_index // channel: [meta, BowtieIndex/]
-    bowtie2_index // channel: [meta, Bowtie2Index/]
-    fasta_fai // channel: [meta, *.fa(sta).fai]
-    fasta_sizes // channel: [meta, *.fa(sta).sizes]
-    gtf // channel: [meta, gtf]
-    hisat2_index // channel: [meta, Hisat2Index/]
-    kallisto_index // channel: [meta, KallistoIndex]
-    rsem_index // channel: [meta, RSEMIndex/]
-    salmon_index // channel: [meta, SalmonIndex/]
-    splice_sites // channel: [meta, *.splice_sites.txt]
-    star_index // channel: [meta, STARIndex/]
+    bowtie1_index    // channel: [meta, BowtieIndex/]
+    bowtie2_index    // channel: [meta, Bowtie2Index/]
+    fasta_fai        // channel: [meta, *.fa(sta).fai]
+    fasta_sizes      // channel: [meta, *.fa(sta).sizes]
+    gtf              // channel: [meta, gtf]
+    hisat2_index     // channel: [meta, Hisat2Index/]
+    kallisto_index   // channel: [meta, KallistoIndex]
+    rsem_index       // channel: [meta, RSEMIndex/]
+    salmon_index     // channel: [meta, SalmonIndex/]
+    splice_sites     // channel: [meta, *.splice_sites.txt]
+    star_index       // channel: [meta, STARIndex/]
     transcript_fasta // channel: [meta, *.transcripts.fasta]
     topic_versions   = channel.topic('versions')
 }
