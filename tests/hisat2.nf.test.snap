@@ -1,6 +1,7 @@
 {
     "-profile test --tools hisat2,hisat2_extractsplicesites --input references-datasheets/latest/genomes/Homo_sapiens/nf-core/GRCh38_chr21_MT.yml": {
         "content": [
+            2,
             {
                 "HISAT2_BUILD": {
                     "hisat2": "2.2.1"
@@ -24,7 +25,7 @@
                 "multiqc_citations.txt:md5,4c806e63a283ec1b7e78cdae3a923d4f"
             ]
         ],
-        "timestamp": "2026-04-30T15:25:20.308458245",
+        "timestamp": "2026-05-04T13:28:33.954930393",
         "meta": {
             "nf-test": "0.9.5",
             "nextflow": "26.03.4"
@@ -32,6 +33,7 @@
     },
     "-profile test --tools hisat2,hisat2_extractsplicesites": {
         "content": [
+            4,
             {
                 "GFFREAD": {
                     "gffread": "0.12.7"
@@ -91,10 +93,10 @@
                 "multiqc_citations.txt:md5,4c806e63a283ec1b7e78cdae3a923d4f"
             ]
         ],
-        "timestamp": "2025-10-22T13:48:24.752339407",
+        "timestamp": "2026-05-04T13:30:01.145090085",
         "meta": {
-            "nf-test": "0.9.3",
-            "nextflow": "25.04.8"
+            "nf-test": "0.9.5",
+            "nextflow": "26.03.4"
         }
     }
 }
