@@ -1,6 +1,7 @@
 {
     "-profile test --tools bwamem1,createsequencedictionary,faidx,intervals --input references-datasheets/latest/genomes_source/Homo_sapiens/nf-core/GRCh38_chr21_chr22.yml": {
         "content": [
+            9,
             {
                 "BUILD_INTERVALS": {
                     "gawk": "5.3.0"
@@ -82,14 +83,15 @@
                 "multiqc_citations.txt:md5,4c806e63a283ec1b7e78cdae3a923d4f"
             ]
         ],
+        "timestamp": "2026-05-04T13:34:18.615057144",
         "meta": {
-            "nf-test": "0.9.3",
-            "nextflow": "25.10.2"
-        },
-        "timestamp": "2026-01-15T13:32:53.633810585"
+            "nf-test": "0.9.5",
+            "nextflow": "26.03.4"
+        }
     },
     "-profile test --tools tabix --input references-datasheets/latest/genomes_source/Homo_sapiens/GATK/GRCh37_GRCh38_multiple_dbsnps_globs.yml": {
         "content": [
+            5,
             {
                 "TABIX_TABIX": {
                     "tabix": "1.21"
@@ -130,10 +132,10 @@
                 "multiqc_citations.txt:md5,4c806e63a283ec1b7e78cdae3a923d4f"
             ]
         ],
+        "timestamp": "2026-05-04T13:34:53.027597524",
         "meta": {
-            "nf-test": "0.9.3",
-            "nextflow": "25.10.2"
-        },
-        "timestamp": "2026-01-15T13:33:25.90199516"
+            "nf-test": "0.9.5",
+            "nextflow": "26.03.4"
+        }
     }
 }

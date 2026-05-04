@@ -1,6 +1,7 @@
 {
     "-profile test --tools kallisto,rsem_make_transcript_fasta": {
         "content": [
+            4,
             {
                 "GFFREAD": {
                     "gffread": "0.12.7"
@@ -46,14 +47,15 @@
                 "multiqc_citations.txt:md5,4c806e63a283ec1b7e78cdae3a923d4f"
             ]
         ],
+        "timestamp": "2026-05-04T15:57:10.384204424",
         "meta": {
-            "nf-test": "0.9.3",
-            "nextflow": "25.04.8"
-        },
-        "timestamp": "2025-10-22T13:50:13.684163497"
+            "nf-test": "0.9.5",
+            "nextflow": "26.04.0"
+        }
     },
     "-profile test --tools kallisto,rsem_make_transcript_fasta --input references-datasheets/latest/genomes/Homo_sapiens/nf-core/GRCh38_chr21_MT.yml": {
         "content": [
+            2,
             {
                 "KALLISTO_INDEX": {
                     "kallisto": "0.51.1"
@@ -86,10 +88,10 @@
                 "multiqc_citations.txt:md5,4c806e63a283ec1b7e78cdae3a923d4f"
             ]
         ],
+        "timestamp": "2026-05-04T15:56:50.407246621",
         "meta": {
-            "nf-test": "0.9.3",
-            "nextflow": "25.04.8"
-        },
-        "timestamp": "2025-10-22T13:48:54.722152131"
+            "nf-test": "0.9.5",
+            "nextflow": "26.04.0"
+        }
     }
 }

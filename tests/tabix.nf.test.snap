@@ -1,6 +1,7 @@
 {
     "-profile test --tools tabix --input references-datasheets/latest/genomes_source/Homo_sapiens/nf-core/GRCh38_chr21_chr22.yml": {
         "content": [
+            1,
             {
                 
             },
@@ -23,14 +24,15 @@
                 "multiqc_citations.txt:md5,4c806e63a283ec1b7e78cdae3a923d4f"
             ]
         ],
+        "timestamp": "2026-05-04T13:49:48.65709389",
         "meta": {
-            "nf-test": "0.9.3",
-            "nextflow": "25.04.8"
-        },
-        "timestamp": "2025-10-22T13:59:06.940925897"
+            "nf-test": "0.9.5",
+            "nextflow": "26.03.4"
+        }
     },
     "-profile test --tools tabix --input references-datasheets/latest/genomes_source/Homo_sapiens/nf-core/GRCh38_chr21_MT.yml": {
         "content": [
+            5,
             {
                 "TABIX_BGZIPTABIX": {
                     "tabix": "1.21"
@@ -74,10 +76,10 @@
                 "multiqc_citations.txt:md5,4c806e63a283ec1b7e78cdae3a923d4f"
             ]
         ],
+        "timestamp": "2026-05-04T16:11:10.049971239",
         "meta": {
-            "nf-test": "0.9.3",
-            "nextflow": "25.10.2"
-        },
-        "timestamp": "2026-01-15T13:41:42.457020033"
+            "nf-test": "0.9.5",
+            "nextflow": "26.04.0"
+        }
     }
 }

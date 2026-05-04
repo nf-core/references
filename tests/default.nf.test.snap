@@ -1,6 +1,7 @@
 {
     "-profile test": {
         "content": [
+            6,
             {
                 "BOWTIE1_BUILD": {
                     "bowtie": "1.3.1"
@@ -112,10 +113,10 @@
                 "multiqc_citations.txt:md5,4c806e63a283ec1b7e78cdae3a923d4f"
             ]
         ],
+        "timestamp": "2026-05-04T13:27:00.400984209",
         "meta": {
-            "nf-test": "0.9.3",
-            "nextflow": "25.10.2"
-        },
-        "timestamp": "2026-01-15T13:26:42.652887516"
+            "nf-test": "0.9.5",
+            "nextflow": "26.03.4"
+        }
     }
 }

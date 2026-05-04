@@ -1,6 +1,7 @@
 {
     "-profile test --tools bwamem1,bwamem2,createsequencedictionary,dragmap,faidx,intervals,msisensorpro,tabix --input references-datasheets/latest/genomes_source/Homo_sapiens/GATK/GRCh38_chr22.yml": {
         "content": [
+            11,
             {
                 "BUILD_INTERVALS": {
                     "gawk": "5.3.0"
@@ -108,14 +109,15 @@
                 "multiqc_citations.txt:md5,4c806e63a283ec1b7e78cdae3a923d4f"
             ]
         ],
+        "timestamp": "2026-05-04T15:57:51.433637102",
         "meta": {
-            "nf-test": "0.9.3",
-            "nextflow": "25.10.2"
-        },
-        "timestamp": "2026-01-15T13:40:39.747672409"
+            "nf-test": "0.9.5",
+            "nextflow": "26.04.0"
+        }
     },
     "-profile test --tools bwamem1,bwamem2,createsequencedictionary,dragmap,faidx,intervals,msisensorpro,tabix --input references-datasheets/latest/genomes/Homo_sapiens/GATK/GRCh38_chr22.yml": {
         "content": [
+            2,
             {
                 "MSISENSORPRO_SCAN": {
                     "msisensor-pro": "1.3.0"
@@ -147,10 +149,10 @@
                 "multiqc_citations.txt:md5,4c806e63a283ec1b7e78cdae3a923d4f"
             ]
         ],
+        "timestamp": "2026-05-04T16:00:36.157261789",
         "meta": {
-            "nf-test": "0.9.3",
-            "nextflow": "25.04.8"
-        },
-        "timestamp": "2025-10-22T13:58:49.531702963"
+            "nf-test": "0.9.5",
+            "nextflow": "26.04.0"
+        }
     }
 }
