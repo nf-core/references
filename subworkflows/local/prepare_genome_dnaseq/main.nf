@@ -5,8 +5,7 @@ include { GATK4_CREATESEQUENCEDICTIONARY } from '../../../modules/local/gatk4/cr
 include { GAWK as BUILD_INTERVALS        } from '../../../modules/local/gawk'
 include { MSISENSORPRO_SCAN              } from '../../../modules/local/msisensorpro/scan'
 include { SAMTOOLS_FAIDX                 } from '../../../modules/local/samtools/faidx'
-include { TABIX_BGZIPTABIX               } from '../../../modules/local/tabix/bgziptabix'
-include { TABIX_TABIX                    } from '../../../modules/local/tabix/tabix'
+include { HTSLIB_BGZIPTABIX               } from '../../../modules/nf-core/htslib/bgziptabix'
 include { SNAPALIGNER_INDEX              } from '../../../modules/local/snapaligner/index'
 
 workflow PREPARE_GENOME_DNASEQ {
@@ -84,16 +83,15 @@ workflow PREPARE_GENOME_DNASEQ {
     }
 
     if (run_tabix) {
-        vcf_to_index = vcf.branch { _meta, vcf_ ->
-            vcf_gz: vcf_.toString().endsWith('.gz')
-            vcf: true
-        }
+        HTSLIB_BGZIPTABIX(
+            vcf.map { meta, vcf_ -> [meta, vcf_, [], []] },
+            "compress",
+            true,
+            "vcf"
+        )
 
-        TABIX_BGZIPTABIX(vcf_to_index.vcf)
-        TABIX_TABIX(vcf_to_index.vcf_gz)
-
-        vcf_gz = TABIX_BGZIPTABIX.out.gz_tbi.map { meta, vcf_gz_, _vcf_tbi -> [meta, vcf_gz_] }
-        vcf_tbi = TABIX_TABIX.out.tbi.mix(TABIX_BGZIPTABIX.out.gz_tbi.map { meta, _vcf_gz, vcf_tbi_ -> [meta, vcf_tbi_] })
+        vcf_gz = HTSLIB_BGZIPTABIX.out.output.map { meta, out -> [meta, out] }
+        vcf_tbi = HTSLIB_BGZIPTABIX.out.index.map { meta, idx -> [meta, idx] }
     }
 
     if (run_snapaligner) {

@@ -1,6 +1,6 @@
 nextflow_pipeline {
 
-    name "Build tabix references"
+    name "Build htslib references"
     script "../main.nf"
     tag "pipeline"
 
