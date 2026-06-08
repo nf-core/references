@@ -1,14 +1,14 @@
-include { BOWTIE2_BUILD                                         } from '../../../modules/local/bowtie2/build'
-include { BOWTIE_BUILD as BOWTIE1_BUILD                         } from '../../../modules/local/bowtie/build'
-include { GFFREAD                                               } from '../../../modules/local/gffread'
-include { HISAT2_BUILD                                          } from '../../../modules/local/hisat2/build'
-include { HISAT2_EXTRACTSPLICESITES                             } from '../../../modules/local/hisat2/extractsplicesites'
-include { KALLISTO_INDEX                                        } from '../../../modules/local/kallisto/index'
-include { RSEM_PREPAREREFERENCE as MAKE_TRANSCRIPTS_FASTA       } from '../../../modules/local/rsem/preparereference'
-include { RSEM_PREPAREREFERENCE as RSEM_PREPAREREFERENCE_GENOME } from '../../../modules/local/rsem/preparereference'
-include { SALMON_INDEX                                          } from '../../../modules/local/salmon/index'
-include { SAMTOOLS_FAIDX                                        } from '../../../modules/local/samtools/faidx'
-include { STAR_GENOMEGENERATE                                   } from '../../../modules/local/star/genomegenerate'
+include { BOWTIE2_BUILD                                         } from '../../../modules/nf-core/bowtie2/build'
+include { BOWTIE_BUILD as BOWTIE1_BUILD                         } from '../../../modules/nf-core/bowtie/build'
+include { GFFREAD                                               } from '../../../modules/nf-core/gffread'
+include { HISAT2_BUILD                                          } from '../../../modules/nf-core/hisat2/build'
+include { HISAT2_EXTRACTSPLICESITES                             } from '../../../modules/nf-core/hisat2/extractsplicesites'
+include { KALLISTO_INDEX                                        } from '../../../modules/nf-core/kallisto/index'
+include { RSEM_PREPAREREFERENCE as MAKE_TRANSCRIPTS_FASTA       } from '../../../modules/nf-core/rsem/preparereference'
+include { RSEM_PREPAREREFERENCE as RSEM_PREPAREREFERENCE_GENOME } from '../../../modules/nf-core/rsem/preparereference'
+include { SALMON_INDEX                                          } from '../../../modules/nf-core/salmon/index'
+include { SAMTOOLS_FAIDX                                        } from '../../../modules/nf-core/samtools/faidx'
+include { STAR_GENOMEGENERATE                                   } from '../../../modules/nf-core/star/genomegenerate'
 
 workflow PREPARE_GENOME_RNASEQ {
     take:
@@ -31,14 +31,14 @@ workflow PREPARE_GENOME_RNASEQ {
     run_star // boolean: true/false
 
     main:
-    bowtie1_index = Channel.empty()
-    bowtie2_index = Channel.empty()
-    hisat2_index = Channel.empty()
-    kallisto_index = Channel.empty()
-    rsem_index = Channel.empty()
-    salmon_index = Channel.empty()
-    star_index = Channel.empty()
-    fasta_sizes = Channel.empty()
+    bowtie1_index = channel.empty()
+    bowtie2_index = channel.empty()
+    hisat2_index = channel.empty()
+    kallisto_index = channel.empty()
+    rsem_index = channel.empty()
+    salmon_index = channel.empty()
+    star_index = channel.empty()
+    fasta_sizes = channel.empty()
 
     if (run_bowtie1) {
         BOWTIE1_BUILD(fasta)
@@ -58,7 +58,7 @@ workflow PREPARE_GENOME_RNASEQ {
     }
 
     if (run_hisat2 || run_kallisto || run_rsem || run_rsem_make_transcript_fasta || run_salmon || run_star) {
-        GFFREAD(gff.map { meta, gff_ -> [meta, [], gff_] })
+        GFFREAD(fasta, gff.map { meta, gff_ -> [meta, [], gff_] })
 
         gtf = gtf
             .mix(GFFREAD.out.gtf)
@@ -71,14 +71,14 @@ workflow PREPARE_GENOME_RNASEQ {
             splice_sites = splice_sites.mix(HISAT2_EXTRACTSPLICESITES.out.txt)
 
             if (run_hisat2) {
-                HISAT2_BUILD(join_by_meta_id(fasta, gtf, splice_sites))
+                HISAT2_BUILD(fasta, gtf, splice_sites)
 
                 hisat2_index = HISAT2_BUILD.out.index
             }
         }
 
         if (run_kallisto || run_rsem_make_transcript_fasta || run_salmon) {
-            MAKE_TRANSCRIPTS_FASTA(join_by_meta_id(fasta, gtf))
+            MAKE_TRANSCRIPTS_FASTA(fasta, gtf)
 
             transcript_fasta = transcript_fasta.mix(MAKE_TRANSCRIPTS_FASTA.out.transcript_fasta)
 
@@ -89,20 +89,20 @@ workflow PREPARE_GENOME_RNASEQ {
             }
 
             if (run_salmon) {
-                SALMON_INDEX(join_by_meta_id(fasta, transcript_fasta))
+                SALMON_INDEX(fasta, transcript_fasta)
 
                 salmon_index = SALMON_INDEX.out.index
             }
         }
 
         if (run_rsem) {
-            RSEM_PREPAREREFERENCE_GENOME(join_by_meta_id(fasta, gtf))
+            RSEM_PREPAREREFERENCE_GENOME(fasta, gtf)
 
             rsem_index = RSEM_PREPAREREFERENCE_GENOME.out.index
         }
 
         if (run_star) {
-            STAR_GENOMEGENERATE(join_by_meta_id(fasta, gtf))
+            STAR_GENOMEGENERATE(fasta, gtf)
 
             star_index = STAR_GENOMEGENERATE.out.index
         }
@@ -121,27 +121,4 @@ workflow PREPARE_GENOME_RNASEQ {
     splice_sites // channel: [meta, *.splice_sites.txt]
     star_index // channel: [meta, STARIndex/]
     transcript_fasta // channel: [meta, *.transcripts.fasta]
-    topic_versions   = channel.topic('versions')
-}
-
-/*
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    UTILITY FUNCTIONS
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-*/
-
-def join_by_meta_id(channel1, channel2, channel3 = null) {
-    if (channel3) {
-        return channel1
-            .map { meta, content1_ -> [meta.id, content1_, meta] }
-            .join(channel2.map { meta, content2_ -> [meta.id, content2_, meta] })
-            .join(channel3.map { meta, content3_ -> [meta.id, content3_, meta] })
-            .map { _id, content1_, meta1, content2_, meta2, content3_, meta3 -> [meta3 + meta2 + meta1, content1_, content2_, content3_] }
-    }
-    else {
-        return channel1
-            .map { meta, content1_ -> [meta.id, content1_, meta] }
-            .join(channel2.map { meta, content2_ -> [meta.id, content2_, meta] })
-            .map { _id, content1_, meta1, content2_, meta2 -> [meta2 + meta1, content1_, content2_] }
-    }
 }

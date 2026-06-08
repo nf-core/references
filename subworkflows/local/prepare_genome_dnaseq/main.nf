@@ -1,12 +1,12 @@
-include { BWAMEM2_INDEX                  } from '../../../modules/local/bwamem2/index'
-include { BWA_INDEX as BWAMEM1_INDEX     } from '../../../modules/local/bwa/index'
-include { DRAGMAP_HASHTABLE              } from '../../../modules/local/dragmap/hashtable'
-include { GATK4_CREATESEQUENCEDICTIONARY } from '../../../modules/local/gatk4/createsequencedictionary'
-include { GAWK as BUILD_INTERVALS        } from '../../../modules/local/gawk'
-include { MSISENSORPRO_SCAN              } from '../../../modules/local/msisensorpro/scan'
-include { SAMTOOLS_FAIDX                 } from '../../../modules/local/samtools/faidx'
-include { HTSLIB_BGZIPTABIX               } from '../../../modules/nf-core/htslib/bgziptabix'
-include { SNAPALIGNER_INDEX              } from '../../../modules/local/snapaligner/index'
+include { BWAMEM2_INDEX                  } from '../../../modules/nf-core/bwamem2/index'
+include { BWA_INDEX as BWAMEM1_INDEX     } from '../../../modules/nf-core/bwa/index'
+include { DRAGMAP_HASHTABLE              } from '../../../modules/nf-core/dragmap/hashtable'
+include { GATK4_CREATESEQUENCEDICTIONARY } from '../../../modules/nf-core/gatk4/createsequencedictionary'
+include { GAWK as BUILD_INTERVALS        } from '../../../modules/nf-core/gawk'
+include { MSISENSORPRO_SCAN              } from '../../../modules/nf-core/msisensorpro/scan'
+include { SAMTOOLS_FAIDX                 } from '../../../modules/nf-core/samtools/faidx'
+include { HTSLIB_BGZIPTABIX              } from '../../../modules/nf-core/htslib/bgziptabix'
+include { SNAPALIGNER_INDEX              } from '../../../modules/nf-core/snapaligner/index'
 
 workflow PREPARE_GENOME_DNASEQ {
     take:
@@ -25,15 +25,15 @@ workflow PREPARE_GENOME_DNASEQ {
     run_snapaligner // boolean: true/false
 
     main:
-    bwamem1_index = Channel.empty()
-    bwamem2_index = Channel.empty()
-    dragmap_hashmap = Channel.empty()
-    fasta_dict = Channel.empty()
-    intervals_bed = Channel.empty()
-    msisensorpro_list = Channel.empty()
-    vcf_gz = Channel.empty()
-    vcf_tbi = Channel.empty()
-    snapaligner_index = Channel.empty()
+    bwamem1_index = channel.empty()
+    bwamem2_index = channel.empty()
+    dragmap_hashmap = channel.empty()
+    fasta_dict = channel.empty()
+    intervals_bed = channel.empty()
+    msisensorpro_list = channel.empty()
+    vcf_gz = channel.empty()
+    vcf_tbi = channel.empty()
+    snapaligner_index = channel.empty()
 
     if (run_bwamem1) {
         BWAMEM1_INDEX(fasta)
@@ -87,7 +87,7 @@ workflow PREPARE_GENOME_DNASEQ {
             vcf.map { meta, vcf_ -> [meta, vcf_, [], []] },
             "compress",
             true,
-            "vcf"
+            "vcf",
         )
 
         vcf_gz = HTSLIB_BGZIPTABIX.out.output.map { meta, out -> [meta, out] }
@@ -116,5 +116,4 @@ workflow PREPARE_GENOME_DNASEQ {
     snapaligner_index // channel: [meta, snap/]
     vcf_gz // channel: [meta, *.vcf.gz]
     vcf_tbi // channel: [meta, *.vcf.gz.tbi]
-    topic_versions    = channel.topic('versions')
 }
