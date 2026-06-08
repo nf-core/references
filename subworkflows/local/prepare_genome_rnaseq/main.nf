@@ -1,34 +1,34 @@
-include { BOWTIE2_BUILD                                         } from '../../../modules/nf-side/bowtie2/build'
-include { BOWTIE_BUILD as BOWTIE1_BUILD                         } from '../../../modules/nf-side/bowtie/build'
-include { GFFREAD                                               } from '../../../modules/nf-side/gffread'
-include { HISAT2_BUILD                                          } from '../../../modules/nf-side/hisat2/build'
-include { HISAT2_EXTRACTSPLICESITES                             } from '../../../modules/nf-side/hisat2/extractsplicesites'
-include { KALLISTO_INDEX                                        } from '../../../modules/nf-side/kallisto/index'
-include { RSEM_PREPAREREFERENCE as MAKE_TRANSCRIPTS_FASTA       } from '../../../modules/nf-side/rsem/preparereference'
-include { RSEM_PREPAREREFERENCE as RSEM_PREPAREREFERENCE_GENOME } from '../../../modules/nf-side/rsem/preparereference'
-include { SALMON_INDEX                                          } from '../../../modules/nf-side/salmon/index'
-include { SAMTOOLS_FAIDX                                        } from '../../../modules/nf-side/samtools/faidx'
-include { STAR_GENOMEGENERATE                                   } from '../../../modules/nf-side/star/genomegenerate'
+include { BOWTIE2_BUILD                                         } from '../../../modules/local/bowtie2/build'
+include { BOWTIE_BUILD as BOWTIE1_BUILD                         } from '../../../modules/local/bowtie/build'
+include { GFFREAD                                               } from '../../../modules/local/gffread'
+include { HISAT2_BUILD                                          } from '../../../modules/local/hisat2/build'
+include { HISAT2_EXTRACTSPLICESITES                             } from '../../../modules/local/hisat2/extractsplicesites'
+include { KALLISTO_INDEX                                        } from '../../../modules/local/kallisto/index'
+include { RSEM_PREPAREREFERENCE as MAKE_TRANSCRIPTS_FASTA       } from '../../../modules/local/rsem/preparereference'
+include { RSEM_PREPAREREFERENCE as RSEM_PREPAREREFERENCE_GENOME } from '../../../modules/local/rsem/preparereference'
+include { SALMON_INDEX                                          } from '../../../modules/local/salmon/index'
+include { SAMTOOLS_FAIDX                                        } from '../../../modules/local/samtools/faidx'
+include { STAR_GENOMEGENERATE                                   } from '../../../modules/local/star/genomegenerate'
 
 workflow PREPARE_GENOME_RNASEQ {
     take:
-    fasta                          // channel: [meta, fasta]
-    fasta_fai                      // channel: [meta, fasta_fai]
-    gff                            // channel: [meta, gff]
-    gtf                            // channel: [meta, gtf]
-    splice_sites                   // channel: [meta, splice_sites]
-    transcript_fasta               // channel: [meta, transcript_fasta]
-    run_bowtie1                    // boolean: true/false
-    run_bowtie2                    // boolean: true/false
-    run_faidx                      // boolean: true/false
-    run_hisat2                     // boolean: true/false
-    run_hisat2_extractsplicesites  // boolean: true/false
-    run_kallisto                   // boolean: true/false
-    run_rsem                       // boolean: true/false
+    fasta // channel: [meta, fasta]
+    fasta_fai // channel: [meta, fasta_fai]
+    gff // channel: [meta, gff]
+    gtf // channel: [meta, gtf]
+    splice_sites // channel: [meta, splice_sites]
+    transcript_fasta // channel: [meta, transcript_fasta]
+    run_bowtie1 // boolean: true/false
+    run_bowtie2 // boolean: true/false
+    run_faidx // boolean: true/false
+    run_hisat2 // boolean: true/false
+    run_hisat2_extractsplicesites // boolean: true/false
+    run_kallisto // boolean: true/false
+    run_rsem // boolean: true/false
     run_rsem_make_transcript_fasta // boolean: true/false
-    run_salmon                     // boolean: true/false
-    run_sizes                      // boolean: true/false
-    run_star                       // boolean: true/false
+    run_salmon // boolean: true/false
+    run_sizes // boolean: true/false
+    run_star // boolean: true/false
 
     main:
     bowtie1_index = Channel.empty()
@@ -109,17 +109,17 @@ workflow PREPARE_GENOME_RNASEQ {
     }
 
     emit:
-    bowtie1_index    // channel: [meta, BowtieIndex/]
-    bowtie2_index    // channel: [meta, Bowtie2Index/]
-    fasta_fai        // channel: [meta, *.fa(sta).fai]
-    fasta_sizes      // channel: [meta, *.fa(sta).sizes]
-    gtf              // channel: [meta, gtf]
-    hisat2_index     // channel: [meta, Hisat2Index/]
-    kallisto_index   // channel: [meta, KallistoIndex]
-    rsem_index       // channel: [meta, RSEMIndex/]
-    salmon_index     // channel: [meta, SalmonIndex/]
-    splice_sites     // channel: [meta, *.splice_sites.txt]
-    star_index       // channel: [meta, STARIndex/]
+    bowtie1_index // channel: [meta, BowtieIndex/]
+    bowtie2_index // channel: [meta, Bowtie2Index/]
+    fasta_fai // channel: [meta, *.fa(sta).fai]
+    fasta_sizes // channel: [meta, *.fa(sta).sizes]
+    gtf // channel: [meta, gtf]
+    hisat2_index // channel: [meta, Hisat2Index/]
+    kallisto_index // channel: [meta, KallistoIndex]
+    rsem_index // channel: [meta, RSEMIndex/]
+    salmon_index // channel: [meta, SalmonIndex/]
+    splice_sites // channel: [meta, *.splice_sites.txt]
+    star_index // channel: [meta, STARIndex/]
     transcript_fasta // channel: [meta, *.transcripts.fasta]
     topic_versions   = channel.topic('versions')
 }

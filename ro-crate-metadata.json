@@ -21,12 +21,15 @@
         {
             "@id": "./",
             "@type": "Dataset",
-            "creativeWorkStatus": "Stable",
-            "datePublished": "2026-04-30T07:36:54+00:00",
-            "description": "<h1>\n  <picture>\n    <source media=\"(prefers-color-scheme: dark)\" srcset=\"docs/images/nf-core-references_logo_dark.png\">\n    <img alt=\"nf-core/references\" src=\"docs/images/nf-core-references_logo_light.png\">\n  </picture>\n</h1>\n\n[![Open in GitHub Codespaces](https://img.shields.io/badge/Open_In_GitHub_Codespaces-black?labelColor=grey&logo=github)](https://github.com/codespaces/new/nf-core/references)\n[![GitHub Actions CI Status](https://github.com/nf-core/references/actions/workflows/nf-test.yml/badge.svg)](https://github.com/nf-core/references/actions/workflows/nf-test.yml)\n[![GitHub Actions Linting Status](https://github.com/nf-core/references/actions/workflows/linting.yml/badge.svg)](https://github.com/nf-core/references/actions/workflows/linting.yml)[![AWS CI](https://img.shields.io/badge/CI%20tests-full%20size-FF9900?labelColor=000000&logo=Amazon%20AWS)](https://nf-co.re/references/results)[![Cite with Zenodo](http://img.shields.io/badge/DOI-10.5281/zenodo.14576225-1073c8?labelColor=000000)](https://doi.org/10.5281/zenodo.14576225)\n[![nf-test](https://img.shields.io/badge/unit_tests-nf--test-337ab7.svg)](https://www.nf-test.com)\n\n[![Nextflow](https://img.shields.io/badge/version-%E2%89%A525.10.4-green?style=flat&logo=nextflow&logoColor=white&color=%230DC09D&link=https%3A%2F%2Fnextflow.io)](https://www.nextflow.io/)\n[![nf-core template version](https://img.shields.io/badge/nf--core_template-4.0.1-green?style=flat&logo=nfcore&logoColor=white&color=%2324B064&link=https%3A%2F%2Fnf-co.re)](https://github.com/nf-core/tools/releases/tag/4.0.1)\n[![run with conda](http://img.shields.io/badge/run%20with-conda-3EB049?labelColor=000000&logo=anaconda)](https://docs.conda.io/en/latest/)\n[![run with docker](https://img.shields.io/badge/run%20with-docker-0db7ed?labelColor=000000&logo=docker)](https://www.docker.com/)\n[![run with singularity](https://img.shields.io/badge/run%20with-singularity-1d355c.svg?labelColor=000000)](https://sylabs.io/docs/)\n[![Launch on Seqera Platform](https://img.shields.io/badge/Launch%20%F0%9F%9A%80-Seqera%20Platform-%234256e7)](https://cloud.seqera.io/launch?pipeline=https://github.com/nf-core/references)\n\n[![Get help on Slack](http://img.shields.io/badge/slack-nf--core%20%23references-4A154B?labelColor=000000&logo=slack)](https://nfcore.slack.com/channels/references)[![Follow on Bluesky](https://img.shields.io/badge/bluesky-%40nf__core-1185fe?labelColor=000000&logo=bluesky)](https://bsky.app/profile/nf-co.re)[![Follow on Mastodon](https://img.shields.io/badge/mastodon-nf__core-6364ff?labelColor=FFFFFF&logo=mastodon)](https://mstdn.science/@nf_core)[![Watch on YouTube](http://img.shields.io/badge/youtube-nf--core-FF0000?labelColor=000000&logo=youtube)](https://www.youtube.com/c/nf-core)\n\n## Introduction\n\n**nf-core/references** is a bioinformatics pipeline that build references.\n\nFor most common organisms references will be stored them in the cloud, similar to [AWS iGenomes](https://github.com/ewels/AWS-iGenomes/), to allow for fast and simple access and better reproducibility.\nReferences can also be built locally for any organisms.\n\n![nf-core/references metro map](docs/images/nf-core-references_metro_map_color.png)\n\n## DNASEQ\n\nFor DNASEQ pipelines (ie [nf-core/sarek](https://nf-co.re/sarek)), needing only a fasta file, it will be able to build the following references:\n\n- [BWA-MEM](https://arxiv.org/abs/1303.3997v2) index\n- [BWA-MEM2](https://ieeexplore.ieee.org/document/8820962) index\n- [DragMap](https://github.com/Illumina/DRAGMAP) hashtable\n- Fasta dictionary (with [GATK4](https://pubmed.ncbi.nlm.nih.gov/20644199/))\n- Fasta fai (with [SAMtools](https://pubmed.ncbi.nlm.nih.gov/19505943/))\n- Fasta intervals bed (with [GATK4](https://pubmed.ncbi.nlm.nih.gov/20644199/))\n- [MSISensorPro](https://www.sciencedirect.com/science/article/pii/S1672022920300218) list\n- [SNAP](https://www.biorxiv.org/content/10.1101/2021.11.23.469039v1/) index\n\nIt will compress VCF files, if it was not already compressed, and tabix index it.\n\n- [Tabix](https://academic.oup.com/bioinformatics/article/27/5/718/262743)\n\nAnd with metadata, it will be able to download annotation caches from:\n\n- [EnsemblVEP](https://pubmed.ncbi.nlm.nih.gov/27268795/)\n- [snpEff](https://pcingola.github.io/SnpEff/)\n\n## RNASEQ\n\nFor RNASEQ pipelines (ie [nf-core/rnaseq](https://nf-co.re/rnaseq) or [nf-core/rnavar](https://nf-co.re/rnavar)), providing additional files describing genes' structures (either GFF3 or GTF), it will be able to build the following references:\n\n- [Bowtie1](http://genomebiology.com/2009/10/3/R25) index\n- [Bowtie2](https://www.nature.com/articles/nmeth.1923) index\n- Fasta dictionary (with [GATK4](https://pubmed.ncbi.nlm.nih.gov/20644199/))\n- Fasta sizes (with [SAMtools](https://pubmed.ncbi.nlm.nih.gov/19505943/))\n- GTF (from GFF3 with [GffRead](https://pubmed.ncbi.nlm.nih.gov/32489650/))\n- [HISAT2](https://pubmed.ncbi.nlm.nih.gov/31375807/) index\n- [Kallisto](https://pachterlab.github.io/kallisto/) index\n- [RSEM](https://pubmed.ncbi.nlm.nih.gov/21816040/) index\n- [STAR](https://pubmed.ncbi.nlm.nih.gov/23104886/) index\n- [Salmon](https://pubmed.ncbi.nlm.nih.gov/28263959/) index\n- Splice sites (with [HISAT2](https://pubmed.ncbi.nlm.nih.gov/31375807/))\n- Transcript fasta (with [RSEM](https://pubmed.ncbi.nlm.nih.gov/21816040/))\n\n## Datasheets\n\nDatasheets are stored in [references-datasheets](https://github.com/nf-core/references-datasheets).\n\n## Running\n\n> [!NOTE]\n> If you are new to Nextflow and nf-core, please refer to [this page](https://nf-co.re/docs/get_started/environment_setup/overview) on how to set-up Nextflow. Make sure to [test your setup](https://nf-co.re/docs/get_started/run-your-first-pipeline) with `-profile test` before running the workflow on actual data.\n\n`asset.yml`:\n\n```yml\n- genome: GRCh38_chr21\n  fasta: \"https://raw.githubusercontent.com/nf-core/test-datasets/references/references/GRCh38_chr21/GRCh38_chr21.fa\"\n  gtf: \"https://raw.githubusercontent.com/nf-core/test-datasets/references/references/GRCh38_chr21/GRCh38_chr21.gtf\"\n  source_version: \"CUSTOM\"\n  readme: \"https://raw.githubusercontent.com/nf-core/test-datasets/references/references/GRCh38_chr21/README.md\"\n  source: \"nf-core/references\"\n  source_vcf: \"GATK_BUNDLE\"\n  species: \"Homo_sapiens\"\n  vcf: \"https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/genomics/homo_sapiens/genome/vcf/dbsnp_146.hg38.vcf.gz\"\n```\n\nEach line represents a source for building a reference, a reference already built, or metadata.\n\nNow, you can run the pipeline using:\n\n```bash\nnextflow run nf-core/references \\\n   -profile <docker/singularity/.../institute> \\\n   --input datasheet.yml \\\n   --outdir <OUTDIR>\n```\n\n> [!WARNING]\n> Please provide pipeline parameters via the CLI or Nextflow `-params-file` option. Custom config files including those provided by the `-c` Nextflow option can be used to provide any configuration _**except for parameters**_; see [docs](https://nf-co.re/docs/running/run-pipelines#using-parameter-files).\n\nFor more details and further functionality, please refer to the [usage documentation](https://nf-co.re/references/usage) and the [parameter documentation](https://nf-co.re/references/parameters).\n\n## Pipeline output\n\nTo see the results of an example test run with a full size dataset refer to the [results](https://nf-co.re/references/results) tab on the nf-core website pipeline page.\nFor more details about the output files and reports, please refer to the\n[output documentation](https://nf-co.re/references/output).\n\n## Credits\n\nnf-core/references was originally written by [Maxime U Garcia](https://github.com/maxulysse) | [Edmund Miller](https://github.com/edmundmiller) | [Phil Ewels](https://github.com/ewels).\n\nWe thank the following people for their extensive assistance in the development of this pipeline:\n\n- [Adam Talbot](https://github.com/adamrtalbot)\n- [Friederike Hanssen](https://github.com/FriederikeHanssen)\n- [Harshil Patel](https://github.com/drpatelh)\n- [James Fellows Yates](https://github.com/jfy133)\n- [Jonathan Manning](https://github.com/pinin4fjords)\n- [Nicolas Vannieuwkerke](https://github.com/nvnieuwk)\n\n## Contributions and Support\n\nIf you would like to contribute to this pipeline, please see the [contributing guidelines](docs/CONTRIBUTING.md).\n\nFor further information or help, don't hesitate to get in touch on the [Slack `#references` channel](https://nfcore.slack.com/channels/references) (you can join with [this invite](https://nf-co.re/join/slack)).\n\n## Citations\n\nIf you use nf-core/references for your analysis, please cite it using the following doi: [10.5281/zenodo.14576225](https://doi.org/10.5281/zenodo.14576225)\n\nAn extensive list of references for the tools used by the pipeline can be found in the [`CITATIONS.md`](CITATIONS.md) file.\n\nYou can cite the `nf-core` publication as follows:\n\n> **The nf-core framework for community-curated bioinformatics pipelines.**\n>\n> Philip Ewels, Alexander Peltzer, Sven Fillinger, Harshil Patel, Johannes Alneberg, Andreas Wilm, Maxime Ulysse Garcia, Paolo Di Tommaso & Sven Nahnsen.\n>\n> _Nat Biotechnol._ 2020 Feb 13. doi: [10.1038/s41587-020-0439-x](https://dx.doi.org/10.1038/s41587-020-0439-x).\n",
+            "creativeWorkStatus": "InProgress",
+            "datePublished": "2026-06-08T11:10:02+00:00",
+            "description": "<h1>\n  <picture>\n    <source media=\"(prefers-color-scheme: dark)\" srcset=\"docs/images/nf-core-references_logo_dark.png\">\n    <img alt=\"nf-core/references\" src=\"docs/images/nf-core-references_logo_light.png\">\n  </picture>\n</h1>\n\n[![Open in GitHub Codespaces](https://img.shields.io/badge/Open_In_GitHub_Codespaces-black?labelColor=grey&logo=github)](https://github.com/codespaces/new/nf-core/references)\n[![GitHub Actions CI Status](https://github.com/nf-core/references/actions/workflows/nf-test.yml/badge.svg)](https://github.com/nf-core/references/actions/workflows/nf-test.yml)\n[![GitHub Actions Linting Status](https://github.com/nf-core/references/actions/workflows/linting.yml/badge.svg)](https://github.com/nf-core/references/actions/workflows/linting.yml)[![AWS CI](https://img.shields.io/badge/CI%20tests-full%20size-FF9900?labelColor=000000&logo=Amazon%20AWS)](https://nf-co.re/references/results)[![Cite with Zenodo](http://img.shields.io/badge/DOI-10.5281/zenodo.14576225-1073c8?labelColor=000000)](https://doi.org/10.5281/zenodo.14576225)\n[![nf-test](https://img.shields.io/badge/unit_tests-nf--test-337ab7.svg)](https://www.nf-test.com)\n\n[![Nextflow](https://img.shields.io/badge/version-%E2%89%A526.04.0-green?style=flat&logo=nextflow&logoColor=white&color=%230DC09D&link=https%3A%2F%2Fnextflow.io)](https://www.nextflow.io/)\n[![nf-core template version](https://img.shields.io/badge/nf--core_template-4.0.2-green?style=flat&logo=nfcore&logoColor=white&color=%2324B064&link=https%3A%2F%2Fnf-co.re)](https://github.com/nf-core/tools/releases/tag/4.0.2)\n[![run with conda](http://img.shields.io/badge/run%20with-conda-3EB049?labelColor=000000&logo=anaconda)](https://docs.conda.io/en/latest/)\n[![run with docker](https://img.shields.io/badge/run%20with-docker-0db7ed?labelColor=000000&logo=docker)](https://www.docker.com/)\n[![run with singularity](https://img.shields.io/badge/run%20with-singularity-1d355c.svg?labelColor=000000)](https://sylabs.io/docs/)\n[![Launch on Seqera Platform](https://img.shields.io/badge/Launch%20%F0%9F%9A%80-Seqera%20Platform-%234256e7)](https://cloud.seqera.io/launch?pipeline=https://github.com/nf-core/references)\n\n[![Get help on Slack](http://img.shields.io/badge/slack-nf--core%20%23references-4A154B?labelColor=000000&logo=slack)](https://nfcore.slack.com/channels/references)[![Follow on Bluesky](https://img.shields.io/badge/bluesky-%40nf__core-1185fe?labelColor=000000&logo=bluesky)](https://bsky.app/profile/nf-co.re)[![Follow on Mastodon](https://img.shields.io/badge/mastodon-nf__core-6364ff?labelColor=FFFFFF&logo=mastodon)](https://mstdn.science/@nf_core)[![Watch on YouTube](http://img.shields.io/badge/youtube-nf--core-FF0000?labelColor=000000&logo=youtube)](https://www.youtube.com/c/nf-core)\n\n## Introduction\n\n**nf-core/references** is a bioinformatics pipeline that build references.\n\nFor most common organisms references will be stored them in the cloud, similar to [AWS iGenomes](https://github.com/ewels/AWS-iGenomes/), to allow for fast and simple access and better reproducibility.\nReferences can also be built locally for any organisms.\n\n![nf-core/references metro map](docs/images/nf-core-references_metro_map_color.png)\n\n## DNASEQ\n\nFor DNASEQ pipelines (ie [nf-core/sarek](https://nf-co.re/sarek)), needing only a fasta file, it will be able to build the following references:\n\n- [BWA-MEM](https://arxiv.org/abs/1303.3997v2) index\n- [BWA-MEM2](https://ieeexplore.ieee.org/document/8820962) index\n- [DragMap](https://github.com/Illumina/DRAGMAP) hashtable\n- Fasta dictionary (with [GATK4](https://pubmed.ncbi.nlm.nih.gov/20644199/))\n- Fasta fai (with [SAMtools](https://pubmed.ncbi.nlm.nih.gov/19505943/))\n- Fasta intervals bed (with [GATK4](https://pubmed.ncbi.nlm.nih.gov/20644199/))\n- [MSISensorPro](https://www.sciencedirect.com/science/article/pii/S1672022920300218) list\n- [SNAP](https://www.biorxiv.org/content/10.1101/2021.11.23.469039v1/) index\n\nIt will compress VCF files, if it was not already compressed, and tabix index it.\n\n- [Tabix](https://academic.oup.com/bioinformatics/article/27/5/718/262743)\n\nAnd with metadata, it will be able to download annotation caches from:\n\n- [EnsemblVEP](https://pubmed.ncbi.nlm.nih.gov/27268795/)\n- [snpEff](https://pcingola.github.io/SnpEff/)\n\n## RNASEQ\n\nFor RNASEQ pipelines (ie [nf-core/rnaseq](https://nf-co.re/rnaseq) or [nf-core/rnavar](https://nf-co.re/rnavar)), providing additional files describing genes' structures (either GFF3 or GTF), it will be able to build the following references:\n\n- [Bowtie1](http://genomebiology.com/2009/10/3/R25) index\n- [Bowtie2](https://www.nature.com/articles/nmeth.1923) index\n- Fasta dictionary (with [GATK4](https://pubmed.ncbi.nlm.nih.gov/20644199/))\n- Fasta sizes (with [SAMtools](https://pubmed.ncbi.nlm.nih.gov/19505943/))\n- GTF (from GFF3 with [GffRead](https://pubmed.ncbi.nlm.nih.gov/32489650/))\n- [HISAT2](https://pubmed.ncbi.nlm.nih.gov/31375807/) index\n- [Kallisto](https://pachterlab.github.io/kallisto/) index\n- [RSEM](https://pubmed.ncbi.nlm.nih.gov/21816040/) index\n- [STAR](https://pubmed.ncbi.nlm.nih.gov/23104886/) index\n- [Salmon](https://pubmed.ncbi.nlm.nih.gov/28263959/) index\n- Splice sites (with [HISAT2](https://pubmed.ncbi.nlm.nih.gov/31375807/))\n- Transcript fasta (with [RSEM](https://pubmed.ncbi.nlm.nih.gov/21816040/))\n\n## Datasheets\n\nDatasheets are stored in [references-datasheets](https://github.com/nf-core/references-datasheets).\n\n## Running\n\n> [!NOTE]\n> If you are new to Nextflow and nf-core, please refer to [this page](https://nf-co.re/docs/get_started/environment_setup/overview) on how to set-up Nextflow. Make sure to [test your setup](https://nf-co.re/docs/get_started/run-your-first-pipeline) with `-profile test` before running the workflow on actual data.\n\n`asset.yml`:\n\n```yml\n- genome: GRCh38_chr21\n  fasta: \"https://raw.githubusercontent.com/nf-core/test-datasets/references/references/GRCh38_chr21/GRCh38_chr21.fa\"\n  gtf: \"https://raw.githubusercontent.com/nf-core/test-datasets/references/references/GRCh38_chr21/GRCh38_chr21.gtf\"\n  source_version: \"CUSTOM\"\n  readme: \"https://raw.githubusercontent.com/nf-core/test-datasets/references/references/GRCh38_chr21/README.md\"\n  source: \"nf-core/references\"\n  source_vcf: \"GATK_BUNDLE\"\n  species: \"Homo_sapiens\"\n  vcf: \"https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/genomics/homo_sapiens/genome/vcf/dbsnp_146.hg38.vcf.gz\"\n```\n\nEach line represents a source for building a reference, a reference already built, or metadata.\n\nNow, you can run the pipeline using:\n\n```bash\nnextflow run nf-core/references \\\n   -profile <docker/singularity/.../institute> \\\n   --input datasheet.yml \\\n   --outdir <OUTDIR>\n```\n\n> [!WARNING]\n> Please provide pipeline parameters via the CLI or Nextflow `-params-file` option. Custom config files including those provided by the `-c` Nextflow option can be used to provide any configuration _**except for parameters**_; see [docs](https://nf-co.re/docs/running/run-pipelines#using-parameter-files).\n\nFor more details and further functionality, please refer to the [usage documentation](https://nf-co.re/references/usage) and the [parameter documentation](https://nf-co.re/references/parameters).\n\n## Pipeline output\n\nTo see the results of an example test run with a full size dataset refer to the [results](https://nf-co.re/references/results) tab on the nf-core website pipeline page.\nFor more details about the output files and reports, please refer to the\n[output documentation](https://nf-co.re/references/output).\n\n## Credits\n\nnf-core/references was originally written by [Maxime U Garcia](https://github.com/maxulysse) | [Edmund Miller](https://github.com/edmundmiller) | [Phil Ewels](https://github.com/ewels).\n\nWe thank the following people for their extensive assistance in the development of this pipeline:\n\n- [Adam Talbot](https://github.com/adamrtalbot)\n- [Friederike Hanssen](https://github.com/FriederikeHanssen)\n- [Harshil Patel](https://github.com/drpatelh)\n- [James Fellows Yates](https://github.com/jfy133)\n- [Jonathan Manning](https://github.com/pinin4fjords)\n- [Nicolas Vannieuwkerke](https://github.com/nvnieuwk)\n\n## Contributions and Support\n\nIf you would like to contribute to this pipeline, please see the [contributing guidelines](docs/CONTRIBUTING.md).\n\nFor further information or help, don't hesitate to get in touch on the [Slack `#references` channel](https://nfcore.slack.com/channels/references) (you can join with [this invite](https://nf-co.re/join/slack)).\n\n## Citations\n\nIf you use nf-core/references for your analysis, please cite it using the following doi: [10.5281/zenodo.14576225](https://doi.org/10.5281/zenodo.14576225)\n\nAn extensive list of references for the tools used by the pipeline can be found in the [`CITATIONS.md`](CITATIONS.md) file.\n\nYou can cite the `nf-core` publication as follows:\n\n> **The nf-core framework for community-curated bioinformatics pipelines.**\n>\n> Philip Ewels, Alexander Peltzer, Sven Fillinger, Harshil Patel, Johannes Alneberg, Andreas Wilm, Maxime Ulysse Garcia, Paolo Di Tommaso & Sven Nahnsen.\n>\n> _Nat Biotechnol._ 2020 Feb 13. doi: [10.1038/s41587-020-0439-x](https://dx.doi.org/10.1038/s41587-020-0439-x).\n",
             "hasPart": [
                 {
                     "@id": "main.nf"
+                },
+                {
+                    "@id": "docs/images/nf-core-references_metro_map_color.png"
                 },
                 {
                     "@id": "assets/"
@@ -42,6 +45,9 @@
                 },
                 {
                     "@id": "modules/"
+                },
+                {
+                    "@id": "modules/local/"
                 },
                 {
                     "@id": "modules/nf-core/"
@@ -99,7 +105,7 @@
             },
             "mentions": [
                 {
-                    "@id": "#35c27ac5-ba08-4fc5-8c56-0fc212432378"
+                    "@id": "#650ad9e1-16be-48bd-8534-cd6106229e19"
                 }
             ],
             "name": "nf-core/references"
@@ -126,14 +132,31 @@
                 "SoftwareSourceCode",
                 "ComputationalWorkflow"
             ],
+            "author": [
+                {
+                    "@id": "https://orcid.org/0000-0003-2827-9261"
+                },
+                {
+                    "@id": "https://orcid.org/0000-0002-2398-0334"
+                }
+            ],
             "contributor": [
                 {
-                    "@id": "#acf498d1-a568-46fd-a16a-d61b2c70186b"
+                    "@id": "https://orcid.org/0000-0003-4101-2502"
+                },
+                {
+                    "@id": "#be67a34a-8880-407d-b103-8758bbf94fef"
+                },
+                {
+                    "@id": "https://orcid.org/0009-0003-5619-1555"
                 }
             ],
             "dateCreated": "",
-            "dateModified": "2026-04-30T07:36:54Z",
+            "dateModified": "2026-06-08T13:10:02Z",
             "dct:conformsTo": "https://bioschemas.org/profiles/ComputationalWorkflow/1.0-RELEASE/",
+            "image": {
+                "@id": "docs/images/nf-core-references_metro_map_color.png"
+            },
             "keywords": [
                 "nf-core",
                 "nextflow",
@@ -155,10 +178,10 @@
             },
             "url": [
                 "https://github.com/nf-core/references",
-                "https://nf-co.re/references/0.2/"
+                "https://nf-co.re/references/dev/"
             ],
             "version": [
-                "0.2"
+                "0.2dev"
             ]
         },
         {
@@ -171,14 +194,22 @@
             "url": {
                 "@id": "https://www.nextflow.io/"
             },
-            "version": "!>=25.10.4"
+            "version": "!>=26.04.0"
         },
         {
-            "@id": "#35c27ac5-ba08-4fc5-8c56-0fc212432378",
+            "@id": "docs/images/nf-core-references_metro_map_color.png",
+            "@type": [
+                "File",
+                "ImageObject"
+            ],
+            "name": "Workflow diagram"
+        },
+        {
+            "@id": "#650ad9e1-16be-48bd-8534-cd6106229e19",
             "@type": "TestSuite",
             "instance": [
                 {
-                    "@id": "#dab1c7d4-bc70-4d03-b9f9-3547c29de632"
+                    "@id": "#380b4d21-1c05-49bf-8dae-78ef68dde518"
                 }
             ],
             "mainEntity": {
@@ -187,7 +218,7 @@
             "name": "Test suite for nf-core/references"
         },
         {
-            "@id": "#dab1c7d4-bc70-4d03-b9f9-3547c29de632",
+            "@id": "#380b4d21-1c05-49bf-8dae-78ef68dde518",
             "@type": "TestInstance",
             "name": "GitHub Actions workflow for testing nf-core/references",
             "resource": "repos/nf-core/references/actions/workflows/nf-test.yml",
@@ -228,6 +259,11 @@
             "@id": "modules/",
             "@type": "Dataset",
             "description": "Modules used by the pipeline"
+        },
+        {
+            "@id": "modules/local/",
+            "@type": "Dataset",
+            "description": "Pipeline-specific modules"
         },
         {
             "@id": "modules/nf-core/",
@@ -316,9 +352,39 @@
             "url": "https://nf-co.re/"
         },
         {
-            "@id": "#acf498d1-a568-46fd-a16a-d61b2c70186b",
+            "@id": "https://orcid.org/0000-0003-2827-9261",
             "@type": "Person",
-            "name": "@maxulysse"
+            "affiliation": "NGI",
+            "name": "Maxime U Garcia",
+            "url": "https://github.com/maxulysse"
+        },
+        {
+            "@id": "https://orcid.org/0000-0002-2398-0334",
+            "@type": "Person",
+            "affiliation": "Seqera",
+            "name": "Edmund Miller",
+            "url": "https://github.com/edmundmiller"
+        },
+        {
+            "@id": "https://orcid.org/0000-0003-4101-2502",
+            "@type": "Person",
+            "affiliation": "Seqera",
+            "name": "Phil Ewels",
+            "url": "https://github.com/ewels"
+        },
+        {
+            "@id": "#be67a34a-8880-407d-b103-8758bbf94fef",
+            "@type": "Person",
+            "affiliation": "Seqera",
+            "name": "Jonathan Manning",
+            "url": "https://github.com/pinin4fjords"
+        },
+        {
+            "@id": "https://orcid.org/0009-0003-5619-1555",
+            "@type": "Person",
+            "affiliation": "CMGG",
+            "name": "Nicolas Vannieuwkerke",
+            "url": "https://github.com/nvnieuwk"
         }
     ]
 }

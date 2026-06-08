@@ -1,5 +1,5 @@
-include { PREPARE_GENOME_DNASEQ } from '../subworkflows/nf-side/prepare_genome_dnaseq'
-include { PREPARE_GENOME_RNASEQ } from '../subworkflows/nf-side/prepare_genome_rnaseq'
+include { PREPARE_GENOME_DNASEQ } from '../subworkflows/local/prepare_genome_dnaseq'
+include { PREPARE_GENOME_RNASEQ } from '../subworkflows/local/prepare_genome_rnaseq'
 
 workflow REFERENCES {
     take:

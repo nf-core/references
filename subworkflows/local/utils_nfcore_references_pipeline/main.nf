@@ -8,7 +8,7 @@
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 */
 
-include { update_references_file } from '../../nf-side/utils_references'
+include { update_references_file } from '../../local/utils_references'
 
 include { checkCondaChannels     } from 'plugin/nf-core-utils'
 include { checkConfigProvided    } from 'plugin/nf-core-utils'
@@ -143,7 +143,7 @@ workflow PIPELINE_INITIALISATION {
     references = channel.fromList(
         samplesheetToList(
             update_references_file(asset, basepath_final, basepath_to_replace),
-            "${projectDir}/subworkflows/nf-side/utils_references/schema_references.json",
+            "${projectDir}/subworkflows/local/utils_references/schema_references.json",
         )
     )
 

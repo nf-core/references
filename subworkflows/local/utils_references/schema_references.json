@@ -1,6 +1,6 @@
 {
     "$schema": "https://json-schema.org/draft/2020-12/schema",
-    "$id": "https://raw.githubusercontent.com/nf-side/modules/main/subworkflows/nf-side/utils_references/schema_references.json",
+    "$id": "https://raw.githubusercontent.com/local/modules/main/subworkflows/local/utils_references/schema_references.json",
     "title": "nf-core/references pipeline - params.asset schema",
     "description": "Schema for the file provided with params.asset",
     "type": "array",
