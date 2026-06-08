@@ -1,95 +1,118 @@
-/*
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    IMPORT MODULES / SUBWORKFLOWS / FUNCTIONS
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-*/
-include { MULTIQC                } from '../modules/nf-core/multiqc/main'
-include { paramsSummaryMap       } from 'plugin/nf-schema'
-include { paramsSummaryMultiqc   } from '../subworkflows/nf-core/utils_nfcore_pipeline'
-include { softwareVersionsToYAML } from '../subworkflows/nf-core/utils_nfcore_pipeline'
-include { methodsDescriptionText } from '../subworkflows/local/utils_nfcore_references_pipeline'
-
-/*
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    RUN MAIN WORKFLOW
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-*/
+include { PREPARE_GENOME_DNASEQ } from '../subworkflows/local/prepare_genome_dnaseq'
+include { PREPARE_GENOME_RNASEQ } from '../subworkflows/local/prepare_genome_rnaseq'
 
 workflow REFERENCES {
-
     take:
-    ch_samplesheet // channel: samplesheet read in from --input
-    multiqc_config
-    multiqc_logo
-    multiqc_methods_description
-    outdir
+    altliftoverfile
+    ascat_alleles
+    ascat_loci
+    ascat_loci_gc
+    ascat_loci_rt
+    chr_dir
+    fasta
+    fasta_dict
+    fasta_fai
+    fasta_sizes
+    gff
+    gtf
+    intervals_bed
+    splice_sites
+    transcript_fasta
+    vcf
+    tools // List: Can contain any combination of tools of the list of available tools, or just no_tools
 
     main:
+    // Create references for rnaseq based pipelines such as nf-core/riboseq, nf-core/rnaseq, nf-core/rnavar
+    PREPARE_GENOME_RNASEQ(
+        fasta,
+        fasta_fai,
+        gff,
+        gtf,
+        splice_sites,
+        transcript_fasta,
+        tools.split(',').contains('bowtie1'),
+        tools.split(',').contains('bowtie2'),
+        tools.split(',').contains('faidx') && (tools.split(',').contains('intervals') || tools.split(',').contains('sizes')),
+        tools.split(',').contains('hisat2'),
+        tools.split(',').contains('hisat2_extractsplicesites'),
+        tools.split(',').contains('kallisto'),
+        tools.split(',').contains('rsem'),
+        tools.split(',').contains('rsem_make_transcript_fasta'),
+        tools.split(',').contains('salmon'),
+        tools.split(',').contains('sizes'),
+        tools.split(',').contains('star'),
+    )
 
-    def ch_versions = channel.empty()
-    def ch_multiqc_files = channel.empty()
+    // Create references for dnaseq based pipelines such as nf-core/sarek
+    PREPARE_GENOME_DNASEQ(
+        fasta,
+        fasta_fai.mix(PREPARE_GENOME_RNASEQ.out.fasta_fai).unique(),
+        vcf,
+        altliftoverfile,
+        tools.split(',').contains('bwamem1'),
+        tools.split(',').contains('bwamem2'),
+        tools.split(',').contains('createsequencedictionary'),
+        tools.split(',').contains('dragmap'),
+        tools.split(',').contains('faidx') && !(tools.split(',').contains('intervals') || tools.split(',').contains('sizes')),
+        tools.split(',').contains('intervals'),
+        tools.split(',').contains('msisensorpro'),
+        tools.split(',').contains('tabix'),
+        tools.split(',').contains('snapaligner'),
+    )
 
-    //
-    // Collate and save software versions
-    //
-    def topic_versions = channel.topic("versions")
-        .distinct()
-        .branch { entry ->
-            versions_file: entry instanceof Path
-            versions_tuple: true
-        }
+    bowtie1_index = PREPARE_GENOME_RNASEQ.out.bowtie1_index
+    bowtie2_index = PREPARE_GENOME_RNASEQ.out.bowtie2_index
+    bwamem1_index = PREPARE_GENOME_DNASEQ.out.bwamem1_index
+    bwamem2_index = PREPARE_GENOME_DNASEQ.out.bwamem2_index
+    dragmap_hashmap = PREPARE_GENOME_DNASEQ.out.dragmap_hashmap
+    fasta_dict = PREPARE_GENOME_DNASEQ.out.fasta_dict
+    fasta_fai = PREPARE_GENOME_DNASEQ.out.fasta_fai
+    fasta_sizes = PREPARE_GENOME_RNASEQ.out.fasta_sizes
+    gtf = PREPARE_GENOME_RNASEQ.out.gtf
+    hisat2_index = PREPARE_GENOME_RNASEQ.out.hisat2_index
+    intervals_bed = PREPARE_GENOME_DNASEQ.out.intervals_bed
+    kallisto_index = PREPARE_GENOME_RNASEQ.out.kallisto_index
+    msisensorpro_list = PREPARE_GENOME_DNASEQ.out.msisensorpro_list
+    rsem_index = PREPARE_GENOME_RNASEQ.out.rsem_index
+    salmon_index = PREPARE_GENOME_RNASEQ.out.salmon_index
+    splice_sites = PREPARE_GENOME_RNASEQ.out.splice_sites
+    star_index = PREPARE_GENOME_RNASEQ.out.star_index
+    transcript_fasta = PREPARE_GENOME_RNASEQ.out.transcript_fasta
+    vcf_tbi = PREPARE_GENOME_DNASEQ.out.vcf_tbi
 
-    def topic_versions_string = topic_versions.versions_tuple
-        .map { process, tool, version ->
-            [ process[process.lastIndexOf(':')+1..-1], "  ${tool}: ${version}" ]
-        }
-        .groupTuple(by:0)
-        .map { process, tool_versions ->
-            tool_versions.unique().sort()
-            "${process}:\n${tool_versions.join('\n')}"
-        }
+    // TODO: need to rescue these files
+    // vcf.map { meta, reference_ -> [meta + [file: "${meta.type}_vcf"], reference_] },
 
-    def ch_collated_versions = softwareVersionsToYAML(ch_versions.mix(topic_versions.versions_file))
-        .mix(topic_versions_string)
-        .collectFile(
-            storeDir: "${outdir}/pipeline_info",
-            name: 'nf_core_'  +  'references_software_'  + 'mqc_'  + 'versions.yml',
-            sort: true,
-            newLine: true
+    references = channel.empty()
+        .mix(
+            ascat_alleles.map { meta, reference_ -> [meta + [file: 'ascat_alleles'], reference_] },
+            ascat_loci.map { meta, reference_ -> [meta + [file: 'ascat_loci'], reference_] },
+            ascat_loci_gc.map { meta, reference_ -> [meta + [file: 'ascat_loci_gc'], reference_] },
+            ascat_loci_rt.map { meta, reference_ -> [meta + [file: 'ascat_loci_rt'], reference_] },
+            bowtie1_index.map { meta, reference_ -> [meta + [file: 'bowtie1_index'], reference_] },
+            bowtie2_index.map { meta, reference_ -> [meta + [file: 'bowtie2_index'], reference_] },
+            bwamem1_index.map { meta, reference_ -> [meta + [file: 'bwamem1_index'], reference_] },
+            bwamem2_index.map { meta, reference_ -> [meta + [file: 'bwamem2_index'], reference_] },
+            chr_dir.map { meta, reference_ -> [meta + [file: 'chr_dir'], reference_] },
+            dragmap_hashmap.map { meta, reference_ -> [meta + [file: 'dragmap_hashmap'], reference_] },
+            fasta.map { meta, reference_ -> [meta + [file: 'fasta'], reference_] },
+            fasta_dict.map { meta, reference_ -> [meta + [file: 'fasta_dict'], reference_] },
+            fasta_fai.map { meta, reference_ -> [meta + [file: 'fasta_fai'], reference_] },
+            fasta_sizes.map { meta, reference_ -> [meta + [file: 'fasta_sizes'], reference_] },
+            gff.map { meta, reference_ -> [meta + [file: 'gff'], reference_] },
+            gtf.map { meta, reference_ -> [meta + [file: 'gtf'], reference_] },
+            hisat2_index.map { meta, reference_ -> [meta + [file: 'hisat2_index'], reference_] },
+            intervals_bed.map { meta, reference_ -> [meta + [file: 'intervals_bed'], reference_] },
+            kallisto_index.map { meta, reference_ -> [meta + [file: 'kallisto_index'], reference_] },
+            msisensorpro_list.map { meta, reference_ -> [meta + [file: 'msisensorpro_list'], reference_] },
+            rsem_index.map { meta, reference_ -> [meta + [file: 'rsem_index'], reference_] },
+            salmon_index.map { meta, reference_ -> [meta + [file: 'salmon_index'], reference_] },
+            splice_sites.map { meta, reference_ -> [meta + [file: 'splice_sites'], reference_] },
+            star_index.map { meta, reference_ -> [meta + [file: 'star_index'], reference_] },
+            transcript_fasta.map { meta, reference_ -> [meta + [file: 'transcript_fasta'], reference_] },
+            vcf_tbi.map { meta, reference_ -> [meta + [file: "${meta.type}_vcf_tbi"], reference_] },
         )
 
-    //
-    // MODULE: MultiQC
-    //
-    ch_multiqc_files = ch_multiqc_files.mix(ch_collated_versions)
-    def ch_summary_params = paramsSummaryMap(workflow, parameters_schema: "nextflow_schema.json")
-    def ch_workflow_summary = channel.value(paramsSummaryMultiqc(ch_summary_params))
-    ch_multiqc_files = ch_multiqc_files.mix(ch_workflow_summary.collectFile(name: 'workflow_summary_mqc.yaml'))
-    def ch_multiqc_custom_methods_description = multiqc_methods_description
-        ? file(multiqc_methods_description, checkIfExists: true)
-        : file("${projectDir}/assets/methods_description_template.yml", checkIfExists: true)
-    def ch_methods_description = channel.value(methodsDescriptionText(ch_multiqc_custom_methods_description))
-    ch_multiqc_files = ch_multiqc_files.mix(ch_methods_description.collectFile(name: 'methods_description_mqc.yaml', sort: true))
-    MULTIQC(
-        ch_multiqc_files.flatten().collect().map { files ->
-            [
-                [id: 'references'],
-                files,
-                multiqc_config
-                    ? file(multiqc_config, checkIfExists: true)
-                    : file("${projectDir}/assets/multiqc_config.yml", checkIfExists: true),
-                multiqc_logo ? file(multiqc_logo, checkIfExists: true) : [],
-                [],
-                [],
-            ]
-        }
-    )
-    emit:multiqc_report = MULTIQC.out.report.map { _meta, report -> [report] }.toList() // channel: /path/to/multiqc_report.html
-    versions       = ch_versions                 // channel: [ path(versions.yml) ]
+    emit:
+    references // channel: [meta, *]
 }
-
-/*
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    THE END
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-*/

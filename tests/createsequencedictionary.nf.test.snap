@@ -1,0 +1,42 @@
+{
+    "-profile test --tools createsequencedictionary": {
+        "content": [
+            2,
+            {
+                "GATK4_CREATESEQUENCEDICTIONARY": {
+                    "gatk": "4.6.1.0"
+                }
+            },
+            [
+                "Homo_sapiens",
+                "Homo_sapiens/nf-core",
+                "Homo_sapiens/nf-core/GRCh38_chr21",
+                "Homo_sapiens/nf-core/GRCh38_chr21/Sequence",
+                "Homo_sapiens/nf-core/GRCh38_chr21/Sequence/WholeGenomeFasta",
+                "Homo_sapiens/nf-core/GRCh38_chr21/Sequence/WholeGenomeFasta/GRCh38_chr21.dict",
+                "index.json",
+                "multiqc",
+                "multiqc/multiqc_data",
+                "multiqc/multiqc_data/llms-full.txt",
+                "multiqc/multiqc_data/multiqc.log",
+                "multiqc/multiqc_data/multiqc.parquet",
+                "multiqc/multiqc_data/multiqc_citations.txt",
+                "multiqc/multiqc_data/multiqc_data.json",
+                "multiqc/multiqc_data/multiqc_software_versions.txt",
+                "multiqc/multiqc_data/multiqc_sources.txt",
+                "multiqc/multiqc_report.html",
+                "pipeline_info",
+                "pipeline_info/nf_core_references_software_mqc_versions.yml"
+            ],
+            [
+                "GRCh38_chr21.dict:md5,40482944b1a51af140a397e2544b6ed4",
+                "multiqc_citations.txt:md5,4c806e63a283ec1b7e78cdae3a923d4f"
+            ]
+        ],
+        "timestamp": "2026-05-04T13:25:57.485529971",
+        "meta": {
+            "nf-test": "0.9.5",
+            "nextflow": "26.03.4"
+        }
+    }
+}

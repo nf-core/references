@@ -16,11 +16,11 @@
                     "type": "string",
                     "format": "file-path",
                     "exists": true,
-                    "schema": "assets/schema_input.json",
+                    "schema": "subworkflows/local/utils_references/schema_references.json",
                     "mimetype": "text/csv",
-                    "pattern": "^\\S+\\.csv$",
-                    "description": "Path to comma-separated file containing information about the samples in the experiment.",
-                    "help_text": "You will need to create a design file with information about the samples in your experiment before running the pipeline. Use this parameter to specify its location. It has to be a comma-separated file with 3 columns, and a header row. See [usage docs](https://nf-co.re/references/usage#samplesheet-input).",
+                    "pattern": "^\\S+\\.(yaml|yml)$",
+                    "description": "Path to yaml file containing information about the genome(s) and files to use for building references.",
+                    "help_text": "You will need to create a datasheet with information about the genome(s) before running the pipeline. Use this parameter to specify its location. It has to be a yaml file. See [usage docs](https://nf-co.re/references/usage#datasheet).",
                     "fa_icon": "fas fa-file-csv"
                 },
                 "outdir": {
@@ -28,6 +28,19 @@
                     "format": "directory-path",
                     "description": "The output directory where the results will be saved. You have to use absolute paths to storage on Cloud infrastructure.",
                     "fa_icon": "fas fa-folder-open"
+                },
+                "tools": {
+                    "type": "string",
+                    "fa_icon": "fas fa-toolbox",
+                    "description": "Tools to use for building references.",
+                    "help_text": "Multiple tools separated with commas.",
+                    "pattern": "^((bowtie1|bowtie2|bwamem1|bwamem2|createsequencedictionary|dragmap|faidx|gffread|hisat2|hisat2_extractsplicesites|intervals|kallisto|msisensorpro|rsem|rsem_make_transcript_fasta|salmon|sizes|star|tabix)?,?)*(?<!,)$"
+                },
+                "references_base_path": {
+                    "type": "string",
+                    "format": "directory-path",
+                    "description": "The base path to the reference files",
+                    "fa_icon": "fas fa-ban"
                 },
                 "email": {
                     "type": "string",
@@ -40,6 +53,20 @@
                     "type": "string",
                     "description": "MultiQC report title. Printed as page header, used for filename if not otherwise specified.",
                     "fa_icon": "fas fa-file-signature"
+                }
+            }
+        },
+        "building_index_options": {
+            "title": "Building index options",
+            "type": "object",
+            "description": "",
+            "default": "",
+            "properties": {
+                "kallisto_make_unique": {
+                    "type": "boolean",
+                    "description": "Make --make-unique flag for kallisto index",
+                    "fa_icon": "fas fa-toolbox",
+                    "default": false
                 }
             }
         },
@@ -166,6 +193,13 @@
                     "fa_icon": "fas fa-check-square",
                     "hidden": true
                 },
+                "modules_testdata_base_path": {
+                    "type": "string",
+                    "fa_icon": "far fa-check-circle",
+                    "description": "Base URL or local path to location of pipeline test dataset files",
+                    "default": "https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/",
+                    "hidden": true
+                },
                 "pipelines_testdata_base_path": {
                     "type": "string",
                     "fa_icon": "far fa-check-circle",
@@ -197,6 +231,9 @@
     "allOf": [
         {
             "$ref": "#/$defs/input_output_options"
+        },
+        {
+            "$ref": "#/$defs/building_index_options"
         },
         {
             "$ref": "#/$defs/institutional_config_options"

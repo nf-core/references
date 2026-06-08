@@ -1,0 +1,72 @@
+nextflow_pipeline {
+
+    name "Build multiple references"
+    script "../main.nf"
+    tag "pipeline"
+
+    test("-profile test --tools bwamem1,createsequencedictionary,faidx,intervals --input references-datasheets/latest/genomes_source/Homo_sapiens/nf-core/GRCh38_chr21_chr22.yml") {
+
+        options "-output-dir $outputDir"
+
+        when {
+            params {
+                input  = "https://raw.githubusercontent.com/nf-core/references-datasheets/latest/genomes_source/Homo_sapiens/nf-core/GRCh38_chr21_chr22.yml"
+                outdir = "$outputDir"
+                tools  = 'bwamem1,createsequencedictionary,faidx,intervals'
+            }
+        }
+
+        then {
+            // stable_path: All files + folders in ${params.outdir}/ with a stable path (including file name)
+            def stable_path = getAllFilesFromDir(params.outdir, relative: true, includeDir: true, ignore: ['pipeline_info/*.{html,json,txt}'])
+            // stable_content: All files in ${params.outdir}/ with stable content
+            def stable_content = getAllFilesFromDir(params.outdir, ignoreFile: 'tests/.nftignore')
+            assert workflow.success
+            assertAll(
+                { assert snapshot(
+                    // Number of successful tasks
+                    workflow.trace.succeeded().size(),
+                    // pipeline versions.yml file for multiqc from which Nextflow and pipeline versions are removed (all from the workflow key)
+                    removeFromYamlMap("${outputDir}/pipeline_info/nf_core_references_software_mqc_versions.yml", 'Workflow'),
+                    // All stable path name, with a relative path
+                    stable_path,
+                    // All files with stable contents
+                    stable_content
+                ).match() }
+            )
+        }
+    }
+
+    test("-profile test --tools tabix --input references-datasheets/latest/genomes_source/Homo_sapiens/GATK/GRCh37_GRCh38_multiple_dbsnps_globs.yml") {
+
+        options "-output-dir $outputDir"
+
+        when {
+            params {
+                input  = "https://raw.githubusercontent.com/nf-core/references-datasheets/latest/genomes_source/Homo_sapiens/GATK/GRCh37_GRCh38_multiple_dbsnps_globs.yml"
+                outdir = "$outputDir"
+                tools  = 'tabix'
+            }
+        }
+
+        then {
+            // stable_name: All files + folders in ${params.outdir}/ with a stable name
+            def stable_name = getAllFilesFromDir(params.outdir, relative: true, includeDir: true, ignore: ['pipeline_info/*.{html,json,txt}', 'Homo_sapiens/GATK/*/Annotation/GATK_BUNDLE/*.vcf.gz'])
+            // stable_path: All files in ${params.outdir}/ with stable content
+            def stable_path = getAllFilesFromDir(params.outdir, ignoreFile: 'tests/.nftignore', ignore: ['Homo_sapiens/GATK/*/Annotation/GATK_BUNDLE/*.vcf.gz'])
+            assert workflow.success
+            assertAll(
+                { assert snapshot(
+                    // Number of successful tasks
+                    workflow.trace.succeeded().size(),
+                    // pipeline versions.yml file for multiqc from which Nextflow and pipeline versions are removed (all from the workflow key)
+                    removeFromYamlMap("${outputDir}/pipeline_info/nf_core_references_software_mqc_versions.yml", 'Workflow'),
+                    // All stable path name, with a relative path
+                    stable_name,
+                    // All files with stable contents
+                    stable_path
+                ).match() }
+            )
+        }
+    }
+}
