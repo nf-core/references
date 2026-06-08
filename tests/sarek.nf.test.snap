@@ -83,7 +83,6 @@
                 "pipeline_info/nf_core_references_software_mqc_versions.yml"
             ],
             [
-                "GRCh38_chr22.vcf.gz.tbi:md5,628232d0c870f2dbf73c3e81aff7b4b4",
                 "GRCh38_chr22.bed:md5,87a15eb9c2ff20ccd5cd8735a28708f7",
                 "GRCh38_chr22.msisensor_scan.list:md5,1c670ac986f5e6d7a9d11e45231d5417",
                 "genome.amb:md5,1891c1de381b3a96d4e72f590fde20c1",
@@ -106,7 +105,7 @@
                 "multiqc_citations.txt:md5,4c806e63a283ec1b7e78cdae3a923d4f"
             ]
         ],
-        "timestamp": "2026-06-08T16:44:57.780668066",
+        "timestamp": "2026-06-08T17:02:58.32730055",
         "meta": {
             "nf-test": "0.9.5",
             "nextflow": "26.04.3"

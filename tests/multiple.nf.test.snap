@@ -124,12 +124,10 @@
                 "pipeline_info/nf_core_references_software_mqc_versions.yml"
             ],
             [
-                "GRCh37.vcf.gz.tbi:md5,aa36bfab96e05ff18f9f58925a41306a",
-                "GRCh38.vcf.gz.tbi:md5,5d0aad81fa364a93ba4dff95bb6fb766",
                 "multiqc_citations.txt:md5,4c806e63a283ec1b7e78cdae3a923d4f"
             ]
         ],
-        "timestamp": "2026-06-08T16:44:06.150606247",
+        "timestamp": "2026-06-08T17:02:38.955211105",
         "meta": {
             "nf-test": "0.9.5",
             "nextflow": "26.04.3"
