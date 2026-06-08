@@ -1,3 +1,4 @@
+**/*.vcf.gz.tbi
 **/RSEMIndex/{,*/,**/}Log.out
 **/RSEMIndex/{,*/,**/}genomeParameters.txt
 **/STARIndex/{,*/,**/}Log.out

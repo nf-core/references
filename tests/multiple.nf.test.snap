@@ -93,8 +93,9 @@
         "content": [
             5,
             {
-                "TABIX_TABIX": {
-                    "tabix": "1.21"
+                "HTSLIB_BGZIPTABIX": {
+                    "htslib": "1.23.1",
+                    "xz": "5.8.3"
                 }
             },
             [
@@ -103,13 +104,11 @@
                 "Homo_sapiens/GATK/GRCh37",
                 "Homo_sapiens/GATK/GRCh37/Annotation",
                 "Homo_sapiens/GATK/GRCh37/Annotation/GATK_BUNDLE",
-                "Homo_sapiens/GATK/GRCh37/Annotation/GATK_BUNDLE/1000G_phase1.indels.b37.vcf.gz.tbi",
-                "Homo_sapiens/GATK/GRCh37/Annotation/GATK_BUNDLE/Mills_and_1000G_gold_standard.indels.b37.vcf.gz.tbi",
+                "Homo_sapiens/GATK/GRCh37/Annotation/GATK_BUNDLE/GRCh37.vcf.gz.tbi",
                 "Homo_sapiens/GATK/GRCh38",
                 "Homo_sapiens/GATK/GRCh38/Annotation",
                 "Homo_sapiens/GATK/GRCh38/Annotation/GATK_BUNDLE",
-                "Homo_sapiens/GATK/GRCh38/Annotation/GATK_BUNDLE/Homo_sapiens_assembly38.known_indels.vcf.gz.tbi",
-                "Homo_sapiens/GATK/GRCh38/Annotation/GATK_BUNDLE/Mills_and_1000G_gold_standard.indels.hg38.vcf.gz.tbi",
+                "Homo_sapiens/GATK/GRCh38/Annotation/GATK_BUNDLE/GRCh38.vcf.gz.tbi",
                 "index.json",
                 "multiqc",
                 "multiqc/multiqc_data",
@@ -125,17 +124,13 @@
                 "pipeline_info/nf_core_references_software_mqc_versions.yml"
             ],
             [
-                "1000G_phase1.indels.b37.vcf.gz.tbi:md5,aa36bfab96e05ff18f9f58925a41306a",
-                "Mills_and_1000G_gold_standard.indels.b37.vcf.gz.tbi:md5,d3f818e36a0d4fa2bcdfbbca47b5e325",
-                "Homo_sapiens_assembly38.known_indels.vcf.gz.tbi:md5,5d0aad81fa364a93ba4dff95bb6fb766",
-                "Mills_and_1000G_gold_standard.indels.hg38.vcf.gz.tbi:md5,c04253adf2c4192475110557086d5ac1",
                 "multiqc_citations.txt:md5,4c806e63a283ec1b7e78cdae3a923d4f"
             ]
         ],
-        "timestamp": "2026-05-04T13:34:53.027597524",
+        "timestamp": "2026-06-08T17:02:38.955211105",
         "meta": {
             "nf-test": "0.9.5",
-            "nextflow": "26.03.4"
+            "nextflow": "26.04.3"
         }
     }
 }

@@ -18,14 +18,15 @@
                 "GATK4_CREATESEQUENCEDICTIONARY": {
                     "gatk": "4.6.1.0"
                 },
+                "HTSLIB_BGZIPTABIX": {
+                    "htslib": "1.23.1",
+                    "xz": "5.8.3"
+                },
                 "MSISENSORPRO_SCAN": {
                     "msisensor-pro": "1.3.0"
                 },
                 "SAMTOOLS_FAIDX": {
                     "samtools": "1.21"
-                },
-                "TABIX_TABIX": {
-                    "tabix": "1.21"
                 }
             },
             [
@@ -34,9 +35,7 @@
                 "Homo_sapiens/nf-core/GRCh38_chr22",
                 "Homo_sapiens/nf-core/GRCh38_chr22/Annotation",
                 "Homo_sapiens/nf-core/GRCh38_chr22/Annotation/GATK_BUNDLE",
-                "Homo_sapiens/nf-core/GRCh38_chr22/Annotation/GATK_BUNDLE/dbsnp_146.hg38.vcf.gz.tbi",
-                "Homo_sapiens/nf-core/GRCh38_chr22/Annotation/GATK_BUNDLE/gnomAD.r2.1.1.vcf.gz.tbi",
-                "Homo_sapiens/nf-core/GRCh38_chr22/Annotation/GATK_BUNDLE/mills_and_1000G.indels.vcf.gz.tbi",
+                "Homo_sapiens/nf-core/GRCh38_chr22/Annotation/GATK_BUNDLE/GRCh38_chr22.vcf.gz.tbi",
                 "Homo_sapiens/nf-core/GRCh38_chr22/Annotation/intervals",
                 "Homo_sapiens/nf-core/GRCh38_chr22/Annotation/intervals/GRCh38_chr22.bed",
                 "Homo_sapiens/nf-core/GRCh38_chr22/Annotation/msisensorpro",
@@ -84,9 +83,6 @@
                 "pipeline_info/nf_core_references_software_mqc_versions.yml"
             ],
             [
-                "dbsnp_146.hg38.vcf.gz.tbi:md5,628232d0c870f2dbf73c3e81aff7b4b4",
-                "gnomAD.r2.1.1.vcf.gz.tbi:md5,d95bc4bd1eee441d13ed99f0f3d501f8",
-                "mills_and_1000G.indels.vcf.gz.tbi:md5,1bb7ab8f22eb798efd796439d3b29b7a",
                 "GRCh38_chr22.bed:md5,87a15eb9c2ff20ccd5cd8735a28708f7",
                 "GRCh38_chr22.msisensor_scan.list:md5,1c670ac986f5e6d7a9d11e45231d5417",
                 "genome.amb:md5,1891c1de381b3a96d4e72f590fde20c1",
@@ -109,10 +105,10 @@
                 "multiqc_citations.txt:md5,4c806e63a283ec1b7e78cdae3a923d4f"
             ]
         ],
-        "timestamp": "2026-05-04T15:57:51.433637102",
+        "timestamp": "2026-06-08T17:02:58.32730055",
         "meta": {
             "nf-test": "0.9.5",
-            "nextflow": "26.04.0"
+            "nextflow": "26.04.3"
         }
     },
     "-profile test --tools bwamem1,bwamem2,createsequencedictionary,dragmap,faidx,intervals,msisensorpro,tabix --input references-datasheets/latest/genomes/Homo_sapiens/GATK/GRCh38_chr22.yml": {
