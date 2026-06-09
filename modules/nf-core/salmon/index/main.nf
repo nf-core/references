@@ -8,8 +8,7 @@ process SALMON_INDEX {
         'quay.io/biocontainers/salmon:1.10.3--h6dccd9a_2' }"
 
     input:
-    path genome_fasta
-    path transcript_fasta
+    tuple val(meta), path(genome_fasta), path(transcript_fasta)
 
     output:
     path "salmon"      , emit: index

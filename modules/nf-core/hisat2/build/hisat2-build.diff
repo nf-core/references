@@ -1,0 +1,21 @@
+Changes in component 'nf-core/hisat2/build'
+'modules/nf-core/hisat2/build/meta.yml' is unchanged
+'modules/nf-core/hisat2/build/environment.yml' is unchanged
+Changes in 'hisat2/build/main.nf':
+--- modules/nf-core/hisat2/build/main.nf
++++ modules/nf-core/hisat2/build/main.nf
+@@ -8,9 +8,7 @@
+         'quay.io/biocontainers/hisat2:2.2.2--h503566f_0'}"
+ 
+     input:
+-    tuple val(meta), path(fasta)
+-    tuple val(meta2), path(gtf)
+-    tuple val(meta3), path(splicesites)
++    tuple val(meta), path(fasta), path(gtf), path(splicesites)
+ 
+     output:
+     tuple val(meta), path("hisat2"), emit: index
+
+'modules/nf-core/hisat2/build/tests/main.nf.test' is unchanged
+'modules/nf-core/hisat2/build/tests/main.nf.test.snap' is unchanged
+************************************************************

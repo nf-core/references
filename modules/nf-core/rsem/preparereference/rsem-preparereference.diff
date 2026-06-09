@@ -1,0 +1,20 @@
+Changes in component 'nf-core/rsem/preparereference'
+'modules/nf-core/rsem/preparereference/meta.yml' is unchanged
+'modules/nf-core/rsem/preparereference/environment.yml' is unchanged
+Changes in 'rsem/preparereference/main.nf':
+--- modules/nf-core/rsem/preparereference/main.nf
++++ modules/nf-core/rsem/preparereference/main.nf
+@@ -8,8 +8,7 @@
+         'community.wave.seqera.io/library/rsem_star:5acb4e8c03239c32' }"
+ 
+     input:
+-    path fasta, stageAs: "rsem/*"
+-    path gtf
++    tuple val(meta), path(fasta, stageAs: "rsem/*"), path(gtf)
+ 
+     output:
+     path "rsem"           , emit: index
+
+'modules/nf-core/rsem/preparereference/tests/main.nf.test' is unchanged
+'modules/nf-core/rsem/preparereference/tests/main.nf.test.snap' is unchanged
+************************************************************

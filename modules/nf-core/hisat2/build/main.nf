@@ -8,9 +8,7 @@ process HISAT2_BUILD {
         'quay.io/biocontainers/hisat2:2.2.2--h503566f_0'}"
 
     input:
-    tuple val(meta), path(fasta)
-    tuple val(meta2), path(gtf)
-    tuple val(meta3), path(splicesites)
+    tuple val(meta), path(fasta), path(gtf), path(splicesites)
 
     output:
     tuple val(meta), path("hisat2"), emit: index

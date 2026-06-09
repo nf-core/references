@@ -8,8 +8,7 @@ process STAR_GENOMEGENERATE {
         'community.wave.seqera.io/library/htslib_samtools_star_gawk:ae438e9a604351a4' }"
 
     input:
-    tuple val(meta), path(fasta)
-    tuple val(meta2), path(gtf)
+    tuple val(meta), path(fasta), path(gtf)
 
     output:
     tuple val(meta), path("star")  , emit: index

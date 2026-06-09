@@ -1,0 +1,20 @@
+Changes in component 'nf-core/salmon/index'
+'modules/nf-core/salmon/index/meta.yml' is unchanged
+'modules/nf-core/salmon/index/environment.yml' is unchanged
+Changes in 'salmon/index/main.nf':
+--- modules/nf-core/salmon/index/main.nf
++++ modules/nf-core/salmon/index/main.nf
+@@ -8,8 +8,7 @@
+         'quay.io/biocontainers/salmon:1.10.3--h6dccd9a_2' }"
+ 
+     input:
+-    path genome_fasta
+-    path transcript_fasta
++    tuple val(meta), path(genome_fasta), path(transcript_fasta)
+ 
+     output:
+     path "salmon"      , emit: index
+
+'modules/nf-core/salmon/index/tests/main.nf.test' is unchanged
+'modules/nf-core/salmon/index/tests/main.nf.test.snap' is unchanged
+************************************************************

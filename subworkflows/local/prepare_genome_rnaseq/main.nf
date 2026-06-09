@@ -58,7 +58,7 @@ workflow PREPARE_GENOME_RNASEQ {
     }
 
     if (run_hisat2 || run_kallisto || run_rsem || run_rsem_make_transcript_fasta || run_salmon || run_star) {
-        GFFREAD(fasta, gff.map { meta, gff_ -> [meta, [], gff_] })
+        GFFREAD(join_by_meta_id(fasta, gff))
 
         gtf = gtf
             .mix(GFFREAD.out.gtf)
@@ -71,14 +71,14 @@ workflow PREPARE_GENOME_RNASEQ {
             splice_sites = splice_sites.mix(HISAT2_EXTRACTSPLICESITES.out.txt)
 
             if (run_hisat2) {
-                HISAT2_BUILD(fasta, gtf, splice_sites)
+                HISAT2_BUILD(join_by_meta_id(fasta, gtf, splice_sites))
 
                 hisat2_index = HISAT2_BUILD.out.index
             }
         }
 
         if (run_kallisto || run_rsem_make_transcript_fasta || run_salmon) {
-            MAKE_TRANSCRIPTS_FASTA(fasta, gtf)
+            MAKE_TRANSCRIPTS_FASTA(join_by_meta_id(fasta, gtf))
 
             transcript_fasta = transcript_fasta.mix(MAKE_TRANSCRIPTS_FASTA.out.transcript_fasta)
 
@@ -89,20 +89,20 @@ workflow PREPARE_GENOME_RNASEQ {
             }
 
             if (run_salmon) {
-                SALMON_INDEX(fasta, transcript_fasta)
+                SALMON_INDEX(join_by_meta_id(fasta, transcript_fasta))
 
                 salmon_index = SALMON_INDEX.out.index
             }
         }
 
         if (run_rsem) {
-            RSEM_PREPAREREFERENCE_GENOME(fasta, gtf)
+            RSEM_PREPAREREFERENCE_GENOME(join_by_meta_id(fasta, gtf))
 
             rsem_index = RSEM_PREPAREREFERENCE_GENOME.out.index
         }
 
         if (run_star) {
-            STAR_GENOMEGENERATE(fasta, gtf)
+            STAR_GENOMEGENERATE(join_by_meta_id(fasta, gtf))
 
             star_index = STAR_GENOMEGENERATE.out.index
         }
@@ -121,4 +121,26 @@ workflow PREPARE_GENOME_RNASEQ {
     splice_sites // channel: [meta, *.splice_sites.txt]
     star_index // channel: [meta, STARIndex/]
     transcript_fasta // channel: [meta, *.transcripts.fasta]
+}
+
+/*
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    UTILITY FUNCTIONS
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+*/
+
+def join_by_meta_id(channel1, channel2, channel3 = null) {
+    if (channel3) {
+        return channel1
+            .map { meta, content1_ -> [meta.id, content1_, meta] }
+            .join(channel2.map { meta, content2_ -> [meta.id, content2_, meta] })
+            .join(channel3.map { meta, content3_ -> [meta.id, content3_, meta] })
+            .map { _id, content1_, meta1, content2_, meta2, content3_, meta3 -> [meta3 + meta2 + meta1, content1_, content2_, content3_] }
+    }
+    else {
+        return channel1
+            .map { meta, content1_ -> [meta.id, content1_, meta] }
+            .join(channel2.map { meta, content2_ -> [meta.id, content2_, meta] })
+            .map { _id, content1_, meta1, content2_, meta2 -> [meta2 + meta1, content1_, content2_] }
+    }
 }

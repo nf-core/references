@@ -8,8 +8,7 @@ process GFFREAD {
         'quay.io/biocontainers/gffread:0.12.7--hdcf5f25_4' }"
 
     input:
-    tuple val(meta), path(gff)
-    path fasta
+    tuple val(meta), path(fasta), path(gff)
 
     output:
     tuple val(meta), path("*.gtf")  , emit: gtf             , optional: true
