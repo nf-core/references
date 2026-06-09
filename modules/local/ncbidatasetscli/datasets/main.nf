@@ -22,7 +22,7 @@ process NCBIDATASETSCLI_DATASETS {
 
     script:
     """
-    datasets download genome accession ${meta.accession} --reference --include ${reference}
+    ${task.ext.args ?: ''} datasets download genome accession ${meta.accession} --reference --include ${reference}
     7za \\
         x \\
         -o"data"/ \\
