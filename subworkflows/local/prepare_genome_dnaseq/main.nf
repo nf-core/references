@@ -37,7 +37,7 @@ workflow PREPARE_GENOME_DNASEQ {
     // Do not generate sizes for DNAseq
     generate_sizes = false
 
-    SAMTOOLS_FAIDX(fasta.filter { meta, _fasta -> (run_faidx || run_intervals) && meta.run_faidx }.map { meta, fasta_ -> [meta, fasta_, []] }, generate_sizes)
+    SAMTOOLS_FAIDX(fasta.filter { meta, _fasta -> run_faidx && meta.run_faidx }.map { meta, fasta_ -> [meta, fasta_, []] }, generate_sizes)
 
     fasta_fai = fasta_fai.mix(SAMTOOLS_FAIDX.out.fai)
 
