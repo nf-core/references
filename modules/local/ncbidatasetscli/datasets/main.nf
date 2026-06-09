@@ -21,8 +21,12 @@ process NCBIDATASETSCLI_DATASETS {
     task.ext.when == null || task.ext.when
 
     script:
+    def args = task.ext.args ?: ''
     """
-    ${task.ext.args ?: ''} datasets download genome accession ${meta.accession} --reference --include ${reference}
+    datasets ${args} \\
+        download \\
+        genome accession ${meta.accession} \\
+        --reference --include ${reference}
     7za \\
         x \\
         -o"data"/ \\

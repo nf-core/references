@@ -1,7 +1,7 @@
 {
     "-profile test --tools bwamem1,createsequencedictionary,faidx,intervals,rsem,star --input Caenorhabditis_elegans/NCBI/WBcel235.yml": {
         "content": [
-            10,
+            8,
             {
                 "BUILD_INTERVALS": {
                     "gawk": "5.3.1"
@@ -12,15 +12,7 @@
                 "GATK4_CREATESEQUENCEDICTIONARY": {
                     "gatk4": "4.6.2.0"
                 },
-                "NCBIDOWNLOAD_FASTA": {
-                    "gunzip": "1.12",
-                    "ncbidatasetscli": "datasets version: 18.25.0"
-                },
-                "NCBIDOWNLOAD_GFF": {
-                    "gunzip": "1.12",
-                    "ncbidatasetscli": "datasets version: 18.25.0"
-                },
-                "NCBIDOWNLOAD_GTF": {
+                "NCBIDATASETSCLI_DATASETS": {
                     "gunzip": "1.12",
                     "ncbidatasetscli": "datasets version: 18.25.0"
                 },
@@ -170,7 +162,7 @@
                 "multiqc_citations.txt:md5,4c806e63a283ec1b7e78cdae3a923d4f"
             ]
         ],
-        "timestamp": "2026-06-09T12:43:15.514012267",
+        "timestamp": "2026-06-09T17:12:22.546083984",
         "meta": {
             "nf-test": "0.9.5",
             "nextflow": "26.04.3"
