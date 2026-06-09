@@ -17,7 +17,7 @@ workflow UTILS_REFERENCES {
 
     main:
 
-    references = Channel.fromList(
+    references = channel.fromList(
         samplesheetToList(
             update_references_file(yaml_reference, basepath_final, basepath_to_replace),
             "${projectDir}/subworkflows/local/utils_references/schema_references.json",

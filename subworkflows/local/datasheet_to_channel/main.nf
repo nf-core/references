@@ -17,7 +17,7 @@ workflow DATASHEET_TO_CHANNEL {
         // If the reference doesn't exist, then we return nothing
         return null
     }
-    def ascat_alleles = ascat_alleles_branch.file
+    ascat_alleles = ascat_alleles_branch.file
 
     ascat_loci_branch = datasheet.branch { meta, _readme ->
         file: meta.ascat_loci
@@ -26,7 +26,7 @@ workflow DATASHEET_TO_CHANNEL {
         // If the reference doesn't exist, then we return nothing
         return null
     }
-    def ascat_loci = ascat_loci_branch.file
+    ascat_loci = ascat_loci_branch.file
 
     ascat_loci_gc_branch = datasheet.branch { meta, _readme ->
         file: meta.ascat_loci_gc
@@ -35,7 +35,7 @@ workflow DATASHEET_TO_CHANNEL {
         // If the reference doesn't exist, then we return nothing
         return null
     }
-    def ascat_loci_gc = ascat_loci_gc_branch.file
+    ascat_loci_gc = ascat_loci_gc_branch.file
 
     ascat_loci_rt_branch = datasheet.branch { meta, _readme ->
         file: meta.ascat_loci_rt
@@ -44,7 +44,7 @@ workflow DATASHEET_TO_CHANNEL {
         // If the reference doesn't exist, then we return nothing
         return null
     }
-    def ascat_loci_rt = ascat_loci_rt_branch.file
+    ascat_loci_rt = ascat_loci_rt_branch.file
 
     chr_dir_branch = datasheet.branch { meta, _readme ->
         file: meta.chr_dir
@@ -53,7 +53,7 @@ workflow DATASHEET_TO_CHANNEL {
         // If the reference doesn't exist, then we return nothing
         return null
     }
-    def chr_dir = chr_dir_branch.file
+    chr_dir = chr_dir_branch.file
 
     intervals_bed_branch = datasheet.branch { meta, _readme ->
         file: meta.intervals_bed
@@ -62,7 +62,7 @@ workflow DATASHEET_TO_CHANNEL {
         // If the reference doesn't exist, then we return nothing
         return null
     }
-    def intervals_bed = intervals_bed_branch.file
+    intervals_bed = intervals_bed_branch.file
 
     fasta_branch = datasheet.branch { meta, _readme ->
         file: meta.fasta
@@ -88,7 +88,7 @@ workflow DATASHEET_TO_CHANNEL {
         // If the reference doesn't exist, then we return nothing
         return null
     }
-    def fasta = fasta_branch.file
+    fasta = fasta_branch.file
 
     fasta_dict_branch = datasheet.branch { meta, _readme ->
         file: meta.fasta_dict
@@ -97,7 +97,7 @@ workflow DATASHEET_TO_CHANNEL {
         // If the reference doesn't exist, then we return nothing
         return null
     }
-    def fasta_dict = fasta_dict_branch.file
+    fasta_dict = fasta_dict_branch.file
 
     // If we have intervals_bed, then we don't need to run faidx
     fasta_fai_branch = datasheet.branch { meta, _readme ->
@@ -109,7 +109,7 @@ workflow DATASHEET_TO_CHANNEL {
         // If the reference doesn't exist, then we return nothing
         return null
     }
-    def fasta_fai = fasta_fai_branch.file
+    fasta_fai = fasta_fai_branch.file
 
     fasta_sizes_branch = datasheet.branch { meta, _readme ->
         file: meta.fasta_sizes
@@ -118,7 +118,7 @@ workflow DATASHEET_TO_CHANNEL {
         // If the reference doesn't exist, then we return nothing
         return null
     }
-    def fasta_sizes = fasta_sizes_branch.file
+    fasta_sizes = fasta_sizes_branch.file
 
     gff_branch = datasheet.branch { meta, _readme ->
         file: meta.gff
@@ -131,7 +131,7 @@ workflow DATASHEET_TO_CHANNEL {
         // If the reference doesn't exist, then we return nothing
         return null
     }
-    def gff = gff_branch.file
+    gff = gff_branch.file
 
     gtf_branch = datasheet.branch { meta, _readme ->
         file: meta.gtf
@@ -143,7 +143,7 @@ workflow DATASHEET_TO_CHANNEL {
         // If the reference doesn't exist, then we return nothing
         return null
     }
-    def gtf = gtf_branch.file
+    gtf = gtf_branch.file
 
     splice_sites_branch = datasheet.branch { meta, _readme ->
         file: meta.splice_sites
@@ -152,7 +152,7 @@ workflow DATASHEET_TO_CHANNEL {
         // If the reference doesn't exist, then we return nothing
         return null
     }
-    def splice_sites = splice_sites_branch.file
+    splice_sites = splice_sites_branch.file
 
     transcript_fasta_branch = datasheet.branch { meta, _readme ->
         file: meta.transcript_fasta
@@ -168,7 +168,7 @@ workflow DATASHEET_TO_CHANNEL {
         // If the reference doesn't exist, then we return nothing
         return null
     }
-    def transcript_fasta = transcript_fasta_branch.file
+    transcript_fasta = transcript_fasta_branch.file
 
     // HANDLING OF VCF
 
@@ -228,7 +228,7 @@ workflow DATASHEET_TO_CHANNEL {
         return null
     }
 
-    def vcf = channel.empty()
+    vcf = channel.empty()
         .mix(
             dbsnp_branch.file,
             germline_resource_branch.file,
