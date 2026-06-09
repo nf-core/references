@@ -3,7 +3,7 @@
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## v0.2 - [date]
+## dev
 
 ### Added
 
@@ -42,6 +42,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - [#131](https://github.com/nf-core/references/pull/131) - Template update for nf-core/tools v3.5.1
 - [#132](https://github.com/nf-core/references/pull/132) - Update nf-core-utils plugin and use updated functions for topics
 - [#137](https://github.com/nf-core/references/pull/137) - Replace local TABIX modules with nf-core `htslib/bgziptabix`
+- [#138](https://github.com/nf-core/references/pull/138) - Use nf-core modules for all modules
 
 ### Fixed
 
@@ -51,15 +52,37 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Dependencies
 
-| modules                           | old version | new version |
-| --------------------------------- | ----------- | ----------- |
-| bbmap                             | 39.10       | 39.18       |
-| gunzip                            | 1.1         | 1.13        |
-| multiqc                           | 1.28        | 1.32        |
-| pigz (in bbmap/bbsplit)           |             | 2.8         |
-| samtools (in star/genomegenerate) | 1.20        | 1.21        |
-| untar                             |             | 1.34        |
-| unzip                             |             | 16.02       |
+| modules           | old version | new version |
+| ----------------- | ----------- | ----------- |
+| bbmap             | 39.10       |             |
+| bowtie            |             |             |
+| --htslib          | 1.20        | 1.21        |
+| --samtools        |             | 1.21        |
+| bowtie2           | 2.5.2       | 2.5.4       |
+| --htslib          |             | 1.21        |
+| --samtools        |             | 1.21        |
+| --pigz            |             | 2.8         |
+| bwa               | 0.7.18      | 0.7.19      |
+| --htslib          | 1.21        | 1.22.1      |
+| --samtools        | 1.21        | 1.22.1      |
+| bwamem2           | 2.2.1       | 2.3         |
+| --htslib          |             | 1.22.1      |
+| --samtools        |             | 1.22.1      |
+| dragmap           | 1.3.0       | 1.2.1       |
+| gatk4             | 4.6.1.0     | 4.6.2.0     |
+| gawk              | 5.3.0       | 5.3.1       |
+| hisat2            | 2.2.1       | 2.2.2       |
+| --samtools        |             | 1.20        |
+| multiqc           | 1.25.1      | 1.35        |
+| msisensorpro/scan | 1.2.0       | 1.3.0       |
+| samtools          | 1.21        | 1.23.1      |
+| --htslib          | 1.21        | 1.23.1      |
+| snapaligner       |             | 2.0.5       |
+| star              |             |             |
+| --htslib          | 1.20        | 1.21        |
+| --samtools        | 1.20        | 1.21        |
+| untar             |             | 1.34        |
+| unzip             |             | 16.02       |
 
 > NB: Dependency has been updated if both old and new version information is present.
 > NB: Dependency has been added if just the new version information is present.
