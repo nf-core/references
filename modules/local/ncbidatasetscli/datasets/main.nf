@@ -14,15 +14,19 @@ process NCBIDATASETSCLI_DATASETS {
     tuple val(meta), path("*enomic.fna"), emit: fna, optional: true
     tuple val(meta), path("*enomic.gff"), emit: gff, optional: true
     tuple val(meta), path("*enomic.gtf"), emit: gtf, optional: true
-    tuple val("${task.process}"), val('ncbidatasetscli'), eval('datasets --version'), topic: versions, emit: versions_ncbidatasetscli
+    tuple val("${task.process}"), val('ncbidatasetscli'), eval('datasets --version | sed "s/datasets version: //"'), topic: versions, emit: versions_ncbidatasetscli
     tuple val("${task.process}"), val('gunzip'), eval('gunzip --version 2>&1 | head -1 | sed "s/^.*(gzip) //; s/ Copyright.*//"'), topic: versions, emit: versions_gunzip
 
     when:
     task.ext.when == null || task.ext.when
 
     script:
+    def args = task.ext.args ?: ''
     """
-    datasets download genome accession ${meta.accession} --reference --include ${reference}
+    datasets ${args} \\
+        download \\
+        genome accession ${meta.accession} \\
+        --reference --include ${reference}
     7za \\
         x \\
         -o"data"/ \\

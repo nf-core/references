@@ -114,5 +114,5 @@ workflow REFERENCES {
         )
 
     emit:
-    references // channel: [meta, *]
+    references = references // channel: [meta, *]
 }

@@ -15,20 +15,18 @@
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 */
 
-include { ARCHIVE_EXTRACT                                } from './subworkflows/nf-core/archive_extract'
-include { NCBIDATASETSCLI_DATASETS as NCBIDOWNLOAD_FASTA } from './modules/local/ncbidatasetscli/datasets'
-include { NCBIDATASETSCLI_DATASETS as NCBIDOWNLOAD_GFF   } from './modules/local/ncbidatasetscli/datasets'
-include { NCBIDATASETSCLI_DATASETS as NCBIDOWNLOAD_GTF   } from './modules/local/ncbidatasetscli/datasets'
-include { DATASHEET_TO_CHANNEL                           } from './subworkflows/local/datasheet_to_channel'
-include { PIPELINE_COMPLETION                            } from './subworkflows/local/utils_nfcore_references_pipeline'
-include { PIPELINE_INITIALISATION                        } from './subworkflows/local/utils_nfcore_references_pipeline'
-include { REFERENCES                                     } from "./workflows/references"
+include { ARCHIVE_EXTRACT          } from './subworkflows/nf-core/archive_extract'
+include { NCBIDATASETSCLI_DATASETS } from './modules/local/ncbidatasetscli/datasets'
+include { DATASHEET_TO_CHANNEL     } from './subworkflows/local/datasheet_to_channel'
+include { PIPELINE_COMPLETION      } from './subworkflows/local/utils_nfcore_references_pipeline'
+include { PIPELINE_INITIALISATION  } from './subworkflows/local/utils_nfcore_references_pipeline'
+include { REFERENCES               } from "./workflows/references"
 
 // MULTIQC & versions
-include { MULTIQC                                        } from './modules/nf-core/multiqc'
-include { softwareVersionsToYAML                         } from 'plugin/nf-core-utils'
-include { methodsDescriptionText                         } from './subworkflows/local/utils_nfcore_references_pipeline'
-include { paramsSummaryMap                               } from 'plugin/nf-schema'
+include { MULTIQC                  } from './modules/nf-core/multiqc'
+include { softwareVersionsToYAML   } from 'plugin/nf-core-utils'
+include { methodsDescriptionText   } from './subworkflows/local/utils_nfcore_references_pipeline'
+include { paramsSummaryMap         } from 'plugin/nf-schema'
 
 /*
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -58,9 +56,29 @@ workflow NFCORE_REFERENCES {
     gff_download_input = need_ncbi_download(DATASHEET_TO_CHANNEL.out.gff, 'gff')
     gtf_download_input = need_ncbi_download(DATASHEET_TO_CHANNEL.out.gtf, 'gtf')
 
-    NCBIDOWNLOAD_FASTA(fasta_download_input.to_download.map { meta, _file -> [meta + [accession: meta.source_version], 'genome'] })
-    NCBIDOWNLOAD_GFF(gff_download_input.to_download.map { meta, _file -> [meta + [accession: meta.source_version], 'gff3'] })
-    NCBIDOWNLOAD_GTF(gtf_download_input.to_download.map { meta, _file -> [meta + [accession: meta.source_version], 'gtf'] })
+    ncbi_download_input = fasta_download_input.to_download
+        .mix(gff_download_input.to_download, gtf_download_input.to_download)
+        .map { meta, _file ->
+            [meta.source_version, meta.reference, meta]
+        }
+        .groupTuple()
+        .map { acc, ref_types, metas ->
+            def includes = ref_types
+                .collect { reference_ ->
+                    reference_ == 'fasta'
+                        ? 'genome'
+                        : reference_ == 'gff'
+                            ? 'gff3'
+                            : reference_ == 'gtf' ? 'gtf' : reference_
+                }
+                .unique()
+                .sort()
+                .join(',')
+            def merged_meta = metas.inject([:]) { a, m -> a + m } + [accession: acc]
+            [merged_meta, includes]
+        }
+
+    NCBIDATASETSCLI_DATASETS(ncbi_download_input)
 
     fasta_input = need_extract(fasta_download_input.not_downloaded, 'fasta')
     gff_input = need_extract(gff_download_input.not_downloaded, 'gff')
@@ -113,12 +131,12 @@ workflow NFCORE_REFERENCES {
         ascat_loci_gc_input.not_extracted.mix(extracted_reference.ascat_loci_gc),
         ascat_loci_rt_input.not_extracted.mix(extracted_reference.ascat_loci_rt),
         chr_dir_input.not_extracted.mix(extracted_reference.chr_dir),
-        fasta_input.not_extracted.mix(extracted_reference.fasta, NCBIDOWNLOAD_FASTA.out.fna),
+        fasta_input.not_extracted.mix(extracted_reference.fasta, NCBIDATASETSCLI_DATASETS.out.fna.map { meta, file -> [meta + [reference: 'fasta', file: 'fasta'], file] }),
         DATASHEET_TO_CHANNEL.out.fasta_dict,
         DATASHEET_TO_CHANNEL.out.fasta_fai,
         DATASHEET_TO_CHANNEL.out.fasta_sizes,
-        gff_input.not_extracted.mix(extracted_reference.gff, NCBIDOWNLOAD_GFF.out.gff),
-        gtf_input.not_extracted.mix(extracted_reference.gtf, NCBIDOWNLOAD_GTF.out.gtf),
+        gff_input.not_extracted.mix(extracted_reference.gff, NCBIDATASETSCLI_DATASETS.out.gff.map { meta, file -> [meta + [reference: 'gff', file: 'gff'], file] }),
+        gtf_input.not_extracted.mix(extracted_reference.gtf, NCBIDATASETSCLI_DATASETS.out.gtf.map { meta, file -> [meta + [reference: 'gtf', file: 'gtf'], file] }),
         DATASHEET_TO_CHANNEL.out.intervals_bed,
         DATASHEET_TO_CHANNEL.out.splice_sites,
         DATASHEET_TO_CHANNEL.out.transcript_fasta,

@@ -25,95 +25,46 @@ workflow PREPARE_GENOME_DNASEQ {
     run_snapaligner // boolean: true/false
 
     main:
-    bwamem1_index = channel.empty()
-    bwamem2_index = channel.empty()
-    dragmap_hashmap = channel.empty()
-    fasta_dict = channel.empty()
-    intervals_bed = channel.empty()
-    msisensorpro_list = channel.empty()
-    vcf_gz = channel.empty()
-    vcf_tbi = channel.empty()
-    snapaligner_index = channel.empty()
 
-    if (run_bwamem1) {
-        BWAMEM1_INDEX(fasta)
+    BWAMEM1_INDEX(fasta.filter { meta, _fasta -> run_bwamem1 && meta.run_bwamem1 })
 
-        bwamem1_index = BWAMEM1_INDEX.out.index
-    }
+    BWAMEM2_INDEX(fasta.filter { meta, _fasta -> run_bwamem2 && meta.run_bwamem2 })
 
-    if (run_bwamem2) {
-        BWAMEM2_INDEX(fasta)
+    DRAGMAP_HASHTABLE(fasta.filter { meta, _fasta -> run_dragmap && meta.run_dragmap })
 
-        bwamem2_index = BWAMEM2_INDEX.out.index
-    }
+    GATK4_CREATESEQUENCEDICTIONARY(fasta.filter { meta, _fasta -> run_createsequencedictionary && meta.run_createsequencedictionary })
 
-    if (run_dragmap) {
-        DRAGMAP_HASHTABLE(fasta)
+    // Do not generate sizes for DNAseq
+    generate_sizes = false
 
-        dragmap_hashmap = DRAGMAP_HASHTABLE.out.hashmap
-    }
+    SAMTOOLS_FAIDX(fasta.filter { meta, _fasta -> run_faidx && meta.run_faidx }.map { meta, fasta_ -> [meta, fasta_, []] }, generate_sizes)
 
-    if (run_createsequencedictionary) {
-        GATK4_CREATESEQUENCEDICTIONARY(fasta)
+    fasta_fai = fasta_fai.mix(SAMTOOLS_FAIDX.out.fai)
 
-        fasta_dict = GATK4_CREATESEQUENCEDICTIONARY.out.dict
-    }
+    BUILD_INTERVALS(fasta_fai.filter { meta, _fasta_fai -> run_intervals && meta.run_intervals }, [], false)
 
-    if (run_faidx || run_intervals) {
+    MSISENSORPRO_SCAN(fasta.filter { meta, _fasta -> run_msisensorpro && meta.run_msisensorpro })
 
-        if (run_faidx) {
-            // Do not generate sizes for DNAseq
-            generate_sizes = false
+    HTSLIB_BGZIPTABIX(
+        vcf.filter { meta, _vcf -> run_tabix && meta.run_tabix }.map { meta, vcf_ -> [meta, vcf_, [], []] },
+        "compress",
+        true,
+        "vcf",
+    )
 
-            SAMTOOLS_FAIDX(fasta.map { meta, fasta_ -> [meta, fasta_, []] }, generate_sizes)
-
-            fasta_fai = fasta_fai.mix(SAMTOOLS_FAIDX.out.fai)
-        }
-
-        if (run_intervals) {
-            BUILD_INTERVALS(fasta_fai, [], false)
-            intervals_bed = BUILD_INTERVALS.out.output
-        }
-    }
-
-    if (run_msisensorpro) {
-        MSISENSORPRO_SCAN(fasta)
-
-        msisensorpro_list = MSISENSORPRO_SCAN.out.list
-    }
-
-    if (run_tabix) {
-        HTSLIB_BGZIPTABIX(
-            vcf.map { meta, vcf_ -> [meta, vcf_, [], []] },
-            "compress",
-            true,
-            "vcf",
-        )
-
-        vcf_gz = HTSLIB_BGZIPTABIX.out.output.map { meta, out -> [meta, out] }
-        vcf_tbi = HTSLIB_BGZIPTABIX.out.index.map { meta, idx -> [meta, idx] }
-    }
-
-    if (run_snapaligner) {
-        def snap_input = fasta
-            .combine(altliftoverfile)
-            .map { meta, fasta_, altliftoverfile_ ->
-                [meta, fasta_, [], [], altliftoverfile_]
-            }
-        SNAPALIGNER_INDEX(snap_input)
-
-        snapaligner_index = snapaligner_index.mix(SNAPALIGNER_INDEX.out.index)
-    }
+    SNAPALIGNER_INDEX(
+        fasta.combine(altliftoverfile).map { meta, fasta_, altliftoverfile_ -> [meta, fasta_, [], [], altliftoverfile_] }.filter { meta, _snap_input -> run_snapaligner && meta.run_snapaligner }
+    )
 
     emit:
-    bwamem1_index // channel: [meta, BWAmemIndex/]
-    bwamem2_index // channel: [meta, BWAmem2memIndex/]
-    dragmap_hashmap // channel: [meta, DragmapHashtable/]
-    fasta_dict // channel: [meta, *.fa(sta).dict]
+    bwamem1_index     = BWAMEM1_INDEX.out.index // channel: [meta, BWAmemIndex/]
+    bwamem2_index     = BWAMEM2_INDEX.out.index // channel: [meta, BWAmem2memIndex/]
+    dragmap_hashmap   = DRAGMAP_HASHTABLE.out.hashmap // channel: [meta, DragmapHashtable/]
+    fasta_dict        = GATK4_CREATESEQUENCEDICTIONARY.out.dict // channel: [meta, *.fa(sta).dict]
     fasta_fai // channel: [meta, *.fa(sta).fai]
-    intervals_bed // channel: [meta, *.bed]
-    msisensorpro_list // channel: [meta, *.list]
-    snapaligner_index // channel: [meta, snap/]
-    vcf_gz // channel: [meta, *.vcf.gz]
-    vcf_tbi // channel: [meta, *.vcf.gz.tbi]
+    intervals_bed     = BUILD_INTERVALS.out.output // channel: [meta, *.bed]
+    msisensorpro_list = MSISENSORPRO_SCAN.out.list // channel: [meta, *.list]
+    snapaligner_index = SNAPALIGNER_INDEX.out.index // channel: [meta, snap/]
+    vcf_gz            = HTSLIB_BGZIPTABIX.out.output.map { meta, out -> [meta, out] } // channel: [meta, *.vcf.gz]
+    vcf_tbi           = HTSLIB_BGZIPTABIX.out.index.map { meta, idx -> [meta, idx] } // channel: [meta, *.vcf.gz.tbi]
 }

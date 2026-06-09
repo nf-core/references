@@ -77,11 +77,12 @@ workflow DATASHEET_TO_CHANNEL {
         meta_extra += [run_hisat2: meta.hisat2_index ? false : true]
         meta_extra += [run_intervals: meta.intervals_bed ? false : true]
         meta_extra += [run_kallisto: meta.kallisto_index ? false : true]
-        meta_extra += [run_msisenpro: meta.msisensorpro_list ? false : true]
+        meta_extra += [run_msisensorpro: meta.msisensorpro_list ? false : true]
         meta_extra += [run_rsem: meta.rsem_index ? false : true]
         meta_extra += [run_rsem_make_transcript_fasta: meta.transcript_fasta ? false : true]
         meta_extra += [run_salmon: meta.salmon_index ? false : true]
         meta_extra += [run_star: meta.star_index ? false : true]
+        meta_extra += [run_snapaligner: meta.snapaligner_index ? false : true]
         return [reduceMeta(meta) + meta_extra, meta.fasta.contains('ncbi.nlm.nih.gov') ? meta.fasta : file(meta.fasta, checkIfExists: true)]
         other: true
         // If the reference doesn't exist, then we return nothing
@@ -175,8 +176,7 @@ workflow DATASHEET_TO_CHANNEL {
         file: meta.vcf_dbsnp_vcf
 
         // If we already have the vcf_tbi, then we don't need to index the vcf
-        def meta_extra = [run_tabix: meta.vcf_dbsnp_vcf_tbi || meta.vcf_dbsnp_vcf.endsWith('.vcf') ? false : true]
-        meta_extra += [run_bgziptabix: meta.vcf_dbsnp_vcf.endsWith('.vcf') ?: false]
+        def meta_extra = [run_tabix: !meta.vcf_dbsnp_vcf_tbi]
         meta_extra += [type: 'dbsnp', source_vcf: meta.vcf_dbsnp_vcf_source]
         return [reduceMeta(meta) + meta_extra, files(meta.vcf_dbsnp_vcf, checkIfExists: true)]
         other: true
@@ -187,8 +187,7 @@ workflow DATASHEET_TO_CHANNEL {
     germline_resource_branch = datasheet.branch { meta, _readme ->
         file: meta.vcf_germline_resource_vcf
         // If we already have the vcf_tbi, then we don't need to index the vcf
-        def meta_extra = [run_tabix: meta.vcf_germline_resource_vcf_tbi || meta.vcf_germline_resource_vcf.endsWith('.vcf') ? false : true]
-        meta_extra += [run_bgziptabix: meta.vcf_germline_resource_vcf.endsWith('.vcf') ?: false]
+        def meta_extra = [run_tabix: !meta.vcf_germline_resource_vcf_tbi]
         meta_extra += [type: 'germline_resource', source_vcf: meta.vcf_germline_resource_vcf_source]
         return [reduceMeta(meta) + meta_extra, file(meta.vcf_germline_resource_vcf, checkIfExists: true)]
         other: true
@@ -199,8 +198,7 @@ workflow DATASHEET_TO_CHANNEL {
     known_indels_branch = datasheet.branch { meta, _readme ->
         file: meta.vcf_known_indels_vcf
         // If we already have the vcf_tbi, then we don't need to index the vcf
-        def meta_extra = [run_tabix: meta.vcf_known_indels_vcf_tbi || meta.vcf_known_indels_vcf.endsWith('.vcf') ? false : true]
-        meta_extra += [run_bgziptabix: meta.vcf_known_indels_vcf.endsWith('.vcf') ?: false]
+        def meta_extra = [run_tabix: !meta.vcf_known_indels_vcf_tbi]
         meta_extra += [type: 'known_indels', source_vcf: meta.vcf_known_indels_vcf_source]
         return [reduceMeta(meta) + meta_extra, file(meta.vcf_known_indels_vcf, checkIfExists: true)]
         other: true
@@ -211,8 +209,7 @@ workflow DATASHEET_TO_CHANNEL {
     known_snps_branch = datasheet.branch { meta, _readme ->
         file: meta.vcf_known_snps_vcf
         // If we already have the vcf_tbi, then we don't need to index the vcf
-        def meta_extra = [run_tabix: meta.vcf_known_snps_vcf_tbi || meta.vcf_known_snps_vcf.endsWith('.vcf') ? false : true]
-        meta_extra += [run_bgziptabix: meta.vcf_known_snps_vcf.endsWith('.vcf') ?: false]
+        def meta_extra = [run_tabix: !meta.vcf_known_snps_vcf_tbi]
         meta_extra += [type: 'known_snps', source_vcf: meta.vcf_known_snps_vcf_source]
         return [reduceMeta(meta) + meta_extra, file(meta.vcf_known_snps_vcf, checkIfExists: true)]
         other: true
@@ -223,8 +220,7 @@ workflow DATASHEET_TO_CHANNEL {
     pon_branch = datasheet.branch { meta, _readme ->
         file: meta.vcf_pon_vcf
         // If we already have the vcf_tbi, then we don't need to index the vcf
-        def meta_extra = [run_tabix: meta.vcf_pon_vcf_tbi || meta.vcf_pon_vcf.endsWith('.vcf') ? false : true]
-        meta_extra += [run_bgziptabix: meta.vcf_pon_vcf.endsWith('.vcf') ?: false]
+        def meta_extra = [run_tabix: !meta.vcf_pon_vcf_tbi]
         meta_extra += [type: 'pon', source_vcf: meta.vcf_pon_vcf_source]
         return [reduceMeta(meta) + meta_extra, file(meta.vcf_pon_vcf, checkIfExists: true)]
         other: true
@@ -232,24 +228,32 @@ workflow DATASHEET_TO_CHANNEL {
         return null
     }
 
-    vcf = channel.empty().mix(dbsnp_branch.file, germline_resource_branch.file, known_indels_branch.file, known_snps_branch.file, pon_branch.file).transpose()
+    vcf = channel.empty()
+        .mix(
+            dbsnp_branch.file,
+            germline_resource_branch.file,
+            known_indels_branch.file,
+            known_snps_branch.file,
+            pon_branch.file,
+        )
+        .transpose()
 
     emit:
-    ascat_alleles // channel: [meta, *.ascat_alleles.txt]
-    ascat_loci // channel: [meta, *.ascat_loci.txt]
-    ascat_loci_gc // channel: [meta, *.ascat_loci_gc.txt]
-    ascat_loci_rt // channel: [meta, *.ascat_loci_rt.txt]
-    chr_dir // channel: [meta, *.chr_dir]
-    intervals_bed // channel: [meta, *.bed]
-    fasta // channel: [meta, *.f(ast|n)?a]
-    fasta_dict // channel: [meta, *.f(ast|n)?a.dict]
-    fasta_fai // channel: [meta, *.f(ast|n)?a.fai]
-    fasta_sizes // channel: [meta, *.f(ast|n)?a.sizes]
-    gff // channel: [meta, gff]
-    gtf // channel: [meta, gtf]
-    splice_sites // channel: [meta, *.splice_sites.txt]
-    transcript_fasta // channel: [meta, *.transcripts.fasta]
-    vcf // channel: [meta, *.vcf.gz]
+    ascat_alleles    = ascat_alleles // channel: [meta, *.ascat_alleles.txt]
+    ascat_loci       = ascat_loci // channel: [meta, *.ascat_loci.txt]
+    ascat_loci_gc    = ascat_loci_gc // channel: [meta, *.ascat_loci_gc.txt]
+    ascat_loci_rt    = ascat_loci_rt // channel: [meta, *.ascat_loci_rt.txt]
+    chr_dir          = chr_dir // channel: [meta, *.chr_dir]
+    intervals_bed    = intervals_bed // channel: [meta, *.bed]
+    fasta            = fasta // channel: [meta, *.f(ast|n)?a]
+    fasta_dict       = fasta_dict // channel: [meta, *.f(ast|n)?a.dict]
+    fasta_fai        = fasta_fai // channel: [meta, *.f(ast|n)?a.fai]
+    fasta_sizes      = fasta_sizes // channel: [meta, *.f(ast|n)?a.sizes]
+    gff              = gff // channel: [meta, gff]
+    gtf              = gtf // channel: [meta, gtf]
+    splice_sites     = splice_sites // channel: [meta, *.splice_sites.txt]
+    transcript_fasta = transcript_fasta // channel: [meta, *.transcripts.fasta]
+    vcf              = vcf // channel: [meta, *.vcf.gz]
 }
 
 /*
