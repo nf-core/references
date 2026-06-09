@@ -83,7 +83,7 @@ workflow REFERENCES {
     // TODO: need to rescue these files
     // vcf.map { meta, reference_ -> [meta + [file: "${meta.type}_vcf"], reference_] },
 
-    def references = channel.empty()
+    references = channel.empty()
         .mix(
             ascat_alleles.map { meta, reference_ -> [meta + [file: 'ascat_alleles'], reference_] },
             ascat_loci.map { meta, reference_ -> [meta + [file: 'ascat_loci'], reference_] },
