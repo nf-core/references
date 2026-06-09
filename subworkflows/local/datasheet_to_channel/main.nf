@@ -176,7 +176,7 @@ workflow DATASHEET_TO_CHANNEL {
         file: meta.vcf_dbsnp_vcf
 
         // If we already have the vcf_tbi, then we don't need to index the vcf
-        def meta_extra = [run_tabix: meta.vcf_dbsnp_vcf_tbi || meta.vcf_dbsnp_vcf.endsWith('.vcf') ? false : true]
+        def meta_extra = [run_tabix: !meta.vcf_dbsnp_vcf_tbi && meta.vcf_dbsnp_vcf.endsWith('.vcf.gz')]
         meta_extra += [type: 'dbsnp', source_vcf: meta.vcf_dbsnp_vcf_source]
         return [reduceMeta(meta) + meta_extra, files(meta.vcf_dbsnp_vcf, checkIfExists: true)]
         other: true
@@ -187,7 +187,7 @@ workflow DATASHEET_TO_CHANNEL {
     germline_resource_branch = datasheet.branch { meta, _readme ->
         file: meta.vcf_germline_resource_vcf
         // If we already have the vcf_tbi, then we don't need to index the vcf
-        def meta_extra = [run_tabix: meta.vcf_germline_resource_vcf_tbi || meta.vcf_germline_resource_vcf.endsWith('.vcf') ? false : true]
+        def meta_extra = [run_tabix: !meta.vcf_germline_resource_vcf_tbi && meta.vcf_germline_resource_vcf.endsWith('.vcf.gz')]
         meta_extra += [type: 'germline_resource', source_vcf: meta.vcf_germline_resource_vcf_source]
         return [reduceMeta(meta) + meta_extra, file(meta.vcf_germline_resource_vcf, checkIfExists: true)]
         other: true
@@ -198,7 +198,7 @@ workflow DATASHEET_TO_CHANNEL {
     known_indels_branch = datasheet.branch { meta, _readme ->
         file: meta.vcf_known_indels_vcf
         // If we already have the vcf_tbi, then we don't need to index the vcf
-        def meta_extra = [run_tabix: meta.vcf_known_indels_vcf_tbi || meta.vcf_known_indels_vcf.endsWith('.vcf') ? false : true]
+        def meta_extra = [run_tabix: !meta.vcf_known_indels_vcf_tbi && meta.vcf_known_indels_vcf.endsWith('.vcf.gz')]
         meta_extra += [type: 'known_indels', source_vcf: meta.vcf_known_indels_vcf_source]
         return [reduceMeta(meta) + meta_extra, file(meta.vcf_known_indels_vcf, checkIfExists: true)]
         other: true
@@ -209,7 +209,7 @@ workflow DATASHEET_TO_CHANNEL {
     known_snps_branch = datasheet.branch { meta, _readme ->
         file: meta.vcf_known_snps_vcf
         // If we already have the vcf_tbi, then we don't need to index the vcf
-        def meta_extra = [run_tabix: meta.vcf_known_snps_vcf_tbi || meta.vcf_known_snps_vcf.endsWith('.vcf') ? false : true]
+        def meta_extra = [run_tabix: !meta.vcf_known_snps_vcf_tbi && meta.vcf_known_snps_vcf.endsWith('.vcf.gz')]
         meta_extra += [type: 'known_snps', source_vcf: meta.vcf_known_snps_vcf_source]
         return [reduceMeta(meta) + meta_extra, file(meta.vcf_known_snps_vcf, checkIfExists: true)]
         other: true
@@ -220,7 +220,7 @@ workflow DATASHEET_TO_CHANNEL {
     pon_branch = datasheet.branch { meta, _readme ->
         file: meta.vcf_pon_vcf
         // If we already have the vcf_tbi, then we don't need to index the vcf
-        def meta_extra = [run_tabix: meta.vcf_pon_vcf_tbi || meta.vcf_pon_vcf.endsWith('.vcf') ? false : true]
+        def meta_extra = [run_tabix: !meta.vcf_pon_vcf_tbi && meta.vcf_pon_vcf.endsWith('.vcf.gz')]
         meta_extra += [type: 'pon', source_vcf: meta.vcf_pon_vcf_source]
         return [reduceMeta(meta) + meta_extra, file(meta.vcf_pon_vcf, checkIfExists: true)]
         other: true
