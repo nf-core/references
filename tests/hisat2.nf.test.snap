@@ -4,7 +4,7 @@
             2,
             {
                 "HISAT2_BUILD": {
-                    "hisat2": "2.2.1"
+                    "hisat2": "2.2.2"
                 }
             },
             [
@@ -38,7 +38,7 @@
                 "pipeline_info/nf_core_references_software_mqc_versions.yml"
             ],
             [
-                "GRCh38_chr21.1.ht2:md5,eb322cf410ecc616d7fe63cc1be2785b",
+                "GRCh38_chr21.1.ht2:md5,4a19b03fdaa4e9c222cbd110517b2772",
                 "GRCh38_chr21.2.ht2:md5,46be3356d4c236ebd5d1e52e9eaf4e12",
                 "GRCh38_chr21.3.ht2:md5,dbf5af96efd98d6b03f1e5d2baed848a",
                 "GRCh38_chr21.4.ht2:md5,bd952f748321c4c230671e8fce7b1650",
@@ -49,10 +49,10 @@
                 "multiqc_citations.txt:md5,4c806e63a283ec1b7e78cdae3a923d4f"
             ]
         ],
-        "timestamp": "2026-05-04T16:03:12.129814483",
+        "timestamp": "2026-06-09T11:55:28.651184433",
         "meta": {
             "nf-test": "0.9.5",
-            "nextflow": "26.04.0"
+            "nextflow": "26.04.3"
         }
     },
     "-profile test --tools hisat2,hisat2_extractsplicesites": {
@@ -63,7 +63,7 @@
                     "gffread": "0.12.7"
                 },
                 "HISAT2_BUILD": {
-                    "hisat2": "2.2.1"
+                    "hisat2": "2.2.2"
                 },
                 "HISAT2_EXTRACTSPLICESITES": {
                     "hisat2": "2.2.1"
@@ -105,7 +105,7 @@
             ],
             [
                 "GRCh38_chr21.gtf:md5,c552c0aee5f1becb1d3991d21e63a5c1",
-                "GRCh38_chr21.1.ht2:md5,eb322cf410ecc616d7fe63cc1be2785b",
+                "GRCh38_chr21.1.ht2:md5,4a19b03fdaa4e9c222cbd110517b2772",
                 "GRCh38_chr21.2.ht2:md5,46be3356d4c236ebd5d1e52e9eaf4e12",
                 "GRCh38_chr21.3.ht2:md5,dbf5af96efd98d6b03f1e5d2baed848a",
                 "GRCh38_chr21.4.ht2:md5,bd952f748321c4c230671e8fce7b1650",
@@ -117,10 +117,10 @@
                 "multiqc_citations.txt:md5,4c806e63a283ec1b7e78cdae3a923d4f"
             ]
         ],
-        "timestamp": "2026-05-04T13:30:01.145090085",
+        "timestamp": "2026-06-09T11:57:16.146784434",
         "meta": {
             "nf-test": "0.9.5",
-            "nextflow": "26.03.4"
+            "nextflow": "26.04.3"
         }
     }
 }

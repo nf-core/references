@@ -1,14 +1,14 @@
-include { BOWTIE2_BUILD                                         } from '../../../modules/local/bowtie2/build'
-include { BOWTIE_BUILD as BOWTIE1_BUILD                         } from '../../../modules/local/bowtie/build'
-include { GFFREAD                                               } from '../../../modules/local/gffread'
-include { HISAT2_BUILD                                          } from '../../../modules/local/hisat2/build'
-include { HISAT2_EXTRACTSPLICESITES                             } from '../../../modules/local/hisat2/extractsplicesites'
-include { KALLISTO_INDEX                                        } from '../../../modules/local/kallisto/index'
-include { RSEM_PREPAREREFERENCE as MAKE_TRANSCRIPTS_FASTA       } from '../../../modules/local/rsem/preparereference'
-include { RSEM_PREPAREREFERENCE as RSEM_PREPAREREFERENCE_GENOME } from '../../../modules/local/rsem/preparereference'
-include { SALMON_INDEX                                          } from '../../../modules/local/salmon/index'
-include { SAMTOOLS_FAIDX                                        } from '../../../modules/local/samtools/faidx'
-include { STAR_GENOMEGENERATE                                   } from '../../../modules/local/star/genomegenerate'
+include { BOWTIE2_BUILD                                         } from '../../../modules/nf-core/bowtie2/build'
+include { BOWTIE_BUILD as BOWTIE1_BUILD                         } from '../../../modules/nf-core/bowtie/build'
+include { GFFREAD                                               } from '../../../modules/nf-core/gffread'
+include { HISAT2_BUILD                                          } from '../../../modules/nf-core/hisat2/build'
+include { HISAT2_EXTRACTSPLICESITES                             } from '../../../modules/nf-core/hisat2/extractsplicesites'
+include { KALLISTO_INDEX                                        } from '../../../modules/nf-core/kallisto/index'
+include { RSEM_PREPAREREFERENCE as MAKE_TRANSCRIPTS_FASTA       } from '../../../modules/nf-core/rsem/preparereference'
+include { RSEM_PREPAREREFERENCE as RSEM_PREPAREREFERENCE_GENOME } from '../../../modules/nf-core/rsem/preparereference'
+include { SALMON_INDEX                                          } from '../../../modules/nf-core/salmon/index'
+include { SAMTOOLS_FAIDX                                        } from '../../../modules/nf-core/samtools/faidx'
+include { STAR_GENOMEGENERATE                                   } from '../../../modules/nf-core/star/genomegenerate'
 
 workflow PREPARE_GENOME_RNASEQ {
     take:
@@ -31,14 +31,14 @@ workflow PREPARE_GENOME_RNASEQ {
     run_star // boolean: true/false
 
     main:
-    bowtie1_index = Channel.empty()
-    bowtie2_index = Channel.empty()
-    hisat2_index = Channel.empty()
-    kallisto_index = Channel.empty()
-    rsem_index = Channel.empty()
-    salmon_index = Channel.empty()
-    star_index = Channel.empty()
-    fasta_sizes = Channel.empty()
+    bowtie1_index = channel.empty()
+    bowtie2_index = channel.empty()
+    hisat2_index = channel.empty()
+    kallisto_index = channel.empty()
+    rsem_index = channel.empty()
+    salmon_index = channel.empty()
+    star_index = channel.empty()
+    fasta_sizes = channel.empty()
 
     if (run_bowtie1) {
         BOWTIE1_BUILD(fasta)
@@ -58,7 +58,7 @@ workflow PREPARE_GENOME_RNASEQ {
     }
 
     if (run_hisat2 || run_kallisto || run_rsem || run_rsem_make_transcript_fasta || run_salmon || run_star) {
-        GFFREAD(gff.map { meta, gff_ -> [meta, [], gff_] })
+        GFFREAD(join_by_meta_id(fasta, gff))
 
         gtf = gtf
             .mix(GFFREAD.out.gtf)
@@ -121,7 +121,6 @@ workflow PREPARE_GENOME_RNASEQ {
     splice_sites // channel: [meta, *.splice_sites.txt]
     star_index // channel: [meta, STARIndex/]
     transcript_fasta // channel: [meta, *.transcripts.fasta]
-    topic_versions   = channel.topic('versions')
 }
 
 /*

@@ -4,7 +4,7 @@
             2,
             {
                 "BUILD_INTERVALS": {
-                    "gawk": "5.3.0"
+                    "gawk": "5.3.1"
                 }
             },
             [
@@ -33,10 +33,10 @@
                 "multiqc_citations.txt:md5,4c806e63a283ec1b7e78cdae3a923d4f"
             ]
         ],
-        "timestamp": "2026-05-04T16:10:30.34680381",
+        "timestamp": "2026-06-09T12:06:16.966628586",
         "meta": {
             "nf-test": "0.9.5",
-            "nextflow": "26.04.0"
+            "nextflow": "26.04.3"
         }
     },
     "-profile test --tools faidx,intervals,sizes --input references-datasheets/latest/genomes/Homo_sapiens/nf-core/GRCh38_chr21.yml": {
@@ -75,10 +75,10 @@
             3,
             {
                 "BUILD_INTERVALS": {
-                    "gawk": "5.3.0"
+                    "gawk": "5.3.1"
                 },
                 "SAMTOOLS_FAIDX": {
-                    "samtools": "1.21"
+                    "samtools": "1.23.1"
                 }
             },
             [
@@ -113,10 +113,10 @@
                 "multiqc_citations.txt:md5,4c806e63a283ec1b7e78cdae3a923d4f"
             ]
         ],
-        "timestamp": "2026-05-04T13:40:27.407837236",
+        "timestamp": "2026-06-09T12:05:54.356395091",
         "meta": {
             "nf-test": "0.9.5",
-            "nextflow": "26.03.4"
+            "nextflow": "26.04.3"
         }
     }
 }

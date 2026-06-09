@@ -4,13 +4,13 @@
             10,
             {
                 "BUILD_INTERVALS": {
-                    "gawk": "5.3.0"
+                    "gawk": "5.3.1"
                 },
                 "BWAMEM1_INDEX": {
-                    "bwa": "0.7.18-r1243-dirty"
+                    "bwa": "0.7.19-r1273"
                 },
                 "GATK4_CREATESEQUENCEDICTIONARY": {
-                    "gatk": "4.6.1.0"
+                    "gatk4": "4.6.2.0"
                 },
                 "NCBIDOWNLOAD_FASTA": {
                     "gunzip": "1.12",
@@ -29,7 +29,7 @@
                     "star": "2.7.10a"
                 },
                 "SAMTOOLS_FAIDX": {
-                    "samtools": "1.21"
+                    "samtools": "1.23.1"
                 },
                 "STAR_GENOMEGENERATE": {
                     "gawk": "5.1.0",
@@ -170,10 +170,10 @@
                 "multiqc_citations.txt:md5,4c806e63a283ec1b7e78cdae3a923d4f"
             ]
         ],
-        "timestamp": "2026-05-04T16:26:31.767288789",
+        "timestamp": "2026-06-09T12:43:15.514012267",
         "meta": {
             "nf-test": "0.9.5",
-            "nextflow": "26.04.0"
+            "nextflow": "26.04.3"
         }
     }
 }
