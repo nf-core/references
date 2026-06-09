@@ -14,7 +14,7 @@
                 },
                 "NCBIDATASETSCLI_DATASETS": {
                     "gunzip": "1.12",
-                    "ncbidatasetscli": "datasets version: 18.25.0"
+                    "ncbidatasetscli": "18.25.0"
                 },
                 "RSEM_PREPAREREFERENCE_GENOME": {
                     "rsem": "1.3.1",
@@ -162,7 +162,7 @@
                 "multiqc_citations.txt:md5,4c806e63a283ec1b7e78cdae3a923d4f"
             ]
         ],
-        "timestamp": "2026-06-09T17:12:22.546083984",
+        "timestamp": "2026-06-09T17:26:11.880488291",
         "meta": {
             "nf-test": "0.9.5",
             "nextflow": "26.04.3"
