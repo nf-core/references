@@ -4,16 +4,16 @@
             9,
             {
                 "BUILD_INTERVALS": {
-                    "gawk": "5.3.0"
+                    "gawk": "5.3.1"
                 },
                 "BWAMEM1_INDEX": {
-                    "bwa": "0.7.18-r1243-dirty"
+                    "bwa": "0.7.19-r1273"
                 },
                 "GATK4_CREATESEQUENCEDICTIONARY": {
-                    "gatk": "4.6.1.0"
+                    "gatk4": "4.6.2.0"
                 },
                 "SAMTOOLS_FAIDX": {
-                    "samtools": "1.21"
+                    "samtools": "1.23.1"
                 }
             },
             [
@@ -83,10 +83,10 @@
                 "multiqc_citations.txt:md5,4c806e63a283ec1b7e78cdae3a923d4f"
             ]
         ],
-        "timestamp": "2026-05-04T13:34:18.615057144",
+        "timestamp": "2026-06-09T12:00:30.922638483",
         "meta": {
             "nf-test": "0.9.5",
-            "nextflow": "26.03.4"
+            "nextflow": "26.04.3"
         }
     },
     "-profile test --tools tabix --input references-datasheets/latest/genomes_source/Homo_sapiens/GATK/GRCh37_GRCh38_multiple_dbsnps_globs.yml": {

@@ -4,7 +4,7 @@
             2,
             {
                 "GATK4_CREATESEQUENCEDICTIONARY": {
-                    "gatk": "4.6.1.0"
+                    "gatk4": "4.6.2.0"
                 }
             },
             [
@@ -33,10 +33,10 @@
                 "multiqc_citations.txt:md5,4c806e63a283ec1b7e78cdae3a923d4f"
             ]
         ],
-        "timestamp": "2026-05-04T13:25:57.485529971",
+        "timestamp": "2026-06-09T11:52:04.003672153",
         "meta": {
             "nf-test": "0.9.5",
-            "nextflow": "26.03.4"
+            "nextflow": "26.04.3"
         }
     }
 }

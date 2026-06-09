@@ -11,8 +11,8 @@ process RSEM_PREPAREREFERENCE {
     tuple val(meta), path(fasta, stageAs: "rsem/*"), path(gtf)
 
     output:
-    path "rsem"           , emit: index
-    path "*transcripts.fa", emit: transcript_fasta
+    tuple val(meta), path("rsem"), emit: index
+    tuple val(meta), path("*transcripts.fa"), emit: transcript_fasta
     tuple val("${task.process}"), val('rsem'), eval('rsem-calculate-expression --version | sed -e "s/Current version: RSEM v//g"'), topic: versions, emit: versions_rsem
     tuple val("${task.process}"), val('star'), eval('STAR --version | sed -e "s/STAR_//g"'), topic: versions, emit: versions_star
 

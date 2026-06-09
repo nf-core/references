@@ -11,7 +11,7 @@ process SALMON_INDEX {
     tuple val(meta), path(genome_fasta), path(transcript_fasta)
 
     output:
-    path "salmon"      , emit: index
+    tuple val(meta), path("salmon"), emit: index
     tuple val("${task.process}"), val('salmon'), eval("salmon --version | sed 's/salmon //'"), emit: versions_salmon, topic: versions
 
     when:
