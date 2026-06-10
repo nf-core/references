@@ -18,6 +18,7 @@
 include { ARCHIVE_EXTRACT          } from './subworkflows/nf-core/archive_extract'
 include { NCBIDATASETSCLI_DATASETS } from './modules/local/ncbidatasetscli/datasets'
 include { DATASHEET_TO_CHANNEL     } from './subworkflows/local/datasheet_to_channel'
+include { defineToolsList          } from './subworkflows/local/utils_nfcore_references_pipeline'
 include { PIPELINE_COMPLETION      } from './subworkflows/local/utils_nfcore_references_pipeline'
 include { PIPELINE_INITIALISATION  } from './subworkflows/local/utils_nfcore_references_pipeline'
 include { REFERENCES               } from "./workflows/references"
@@ -174,11 +175,15 @@ workflow {
     )
 
     // WORKFLOW: Run main workflow
-    if (!params.tools) {
+    def tools = defineToolsList(params.tools_bundle, params.tools, params.skip_tools)
+
+    if (!tools) {
         log.warn("No tools specified")
+    } else {
+        log.info("Tools selected: ${tools.join(', ')}")
     }
 
-    NFCORE_REFERENCES(PIPELINE_INITIALISATION.out.references, params.tools ?: "no_tools")
+    NFCORE_REFERENCES(PIPELINE_INITIALISATION.out.references, tools)
 
     // MULTIQC
 

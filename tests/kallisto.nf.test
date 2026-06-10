@@ -4,15 +4,16 @@ nextflow_pipeline {
     script "../main.nf"
     tag "pipeline"
 
-    test("-profile test --tools kallisto,rsem_make_transcript_fasta --input references-datasheets/latest/genomes/Homo_sapiens/nf-core/GRCh38_chr21_MT.yml") {
+    test("-profile test --tools_bundle rnaseq --skip_tools bowtie1,bowtie2,faidx,gffread,hisat2,hisat2_extractsplicesites,rsem,salmon,sizes,star --input references-datasheets/latest/genomes/Homo_sapiens/nf-core/GRCh38_chr21_MT.yml") {
 
         options "-output-dir $outputDir"
 
         when {
             params {
-                input  = "https://raw.githubusercontent.com/nf-core/references-datasheets/latest/genomes/Homo_sapiens/nf-core/GRCh38_chr21_MT.yml"
-                outdir = "$outputDir"
-                tools  = 'kallisto,rsem_make_transcript_fasta'
+                input        = "https://raw.githubusercontent.com/nf-core/references-datasheets/latest/genomes/Homo_sapiens/nf-core/GRCh38_chr21_MT.yml"
+                outdir       = "$outputDir"
+                tools_bundle = 'rnaseq'
+                skip_tools   = 'bowtie1,bowtie2,faidx,gffread,hisat2,hisat2_extractsplicesites,rsem,salmon,sizes,star'
             }
         }
 
@@ -37,14 +38,15 @@ nextflow_pipeline {
         }
     }
 
-    test("-profile test --tools kallisto,rsem_make_transcript_fasta") {
+    test("-profile test --tools_bundle rnaseq --skip_tools bowtie1,bowtie2,faidx,gffread,hisat2,hisat2_extractsplicesites,rsem,salmon,sizes,star") {
 
         options "-output-dir ${outputDir}"
 
         when {
             params {
-                outdir = "${outputDir}"
-                tools  = 'kallisto,rsem_make_transcript_fasta'
+                outdir       = "${outputDir}"
+                tools_bundle = 'rnaseq'
+                skip_tools   = 'bowtie1,bowtie2,faidx,gffread,hisat2,hisat2_extractsplicesites,rsem,salmon,sizes,star'
             }
         }
 

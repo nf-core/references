@@ -226,6 +226,85 @@ def toolBibliographyText() {
     return reference_text
 }
 
+//
+// Define the tools list from user-provided tool selections
+//
+def defineToolsList(input_tools_bundle, input_tools, input_skip) {
+
+    // tool bundles
+    def bundles = [
+        'all'    : [
+            'bowtie1',
+            'bowtie2',
+            'bwamem1',
+            'bwamem2',
+            'createsequencedictionary',
+            'dragmap',
+            'faidx',
+            'gffread',
+            'hisat2',
+            'hisat2_extractsplicesites',
+            'intervals',
+            'kallisto',
+            'msisensorpro',
+            'rsem',
+            'rsem_make_transcript_fasta',
+            'salmon',
+            'sizes',
+            'snapaligner',
+            'star',
+            'tabix',
+        ],
+        'rnaseq' : [
+            'bowtie1',
+            'bowtie2',
+            'faidx',
+            'gffread',
+            'hisat2',
+            'hisat2_extractsplicesites',
+            'kallisto',
+            'rsem',
+            'rsem_make_transcript_fasta',
+            'salmon',
+            'sizes',
+            'star',
+        ],
+        'sarek'  : [
+            'bwamem1',
+            'bwamem2',
+            'createsequencedictionary',
+            'dragmap',
+            'faidx',
+            'intervals',
+            'msisensorpro',
+            'snapaligner',
+            'tabix',
+        ],
+    ]
+
+    // resolve bundles
+    def tools_list = []
+    if (input_tools_bundle) {
+        input_tools_bundle.tokenize(',').each { bundle ->
+            if (bundle in bundles) {
+                tools_list += bundles[bundle]
+            }
+        }
+    }
+
+    // opt-in tools
+    if (input_tools) {
+        tools_list += input_tools.tokenize(',')
+    }
+
+    // opt-out tools
+    def skip_list = input_skip ? input_skip.tokenize(',') : []
+
+    tools_list = tools_list.sort().unique() - skip_list
+
+    return tools_list
+}
+
 def methodsDescriptionText(mqc_methods_yaml) {
     // Convert  to a named map so can be used as with familiar NXF ${workflow} variable syntax in the MultiQC YML file
     def meta = [:]

@@ -73,7 +73,7 @@ workflow DATASHEET_TO_CHANNEL {
         meta_extra += [run_bwamem2: meta.bwamem2_index ? false : true]
         meta_extra += [run_createsequencedictionary: meta.fasta_dict ? false : true]
         meta_extra += [run_dragmap: meta.dragmap_hashtable ? false : true]
-        meta_extra += [run_faidx: meta.fasta_fai && (meta.fasta_sizes || !tools.contains('sizes')) ? false : true]
+        meta_extra += [run_faidx: meta.fasta_fai && (meta.fasta_sizes || !('sizes' in tools)) ? false : true]
         meta_extra += [run_hisat2: meta.hisat2_index ? false : true]
         meta_extra += [run_intervals: meta.intervals_bed ? false : true]
         meta_extra += [run_kallisto: meta.kallisto_index ? false : true]

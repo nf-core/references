@@ -14,25 +14,19 @@ workflow PREPARE_GENOME_DNASEQ {
     fasta_fai // channel: [meta, fasta_fai]
     vcf // channel: [meta, vcf]
     altliftoverfile // channel: altliftoverfile
-    run_bwamem1 // boolean: true/false
-    run_bwamem2 // boolean: true/false
-    run_createsequencedictionary // boolean: true/false
-    run_dragmap // boolean: true/false
-    run_faidx // boolean: true/false
-    run_intervals // boolean: true/false
-    run_msisensorpro // boolean: true/false
-    run_tabix // boolean: true/false
-    run_snapaligner // boolean: true/false
+    tools // List: tools to build references for
 
     main:
 
-    BWAMEM1_INDEX(fasta.filter { meta, _fasta -> run_bwamem1 && meta.run_bwamem1 })
+    run_faidx = ('faidx' in tools) && !('intervals' in tools || 'sizes' in tools)
 
-    BWAMEM2_INDEX(fasta.filter { meta, _fasta -> run_bwamem2 && meta.run_bwamem2 })
+    BWAMEM1_INDEX(fasta.filter { meta, _fasta -> 'bwamem1' in tools && meta.run_bwamem1 })
 
-    DRAGMAP_HASHTABLE(fasta.filter { meta, _fasta -> run_dragmap && meta.run_dragmap })
+    BWAMEM2_INDEX(fasta.filter { meta, _fasta -> 'bwamem2' in tools && meta.run_bwamem2 })
 
-    GATK4_CREATESEQUENCEDICTIONARY(fasta.filter { meta, _fasta -> run_createsequencedictionary && meta.run_createsequencedictionary })
+    DRAGMAP_HASHTABLE(fasta.filter { meta, _fasta -> 'dragmap' in tools && meta.run_dragmap })
+
+    GATK4_CREATESEQUENCEDICTIONARY(fasta.filter { meta, _fasta -> 'createsequencedictionary' in tools && meta.run_createsequencedictionary })
 
     // Do not generate sizes for DNAseq
     generate_sizes = false
@@ -41,19 +35,19 @@ workflow PREPARE_GENOME_DNASEQ {
 
     fasta_fai = fasta_fai.mix(SAMTOOLS_FAIDX.out.fai)
 
-    BUILD_INTERVALS(fasta_fai.filter { meta, _fasta_fai -> run_intervals && meta.run_intervals }, [], false)
+    BUILD_INTERVALS(fasta_fai.filter { meta, _fasta_fai -> 'intervals' in tools && meta.run_intervals }, [], false)
 
-    MSISENSORPRO_SCAN(fasta.filter { meta, _fasta -> run_msisensorpro && meta.run_msisensorpro })
+    MSISENSORPRO_SCAN(fasta.filter { meta, _fasta -> 'msisensorpro' in tools && meta.run_msisensorpro })
 
     HTSLIB_BGZIPTABIX(
-        vcf.filter { meta, _vcf -> run_tabix && meta.run_tabix }.map { meta, vcf_ -> [meta, vcf_, [], []] },
+        vcf.filter { meta, _vcf -> 'tabix' in tools && meta.run_tabix }.map { meta, vcf_ -> [meta, vcf_, [], []] },
         "compress",
         true,
         "vcf",
     )
 
     SNAPALIGNER_INDEX(
-        fasta.combine(altliftoverfile).map { meta, fasta_, altliftoverfile_ -> [meta, fasta_, [], [], altliftoverfile_] }.filter { meta, _snap_input -> run_snapaligner && meta.run_snapaligner }
+        fasta.combine(altliftoverfile).map { meta, fasta_, altliftoverfile_ -> [meta, fasta_, [], [], altliftoverfile_] }.filter { meta, _snap_input -> 'snapaligner' in tools && meta.run_snapaligner }
     )
 
     emit:

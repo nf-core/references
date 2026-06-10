@@ -4,15 +4,16 @@ nextflow_pipeline {
     script "../main.nf"
     tag "pipeline"
 
-    test("-profile test --tools bwamem1,createsequencedictionary,faidx,intervals --input references-datasheets/latest/genomes_source/Homo_sapiens/nf-core/GRCh38_chr21_chr22.yml") {
+    test("-profile test --tools_bundle sarek --skip_tools bwamem2,dragmap,msisensorpro,snapaligner,tabix --input references-datasheets/latest/genomes_source/Homo_sapiens/nf-core/GRCh38_chr21_chr22.yml") {
 
         options "-output-dir $outputDir"
 
         when {
             params {
-                input  = "https://raw.githubusercontent.com/nf-core/references-datasheets/latest/genomes_source/Homo_sapiens/nf-core/GRCh38_chr21_chr22.yml"
-                outdir = "$outputDir"
-                tools  = 'bwamem1,createsequencedictionary,faidx,intervals'
+                input        = "https://raw.githubusercontent.com/nf-core/references-datasheets/latest/genomes_source/Homo_sapiens/nf-core/GRCh38_chr21_chr22.yml"
+                outdir       = "$outputDir"
+                tools_bundle = 'sarek'
+                skip_tools   = 'bwamem2,dragmap,msisensorpro,snapaligner,tabix'
             }
         }
 

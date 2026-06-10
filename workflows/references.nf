@@ -19,7 +19,7 @@ workflow REFERENCES {
     splice_sites
     transcript_fasta
     vcf
-    tools // List: Can contain any combination of tools of the list of available tools, or just no_tools
+    tools // List: Can contain any combination of tools
 
     main:
     // Create references for rnaseq based pipelines such as nf-core/riboseq, nf-core/rnaseq, nf-core/rnavar
@@ -30,17 +30,7 @@ workflow REFERENCES {
         gtf,
         splice_sites,
         transcript_fasta,
-        tools.split(',').contains('bowtie1'),
-        tools.split(',').contains('bowtie2'),
-        tools.split(',').contains('faidx') && (tools.split(',').contains('intervals') || tools.split(',').contains('sizes')),
-        tools.split(',').contains('hisat2'),
-        tools.split(',').contains('hisat2_extractsplicesites'),
-        tools.split(',').contains('kallisto'),
-        tools.split(',').contains('rsem'),
-        tools.split(',').contains('rsem_make_transcript_fasta'),
-        tools.split(',').contains('salmon'),
-        tools.split(',').contains('sizes'),
-        tools.split(',').contains('star'),
+        tools,
     )
 
     // Create references for dnaseq based pipelines such as nf-core/sarek
@@ -49,15 +39,7 @@ workflow REFERENCES {
         fasta_fai.mix(PREPARE_GENOME_RNASEQ.out.fasta_fai).unique(),
         vcf,
         altliftoverfile,
-        tools.split(',').contains('bwamem1'),
-        tools.split(',').contains('bwamem2'),
-        tools.split(',').contains('createsequencedictionary'),
-        tools.split(',').contains('dragmap'),
-        tools.split(',').contains('faidx') && !(tools.split(',').contains('intervals') || tools.split(',').contains('sizes')),
-        tools.split(',').contains('intervals'),
-        tools.split(',').contains('msisensorpro'),
-        tools.split(',').contains('tabix'),
-        tools.split(',').contains('snapaligner'),
+        tools,
     )
 
     bowtie1_index = PREPARE_GENOME_RNASEQ.out.bowtie1_index
