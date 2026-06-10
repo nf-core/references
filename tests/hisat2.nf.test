@@ -4,16 +4,15 @@ nextflow_pipeline {
     script "../main.nf"
     tag "pipeline"
 
-    test("-profile test --tools_bundle rnaseq --skip_tools bowtie1,bowtie2,faidx,gffread,kallisto,rsem,rsem_make_transcript_fasta,salmon,sizes,star --input references-datasheets/latest/genomes/Homo_sapiens/nf-core/GRCh38_chr21_MT.yml") {
+    test("-profile test --tools hisat2,hisat2_extractsplicesites --input references-datasheets/latest/genomes/Homo_sapiens/nf-core/GRCh38_chr21_MT.yml") {
 
         options "-output-dir $outputDir"
 
         when {
             params {
-                input        = "https://raw.githubusercontent.com/nf-core/references-datasheets/latest/genomes/Homo_sapiens/nf-core/GRCh38_chr21_MT.yml"
-                outdir       = "$outputDir"
-                tools_bundle = 'rnaseq'
-                skip_tools   = 'bowtie1,bowtie2,faidx,gffread,kallisto,rsem,rsem_make_transcript_fasta,salmon,sizes,star'
+                input  = "https://raw.githubusercontent.com/nf-core/references-datasheets/latest/genomes/Homo_sapiens/nf-core/GRCh38_chr21_MT.yml"
+                outdir = "$outputDir"
+                tools  = 'hisat2,hisat2_extractsplicesites'
                 // TODO REMOVE ME when the module is fixed
                 // cf https://github.com/nf-core/modules/issues/7045
                 hisat2_build_memory = "3.GB"
@@ -41,15 +40,14 @@ nextflow_pipeline {
         }
     }
 
-    test("-profile test --tools_bundle rnaseq --skip_tools bowtie1,bowtie2,faidx,gffread,kallisto,rsem,rsem_make_transcript_fasta,salmon,sizes,star") {
+    test("-profile test --tools hisat2,hisat2_extractsplicesites") {
 
         options "-output-dir ${outputDir}"
 
         when {
             params {
-                outdir       = "${outputDir}"
-                tools_bundle = 'rnaseq'
-                skip_tools   = 'bowtie1,bowtie2,faidx,gffread,kallisto,rsem,rsem_make_transcript_fasta,salmon,sizes,star'
+                outdir = "${outputDir}"
+                tools  = 'hisat2,hisat2_extractsplicesites'
                 // TODO REMOVE ME when the module is fixed
                 // cf https://github.com/nf-core/modules/issues/7045
                 hisat2_build_memory = "3.GB"
