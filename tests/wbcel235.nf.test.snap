@@ -1,5 +1,5 @@
 {
-    "-profile test --tools bwamem1,createsequencedictionary,faidx,intervals,rsem,star --input Caenorhabditis_elegans/NCBI/WBcel235.yml": {
+    "-profile test --tools_bundle all --skip_tools bowtie1,bowtie2,bwamem2,dragmap,gffread,hisat2,hisat2_extractsplicesites,kallisto,msisensorpro,rsem_make_transcript_fasta,salmon,sizes,snapaligner,tabix --input Caenorhabditis_elegans/NCBI/WBcel235.yml": {
         "content": [
             8,
             {
@@ -162,7 +162,7 @@
                 "multiqc_citations.txt:md5,4c806e63a283ec1b7e78cdae3a923d4f"
             ]
         ],
-        "timestamp": "2026-06-09T17:26:11.880488291",
+        "timestamp": "2026-06-10T10:23:28.542286265",
         "meta": {
             "nf-test": "0.9.5",
             "nextflow": "26.04.3"

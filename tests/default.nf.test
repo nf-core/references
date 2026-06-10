@@ -11,6 +11,7 @@ nextflow_pipeline {
             params {
                 outdir       = "${outputDir}"
                 tools_bundle = 'rnaseq'
+                skip_tools   = 'hisat2,hisat2_extractsplicesites,kallisto,rsem,rsem_make_transcript_fasta,salmon'
             }
         }
 
