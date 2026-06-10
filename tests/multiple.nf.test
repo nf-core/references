@@ -10,9 +10,10 @@ nextflow_pipeline {
 
         when {
             params {
-                input  = "https://raw.githubusercontent.com/nf-core/references-datasheets/latest/genomes_source/Homo_sapiens/nf-core/GRCh38_chr21_chr22.yml"
-                outdir = "$outputDir"
-                tools  = 'bwamem1,createsequencedictionary,faidx,intervals'
+                input        = "https://raw.githubusercontent.com/nf-core/references-datasheets/latest/genomes_source/Homo_sapiens/nf-core/GRCh38_chr21_chr22.yml"
+                outdir       = "$outputDir"
+                tools        = 'bwamem1,createsequencedictionary,faidx,intervals'
+                tools_bundle = null
             }
         }
 
@@ -43,9 +44,10 @@ nextflow_pipeline {
 
         when {
             params {
-                input  = "https://raw.githubusercontent.com/nf-core/references-datasheets/latest/genomes_source/Homo_sapiens/GATK/GRCh37_GRCh38_multiple_dbsnps_globs.yml"
-                outdir = "$outputDir"
-                tools  = 'tabix'
+                input        = "https://raw.githubusercontent.com/nf-core/references-datasheets/latest/genomes_source/Homo_sapiens/GATK/GRCh37_GRCh38_multiple_dbsnps_globs.yml"
+                outdir       = "$outputDir"
+                tools        = 'tabix'
+                tools_bundle = null
             }
         }
 

@@ -10,8 +10,9 @@ nextflow_pipeline {
 
         when {
             params {
-                outdir = "${outputDir}"
-                tools  = 'faidx,intervals,sizes'
+                outdir       = "${outputDir}"
+                tools        = 'faidx,intervals,sizes'
+                tools_bundle = null
             }
         }
 
@@ -42,9 +43,10 @@ nextflow_pipeline {
 
         when {
             params {
-                input  = "https://raw.githubusercontent.com/nf-core/references-datasheets/latest/genomes/Homo_sapiens/nf-core/GRCh38_chr21_MT.yml"
-                outdir = "$outputDir"
-                tools  = 'faidx,intervals,sizes'
+                input        = "https://raw.githubusercontent.com/nf-core/references-datasheets/latest/genomes/Homo_sapiens/nf-core/GRCh38_chr21_MT.yml"
+                outdir       = "$outputDir"
+                tools        = 'faidx,intervals,sizes'
+                tools_bundle = null
             }
         }
 
@@ -75,9 +77,10 @@ nextflow_pipeline {
 
         when {
             params {
-                input  = "https://raw.githubusercontent.com/nf-core/references-datasheets/latest/genomes/Homo_sapiens/nf-core/GRCh38_chr21.yml"
-                outdir = "$outputDir"
-                tools  = 'faidx,intervals,sizes'
+                input        = "https://raw.githubusercontent.com/nf-core/references-datasheets/latest/genomes/Homo_sapiens/nf-core/GRCh38_chr21.yml"
+                outdir       = "$outputDir"
+                tools        = 'faidx,intervals,sizes'
+                tools_bundle = null
             }
         }
 
