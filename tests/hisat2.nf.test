@@ -14,6 +14,7 @@ nextflow_pipeline {
                 outdir       = "$outputDir"
                 tools        = 'hisat2,hisat2_extractsplicesites'
                 tools_bundle = null
+                skip_tools   = null
                 // TODO REMOVE ME when the module is fixed
                 // cf https://github.com/nf-core/modules/issues/7045
                 hisat2_build_memory = "3.GB"
@@ -50,6 +51,7 @@ nextflow_pipeline {
                 outdir       = "${outputDir}"
                 tools        = 'hisat2,hisat2_extractsplicesites'
                 tools_bundle = null
+                skip_tools   = null
                 // TODO REMOVE ME when the module is fixed
                 // cf https://github.com/nf-core/modules/issues/7045
                 hisat2_build_memory = "3.GB"

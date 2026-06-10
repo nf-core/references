@@ -13,6 +13,7 @@ nextflow_pipeline {
                 outdir       = "${outputDir}"
                 tools        = 'createsequencedictionary'
                 tools_bundle = null
+                skip_tools   = null
             }
         }
 

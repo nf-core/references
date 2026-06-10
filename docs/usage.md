@@ -21,6 +21,7 @@ Select a predefined bundle of tools. Available bundles:
 | `all`    | All available tools                                                                                                                  |
 | `rnaseq` | bowtie1, bowtie2, faidx, gffread, hisat2, hisat2_extractsplicesites, kallisto, rsem, rsem_make_transcript_fasta, salmon, sizes, star |
 | `sarek`  | bwamem1, bwamem2, createsequencedictionary, dragmap, faidx, intervals, msisensorpro, snapaligner, tabix                              |
+| `null`   | None — no tool indices will be built. Useful when you only need the genome and annotation files without building any indices.        |
 
 ```bash
 # Build all RNA-seq references
@@ -31,6 +32,9 @@ Select a predefined bundle of tools. Available bundles:
 
 # Build everything
 --tools_bundle all
+
+# Download genome/annotation only, no tool indices
+--tools_bundle null
 ```
 
 ### `--tools`

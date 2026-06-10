@@ -58,10 +58,10 @@
                 "multiqc_citations.txt:md5,4c806e63a283ec1b7e78cdae3a923d4f"
             ]
         ],
-        "timestamp": "2026-05-04T16:09:11.675553276",
+        "timestamp": "2026-06-10T13:38:01.228759656",
         "meta": {
             "nf-test": "0.9.5",
-            "nextflow": "26.04.0"
+            "nextflow": "26.04.3"
         }
     },
     "-profile test --tools salmon,rsem_make_transcript_fasta": {
@@ -136,10 +136,10 @@
                 "multiqc_citations.txt:md5,4c806e63a283ec1b7e78cdae3a923d4f"
             ]
         ],
-        "timestamp": "2026-05-04T13:40:03.501871668",
+        "timestamp": "2026-06-10T13:39:10.138894564",
         "meta": {
             "nf-test": "0.9.5",
-            "nextflow": "26.03.4"
+            "nextflow": "26.04.3"
         }
     }
 }

@@ -13,6 +13,7 @@ nextflow_pipeline {
                 outdir       = "${outputDir}"
                 tools        = 'faidx,intervals,sizes'
                 tools_bundle = null
+                skip_tools   = null
             }
         }
 
@@ -47,6 +48,7 @@ nextflow_pipeline {
                 outdir       = "$outputDir"
                 tools        = 'faidx,intervals,sizes'
                 tools_bundle = null
+                skip_tools   = null
             }
         }
 
@@ -81,6 +83,7 @@ nextflow_pipeline {
                 outdir       = "$outputDir"
                 tools        = 'faidx,intervals,sizes'
                 tools_bundle = null
+                skip_tools   = null
             }
         }
 
