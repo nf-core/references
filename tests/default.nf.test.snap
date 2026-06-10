@@ -113,7 +113,7 @@
                 "multiqc_citations.txt:md5,4c806e63a283ec1b7e78cdae3a923d4f"
             ]
         ],
-        "timestamp": "2026-06-10T13:04:36.533914151",
+        "timestamp": "2026-06-09T11:53:31.625251082",
         "meta": {
             "nf-test": "0.9.5",
             "nextflow": "26.04.3"

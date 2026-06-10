@@ -33,8 +33,8 @@
                     "type": "string",
                     "fa_icon": "fas fa-window-restore",
                     "description": "Select a predefined bundle of tools to build references for.",
-                    "help_text": "Available bundles: 'all' (all available tools), 'rnaseq' (bowtie1, bowtie2, faidx, gffread, hisat2, hisat2_extractsplicesites, kallisto, rsem, rsem_make_transcript_fasta, salmon, sizes, star), 'sarek' (bwamem1, bwamem2, createsequencedictionary, dragmap, faidx, intervals, msisensorpro, snapaligner, tabix). Can be combined with --tools and --skip_tools.",
-                    "pattern": "^((all|rnaseq|sarek)?,?)*(?<!,)$"
+                    "help_text": "Available bundles: 'all' (all available tools), 'rnaseq' (bowtie1, bowtie2, faidx, gffread, hisat2, hisat2_extractsplicesites, kallisto, rsem, rsem_make_transcript_fasta, salmon, sizes, star), 'sarek' (bwamem1, bwamem2, createsequencedictionary, dragmap, faidx, intervals, msisensorpro, snapaligner, tabix), 'null' (no tools). Can be combined with --tools and --skip_tools.",
+                    "pattern": "^((all|null|rnaseq|sarek)?,?)*(?<!,)$"
                 },
                 "tools": {
                     "type": "string",
