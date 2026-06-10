@@ -4,15 +4,16 @@ nextflow_pipeline {
     script "../main.nf"
     tag "pipeline"
 
-    test("-profile test --tools bwamem1,createsequencedictionary,faidx,intervals,rsem,star --input Caenorhabditis_elegans/NCBI/WBcel235.yml") {
+    test("-profile test --tools_bundle all --skip_tools bowtie1,bowtie2,bwamem2,dragmap,gffread,hisat2,hisat2_extractsplicesites,kallisto,msisensorpro,rsem_make_transcript_fasta,salmon,sizes,snapaligner,tabix --input Caenorhabditis_elegans/NCBI/WBcel235.yml") {
 
     options "-output-dir $outputDir"
 
         when {
             params {
-                input  = 'https://raw.githubusercontent.com/nf-core/references-datasheets/latest/genomes_source/Caenorhabditis_elegans/NCBI/WBcel235.yml'
-                outdir = "$outputDir"
-                tools  = 'bwamem1,createsequencedictionary,faidx,intervals,rsem,star'
+                input        = 'https://raw.githubusercontent.com/nf-core/references-datasheets/latest/genomes_source/Caenorhabditis_elegans/NCBI/WBcel235.yml'
+                outdir       = "$outputDir"
+                tools_bundle = 'all'
+                skip_tools   = 'bowtie1,bowtie2,bwamem2,dragmap,gffread,hisat2,hisat2_extractsplicesites,kallisto,msisensorpro,rsem_make_transcript_fasta,salmon,sizes,snapaligner,tabix'
             }
         }
 
