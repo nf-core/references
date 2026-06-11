@@ -46,9 +46,11 @@ workflow PREPARE_GENOME_DNASEQ {
         "vcf",
     )
 
-    SNAPALIGNER_INDEX(
-        fasta.combine(altliftoverfile).map { meta, fasta_, altliftoverfile_ -> [meta, fasta_, [], [], altliftoverfile_] }.filter { meta, _snap_input -> 'snapaligner' in tools && meta.run_snapaligner }
-    )
+    def fasta_for_snapaligner = altliftoverfile
+        ? fasta.combine(altliftoverfile).map { meta, fasta_, altliftoverfile_ -> [meta, fasta_, [], [], altliftoverfile_] }
+        : fasta.map { meta, fasta_ -> [meta, fasta_, [], [], []] }
+
+    SNAPALIGNER_INDEX(fasta_for_snapaligner.filter { meta, _fasta, _altcontigfile, _nonaltcontigfile, _altliftoverfile -> 'snapaligner' in tools && meta.run_snapaligner })
 
     emit:
     bwamem1_index     = BWAMEM1_INDEX.out.index // channel: [meta, BWAmemIndex/]

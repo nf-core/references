@@ -57,6 +57,7 @@ workflow REFERENCES {
     msisensorpro_list = PREPARE_GENOME_DNASEQ.out.msisensorpro_list
     rsem_index = PREPARE_GENOME_RNASEQ.out.rsem_index
     salmon_index = PREPARE_GENOME_RNASEQ.out.salmon_index
+    snapaligner_index = PREPARE_GENOME_DNASEQ.out.snapaligner_index
     splice_sites = PREPARE_GENOME_RNASEQ.out.splice_sites
     star_index = PREPARE_GENOME_RNASEQ.out.star_index
     transcript_fasta = PREPARE_GENOME_RNASEQ.out.transcript_fasta
@@ -89,6 +90,7 @@ workflow REFERENCES {
             msisensorpro_list.map { meta, reference_ -> [meta + [file: 'msisensorpro_list'], reference_] },
             rsem_index.map { meta, reference_ -> [meta + [file: 'rsem_index'], reference_] },
             salmon_index.map { meta, reference_ -> [meta + [file: 'salmon_index'], reference_] },
+            snapaligner_index.map { meta, reference_ -> [meta + [file: 'snapaligner_index'], reference_] },
             splice_sites.map { meta, reference_ -> [meta + [file: 'splice_sites'], reference_] },
             star_index.map { meta, reference_ -> [meta + [file: 'star_index'], reference_] },
             transcript_fasta.map { meta, reference_ -> [meta + [file: 'transcript_fasta'], reference_] },
