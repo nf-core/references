@@ -33,12 +33,10 @@
             [
                 "Genome:md5,366047c9112c837914ce255c16833480",
                 "GenomeIndex:md5,baeedbd4a4534c9a065740335bbe6318",
-                "GenomeIndexHash:md5,27009b947703bd27a3c8b7a0308e944e",
-                "OverflowTable:md5,4e25d70d2f3d3013fa2323398858f07c",
                 "multiqc_citations.txt:md5,4c806e63a283ec1b7e78cdae3a923d4f"
             ]
         ],
-        "timestamp": "2026-06-11T12:48:21.143744205",
+        "timestamp": "2026-06-11T13:07:25.327994814",
         "meta": {
             "nf-test": "0.9.5",
             "nextflow": "26.04.3"

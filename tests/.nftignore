@@ -12,6 +12,8 @@
 **/dragmap/*/hash_table.cfg.bin
 **/dragmap/*/hash_table_stats.txt
 **/kallisto
+**/snap/GenomeIndexHash
+**/snap/OverflowTable
 .DS_Store
 index.json
 multiqc/multiqc_data/llms-full.txt
