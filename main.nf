@@ -123,7 +123,7 @@ workflow NFCORE_REFERENCES {
     // Mix the references that were extracted with the references that did not need to be extracted
     // Some references are not extracted because they are usually not stored in an archived format
     // TODO: check if more references need to be extracted
-    altliftoverfile = channel.empty()
+    altliftoverfile = false
 
     REFERENCES(
         altliftoverfile,

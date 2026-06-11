@@ -1,0 +1,45 @@
+{
+    "-profile test --tools snapaligner": {
+        "content": [
+            2,
+            {
+                "SNAPALIGNER_INDEX": {
+                    "snap-aligner": "2.0.5"
+                }
+            },
+            [
+                "Homo_sapiens",
+                "Homo_sapiens/nf-core",
+                "Homo_sapiens/nf-core/GRCh38_chr21",
+                "Homo_sapiens/nf-core/GRCh38_chr21/snap",
+                "Homo_sapiens/nf-core/GRCh38_chr21/snap/Genome",
+                "Homo_sapiens/nf-core/GRCh38_chr21/snap/GenomeIndex",
+                "Homo_sapiens/nf-core/GRCh38_chr21/snap/GenomeIndexHash",
+                "Homo_sapiens/nf-core/GRCh38_chr21/snap/OverflowTable",
+                "index.json",
+                "multiqc",
+                "multiqc/multiqc_data",
+                "multiqc/multiqc_data/llms-full.txt",
+                "multiqc/multiqc_data/multiqc.log",
+                "multiqc/multiqc_data/multiqc.parquet",
+                "multiqc/multiqc_data/multiqc_citations.txt",
+                "multiqc/multiqc_data/multiqc_data.json",
+                "multiqc/multiqc_data/multiqc_software_versions.txt",
+                "multiqc/multiqc_data/multiqc_sources.txt",
+                "multiqc/multiqc_report.html",
+                "pipeline_info",
+                "pipeline_info/nf_core_references_software_mqc_versions.yml"
+            ],
+            [
+                "Genome:md5,366047c9112c837914ce255c16833480",
+                "GenomeIndex:md5,baeedbd4a4534c9a065740335bbe6318",
+                "multiqc_citations.txt:md5,4c806e63a283ec1b7e78cdae3a923d4f"
+            ]
+        ],
+        "timestamp": "2026-06-11T13:07:25.327994814",
+        "meta": {
+            "nf-test": "0.9.5",
+            "nextflow": "26.04.3"
+        }
+    }
+}
