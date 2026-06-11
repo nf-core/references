@@ -159,6 +159,8 @@ workflow NFCORE_REFERENCES {
 workflow {
 
     main:
+    def tools = defineToolsList(params.tools_bundle, params.tools, params.skip_tools)
+
     // SUBWORKFLOW: Run initialisation tasks
     PIPELINE_INITIALISATION(
         params.version,
@@ -172,21 +174,13 @@ workflow {
         params.show_hidden,
         params.references_base_path,
         ['s3://ngi-igenomes/igenomes/'],
+        tools,
     )
 
     // WORKFLOW: Run main workflow
-    def tools = defineToolsList(params.tools_bundle, params.tools, params.skip_tools)
-
-    if (!tools) {
-        log.warn("No tools specified")
-    } else {
-        log.info("Tools selected: ${tools.join(', ')}")
-    }
-
     NFCORE_REFERENCES(PIPELINE_INITIALISATION.out.references, tools)
 
-    // MULTIQC
-
+    // VERSIONS
     def collated_versions = softwareVersionsToYAML(
         softwareVersions: NFCORE_REFERENCES.out.versions.mix(channel.topic("versions")),
         nextflowVersion: workflow.nextflow.version,
@@ -197,11 +191,9 @@ workflow {
         newLine: true,
     )
 
-    // MODULE: MultiQC
-    def multiqc_report = channel.empty()
-
     // MULTIQC
     def multiqc_files = channel.empty()
+    def multiqc_report = channel.empty()
 
     multiqc_files = multiqc_files.mix(collated_versions)
 
