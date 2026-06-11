@@ -10,9 +10,11 @@ nextflow_pipeline {
 
         when {
             params {
-                input  = "https://raw.githubusercontent.com/nf-core/references-datasheets/latest/genomes/Homo_sapiens/nf-core/GRCh38_chr21_MT.yml"
-                outdir = "$outputDir"
-                tools  = 'hisat2,hisat2_extractsplicesites'
+                input        = "https://raw.githubusercontent.com/nf-core/references-datasheets/latest/genomes/Homo_sapiens/nf-core/GRCh38_chr21_MT.yml"
+                outdir       = "$outputDir"
+                tools        = 'hisat2,hisat2_extractsplicesites'
+                tools_bundle = null
+                skip_tools   = null
                 // TODO REMOVE ME when the module is fixed
                 // cf https://github.com/nf-core/modules/issues/7045
                 hisat2_build_memory = "3.GB"
@@ -46,8 +48,10 @@ nextflow_pipeline {
 
         when {
             params {
-                outdir = "${outputDir}"
-                tools  = 'hisat2,hisat2_extractsplicesites'
+                outdir       = "${outputDir}"
+                tools        = 'hisat2,hisat2_extractsplicesites'
+                tools_bundle = null
+                skip_tools   = null
                 // TODO REMOVE ME when the module is fixed
                 // cf https://github.com/nf-core/modules/issues/7045
                 hisat2_build_memory = "3.GB"

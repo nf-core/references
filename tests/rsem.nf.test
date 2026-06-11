@@ -10,9 +10,11 @@ nextflow_pipeline {
 
         when {
             params {
-                input  = "https://raw.githubusercontent.com/nf-core/references-datasheets/latest/genomes/Homo_sapiens/nf-core/GRCh38_chr21_MT.yml"
-                outdir = "$outputDir"
-                tools  = 'rsem,rsem_make_transcript_fasta'
+                input        = "https://raw.githubusercontent.com/nf-core/references-datasheets/latest/genomes/Homo_sapiens/nf-core/GRCh38_chr21_MT.yml"
+                outdir       = "$outputDir"
+                tools        = 'rsem,rsem_make_transcript_fasta'
+                tools_bundle = null
+                skip_tools   = null
             }
         }
 
@@ -43,8 +45,10 @@ nextflow_pipeline {
 
         when {
             params {
-                outdir = "${outputDir}"
-                tools  = 'rsem,rsem_make_transcript_fasta'
+                outdir       = "${outputDir}"
+                tools        = 'rsem,rsem_make_transcript_fasta'
+                tools_bundle = null
+                skip_tools   = null
             }
         }
 

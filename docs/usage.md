@@ -8,6 +8,59 @@
 
 <!-- TODO nf-core: Add documentation about anything specific to running your pipeline. For general topics, please point to (and add to) the main nf-core website. -->
 
+## Tools selection
+
+The pipeline supports a flexible tools selection system with three parameters that work together:
+
+### `--tools_bundle`
+
+Select a predefined bundle of tools. Available bundles:
+
+| Bundle   | Tools                                                                                                                                |
+| -------- | ------------------------------------------------------------------------------------------------------------------------------------ |
+| `all`    | All available tools                                                                                                                  |
+| `rnaseq` | bowtie1, bowtie2, faidx, gffread, hisat2, hisat2_extractsplicesites, kallisto, rsem, rsem_make_transcript_fasta, salmon, sizes, star |
+| `sarek`  | bwamem1, bwamem2, createsequencedictionary, dragmap, faidx, intervals, msisensorpro, snapaligner, tabix                              |
+| `null`   | None — no tool indices will be built. Useful when you only need the genome and annotation files without building any indices.        |
+
+```bash
+# Build all RNA-seq references
+--tools_bundle rnaseq
+
+# Build all Sarek references
+--tools_bundle sarek
+
+# Build everything
+--tools_bundle all
+
+# Download genome/annotation only, no tool indices
+--tools_bundle null
+```
+
+### `--tools`
+
+Add individual tools on top of a bundle (or use standalone without a bundle):
+
+```bash
+# Add extra tools on top of a bundle
+--tools_bundle rnaseq --tools star,salmon
+
+# Use standalone without a bundle
+--tools star,salmon,bwamem2
+```
+
+### `--skip_tools`
+
+Remove specific tools from the final selection (overrides bundles and `--tools`):
+
+```bash
+# Build all RNA-seq references except hisat2 and kallisto
+--tools_bundle rnaseq --skip_tools hisat2,kallisto
+
+# Build everything except dragmap and tabix
+--tools_bundle all --skip_tools dragmap,tabix
+```
+
 ## Asset input
 
 You will need to create an asset yaml file with information about the genome(s) and files to use for building references before running the pipeline.

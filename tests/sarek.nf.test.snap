@@ -1,5 +1,45 @@
 {
-    "-profile test --tools bwamem1,bwamem2,createsequencedictionary,dragmap,faidx,intervals,msisensorpro,tabix --input references-datasheets/latest/genomes_source/Homo_sapiens/GATK/GRCh38_chr22.yml": {
+    "-profile test --tools_bundle sarek --skip_tools snapaligner --input references-datasheets/latest/genomes/Homo_sapiens/GATK/GRCh38_chr22.yml": {
+        "content": [
+            2,
+            {
+                "MSISENSORPRO_SCAN": {
+                    "msisensor-pro": "1.3.0"
+                }
+            },
+            [
+                "Homo_sapiens",
+                "Homo_sapiens/nf-core",
+                "Homo_sapiens/nf-core/GRCh38_chr22",
+                "Homo_sapiens/nf-core/GRCh38_chr22/Annotation",
+                "Homo_sapiens/nf-core/GRCh38_chr22/Annotation/msisensorpro",
+                "Homo_sapiens/nf-core/GRCh38_chr22/Annotation/msisensorpro/GRCh38_chr22.msisensor_scan.list",
+                "index.json",
+                "multiqc",
+                "multiqc/multiqc_data",
+                "multiqc/multiqc_data/llms-full.txt",
+                "multiqc/multiqc_data/multiqc.log",
+                "multiqc/multiqc_data/multiqc.parquet",
+                "multiqc/multiqc_data/multiqc_citations.txt",
+                "multiqc/multiqc_data/multiqc_data.json",
+                "multiqc/multiqc_data/multiqc_software_versions.txt",
+                "multiqc/multiqc_data/multiqc_sources.txt",
+                "multiqc/multiqc_report.html",
+                "pipeline_info",
+                "pipeline_info/nf_core_references_software_mqc_versions.yml"
+            ],
+            [
+                "GRCh38_chr22.msisensor_scan.list:md5,1c670ac986f5e6d7a9d11e45231d5417",
+                "multiqc_citations.txt:md5,4c806e63a283ec1b7e78cdae3a923d4f"
+            ]
+        ],
+        "timestamp": "2026-06-10T13:41:46.340129922",
+        "meta": {
+            "nf-test": "0.9.5",
+            "nextflow": "26.04.3"
+        }
+    },
+    "-profile test --tools_bundle sarek --skip_tools snapaligner --input references-datasheets/latest/genomes_source/Homo_sapiens/GATK/GRCh38_chr22.yml": {
         "content": [
             11,
             {
@@ -105,50 +145,10 @@
                 "multiqc_citations.txt:md5,4c806e63a283ec1b7e78cdae3a923d4f"
             ]
         ],
-        "timestamp": "2026-06-09T12:07:08.721064577",
+        "timestamp": "2026-06-10T13:41:11.470927943",
         "meta": {
             "nf-test": "0.9.5",
             "nextflow": "26.04.3"
-        }
-    },
-    "-profile test --tools bwamem1,bwamem2,createsequencedictionary,dragmap,faidx,intervals,msisensorpro,tabix --input references-datasheets/latest/genomes/Homo_sapiens/GATK/GRCh38_chr22.yml": {
-        "content": [
-            2,
-            {
-                "MSISENSORPRO_SCAN": {
-                    "msisensor-pro": "1.3.0"
-                }
-            },
-            [
-                "Homo_sapiens",
-                "Homo_sapiens/nf-core",
-                "Homo_sapiens/nf-core/GRCh38_chr22",
-                "Homo_sapiens/nf-core/GRCh38_chr22/Annotation",
-                "Homo_sapiens/nf-core/GRCh38_chr22/Annotation/msisensorpro",
-                "Homo_sapiens/nf-core/GRCh38_chr22/Annotation/msisensorpro/GRCh38_chr22.msisensor_scan.list",
-                "index.json",
-                "multiqc",
-                "multiqc/multiqc_data",
-                "multiqc/multiqc_data/llms-full.txt",
-                "multiqc/multiqc_data/multiqc.log",
-                "multiqc/multiqc_data/multiqc.parquet",
-                "multiqc/multiqc_data/multiqc_citations.txt",
-                "multiqc/multiqc_data/multiqc_data.json",
-                "multiqc/multiqc_data/multiqc_software_versions.txt",
-                "multiqc/multiqc_data/multiqc_sources.txt",
-                "multiqc/multiqc_report.html",
-                "pipeline_info",
-                "pipeline_info/nf_core_references_software_mqc_versions.yml"
-            ],
-            [
-                "GRCh38_chr22.msisensor_scan.list:md5,1c670ac986f5e6d7a9d11e45231d5417",
-                "multiqc_citations.txt:md5,4c806e63a283ec1b7e78cdae3a923d4f"
-            ]
-        ],
-        "timestamp": "2026-05-04T16:00:36.157261789",
-        "meta": {
-            "nf-test": "0.9.5",
-            "nextflow": "26.04.0"
         }
     }
 }

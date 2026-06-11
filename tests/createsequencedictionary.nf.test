@@ -10,8 +10,10 @@ nextflow_pipeline {
 
         when {
             params {
-                outdir = "${outputDir}"
-                tools  = 'createsequencedictionary'
+                outdir       = "${outputDir}"
+                tools        = 'createsequencedictionary'
+                tools_bundle = null
+                skip_tools   = null
             }
         }
 

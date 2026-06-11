@@ -18,6 +18,7 @@
 include { ARCHIVE_EXTRACT          } from './subworkflows/nf-core/archive_extract'
 include { NCBIDATASETSCLI_DATASETS } from './modules/local/ncbidatasetscli/datasets'
 include { DATASHEET_TO_CHANNEL     } from './subworkflows/local/datasheet_to_channel'
+include { defineToolsList          } from './subworkflows/local/utils_nfcore_references_pipeline'
 include { PIPELINE_COMPLETION      } from './subworkflows/local/utils_nfcore_references_pipeline'
 include { PIPELINE_INITIALISATION  } from './subworkflows/local/utils_nfcore_references_pipeline'
 include { REFERENCES               } from "./workflows/references"
@@ -158,6 +159,8 @@ workflow NFCORE_REFERENCES {
 workflow {
 
     main:
+    def tools = defineToolsList(params.tools_bundle, params.tools, params.skip_tools)
+
     // SUBWORKFLOW: Run initialisation tasks
     PIPELINE_INITIALISATION(
         params.version,
@@ -171,17 +174,13 @@ workflow {
         params.show_hidden,
         params.references_base_path,
         ['s3://ngi-igenomes/igenomes/'],
+        tools,
     )
 
     // WORKFLOW: Run main workflow
-    if (!params.tools) {
-        log.warn("No tools specified")
-    }
+    NFCORE_REFERENCES(PIPELINE_INITIALISATION.out.references, tools)
 
-    NFCORE_REFERENCES(PIPELINE_INITIALISATION.out.references, params.tools ?: "no_tools")
-
-    // MULTIQC
-
+    // VERSIONS
     def collated_versions = softwareVersionsToYAML(
         softwareVersions: NFCORE_REFERENCES.out.versions.mix(channel.topic("versions")),
         nextflowVersion: workflow.nextflow.version,
@@ -192,11 +191,9 @@ workflow {
         newLine: true,
     )
 
-    // MODULE: MultiQC
-    def multiqc_report = channel.empty()
-
     // MULTIQC
     def multiqc_files = channel.empty()
+    def multiqc_report = channel.empty()
 
     multiqc_files = multiqc_files.mix(collated_versions)
 

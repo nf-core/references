@@ -16,6 +16,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - [#118](https://github.com/nf-core/references/pull/118) - Added metro map
 - [#119](https://github.com/nf-core/references/pull/119) - Added logo
 - [#139](https://github.com/nf-core/references/pull/139) - Added NCBI_API_KEY support to avoid rate limiting on NCBI Datasets API
+- [#140](https://github.com/nf-core/references/pull/140) - Added `tools_bundle` and `skip_tools` parameters for pre-defined tool bundles (`all`, `rnaseq`, `sarek`)
 
 ### Changed
 

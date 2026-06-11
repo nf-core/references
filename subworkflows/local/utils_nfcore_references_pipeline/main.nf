@@ -43,6 +43,7 @@ workflow PIPELINE_INITIALISATION {
     help // boolean: Display help message and exit
     help_full // boolean: Show the full help message
     show_hidden // boolean: Show hidden parameters in the help message
+    tools
 
     main:
 
@@ -123,6 +124,22 @@ workflow PIPELINE_INITIALISATION {
     log.info(paramsSummaryLog(summary_options, workflow))
     log.info(after_text)
 
+    extra_text = """
+\033[1;37mExtra information\033[0m
+\033[0;34m  Tools selected to be run  :\033[0;32m ${tools.join(",")} \033[0m
+-\033[2m----------------------------------------------------\033[0m-
+"""
+
+    if (monochrome_logs) {
+        extra_text = extra_text.replaceAll(/\033\[[0-9;]*m/, '')
+    }
+
+    log.info(extra_text)
+
+    if (!tools) {
+        log.warn("No tools specified")
+    }
+
     //
     // Validate the parameters using nextflow_schema.json or the schema
     // given via the validation.parametersSchema configuration option
@@ -148,7 +165,7 @@ workflow PIPELINE_INITIALISATION {
     )
 
     emit:
-    references
+    references = references
 }
 
 /*
@@ -219,11 +236,90 @@ def toolBibliographyText() {
     // TODO nf-core: Optionally add bibliographic entries to this list.
     // Can use ternary operators to dynamically construct based conditions, e.g. params["run_xyz"] ? "<li>Author (2023) Pub name, Journal, DOI</li>" : "",
     // Uncomment function in methodsDescriptionText to render in MultiQC report
-    def reference_text = [
-        "<li>Ewels, P., Magnusson, M., Lundin, S., & Käller, M. (2016). MultiQC: summarize analysis results for multiple tools and samples in a single report. Bioinformatics , 32(19), 3047–3048. doi: /10.1093/bioinformatics/btw354</li>"
-    ].join(' ').trim()
+    def reference_text = ["<li>Ewels, P., Magnusson, M., Lundin, S., & Käller, M. (2016). MultiQC: summarize analysis results for multiple tools and samples in a single report. Bioinformatics , 32(19), 3047–3048. doi: /10.1093/bioinformatics/btw354</li>"].join(' ').trim()
 
     return reference_text
+}
+
+//
+// Define the tools list from user-provided tool selections
+//
+def defineToolsList(input_tools_bundle, input_tools, input_skip) {
+
+    // tool bundles
+    def bundles = [
+        'all': [
+            'bowtie1',
+            'bowtie2',
+            'bwamem1',
+            'bwamem2',
+            'createsequencedictionary',
+            'dragmap',
+            'faidx',
+            'gffread',
+            'hisat2',
+            'hisat2_extractsplicesites',
+            'intervals',
+            'kallisto',
+            'msisensorpro',
+            'rsem',
+            'rsem_make_transcript_fasta',
+            'salmon',
+            'sizes',
+            'snapaligner',
+            'star',
+            'tabix',
+        ],
+        'rnaseq': [
+            'bowtie1',
+            'bowtie2',
+            'faidx',
+            'gffread',
+            'hisat2',
+            'hisat2_extractsplicesites',
+            'kallisto',
+            'rsem',
+            'rsem_make_transcript_fasta',
+            'salmon',
+            'sizes',
+            'star',
+        ],
+        'sarek': [
+            'bwamem1',
+            'bwamem2',
+            'createsequencedictionary',
+            'dragmap',
+            'faidx',
+            'intervals',
+            'msisensorpro',
+            'snapaligner',
+            'tabix',
+        ],
+    ]
+
+    // resolve bundles
+    def tools_list = []
+    if (input_tools_bundle) {
+        input_tools_bundle
+            .tokenize(',')
+            .each { bundle ->
+                if (bundle in bundles) {
+                    tools_list += bundles[bundle]
+                }
+            }
+    }
+
+    // opt-in tools
+    if (input_tools) {
+        tools_list += input_tools.tokenize(',')
+    }
+
+    // opt-out tools
+    def skip_list = input_skip ? input_skip.tokenize(',') : []
+
+    tools_list = tools_list.sort().unique() - skip_list
+
+    return tools_list
 }
 
 def methodsDescriptionText(mqc_methods_yaml) {
