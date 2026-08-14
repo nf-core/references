@@ -5,10 +5,11 @@ lint:
     - conf/igenomes_ignored.config
   files_unchanged:
     - .github/PULL_REQUEST_TEMPLATE.md
+    - .github/workflows/branch.yml
     - .github/workflows/linting.yml
     - assets/nf-core-references_logo_light.png
-    - docs/images/nf-core-references_logo_light.png
     - docs/images/nf-core-references_logo_dark.png
+    - docs/images/nf-core-references_logo_light.png
 nf_core_version: 4.0.3
 repository_type: pipeline
 template:
