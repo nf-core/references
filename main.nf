@@ -147,7 +147,6 @@ workflow NFCORE_REFERENCES {
 
     emit:
     references = REFERENCES.out.references
-    versions   = ARCHIVE_EXTRACT.out.versions
 }
 
 /*
@@ -182,7 +181,7 @@ workflow {
 
     // VERSIONS
     def collated_versions = softwareVersionsToYAML(
-        softwareVersions: NFCORE_REFERENCES.out.versions.mix(channel.topic("versions")),
+        softwareVersions: channel.topic("versions"),
         nextflowVersion: workflow.nextflow.version,
     ).collectFile(
         storeDir: "${params.outdir}/pipeline_info",

@@ -47,6 +47,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - [#137](https://github.com/nf-core/references/pull/137) - Replace local TABIX modules with nf-core `htslib/bgziptabix`
 - [#138](https://github.com/nf-core/references/pull/138) - Use nf-core modules for all modules
 - [#139](https://github.com/nf-core/references/pull/139) - Replace `ext.when` in config with `filter` operator in subworkflows and centralise module configs
+- [#143](https://github.com/nf-core/references/pull/143) - Template update for nf-core/tools v4.0.3
+- [#143](https://github.com/nf-core/references/pull/143) - Update modules
 
 ### Fixed
 
@@ -78,10 +80,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 | gawk              | 5.3.0       | 5.3.1       |
 | hisat2            | 2.2.1       | 2.2.2       |
 | --samtools        |             | 1.20        |
+| htslib/bgziptabix | 1.23.1      | 1.24        |
 | multiqc           | 1.25.1      | 1.35        |
 | msisensorpro/scan | 1.2.0       | 1.3.0       |
-| samtools          | 1.21        | 1.23.1      |
-| --htslib          | 1.21        | 1.23.1      |
+| samtools          | 1.21        | 1.24        |
+| --htslib          | 1.21        | 1.24        |
 | snapaligner       |             | 2.0.5       |
 | star              |             |             |
 | --htslib          | 1.20        | 1.21        |
