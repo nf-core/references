@@ -50,6 +50,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - [#139](https://github.com/nf-core/references/pull/139) - Replace `ext.when` in config with `filter` operator in subworkflows and centralise module configs
 - [#143](https://github.com/nf-core/references/pull/143) - Template update for nf-core/tools v4.0.3
 - [#143](https://github.com/nf-core/references/pull/143) - Update modules
+- [#146](https://github.com/nf-core/references/pull/146) - Convert meta maps to Nextflow record types
 
 ### Fixed
 
