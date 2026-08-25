@@ -132,12 +132,12 @@ workflow NFCORE_REFERENCES {
         ascat_loci_gc_input.not_extracted.mix(extracted_reference.ascat_loci_gc),
         ascat_loci_rt_input.not_extracted.mix(extracted_reference.ascat_loci_rt),
         chr_dir_input.not_extracted.mix(extracted_reference.chr_dir),
-        fasta_input.not_extracted.mix(extracted_reference.fasta, NCBIDATASETSCLI_DATASETS.out.fna.map { meta, file -> [meta + [reference: 'fasta', file: 'fasta'], file] }),
+        fasta_input.not_extracted.mix(extracted_reference.fasta, NCBIDATASETSCLI_DATASETS.out.fna.map { meta, file -> [meta + record(reference: 'fasta', file: 'fasta'), file] }),
         DATASHEET_TO_CHANNEL.out.fasta_dict,
         DATASHEET_TO_CHANNEL.out.fasta_fai,
         DATASHEET_TO_CHANNEL.out.fasta_sizes,
-        gff_input.not_extracted.mix(extracted_reference.gff, NCBIDATASETSCLI_DATASETS.out.gff.map { meta, file -> [meta + [reference: 'gff', file: 'gff'], file] }),
-        gtf_input.not_extracted.mix(extracted_reference.gtf, NCBIDATASETSCLI_DATASETS.out.gtf.map { meta, file -> [meta + [reference: 'gtf', file: 'gtf'], file] }),
+        gff_input.not_extracted.mix(extracted_reference.gff, NCBIDATASETSCLI_DATASETS.out.gff.map { meta, file -> [meta + record(reference: 'gff', file: 'gff'), file] }),
+        gtf_input.not_extracted.mix(extracted_reference.gtf, NCBIDATASETSCLI_DATASETS.out.gtf.map { meta, file -> [meta + record(reference: 'gtf', file: 'gtf'), file] }),
         DATASHEET_TO_CHANNEL.out.intervals_bed,
         DATASHEET_TO_CHANNEL.out.splice_sites,
         DATASHEET_TO_CHANNEL.out.transcript_fasta,
@@ -300,7 +300,7 @@ workflow {
             path = "Annotation/${meta.source_vcf}/${file.fileName}"
         }
 
-        [meta + [path: path] - meta.subMap(invalid_keys), file]
+        [meta + record(path: path) - meta.subMap(invalid_keys), file]
     }
 }
 
@@ -364,7 +364,7 @@ def paramsSummaryMultiqc(summary_params) {
 // Depending on the extension, return the appropriate channel
 def need_extract(channel, type) {
     return channel
-        .map { meta, reference_ -> [meta + [reference: type], reference_] }
+        .map { meta, reference_ -> [meta + record(reference: type), reference_] }
         .branch { _meta, reference_ ->
             to_extract: reference_.toString().endsWith('.gz') || reference_.toString().endsWith('.zip')
             not_extracted: true
@@ -376,7 +376,7 @@ def need_extract(channel, type) {
 // Depending on the extension, return the appropriate channel
 def need_ncbi_download(channel, type) {
     return channel
-        .map { meta, reference_ -> [meta + [reference: type], reference_] }
+        .map { meta, reference_ -> [meta + record(reference: type), reference_] }
         .branch { _meta, reference_ ->
             to_download: reference_.toString().contains('ncbi.nlm.nih.gov')
             not_downloaded: true
