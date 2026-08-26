@@ -99,25 +99,21 @@ workflow NFCORE_REFERENCES {
         )
 
     // Extract references from any archive format
-    ARCHIVE_EXTRACT(
-        archive_to_extract
-    )
+    ARCHIVE_EXTRACT(archive_to_extract)
 
     // return to the appropriate channels
-    extracted_reference = ARCHIVE_EXTRACT.out.extracted.branch { meta_, _extracted_reference ->
-        ascat_alleles: meta_.reference == 'ascat_alleles'
-        ascat_loci: meta_.reference == 'ascat_loci'
-        ascat_loci_gc: meta_.reference == 'ascat_loci_gc'
-        ascat_loci_rt: meta_.reference == 'ascat_loci_rt'
-        chr_dir: meta_.reference == 'chr_dir'
-        fasta: meta_.reference == 'fasta'
-        gff: meta_.reference == 'gff'
-        gtf: meta_.reference == 'gtf'
-        non_assigned: true
-    }
+    extracted_ascat_alleles = ARCHIVE_EXTRACT.out.extracted.filter { meta, _ref -> meta.reference == 'ascat_alleles' }
+    extracted_ascat_loci = ARCHIVE_EXTRACT.out.extracted.filter { meta, _ref -> meta.reference == 'ascat_loci' }
+    extracted_ascat_loci_gc = ARCHIVE_EXTRACT.out.extracted.filter { meta, _ref -> meta.reference == 'ascat_loci_gc' }
+    extracted_ascat_loci_rt = ARCHIVE_EXTRACT.out.extracted.filter { meta, _ref -> meta.reference == 'ascat_loci_rt' }
+    extracted_chr_dir = ARCHIVE_EXTRACT.out.extracted.filter { meta, _ref -> meta.reference == 'chr_dir' }
+    extracted_fasta = ARCHIVE_EXTRACT.out.extracted.filter { meta, _ref -> meta.reference == 'fasta' }
+    extracted_gff = ARCHIVE_EXTRACT.out.extracted.filter { meta, _ref -> meta.reference == 'gff' }
+    extracted_gtf = ARCHIVE_EXTRACT.out.extracted.filter { meta, _ref -> meta.reference == 'gtf' }
 
     // This is a confidence check
-    extracted_reference.non_assigned.view { reference -> log.warn("Non assigned extracted reference: " + reference) }
+    def assigned_references = ['ascat_alleles', 'ascat_loci', 'ascat_loci_gc', 'ascat_loci_rt', 'chr_dir', 'fasta', 'gff', 'gtf'] as Set
+    ARCHIVE_EXTRACT.out.extracted.filter { meta, _ref -> !(meta.reference in assigned_references) }.view { reference -> log.warn("Non assigned extracted reference: " + reference) }
 
     // WORKFLOW: Run pipeline
     // Mix the references that were extracted with the references that did not need to be extracted
@@ -127,17 +123,17 @@ workflow NFCORE_REFERENCES {
 
     REFERENCES(
         altliftoverfile,
-        ascat_alleles_input.not_extracted.mix(extracted_reference.ascat_alleles),
-        ascat_loci_input.not_extracted.mix(extracted_reference.ascat_loci),
-        ascat_loci_gc_input.not_extracted.mix(extracted_reference.ascat_loci_gc),
-        ascat_loci_rt_input.not_extracted.mix(extracted_reference.ascat_loci_rt),
-        chr_dir_input.not_extracted.mix(extracted_reference.chr_dir),
-        fasta_input.not_extracted.mix(extracted_reference.fasta, NCBIDATASETSCLI_DATASETS.out.fna.map { meta, file -> [meta + record(reference: 'fasta', file: 'fasta'), file] }),
+        ascat_alleles_input.not_extracted.mix(extracted_ascat_alleles),
+        ascat_loci_input.not_extracted.mix(extracted_ascat_loci),
+        ascat_loci_gc_input.not_extracted.mix(extracted_ascat_loci_gc),
+        ascat_loci_rt_input.not_extracted.mix(extracted_ascat_loci_rt),
+        chr_dir_input.not_extracted.mix(extracted_chr_dir),
+        fasta_input.not_extracted.mix(extracted_fasta, NCBIDATASETSCLI_DATASETS.out.fna.map { meta, file -> [meta + record(reference: 'fasta', file: 'fasta'), file] }),
         DATASHEET_TO_CHANNEL.out.fasta_dict,
         DATASHEET_TO_CHANNEL.out.fasta_fai,
         DATASHEET_TO_CHANNEL.out.fasta_sizes,
-        gff_input.not_extracted.mix(extracted_reference.gff, NCBIDATASETSCLI_DATASETS.out.gff.map { meta, file -> [meta + record(reference: 'gff', file: 'gff'), file] }),
-        gtf_input.not_extracted.mix(extracted_reference.gtf, NCBIDATASETSCLI_DATASETS.out.gtf.map { meta, file -> [meta + record(reference: 'gtf', file: 'gtf'), file] }),
+        gff_input.not_extracted.mix(extracted_gff, NCBIDATASETSCLI_DATASETS.out.gff.map { meta, file -> [meta + record(reference: 'gff', file: 'gff'), file] }),
+        gtf_input.not_extracted.mix(extracted_gtf, NCBIDATASETSCLI_DATASETS.out.gtf.map { meta, file -> [meta + record(reference: 'gtf', file: 'gtf'), file] }),
         DATASHEET_TO_CHANNEL.out.intervals_bed,
         DATASHEET_TO_CHANNEL.out.splice_sites,
         DATASHEET_TO_CHANNEL.out.transcript_fasta,
@@ -363,22 +359,20 @@ def paramsSummaryMultiqc(summary_params) {
 // Add the reference type to the meta
 // Depending on the extension, return the appropriate channel
 def need_extract(channel, type) {
-    return channel
-        .map { meta, reference_ -> [meta + record(reference: type), reference_] }
-        .branch { _meta, reference_ ->
-            to_extract: reference_.toString().endsWith('.gz') || reference_.toString().endsWith('.zip')
-            not_extracted: true
-        }
+    def with_reference = channel.map { meta, reference_ -> [meta + record(reference: type), reference_] }
+    return [
+        to_extract: with_reference.filter { _meta, reference_ -> reference_.toString().endsWith('.gz') || reference_.toString().endsWith('.zip') },
+        not_extracted: with_reference.filter { _meta, reference_ -> !(reference_.toString().endsWith('.gz') || reference_.toString().endsWith('.zip')) },
+    ]
 }
 
 // Helper function to check if a reference needs to be downloaded from ncbi
 // Add the reference type to the meta
 // Depending on the extension, return the appropriate channel
 def need_ncbi_download(channel, type) {
-    return channel
-        .map { meta, reference_ -> [meta + record(reference: type), reference_] }
-        .branch { _meta, reference_ ->
-            to_download: reference_.toString().contains('ncbi.nlm.nih.gov')
-            not_downloaded: true
-        }
+    def with_reference = channel.map { meta, reference_ -> [meta + record(reference: type), reference_] }
+    return [
+        to_download: with_reference.filter { _meta, reference_ -> reference_.toString().contains('ncbi.nlm.nih.gov') },
+        not_downloaded: with_reference.filter { _meta, reference_ -> !reference_.toString().contains('ncbi.nlm.nih.gov') },
+    ]
 }
