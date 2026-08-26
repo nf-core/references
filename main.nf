@@ -151,6 +151,102 @@ workflow NFCORE_REFERENCES {
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 */
 
+params {
+
+    // Path to yaml file containing information about the genome(s) and files to use for building references.
+    input: String?
+
+    // The output directory where the results will be saved. You have to use absolute paths to storage on Cloud infrastructure.
+    outdir: String?
+
+    // Select a predefined bundle of tools to build references for.
+    tools_bundle: String?
+
+    // Specify which tools to build references for.
+    tools: String?
+
+    // Specify which tools to skip building references for.
+    skip_tools: String?
+
+    // The base path to the reference files
+    references_base_path: String?
+
+    // Email address for completion summary.
+    email: String?
+
+    // MultiQC report title. Printed as page header, used for filename if not otherwise specified.
+    multiqc_title: String?
+
+    // Make --make-unique flag for kallisto index
+    kallisto_make_unique: Boolean = false
+
+    // Git commit id for Institutional configs.
+    custom_config_version: String = 'master'
+
+    // Base directory for Institutional configs.
+    custom_config_base: String = 'https://raw.githubusercontent.com/nf-core/configs/master'
+
+    // Institutional config name.
+    config_profile_name: String?
+
+    // Institutional config description.
+    config_profile_description: String?
+
+    // Institutional config contact information.
+    config_profile_contact: String?
+
+    // Institutional config URL link.
+    config_profile_url: String?
+
+    // Display version and exit.
+    version: Boolean = false
+
+    // Method used to save pipeline results to output directory.
+    publish_dir_mode: String = 'copy'
+
+    // Email address for completion summary, only when pipeline fails.
+    email_on_fail: String?
+
+    // Send plain-text email instead of HTML.
+    plaintext_email: Boolean = false
+
+    // File size limit when attaching MultiQC reports to summary emails.
+    max_multiqc_email_size: String = '25.MB'
+
+    // Do not use coloured log outputs.
+    monochrome_logs: Boolean = false
+
+    // Custom config file to supply to MultiQC.
+    multiqc_config: Path?
+
+    // Custom logo file to supply to MultiQC. File name must also be set in the MultiQC config file
+    multiqc_logo: Path?
+
+    // Custom MultiQC yaml file containing HTML including a methods description.
+    multiqc_methods_description: Path?
+
+    // Boolean whether to validate parameters against the schema at runtime
+    validate_params: Boolean = true
+
+    // Base URL or local path to location of pipeline test dataset files
+    modules_testdata_base_path: String = 'https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/'
+
+    // Base URL or local path to location of pipeline test dataset files
+    pipelines_testdata_base_path: String = 'https://raw.githubusercontent.com/nf-core/test-datasets/'
+
+    // Suffix to add to the trace report filename. Default is the date and time in the format yyyy-MM-dd_HH-mm-ss.
+    trace_report_suffix: String
+
+    // Display the help message.
+    help: Boolean = false
+
+    // Display the full detailed help message.
+    help_full: Boolean = false
+
+    // Display hidden parameters in the help message (only works when --help or --help_full are provided).
+    show_hidden: Boolean = false
+}
+
 workflow {
 
     main:
