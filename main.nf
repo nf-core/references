@@ -102,11 +102,6 @@ workflow NFCORE_REFERENCES {
     ARCHIVE_EXTRACT(archive_to_extract)
 
     // return to the appropriate channels
-    extracted_ascat_alleles = ARCHIVE_EXTRACT.out.extracted.filter { meta, _ref -> meta.reference == 'ascat_alleles' }
-    extracted_ascat_loci = ARCHIVE_EXTRACT.out.extracted.filter { meta, _ref -> meta.reference == 'ascat_loci' }
-    extracted_ascat_loci_gc = ARCHIVE_EXTRACT.out.extracted.filter { meta, _ref -> meta.reference == 'ascat_loci_gc' }
-    extracted_ascat_loci_rt = ARCHIVE_EXTRACT.out.extracted.filter { meta, _ref -> meta.reference == 'ascat_loci_rt' }
-    extracted_chr_dir = ARCHIVE_EXTRACT.out.extracted.filter { meta, _ref -> meta.reference == 'chr_dir' }
     extracted_fasta = ARCHIVE_EXTRACT.out.extracted.filter { meta, _ref -> meta.reference == 'fasta' }
     extracted_gff = ARCHIVE_EXTRACT.out.extracted.filter { meta, _ref -> meta.reference == 'gff' }
     extracted_gtf = ARCHIVE_EXTRACT.out.extracted.filter { meta, _ref -> meta.reference == 'gtf' }
@@ -121,20 +116,16 @@ workflow NFCORE_REFERENCES {
     // TODO: check if more references need to be extracted
     altliftoverfile = false
 
+    fasta = fasta_input.not_extracted.mix(extracted_fasta, NCBIDATASETSCLI_DATASETS.out.fna.map { meta, file -> [meta + record(reference: 'fasta', file: 'fasta'), file] })
+    gff = gff_input.not_extracted.mix(extracted_gff, NCBIDATASETSCLI_DATASETS.out.gff.map { meta, file -> [meta + record(reference: 'gff', file: 'gff'), file] })
+    gtf = gtf_input.not_extracted.mix(extracted_gtf, NCBIDATASETSCLI_DATASETS.out.gtf.map { meta, file -> [meta + record(reference: 'gtf', file: 'gtf'), file] })
+
     REFERENCES(
         altliftoverfile,
-        ascat_alleles_input.not_extracted.mix(extracted_ascat_alleles),
-        ascat_loci_input.not_extracted.mix(extracted_ascat_loci),
-        ascat_loci_gc_input.not_extracted.mix(extracted_ascat_loci_gc),
-        ascat_loci_rt_input.not_extracted.mix(extracted_ascat_loci_rt),
-        chr_dir_input.not_extracted.mix(extracted_chr_dir),
-        fasta_input.not_extracted.mix(extracted_fasta, NCBIDATASETSCLI_DATASETS.out.fna.map { meta, file -> [meta + record(reference: 'fasta', file: 'fasta'), file] }),
-        DATASHEET_TO_CHANNEL.out.fasta_dict,
+        fasta,
         DATASHEET_TO_CHANNEL.out.fasta_fai,
-        DATASHEET_TO_CHANNEL.out.fasta_sizes,
-        gff_input.not_extracted.mix(extracted_gff, NCBIDATASETSCLI_DATASETS.out.gff.map { meta, file -> [meta + record(reference: 'gff', file: 'gff'), file] }),
-        gtf_input.not_extracted.mix(extracted_gtf, NCBIDATASETSCLI_DATASETS.out.gtf.map { meta, file -> [meta + record(reference: 'gtf', file: 'gtf'), file] }),
-        DATASHEET_TO_CHANNEL.out.intervals_bed,
+        gff,
+        gtf,
         DATASHEET_TO_CHANNEL.out.splice_sites,
         DATASHEET_TO_CHANNEL.out.transcript_fasta,
         DATASHEET_TO_CHANNEL.out.vcf,
@@ -143,7 +134,34 @@ workflow NFCORE_REFERENCES {
     )
 
     emit:
-    references = REFERENCES.out.references
+    ascat_alleles     = ARCHIVE_EXTRACT.out.extracted.filter { meta, _ref -> meta.reference == 'ascat_alleles' }
+    ascat_loci        = ARCHIVE_EXTRACT.out.extracted.filter { meta, _ref -> meta.reference == 'ascat_loci' }
+    ascat_loci_gc     = ARCHIVE_EXTRACT.out.extracted.filter { meta, _ref -> meta.reference == 'ascat_loci_gc' }
+    ascat_loci_rt     = ARCHIVE_EXTRACT.out.extracted.filter { meta, _ref -> meta.reference == 'ascat_loci_rt' }
+    bowtie1_index     = REFERENCES.out.bowtie1_index
+    bowtie2_index     = REFERENCES.out.bowtie2_index
+    bwamem1_index     = REFERENCES.out.bwamem1_index
+    bwamem2_index     = REFERENCES.out.bwamem2_index
+    chr_dir           = ARCHIVE_EXTRACT.out.extracted.filter { meta, _ref -> meta.reference == 'chr_dir' }
+    dragmap_hashmap   = REFERENCES.out.dragmap_hashmap
+    fasta             = fasta
+    fasta_dict        = REFERENCES.out.fasta_dict.mix(DATASHEET_TO_CHANNEL.out.fasta_dict)
+    fasta_fai         = REFERENCES.out.fasta_fai
+    fasta_sizes       = REFERENCES.out.fasta_sizes.mix(DATASHEET_TO_CHANNEL.out.fasta_sizes)
+    gff               = gff
+    gtf               = REFERENCES.out.gtf
+    hisat2_index      = REFERENCES.out.hisat2_index
+    intervals_bed     = REFERENCES.out.intervals_bed.mix(DATASHEET_TO_CHANNEL.out.intervals_bed)
+    kallisto_index    = REFERENCES.out.kallisto_index
+    msisensorpro_list = REFERENCES.out.msisensorpro_list
+    rsem_index        = REFERENCES.out.rsem_index
+    salmon_index      = REFERENCES.out.salmon_index
+    snapaligner_index = REFERENCES.out.snapaligner_index
+    splice_sites      = REFERENCES.out.splice_sites
+    star_index        = REFERENCES.out.star_index
+    transcript_fasta  = REFERENCES.out.transcript_fasta
+    vcf               = DATASHEET_TO_CHANNEL.out.vcf
+    vcf_tbi           = REFERENCES.out.vcf_tbi
 }
 
 /*
@@ -327,90 +345,141 @@ workflow {
     )
 
     publish:
-    multiqc    = MULTIQC.out.data.mix(MULTIQC.out.plots, MULTIQC.out.report)
-    references = NFCORE_REFERENCES.out.references.filter { _meta, file -> !(file instanceof String) }.filter { _meta, file -> !(file.toString().startsWith('/nf-core')) }.map { meta, file ->
-        // Filter out the run_ keys from the meta for a clearer index file
-        def invalid_keys = meta.keySet().findAll { key -> key.startsWith('run_') }
-
-        def path = ""
-
-        if (meta.file == "bowtie1_index") {
-            path = "Sequence/BowtieIndex/1.3.1"
-        }
-        else if (meta.file == "bowtie2_index") {
-            path = "Sequence/Bowtie2Index/2.5.2"
-        }
-        else if (meta.file == "bwamem1_index") {
-            path = "Sequence/BWAIndex/0.7.18"
-        }
-        else if (meta.file == "bwamem2_index") {
-            path = "Sequence/BWAmem2Index/2.2.1"
-        }
-        else if (meta.file == "dragmap_hashmap") {
-            path = "Sequence/dragmap/1.2.1"
-        }
-        else if (meta.file == "fasta" || meta.file == "fasta_dict" || meta.file == "fasta_fai" || meta.file == "fasta_sizes") {
-            path = "Sequence/WholeGenomeFasta/${file.fileName}"
-        }
-        else if (meta.file == "gff" || meta.file == "gtf") {
-            path = "Annotation/Genes/${file.fileName}"
-        }
-        else if (meta.file == "hisat2_index") {
-            path = meta.source_version == "unknown"
-                ? "Sequence/Hisat2Index/2.2.1"
-                : "Sequence/Hisat2Index/${meta.source_version}/2.2.1"
-        }
-        else if (meta.file == "intervals_bed") {
-            path = "Annotation/intervals/${file.fileName}"
-        }
-        else if (meta.file == "kallisto_index") {
-            path = meta.source_version == "unknown"
-                ? "Sequence/KallistoIndex/0.51.1/${file.fileName}"
-                : "Sequence/KallistoIndex/${meta.source_version}/0.51.1/${file.fileName}"
-        }
-        else if (meta.file == "msisensorpro_list") {
-            path = "Annotation/msisensorpro/${file.fileName}"
-        }
-        else if (meta.file == "rsem_index") {
-            path = meta.source_version == "unknown"
-                ? "Sequence/RSEMIndex/1.3.1"
-                : "Sequence/RSEMIndex/${meta.source_version}/1.3.1"
-        }
-        else if (meta.file == "salmon_index") {
-            path = meta.source_version == "unknown"
-                ? "Sequence/SalmonIndex/1.10.3"
-                : "Sequence/SalmonIndex/${meta.source_version}/1.10.3"
-        }
-        else if (meta.file == "splice_sites") {
-            path = "Sequence/SpliceSites/${file.fileName}"
-        }
-        else if (meta.file == "star_index") {
-            path = meta.source_version == "unknown"
-                ? "Sequence/STARIndex/2.7.11b"
-                : "Sequence/STARIndex/${meta.source_version}/2.7.11b"
-        }
-        else if (meta.file == "transcript_fasta") {
-            path = "Sequence/TranscriptFasta/${file.fileName}"
-        }
-        else if (meta.file == "${meta.type}_vcf" || meta.file == "${meta.type}_vcf_tbi") {
-            path = "Annotation/${meta.source_vcf}/${file.fileName}"
-        }
-
-        [meta.collectEntries { k, v -> invalid_keys.contains(k) ? [:] : [(k): v] } + [path: path], file]
-    }
+    multiqc           = MULTIQC.out.data.mix(MULTIQC.out.plots, MULTIQC.out.report)
+    ascat_alleles     = NFCORE_REFERENCES.out.ascat_alleles
+    ascat_loci        = NFCORE_REFERENCES.out.ascat_loci
+    ascat_loci_gc     = NFCORE_REFERENCES.out.ascat_loci_gc
+    ascat_loci_rt     = NFCORE_REFERENCES.out.ascat_loci_rt
+    bowtie1_index     = NFCORE_REFERENCES.out.bowtie1_index
+    bowtie2_index     = NFCORE_REFERENCES.out.bowtie2_index
+    bwamem1_index     = NFCORE_REFERENCES.out.bwamem1_index
+    bwamem2_index     = NFCORE_REFERENCES.out.bwamem2_index
+    chr_dir           = NFCORE_REFERENCES.out.chr_dir
+    dragmap_hashmap   = NFCORE_REFERENCES.out.dragmap_hashmap
+    fasta             = NFCORE_REFERENCES.out.fasta
+    fasta_dict        = NFCORE_REFERENCES.out.fasta_dict
+    fasta_fai         = NFCORE_REFERENCES.out.fasta_fai
+    fasta_sizes       = NFCORE_REFERENCES.out.fasta_sizes
+    gff               = NFCORE_REFERENCES.out.gff
+    gtf               = NFCORE_REFERENCES.out.gtf
+    hisat2_index      = NFCORE_REFERENCES.out.hisat2_index
+    intervals_bed     = NFCORE_REFERENCES.out.intervals_bed
+    kallisto_index    = NFCORE_REFERENCES.out.kallisto_index
+    msisensorpro_list = NFCORE_REFERENCES.out.msisensorpro_list
+    rsem_index        = NFCORE_REFERENCES.out.rsem_index
+    salmon_index      = NFCORE_REFERENCES.out.salmon_index
+    snapaligner_index = NFCORE_REFERENCES.out.snapaligner_index
+    splice_sites      = NFCORE_REFERENCES.out.splice_sites
+    star_index        = NFCORE_REFERENCES.out.star_index
+    transcript_fasta  = NFCORE_REFERENCES.out.transcript_fasta
+    vcf_tbi           = NFCORE_REFERENCES.out.vcf_tbi
 }
 
 output {
     multiqc {
         path "multiqc"
     }
-    references {
-        index {
-            path "index.json"
-            sep ":"
+    ascat_alleles {
+        path "ascat/"
+    }
+    ascat_loci {
+        path "ascat/"
+    }
+    ascat_loci_gc {
+        path "ascat/"
+    }
+    ascat_loci_rt {
+        path "ascat/"
+    }
+    bowtie1_index {
+        path "Sequence/BowtieIndex/1.3.1"
+    }
+    bowtie2_index {
+        path "Sequence/Bowtie2Index/2.5.2"
+    }
+    bwamem1_index {
+        path "Sequence/BWAIndex/0.7.18"
+    }
+    bwamem2_index {
+        path "Sequence/BWAmem2Index/2.2.1"
+    }
+    chr_dir {
+        path "Sequence/chr"
+    }
+    dragmap_hashmap {
+        path "Sequence/dragmap/1.2.1"
+    }
+    fasta {
+        path "Sequence/WholeGenomeFasta"
+    }
+    fasta_dict {
+        path "Sequence/WholeGenomeFasta"
+    }
+    fasta_fai {
+        path "Sequence/WholeGenomeFasta"
+    }
+    fasta_sizes {
+        path "Sequence/WholeGenomeFasta"
+    }
+    gff {
+        path "Annotation/Genes"
+    }
+    gtf {
+        path "Annotation/Genes"
+    }
+    hisat2_index {
+        path { meta, file ->
+            file >> meta.source_version == "unknown"
+                ? "Sequence/Hisat2Index/2.2.1"
+                : "Sequence/Hisat2Index/${meta.source_version}/2.2.1"
         }
-        path { meta, path ->
-            path >> "${meta.species}/${meta.source}/${meta.genome}/${meta.path}"
+    }
+    intervals_bed {
+        path "Annotation/intervals"
+    }
+    kallisto_index {
+        path { meta, file ->
+            file >> meta.source_version == "unknown"
+                ? "Sequence/KallistoIndex/0.51.1/${file.fileName}"
+                : "Sequence/KallistoIndex/${meta.source_version}/0.51.1/${file.fileName}"
+        }
+    }
+    msisensorpro_list {
+        path "Annotation/msisensorpro"
+    }
+    rsem_index {
+        path { meta, file ->
+            file >> meta.source_version == "unknown"
+                ? "Sequence/RSEMIndex/1.3.1"
+                : "Sequence/RSEMIndex/${meta.source_version}/1.3.1"
+        }
+    }
+    salmon_index {
+        path { meta, file ->
+            file >> meta.source_version == "unknown"
+                ? "Sequence/SalmonIndex/1.10.3"
+                : "Sequence/SalmonIndex/${meta.source_version}/1.10.3"
+        }
+    }
+    snapaligner_index {
+        path "Sequence/snap"
+    }
+    splice_sites {
+        path "Sequence/SpliceSites"
+    }
+    star_index {
+        path { meta, file ->
+            file >> meta.source_version == "unknown"
+                ? "Sequence/STARIndex/2.7.11b"
+                : "Sequence/STARIndex/${meta.source_version}/2.7.11b"
+        }
+    }
+    transcript_fasta {
+        path "Sequence/TranscriptFasta"
+    }
+    vcf_tbi {
+        path { meta, file ->
+            file >> "Annotation/${meta.source_vcf}/"
         }
     }
 }

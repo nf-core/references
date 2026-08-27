@@ -4,18 +4,10 @@ include { PREPARE_GENOME_RNASEQ } from '../subworkflows/local/prepare_genome_rna
 workflow REFERENCES {
     take:
     altliftoverfile
-    ascat_alleles
-    ascat_loci
-    ascat_loci_gc
-    ascat_loci_rt
-    chr_dir
     fasta
-    fasta_dict
     fasta_fai
-    fasta_sizes
     gff
     gtf
-    intervals_bed
     splice_sites
     transcript_fasta
     vcf
@@ -44,61 +36,27 @@ workflow REFERENCES {
         tools,
     )
 
-    bowtie1_index = PREPARE_GENOME_RNASEQ.out.bowtie1_index
-    bowtie2_index = PREPARE_GENOME_RNASEQ.out.bowtie2_index
-    bwamem1_index = PREPARE_GENOME_DNASEQ.out.bwamem1_index
-    bwamem2_index = PREPARE_GENOME_DNASEQ.out.bwamem2_index
-    dragmap_hashmap = PREPARE_GENOME_DNASEQ.out.dragmap_hashmap
-    fasta_dict = PREPARE_GENOME_DNASEQ.out.fasta_dict
-    fasta_fai = PREPARE_GENOME_DNASEQ.out.fasta_fai
-    fasta_sizes = PREPARE_GENOME_RNASEQ.out.fasta_sizes
-    gtf = PREPARE_GENOME_RNASEQ.out.gtf
-    hisat2_index = PREPARE_GENOME_RNASEQ.out.hisat2_index
-    intervals_bed = PREPARE_GENOME_DNASEQ.out.intervals_bed
-    kallisto_index = PREPARE_GENOME_RNASEQ.out.kallisto_index
-    msisensorpro_list = PREPARE_GENOME_DNASEQ.out.msisensorpro_list
-    rsem_index = PREPARE_GENOME_RNASEQ.out.rsem_index
-    salmon_index = PREPARE_GENOME_RNASEQ.out.salmon_index
-    snapaligner_index = PREPARE_GENOME_DNASEQ.out.snapaligner_index
-    splice_sites = PREPARE_GENOME_RNASEQ.out.splice_sites
-    star_index = PREPARE_GENOME_RNASEQ.out.star_index
-    transcript_fasta = PREPARE_GENOME_RNASEQ.out.transcript_fasta
-    vcf_tbi = PREPARE_GENOME_DNASEQ.out.vcf_tbi
-
-    // TODO: need to rescue these files
-    // vcf.map { meta, reference_ -> [meta + record(file: "${meta.type}_vcf"), reference_] },
-
-    references = channel.empty()
-        .mix(
-            ascat_alleles.map { meta, reference_ -> [meta + record(file: 'ascat_alleles'), reference_] },
-            ascat_loci.map { meta, reference_ -> [meta + record(file: 'ascat_loci'), reference_] },
-            ascat_loci_gc.map { meta, reference_ -> [meta + record(file: 'ascat_loci_gc'), reference_] },
-            ascat_loci_rt.map { meta, reference_ -> [meta + record(file: 'ascat_loci_rt'), reference_] },
-            bowtie1_index.map { meta, reference_ -> [meta + record(file: 'bowtie1_index'), reference_] },
-            bowtie2_index.map { meta, reference_ -> [meta + record(file: 'bowtie2_index'), reference_] },
-            bwamem1_index.map { meta, reference_ -> [meta + record(file: 'bwamem1_index'), reference_] },
-            bwamem2_index.map { meta, reference_ -> [meta + record(file: 'bwamem2_index'), reference_] },
-            chr_dir.map { meta, reference_ -> [meta + record(file: 'chr_dir'), reference_] },
-            dragmap_hashmap.map { meta, reference_ -> [meta + record(file: 'dragmap_hashmap'), reference_] },
-            fasta.map { meta, reference_ -> [meta + record(file: 'fasta'), reference_] },
-            fasta_dict.map { meta, reference_ -> [meta + record(file: 'fasta_dict'), reference_] },
-            fasta_fai.map { meta, reference_ -> [meta + record(file: 'fasta_fai'), reference_] },
-            fasta_sizes.map { meta, reference_ -> [meta + record(file: 'fasta_sizes'), reference_] },
-            gff.map { meta, reference_ -> [meta + record(file: 'gff'), reference_] },
-            gtf.map { meta, reference_ -> [meta + record(file: 'gtf'), reference_] },
-            hisat2_index.map { meta, reference_ -> [meta + record(file: 'hisat2_index'), reference_] },
-            intervals_bed.map { meta, reference_ -> [meta + record(file: 'intervals_bed'), reference_] },
-            kallisto_index.map { meta, reference_ -> [meta + record(file: 'kallisto_index'), reference_] },
-            msisensorpro_list.map { meta, reference_ -> [meta + record(file: 'msisensorpro_list'), reference_] },
-            rsem_index.map { meta, reference_ -> [meta + record(file: 'rsem_index'), reference_] },
-            salmon_index.map { meta, reference_ -> [meta + record(file: 'salmon_index'), reference_] },
-            snapaligner_index.map { meta, reference_ -> [meta + record(file: 'snapaligner_index'), reference_] },
-            splice_sites.map { meta, reference_ -> [meta + record(file: 'splice_sites'), reference_] },
-            star_index.map { meta, reference_ -> [meta + record(file: 'star_index'), reference_] },
-            transcript_fasta.map { meta, reference_ -> [meta + record(file: 'transcript_fasta'), reference_] },
-            vcf_tbi.map { meta, reference_ -> [meta + record(file: "${meta.type}_vcf_tbi"), reference_] },
-        )
-
     emit:
-    references = references // channel: [meta, *]
+    bowtie1_index     = PREPARE_GENOME_RNASEQ.out.bowtie1_index
+    bowtie2_index     = PREPARE_GENOME_RNASEQ.out.bowtie2_index
+    bwamem1_index     = PREPARE_GENOME_DNASEQ.out.bwamem1_index
+    bwamem2_index     = PREPARE_GENOME_DNASEQ.out.bwamem2_index
+    dragmap_hashmap   = PREPARE_GENOME_DNASEQ.out.dragmap_hashmap
+    fasta
+    fasta_dict        = PREPARE_GENOME_DNASEQ.out.fasta_dict
+    fasta_fai         = PREPARE_GENOME_DNASEQ.out.fasta_fai
+    fasta_sizes       = PREPARE_GENOME_RNASEQ.out.fasta_sizes
+    gff
+    gtf               = PREPARE_GENOME_RNASEQ.out.gtf
+    hisat2_index      = PREPARE_GENOME_RNASEQ.out.hisat2_index
+    intervals_bed     = PREPARE_GENOME_DNASEQ.out.intervals_bed
+    kallisto_index    = PREPARE_GENOME_RNASEQ.out.kallisto_index
+    msisensorpro_list = PREPARE_GENOME_DNASEQ.out.msisensorpro_list
+    rsem_index        = PREPARE_GENOME_RNASEQ.out.rsem_index
+    salmon_index      = PREPARE_GENOME_RNASEQ.out.salmon_index
+    snapaligner_index = PREPARE_GENOME_DNASEQ.out.snapaligner_index
+    splice_sites      = PREPARE_GENOME_RNASEQ.out.splice_sites
+    star_index        = PREPARE_GENOME_RNASEQ.out.star_index
+    transcript_fasta  = PREPARE_GENOME_RNASEQ.out.transcript_fasta
+    vcf_tbi           = PREPARE_GENOME_DNASEQ.out.vcf_tbi
 }
