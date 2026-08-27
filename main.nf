@@ -139,6 +139,7 @@ workflow NFCORE_REFERENCES {
         DATASHEET_TO_CHANNEL.out.transcript_fasta,
         DATASHEET_TO_CHANNEL.out.vcf,
         tools,
+        params.hisat2_build_memory,
     )
 
     emit:
@@ -179,6 +180,9 @@ params {
 
     // Make --make-unique flag for kallisto index
     kallisto_make_unique: Boolean = false
+
+    // Memory threshold for HISAT2 index building. When available process memory meets or exceeds this value, splice sites and exons are used to build a splice-aware index.
+    hisat2_build_memory: String?
 
     // Git commit id for Institutional configs.
     custom_config_version: String = 'master'
@@ -392,7 +396,7 @@ workflow {
             path = "Annotation/${meta.source_vcf}/${file.fileName}"
         }
 
-        [meta + record(path: path) - meta.subMap(invalid_keys), file]
+        [meta.collectEntries { k, v -> invalid_keys.contains(k) ? [:] : [(k): v] } + [path: path], file]
     }
 }
 

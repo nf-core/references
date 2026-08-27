@@ -20,6 +20,7 @@ workflow REFERENCES {
     transcript_fasta
     vcf
     tools // List: Can contain any combination of tools
+    hisat2_build_memory
 
     main:
     // Create references for rnaseq based pipelines such as nf-core/riboseq, nf-core/rnaseq, nf-core/rnavar
@@ -31,6 +32,7 @@ workflow REFERENCES {
         splice_sites,
         transcript_fasta,
         tools,
+        hisat2_build_memory,
     )
 
     // Create references for dnaseq based pipelines such as nf-core/sarek

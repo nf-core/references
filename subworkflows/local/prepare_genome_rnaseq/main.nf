@@ -19,6 +19,7 @@ workflow PREPARE_GENOME_RNASEQ {
     splice_sites // channel: [meta, splice_sites]
     transcript_fasta // channel: [meta, transcript_fasta]
     tools // List: tools to build references for
+    hisat2_build_memory
 
     main:
 
@@ -44,7 +45,7 @@ workflow PREPARE_GENOME_RNASEQ {
 
     splice_sites = splice_sites.mix(HISAT2_EXTRACTSPLICESITES.out.txt)
 
-    HISAT2_BUILD(join_by_meta_id(fasta.filter { meta, _fasta -> 'hisat2' in tools && meta.run_hisat2 }, gtf, splice_sites))
+    HISAT2_BUILD(join_by_meta_id(fasta.filter { meta, _fasta -> 'hisat2' in tools && meta.run_hisat2 }, gtf, splice_sites), hisat2_build_memory)
 
     MAKE_TRANSCRIPTS_FASTA(join_by_meta_id(fasta.filter { meta, _fasta -> 'rsem_make_transcript_fasta' in tools && meta.run_rsem_make_transcript_fasta }, gtf))
 
