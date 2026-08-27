@@ -10,6 +10,8 @@ lint:
     - assets/nf-core-references_logo_light.png
     - docs/images/nf-core-references_logo_dark.png
     - docs/images/nf-core-references_logo_light.png
+  nextflow_config: false
+  schema_params: false
 nf_core_version: 4.1.0
 repository_type: pipeline
 template:
