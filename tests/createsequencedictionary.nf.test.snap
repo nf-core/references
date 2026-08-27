@@ -4,7 +4,7 @@
             2,
             {
                 "GATK4_CREATESEQUENCEDICTIONARY": {
-                    "gatk4": "4.6.2.0"
+                    "gatk4": "4.7.0.0"
                 }
             },
             [

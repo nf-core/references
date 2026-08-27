@@ -10,7 +10,7 @@
                     "bwa": "0.7.19-r1273"
                 },
                 "GATK4_CREATESEQUENCEDICTIONARY": {
-                    "gatk4": "4.6.2.0"
+                    "gatk4": "4.7.0.0"
                 },
                 "SAMTOOLS_FAIDX": {
                     "samtools": "1.24"
