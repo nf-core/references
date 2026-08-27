@@ -182,7 +182,7 @@ params {
     kallisto_make_unique: Boolean = false
 
     // Memory threshold for HISAT2 index building. When available process memory meets or exceeds this value, splice sites and exons are used to build a splice-aware index.
-    hisat2_build_memory: String?
+    hisat2_build_memory: String = '200.GB'
 
     // Git commit id for Institutional configs.
     custom_config_version: String = 'master'

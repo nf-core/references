@@ -86,6 +86,7 @@
                     "type": "string",
                     "description": "Memory threshold for HISAT2 index building. When available process memory meets or exceeds this value, splice sites and exons are used to build a splice-aware index.",
                     "fa_icon": "fas fa-memory",
+                    "default": "200.GB",
                     "pattern": "^[0-9]+\\.?[0-9]*\\.?[GMK]B$"
                 }
             }
