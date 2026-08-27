@@ -40,7 +40,7 @@ workflow PREPARE_GENOME_DNASEQ {
     MSISENSORPRO_SCAN(fasta.filter { meta, _fasta -> 'msisensorpro' in tools && meta.run_msisensorpro })
 
     HTSLIB_BGZIPTABIX(
-        vcf.filter { meta, _vcf -> 'tabix' in tools && meta.run_tabix }.map { meta, vcf_ -> [meta, vcf_, [], []] },
+        vcf.filter { meta, _vcf -> 'tabix' in tools && meta.run_tabix }.map { meta, vcf_ -> [meta, vcf_, null, null] },
         "compress",
         true,
         "vcf",

@@ -8,7 +8,7 @@ process HTSLIB_BGZIPTABIX {
         : 'community.wave.seqera.io/library/htslib_xz:32f2772a564b3cd2'}"
 
     input:
-    tuple val(meta), path(infile), path(infile_tbi), path(regions)
+    tuple val(meta), path(infile), val(infile_tbi), val(regions)
     val action
     val make_index
     val out_ext
