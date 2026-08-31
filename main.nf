@@ -380,52 +380,84 @@ output {
         path "multiqc"
     }
     ascat_alleles {
-        path "ascat/"
+        path { meta, file ->
+            file >> "${meta.species}/${meta.source}/${meta.genome}/ascat/"
+        }
     }
     ascat_loci {
-        path "ascat/"
+        path { meta, file ->
+            file >> "${meta.species}/${meta.source}/${meta.genome}/ascat/"
+        }
     }
     ascat_loci_gc {
-        path "ascat/"
+        path { meta, file ->
+            file >> "${meta.species}/${meta.source}/${meta.genome}/ascat/"
+        }
     }
     ascat_loci_rt {
-        path "ascat/"
+        path { meta, file ->
+            file >> "${meta.species}/${meta.source}/${meta.genome}/ascat/"
+        }
     }
     bowtie1_index {
-        path "Sequence/BowtieIndex/1.3.1"
+        path { meta, file ->
+            file >> "${meta.species}/${meta.source}/${meta.genome}/Sequence/BowtieIndex/1.3.1"
+        }
     }
     bowtie2_index {
-        path "Sequence/Bowtie2Index/2.5.2"
+        path { meta, file ->
+            file >> "${meta.species}/${meta.source}/${meta.genome}/Sequence/Bowtie2Index/2.5.2"
+        }
     }
     bwamem1_index {
-        path "Sequence/BWAIndex/0.7.18"
+        path { meta, file ->
+            file >> "${meta.species}/${meta.source}/${meta.genome}/Sequence/BWAIndex/0.7.18"
+        }
     }
     bwamem2_index {
-        path "Sequence/BWAmem2Index/2.2.1"
+        path { meta, file ->
+            file >> "${meta.species}/${meta.source}/${meta.genome}/Sequence/BWAmem2Index/2.2.1"
+        }
     }
     chr_dir {
-        path "Sequence/chr"
+        path { meta, file ->
+            file >> "${meta.species}/${meta.source}/${meta.genome}/Sequence/chr"
+        }
     }
     dragmap_hashmap {
-        path "Sequence/dragmap/1.2.1"
+        path { meta, file ->
+            file >> "${meta.species}/${meta.source}/${meta.genome}/Sequence/dragmap/1.2.1"
+        }
     }
     fasta {
-        path "Sequence/WholeGenomeFasta"
+        path { meta, file ->
+            file >> "${meta.species}/${meta.source}/${meta.genome}/Sequence/WholeGenomeFasta"
+        }
     }
     fasta_dict {
-        path "Sequence/WholeGenomeFasta"
+        path { meta, file ->
+            file >> "${meta.species}/${meta.source}/${meta.genome}/Sequence/WholeGenomeFasta"
+        }
     }
     fasta_fai {
-        path "Sequence/WholeGenomeFasta"
+        path { meta, file ->
+            file >> "${meta.species}/${meta.source}/${meta.genome}/Sequence/WholeGenomeFasta"
+        }
     }
     fasta_sizes {
-        path "Sequence/WholeGenomeFasta"
+        path { meta, file ->
+            file >> "${meta.species}/${meta.source}/${meta.genome}/Sequence/WholeGenomeFasta"
+        }
     }
     gff {
-        path "Annotation/Genes"
+        path { meta, file ->
+            file >> "${meta.species}/${meta.source}/${meta.genome}/Annotation/Genes"
+        }
     }
     gtf {
-        path "Annotation/Genes"
+        path { meta, file ->
+            file >> "${meta.species}/${meta.source}/${meta.genome}/Annotation/Genes"
+        }
     }
     hisat2_index {
         path { meta, file ->
@@ -433,7 +465,9 @@ output {
         }
     }
     intervals_bed {
-        path "Annotation/intervals"
+        path { meta, file ->
+            file >> "${meta.species}/${meta.source}/${meta.genome}/Annotation/intervals"
+        }
     }
     kallisto_index {
         path { meta, file ->
@@ -441,7 +475,9 @@ output {
         }
     }
     msisensorpro_list {
-        path "Annotation/msisensorpro"
+        path { meta, file ->
+            file >> "${meta.species}/${meta.source}/${meta.genome}/Annotation/msisensorpro"
+        }
     }
     rsem_index {
         path { meta, file ->
@@ -454,10 +490,14 @@ output {
         }
     }
     snapaligner_index {
-        path "Sequence/snap"
+        path { meta, file ->
+            file >> "${meta.species}/${meta.source}/${meta.genome}/Sequence/snap"
+        }
     }
     splice_sites {
-        path "Sequence/SpliceSites"
+        path { meta, file ->
+            file >> "${meta.species}/${meta.source}/${meta.genome}/Sequence/SpliceSites"
+        }
     }
     star_index {
         path { meta, file ->
@@ -465,7 +505,9 @@ output {
         }
     }
     transcript_fasta {
-        path "Sequence/TranscriptFasta"
+        path { meta, file ->
+            file >> "${meta.species}/${meta.source}/${meta.genome}/Sequence/TranscriptFasta"
+        }
     }
     vcf_tbi {
         path { meta, file ->
