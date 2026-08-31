@@ -461,7 +461,7 @@ output {
     }
     hisat2_index {
         path { meta, file ->
-            file >> "${meta.species}/${meta.source}/${meta.genome}/Sequence/Hisat2Index/" + (meta.source_version == 'unknown' ? '' : meta.source_version + "/2.2.1")
+            file >> "${meta.species}/${meta.source}/${meta.genome}/Sequence/Hisat2Index/" + (meta.source_version == 'unknown' ? '' : meta.source_version) + "/2.2.1"
         }
     }
     intervals_bed {
@@ -471,7 +471,7 @@ output {
     }
     kallisto_index {
         path { meta, file ->
-            file >> "${meta.species}/${meta.source}/${meta.genome}/Sequence/KallistoIndex/" + (meta.source_version == 'unknown' ? '' : meta.source_version + "/0.51.1/${file.fileName}")
+            file >> "${meta.species}/${meta.source}/${meta.genome}/Sequence/KallistoIndex/" + (meta.source_version == 'unknown' ? '' : meta.source_version) + "/0.51.1/${file.fileName}"
         }
     }
     msisensorpro_list {
@@ -481,12 +481,12 @@ output {
     }
     rsem_index {
         path { meta, file ->
-            file >> "${meta.species}/${meta.source}/${meta.genome}/Sequence/RSEMIndex/" + (meta.source_version == 'unknown' ? '' : meta.source_version + "/1.3.1")
+            file >> "${meta.species}/${meta.source}/${meta.genome}/Sequence/RSEMIndex/" + (meta.source_version == 'unknown' ? '' : meta.source_version) + "/1.3.1"
         }
     }
     salmon_index {
         path { meta, file ->
-            file >> "${meta.species}/${meta.source}/${meta.genome}/Sequence/SalmonIndex/" + (meta.source_version == 'unknown' ? '' : meta.source_version + "/1.10.3")
+            file >> "${meta.species}/${meta.source}/${meta.genome}/Sequence/SalmonIndex/" + (meta.source_version == 'unknown' ? '' : meta.source_version) + "/1.10.3"
         }
     }
     snapaligner_index {
@@ -501,7 +501,7 @@ output {
     }
     star_index {
         path { meta, file ->
-            file >> "${meta.species}/${meta.source}/${meta.genome}/Sequence/STARIndex/" + (meta.source_version == 'unknown' ? '' : meta.source_version + "/2.7.11b")
+            file >> "${meta.species}/${meta.source}/${meta.genome}/Sequence/STARIndex/" + (meta.source_version == 'unknown' ? '' : meta.source_version) + "/2.7.11b"
         }
     }
     transcript_fasta {
