@@ -381,22 +381,22 @@ output {
     }
     ascat_alleles {
         path { meta, file ->
-            file >> "${meta.species}/${meta.source}/${meta.genome}/ascat/${file}"
+            file >> "${meta.species}/${meta.source}/${meta.genome}/ascat/"
         }
     }
     ascat_loci {
         path { meta, file ->
-            file >> "${meta.species}/${meta.source}/${meta.genome}/ascat/${file}"
+            file >> "${meta.species}/${meta.source}/${meta.genome}/ascat/"
         }
     }
     ascat_loci_gc {
         path { meta, file ->
-            file >> "${meta.species}/${meta.source}/${meta.genome}/ascat/${file}"
+            file >> "${meta.species}/${meta.source}/${meta.genome}/ascat/"
         }
     }
     ascat_loci_rt {
         path { meta, file ->
-            file >> "${meta.species}/${meta.source}/${meta.genome}/ascat/${file}"
+            file >> "${meta.species}/${meta.source}/${meta.genome}/ascat/"
         }
     }
     bowtie1_index {
@@ -431,32 +431,32 @@ output {
     }
     fasta {
         path { meta, file ->
-            file >> "${meta.species}/${meta.source}/${meta.genome}/Sequence/WholeGenomeFasta/${file}"
+            file >> "${meta.species}/${meta.source}/${meta.genome}/Sequence/WholeGenomeFasta/${file.fileName}"
         }
     }
     fasta_dict {
         path { meta, file ->
-            file >> "${meta.species}/${meta.source}/${meta.genome}/Sequence/WholeGenomeFasta/${file}"
+            file >> "${meta.species}/${meta.source}/${meta.genome}/Sequence/WholeGenomeFasta/${file.fileName}"
         }
     }
     fasta_fai {
         path { meta, file ->
-            file >> "${meta.species}/${meta.source}/${meta.genome}/Sequence/WholeGenomeFasta/${file}"
+            file >> "${meta.species}/${meta.source}/${meta.genome}/Sequence/WholeGenomeFasta/${file.fileName}"
         }
     }
     fasta_sizes {
         path { meta, file ->
-            file >> "${meta.species}/${meta.source}/${meta.genome}/Sequence/WholeGenomeFasta/${file}"
+            file >> "${meta.species}/${meta.source}/${meta.genome}/Sequence/WholeGenomeFasta/${file.fileName}"
         }
     }
     gff {
         path { meta, file ->
-            file >> "${meta.species}/${meta.source}/${meta.genome}/Annotation/Genes/${file}"
+            file >> "${meta.species}/${meta.source}/${meta.genome}/Annotation/Genes/${file.fileName}"
         }
     }
     gtf {
         path { meta, file ->
-            file >> "${meta.species}/${meta.source}/${meta.genome}/Annotation/Genes/${file}"
+            file >> "${meta.species}/${meta.source}/${meta.genome}/Annotation/Genes/${file.fileName}"
         }
     }
     hisat2_index {
@@ -466,17 +466,17 @@ output {
     }
     intervals_bed {
         path { meta, file ->
-            file >> "${meta.species}/${meta.source}/${meta.genome}/Annotation/intervals/${file}"
+            file >> "${meta.species}/${meta.source}/${meta.genome}/Annotation/intervals/${file.fileName}"
         }
     }
     kallisto_index {
         path { meta, file ->
-            file >> "${meta.species}/${meta.source}/${meta.genome}/Sequence/KallistoIndex" + (meta.source_version == 'unknown' ? '' : meta.source_version + "/0.51.1/${file}")
+            file >> "${meta.species}/${meta.source}/${meta.genome}/Sequence/KallistoIndex" + (meta.source_version == 'unknown' ? '' : meta.source_version + "/0.51.1/${file.fileName}")
         }
     }
     msisensorpro_list {
         path { meta, file ->
-            file >> "${meta.species}/${meta.source}/${meta.genome}/Annotation/msisensorpro/${file}"
+            file >> "${meta.species}/${meta.source}/${meta.genome}/Annotation/msisensorpro/${file.fileName}"
         }
     }
     rsem_index {
@@ -496,7 +496,7 @@ output {
     }
     splice_sites {
         path { meta, file ->
-            file >> "${meta.species}/${meta.source}/${meta.genome}/Sequence/SpliceSites/${file}"
+            file >> "${meta.species}/${meta.source}/${meta.genome}/Sequence/SpliceSites/${file.fileName}"
         }
     }
     star_index {
@@ -506,12 +506,12 @@ output {
     }
     transcript_fasta {
         path { meta, file ->
-            file >> "${meta.species}/${meta.source}/${meta.genome}/Sequence/TranscriptFasta/${file}"
+            file >> "${meta.species}/${meta.source}/${meta.genome}/Sequence/TranscriptFasta/${file.fileName}"
         }
     }
     vcf_tbi {
         path { meta, file ->
-            file >> "${meta.species}/${meta.source}/${meta.genome}/Annotation/${meta.source_vcf}/${file}"
+            file >> "${meta.species}/${meta.source}/${meta.genome}/Annotation/${meta.source_vcf}/${file.fileName}"
         }
     }
 }
