@@ -97,7 +97,6 @@
                 "Caenorhabditis_elegans/NCBI/WBcel235/Sequence/WholeGenomeFasta/GCF_000002985.6_WBcel235_genomic.dict",
                 "Caenorhabditis_elegans/NCBI/WBcel235/Sequence/WholeGenomeFasta/GCF_000002985.6_WBcel235_genomic.fna",
                 "Caenorhabditis_elegans/NCBI/WBcel235/Sequence/WholeGenomeFasta/GCF_000002985.6_WBcel235_genomic.fna.fai",
-                "index.json",
                 "multiqc",
                 "multiqc/multiqc_data",
                 "multiqc/multiqc_data/llms-full.txt",

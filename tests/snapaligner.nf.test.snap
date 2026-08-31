@@ -16,7 +16,6 @@
                 "Homo_sapiens/nf-core/GRCh38_chr21/snap/GenomeIndex",
                 "Homo_sapiens/nf-core/GRCh38_chr21/snap/GenomeIndexHash",
                 "Homo_sapiens/nf-core/GRCh38_chr21/snap/OverflowTable",
-                "index.json",
                 "multiqc",
                 "multiqc/multiqc_data",
                 "multiqc/multiqc_data/llms-full.txt",
