@@ -53,13 +53,12 @@
                     },
                     "hisat2/build": {
                         "branch": "master",
-                        "git_sha": "6d46786420b4d7bc88eba026eb389c0c5535d120",
-                        "installed_by": ["modules"],
-                        "patch": "modules/nf-core/hisat2/build/hisat2-build.diff"
+                        "git_sha": "7ff2dbaefb93fdd3825b7bff1d86d2f3c7e946f5",
+                        "installed_by": ["modules"]
                     },
                     "hisat2/extractsplicesites": {
                         "branch": "master",
-                        "git_sha": "6d46786420b4d7bc88eba026eb389c0c5535d120",
+                        "git_sha": "7ff2dbaefb93fdd3825b7bff1d86d2f3c7e946f5",
                         "installed_by": ["modules"]
                     },
                     "htslib/bgziptabix": {
@@ -102,9 +101,8 @@
                     },
                     "snapaligner/index": {
                         "branch": "master",
-                        "git_sha": "6d46786420b4d7bc88eba026eb389c0c5535d120",
-                        "installed_by": ["modules"],
-                        "patch": "modules/nf-core/snapaligner/index/snapaligner-index.diff"
+                        "git_sha": "c8ebae73f5cd2886ad8e3e28d52fe6f6f22cd9ca",
+                        "installed_by": ["modules"]
                     },
                     "star/genomegenerate": {
                         "branch": "master",

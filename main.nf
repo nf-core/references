@@ -447,7 +447,7 @@ output {
     }
     hisat2_index {
         path { meta, file ->
-            file >> "${meta.species}/${meta.source}/${meta.genome}/Sequence/Hisat2Index/" + (meta.source_version == 'unknown' ? '' : meta.source_version) + "/2.2.1"
+            file >> "${meta.species}/${meta.source}/${meta.genome}/Sequence/Hisat2Index/" + (meta.source_version == 'unknown' ? '' : meta.source_version) + "/2.2.3"
         }
     }
     intervals_bed {
