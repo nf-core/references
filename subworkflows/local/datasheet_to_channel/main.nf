@@ -126,7 +126,7 @@ workflow DATASHEET_TO_CHANNEL {
         // (gff, gtf or transcript_fasta)
         def meta_extra = record(run_gffread: meta.fasta && !meta.gtf ?: false)
         meta_extra += record(run_hisat2: meta.splice_sites ? false : true)
-        return [reduceMeta(meta) + meta_extra, meta.gtf.contains('ncbi.nlm.nih.gov') ? meta.gff : file(meta.gff, checkIfExists: true)]
+        return [reduceMeta(meta) + meta_extra, meta.gff.contains('ncbi.nlm.nih.gov') ? meta.gff : file(meta.gff, checkIfExists: true)]
         other: true
         // If the reference doesn't exist, then we return nothing
         return null
