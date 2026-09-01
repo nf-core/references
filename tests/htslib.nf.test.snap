@@ -1,0 +1,77 @@
+{
+    "-profile test --tools tabix --input references-datasheets/latest/genomes_source/Homo_sapiens/nf-core/GRCh38_chr21_chr22.yml": {
+        "content": [
+            1,
+            {
+                
+            },
+            [
+                "index.json",
+                "multiqc",
+                "multiqc/multiqc_data",
+                "multiqc/multiqc_data/llms-full.txt",
+                "multiqc/multiqc_data/multiqc.log",
+                "multiqc/multiqc_data/multiqc.parquet",
+                "multiqc/multiqc_data/multiqc_citations.txt",
+                "multiqc/multiqc_data/multiqc_data.json",
+                "multiqc/multiqc_data/multiqc_software_versions.txt",
+                "multiqc/multiqc_data/multiqc_sources.txt",
+                "multiqc/multiqc_report.html",
+                "pipeline_info",
+                "pipeline_info/nf_core_references_software_mqc_versions.yml"
+            ],
+            [
+                "multiqc_citations.txt:md5,4c806e63a283ec1b7e78cdae3a923d4f"
+            ]
+        ],
+        "timestamp": "2026-05-04T13:49:48.65709389",
+        "meta": {
+            "nf-test": "0.9.5",
+            "nextflow": "26.03.4"
+        }
+    },
+    "-profile test --tools tabix --input references-datasheets/latest/genomes_source/Homo_sapiens/nf-core/GRCh38_chr21_MT.yml": {
+        "content": [
+            5,
+            {
+                "HTSLIB_BGZIPTABIX": {
+                    "htslib": "1.24",
+                    "xz": "5.8.3"
+                }
+            },
+            [
+                "Homo_sapiens",
+                "Homo_sapiens/nf-core",
+                "Homo_sapiens/nf-core/GRCh38_MT",
+                "Homo_sapiens/nf-core/GRCh38_MT/Annotation",
+                "Homo_sapiens/nf-core/GRCh38_MT/Annotation/genmod_compound",
+                "Homo_sapiens/nf-core/GRCh38_MT/Annotation/genmod_compound/GRCh38_MT.vcf.gz.tbi",
+                "Homo_sapiens/nf-core/GRCh38_chr21",
+                "Homo_sapiens/nf-core/GRCh38_chr21/Annotation",
+                "Homo_sapiens/nf-core/GRCh38_chr21/Annotation/GATK_BUNDLE",
+                "Homo_sapiens/nf-core/GRCh38_chr21/Annotation/GATK_BUNDLE/GRCh38_chr21.vcf.gz.tbi",
+                "index.json",
+                "multiqc",
+                "multiqc/multiqc_data",
+                "multiqc/multiqc_data/llms-full.txt",
+                "multiqc/multiqc_data/multiqc.log",
+                "multiqc/multiqc_data/multiqc.parquet",
+                "multiqc/multiqc_data/multiqc_citations.txt",
+                "multiqc/multiqc_data/multiqc_data.json",
+                "multiqc/multiqc_data/multiqc_software_versions.txt",
+                "multiqc/multiqc_data/multiqc_sources.txt",
+                "multiqc/multiqc_report.html",
+                "pipeline_info",
+                "pipeline_info/nf_core_references_software_mqc_versions.yml"
+            ],
+            [
+                "multiqc_citations.txt:md5,4c806e63a283ec1b7e78cdae3a923d4f"
+            ]
+        ],
+        "timestamp": "2026-08-14T15:33:26.515103259",
+        "meta": {
+            "nf-test": "0.9.5",
+            "nextflow": "26.04.6"
+        }
+    }
+}

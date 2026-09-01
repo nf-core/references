@@ -1,0 +1,154 @@
+{
+    "-profile test --tools_bundle sarek --skip_tools snapaligner --input references-datasheets/latest/genomes/Homo_sapiens/GATK/GRCh38_chr22.yml": {
+        "content": [
+            2,
+            {
+                "MSISENSORPRO_SCAN": {
+                    "msisensor-pro": "1.3.0"
+                }
+            },
+            [
+                "Homo_sapiens",
+                "Homo_sapiens/nf-core",
+                "Homo_sapiens/nf-core/GRCh38_chr22",
+                "Homo_sapiens/nf-core/GRCh38_chr22/Annotation",
+                "Homo_sapiens/nf-core/GRCh38_chr22/Annotation/msisensorpro",
+                "Homo_sapiens/nf-core/GRCh38_chr22/Annotation/msisensorpro/GRCh38_chr22.msisensor_scan.list",
+                "index.json",
+                "multiqc",
+                "multiqc/multiqc_data",
+                "multiqc/multiqc_data/llms-full.txt",
+                "multiqc/multiqc_data/multiqc.log",
+                "multiqc/multiqc_data/multiqc.parquet",
+                "multiqc/multiqc_data/multiqc_citations.txt",
+                "multiqc/multiqc_data/multiqc_data.json",
+                "multiqc/multiqc_data/multiqc_software_versions.txt",
+                "multiqc/multiqc_data/multiqc_sources.txt",
+                "multiqc/multiqc_report.html",
+                "pipeline_info",
+                "pipeline_info/nf_core_references_software_mqc_versions.yml"
+            ],
+            [
+                "GRCh38_chr22.msisensor_scan.list:md5,1c670ac986f5e6d7a9d11e45231d5417",
+                "multiqc_citations.txt:md5,4c806e63a283ec1b7e78cdae3a923d4f"
+            ]
+        ],
+        "timestamp": "2026-06-10T13:41:46.340129922",
+        "meta": {
+            "nf-test": "0.9.5",
+            "nextflow": "26.04.3"
+        }
+    },
+    "-profile test --tools_bundle sarek --skip_tools snapaligner --input references-datasheets/latest/genomes_source/Homo_sapiens/GATK/GRCh38_chr22.yml": {
+        "content": [
+            11,
+            {
+                "BUILD_INTERVALS": {
+                    "gawk": "5.3.1"
+                },
+                "BWAMEM1_INDEX": {
+                    "bwa": "0.7.19-r1273"
+                },
+                "BWAMEM2_INDEX": {
+                    "bwamem2": "2.2.1"
+                },
+                "DRAGMAP_HASHTABLE": {
+                    "dragmap": "1.2.1"
+                },
+                "GATK4_CREATESEQUENCEDICTIONARY": {
+                    "gatk4": "4.6.2.0"
+                },
+                "HTSLIB_BGZIPTABIX": {
+                    "htslib": "1.24",
+                    "xz": "5.8.3"
+                },
+                "MSISENSORPRO_SCAN": {
+                    "msisensor-pro": "1.3.0"
+                },
+                "SAMTOOLS_FAIDX": {
+                    "samtools": "1.24"
+                }
+            },
+            [
+                "Homo_sapiens",
+                "Homo_sapiens/nf-core",
+                "Homo_sapiens/nf-core/GRCh38_chr22",
+                "Homo_sapiens/nf-core/GRCh38_chr22/Annotation",
+                "Homo_sapiens/nf-core/GRCh38_chr22/Annotation/GATK_BUNDLE",
+                "Homo_sapiens/nf-core/GRCh38_chr22/Annotation/GATK_BUNDLE/GRCh38_chr22.vcf.gz.tbi",
+                "Homo_sapiens/nf-core/GRCh38_chr22/Annotation/intervals",
+                "Homo_sapiens/nf-core/GRCh38_chr22/Annotation/intervals/GRCh38_chr22.bed",
+                "Homo_sapiens/nf-core/GRCh38_chr22/Annotation/msisensorpro",
+                "Homo_sapiens/nf-core/GRCh38_chr22/Annotation/msisensorpro/GRCh38_chr22.msisensor_scan.list",
+                "Homo_sapiens/nf-core/GRCh38_chr22/Sequence",
+                "Homo_sapiens/nf-core/GRCh38_chr22/Sequence/BWAIndex",
+                "Homo_sapiens/nf-core/GRCh38_chr22/Sequence/BWAIndex/0.7.18",
+                "Homo_sapiens/nf-core/GRCh38_chr22/Sequence/BWAIndex/0.7.18/genome.amb",
+                "Homo_sapiens/nf-core/GRCh38_chr22/Sequence/BWAIndex/0.7.18/genome.ann",
+                "Homo_sapiens/nf-core/GRCh38_chr22/Sequence/BWAIndex/0.7.18/genome.bwt",
+                "Homo_sapiens/nf-core/GRCh38_chr22/Sequence/BWAIndex/0.7.18/genome.pac",
+                "Homo_sapiens/nf-core/GRCh38_chr22/Sequence/BWAIndex/0.7.18/genome.sa",
+                "Homo_sapiens/nf-core/GRCh38_chr22/Sequence/BWAmem2Index",
+                "Homo_sapiens/nf-core/GRCh38_chr22/Sequence/BWAmem2Index/2.2.1",
+                "Homo_sapiens/nf-core/GRCh38_chr22/Sequence/BWAmem2Index/2.2.1/genome.fasta.0123",
+                "Homo_sapiens/nf-core/GRCh38_chr22/Sequence/BWAmem2Index/2.2.1/genome.fasta.amb",
+                "Homo_sapiens/nf-core/GRCh38_chr22/Sequence/BWAmem2Index/2.2.1/genome.fasta.ann",
+                "Homo_sapiens/nf-core/GRCh38_chr22/Sequence/BWAmem2Index/2.2.1/genome.fasta.bwt.2bit.64",
+                "Homo_sapiens/nf-core/GRCh38_chr22/Sequence/BWAmem2Index/2.2.1/genome.fasta.pac",
+                "Homo_sapiens/nf-core/GRCh38_chr22/Sequence/WholeGenomeFasta",
+                "Homo_sapiens/nf-core/GRCh38_chr22/Sequence/WholeGenomeFasta/genome.dict",
+                "Homo_sapiens/nf-core/GRCh38_chr22/Sequence/WholeGenomeFasta/genome.fasta.fai",
+                "Homo_sapiens/nf-core/GRCh38_chr22/Sequence/dragmap",
+                "Homo_sapiens/nf-core/GRCh38_chr22/Sequence/dragmap/1.2.1",
+                "Homo_sapiens/nf-core/GRCh38_chr22/Sequence/dragmap/1.2.1/hash_table.cfg",
+                "Homo_sapiens/nf-core/GRCh38_chr22/Sequence/dragmap/1.2.1/hash_table.cfg.bin",
+                "Homo_sapiens/nf-core/GRCh38_chr22/Sequence/dragmap/1.2.1/hash_table.cmp",
+                "Homo_sapiens/nf-core/GRCh38_chr22/Sequence/dragmap/1.2.1/hash_table_stats.txt",
+                "Homo_sapiens/nf-core/GRCh38_chr22/Sequence/dragmap/1.2.1/ref_index.bin",
+                "Homo_sapiens/nf-core/GRCh38_chr22/Sequence/dragmap/1.2.1/reference.bin",
+                "Homo_sapiens/nf-core/GRCh38_chr22/Sequence/dragmap/1.2.1/repeat_mask.bin",
+                "Homo_sapiens/nf-core/GRCh38_chr22/Sequence/dragmap/1.2.1/str_table.bin",
+                "index.json",
+                "multiqc",
+                "multiqc/multiqc_data",
+                "multiqc/multiqc_data/llms-full.txt",
+                "multiqc/multiqc_data/multiqc.log",
+                "multiqc/multiqc_data/multiqc.parquet",
+                "multiqc/multiqc_data/multiqc_citations.txt",
+                "multiqc/multiqc_data/multiqc_data.json",
+                "multiqc/multiqc_data/multiqc_software_versions.txt",
+                "multiqc/multiqc_data/multiqc_sources.txt",
+                "multiqc/multiqc_report.html",
+                "pipeline_info",
+                "pipeline_info/nf_core_references_software_mqc_versions.yml"
+            ],
+            [
+                "GRCh38_chr22.bed:md5,87a15eb9c2ff20ccd5cd8735a28708f7",
+                "GRCh38_chr22.msisensor_scan.list:md5,1c670ac986f5e6d7a9d11e45231d5417",
+                "genome.amb:md5,1891c1de381b3a96d4e72f590fde20c1",
+                "genome.ann:md5,2df4aa2d7580639fa0fcdbcad5e2e969",
+                "genome.bwt:md5,815eded87e4cb6b0f1daab5c4d6e30af",
+                "genome.pac:md5,8569fbdb2c98c6fb16dfa73d8eacb070",
+                "genome.sa:md5,e7cff62b919448a3a3d0fe4aaf427594",
+                "genome.fasta.0123:md5,d73300d44f733bcdb7c988fc3ff3e3e9",
+                "genome.fasta.amb:md5,1891c1de381b3a96d4e72f590fde20c1",
+                "genome.fasta.ann:md5,2df4aa2d7580639fa0fcdbcad5e2e969",
+                "genome.fasta.bwt.2bit.64:md5,cd4bdf496eab05228a50c45ee43c1ed0",
+                "genome.fasta.pac:md5,8569fbdb2c98c6fb16dfa73d8eacb070",
+                "genome.dict:md5,2433fe2ba31257337bf4c4bd4cb8da15",
+                "genome.fasta.fai:md5,3520cd30e1b100e55f578db9c855f685",
+                "hash_table.cmp:md5,1caab4ffc89f81ace615a2e813295cf4",
+                "ref_index.bin:md5,dbb5c7d26b974e0ac338024fe4535044",
+                "reference.bin:md5,be67b80ee48aa96b383fd72f1ccfefea",
+                "repeat_mask.bin:md5,294939f1f80aa7f4a70b9b537e4c0f21",
+                "str_table.bin:md5,45f7818c4a10fdeed04db7a34b5f9ff1",
+                "multiqc_citations.txt:md5,4c806e63a283ec1b7e78cdae3a923d4f"
+            ]
+        ],
+        "timestamp": "2026-08-14T15:44:51.878613969",
+        "meta": {
+            "nf-test": "0.9.5",
+            "nextflow": "26.04.6"
+        }
+    }
+}
