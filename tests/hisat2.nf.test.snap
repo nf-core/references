@@ -65,7 +65,8 @@
                     "hisat2": "2.2.3"
                 },
                 "HISAT2_EXTRACTSPLICESITES": {
-                    "hisat2": "2.2.3"
+                    "hisat2": "2.2.3",
+                    "samtools": "1.24"
                 }
             },
             [
@@ -115,7 +116,7 @@
                 "multiqc_citations.txt:md5,4c806e63a283ec1b7e78cdae3a923d4f"
             ]
         ],
-        "timestamp": "2026-08-31T18:30:03.035575478",
+        "timestamp": "2026-09-01T16:38:31.084446326",
         "meta": {
             "nf-test": "0.9.5",
             "nextflow": "26.08.0"
