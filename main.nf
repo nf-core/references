@@ -144,11 +144,11 @@ workflow NFCORE_REFERENCES {
     bwamem2_index     = REFERENCES.out.bwamem2_index
     chr_dir           = ARCHIVE_EXTRACT.out.extracted.filter { meta, _ref -> meta.reference == 'chr_dir' }
     dragmap_hashmap   = REFERENCES.out.dragmap_hashmap
-    fasta             = ARCHIVE_EXTRACT.out.extracted.filter { meta, _ref -> meta.reference == 'fasta' }
+    fasta             = extracted_fasta.mix(NCBIDATASETSCLI_DATASETS.out.fna.map { meta, file -> [meta + record(reference: 'fasta', file: 'fasta'), file] })
     fasta_dict        = REFERENCES.out.fasta_dict
     fasta_fai         = REFERENCES.out.fasta_fai
     fasta_sizes       = REFERENCES.out.fasta_sizes
-    gff               = ARCHIVE_EXTRACT.out.extracted.filter { meta, _ref -> meta.reference == 'gff' }
+    gff               = extracted_gff.mix(NCBIDATASETSCLI_DATASETS.out.gff.map { meta, file -> [meta + record(reference: 'gff', file: 'gff'), file] })
     gtf               = REFERENCES.out.gtf
     hisat2_index      = REFERENCES.out.hisat2_index
     intervals_bed     = REFERENCES.out.intervals_bed
