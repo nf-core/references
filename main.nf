@@ -144,12 +144,14 @@ workflow NFCORE_REFERENCES {
     bwamem2_index     = REFERENCES.out.bwamem2_index
     chr_dir           = ARCHIVE_EXTRACT.out.extracted.filter { meta, _ref -> meta.reference == 'chr_dir' }
     dragmap_hashmap   = REFERENCES.out.dragmap_hashmap
-    fasta_dict        = REFERENCES.out.fasta_dict.mix(DATASHEET_TO_CHANNEL.out.fasta_dict)
+    fasta             = ARCHIVE_EXTRACT.out.extracted.filter { meta, _ref -> meta.reference == 'fasta' }
+    fasta_dict        = REFERENCES.out.fasta_dict
     fasta_fai         = REFERENCES.out.fasta_fai
-    fasta_sizes       = REFERENCES.out.fasta_sizes.mix(DATASHEET_TO_CHANNEL.out.fasta_sizes)
+    fasta_sizes       = REFERENCES.out.fasta_sizes
+    gff               = ARCHIVE_EXTRACT.out.extracted.filter { meta, _ref -> meta.reference == 'gff' }
     gtf               = REFERENCES.out.gtf
     hisat2_index      = REFERENCES.out.hisat2_index
-    intervals_bed     = REFERENCES.out.intervals_bed.mix(DATASHEET_TO_CHANNEL.out.intervals_bed)
+    intervals_bed     = REFERENCES.out.intervals_bed
     kallisto_index    = REFERENCES.out.kallisto_index
     msisensorpro_list = REFERENCES.out.msisensorpro_list
     rsem_index        = REFERENCES.out.rsem_index
@@ -158,7 +160,6 @@ workflow NFCORE_REFERENCES {
     splice_sites      = REFERENCES.out.splice_sites
     star_index        = REFERENCES.out.star_index
     transcript_fasta  = REFERENCES.out.transcript_fasta
-    vcf               = DATASHEET_TO_CHANNEL.out.vcf
     vcf_tbi           = REFERENCES.out.vcf_tbi
 }
 
@@ -354,9 +355,11 @@ workflow {
     bwamem2_index     = NFCORE_REFERENCES.out.bwamem2_index
     chr_dir           = NFCORE_REFERENCES.out.chr_dir
     dragmap_hashmap   = NFCORE_REFERENCES.out.dragmap_hashmap
+    fasta             = NFCORE_REFERENCES.out.fasta
     fasta_dict        = NFCORE_REFERENCES.out.fasta_dict
     fasta_fai         = NFCORE_REFERENCES.out.fasta_fai
     fasta_sizes       = NFCORE_REFERENCES.out.fasta_sizes
+    gff               = NFCORE_REFERENCES.out.gff
     gtf               = NFCORE_REFERENCES.out.gtf
     hisat2_index      = NFCORE_REFERENCES.out.hisat2_index
     intervals_bed     = NFCORE_REFERENCES.out.intervals_bed
@@ -425,6 +428,11 @@ output {
             file >> "${meta.species}/${meta.source}/${meta.genome}/Sequence/dragmap/1.2.1"
         }
     }
+    fasta {
+        path { meta, file ->
+            file >> "${meta.species}/${meta.source}/${meta.genome}/Sequence/WholeGenomeFasta/${file.fileName}"
+        }
+    }
     fasta_dict {
         path { meta, file ->
             file >> "${meta.species}/${meta.source}/${meta.genome}/Sequence/WholeGenomeFasta/${file.fileName}"
@@ -441,6 +449,11 @@ output {
         }
     }
     gtf {
+        path { meta, file ->
+            file >> "${meta.species}/${meta.source}/${meta.genome}/Annotation/Genes/${file.fileName}"
+        }
+    }
+    gff {
         path { meta, file ->
             file >> "${meta.species}/${meta.source}/${meta.genome}/Annotation/Genes/${file.fileName}"
         }
