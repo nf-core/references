@@ -316,9 +316,8 @@ workflow {
         items: [methodsDescriptionText(multiqc_custom_methods_description)],
     )
 
-    ch_collected_files = WRITE_FILE(
-        channel.of(workflow_summary, methods_description).mix(collated_versions)
-    )
+    ch_collected_files = WRITE_FILE(channel.of(workflow_summary, methods_description).mix(collated_versions))
+
     multiqc_files = multiqc_files.mix(ch_collected_files)
 
     MULTIQC(
@@ -349,7 +348,7 @@ workflow {
 
     publish:
     multiqc           = MULTIQC.out.data.mix(MULTIQC.out.plots, MULTIQC.out.report)
-    versions          = collated_versions
+    versions          = ch_collected_files.filter { file -> file.name.contains('versions') }
     ascat_alleles     = NFCORE_REFERENCES.out.ascat_alleles
     ascat_loci        = NFCORE_REFERENCES.out.ascat_loci
     ascat_loci_gc     = NFCORE_REFERENCES.out.ascat_loci_gc

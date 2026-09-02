@@ -1,6 +1,8 @@
 nextflow.enable.types = true
 
 process WRITE_FILE {
+    tag name
+
     input:
     record(
         name: String,
