@@ -1,7 +1,7 @@
 {
     "-profile test --tools createsequencedictionary": {
         "content": [
-            2,
+            5,
             {
                 "GATK4_CREATESEQUENCEDICTIONARY": {
                     "gatk4": "4.7.0.0"

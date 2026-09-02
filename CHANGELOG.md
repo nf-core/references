@@ -53,6 +53,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - [#146](https://github.com/nf-core/references/pull/146) - Convert meta maps to Nextflow record types
 - [#147](https://github.com/nf-core/references/pull/147) - Template update for nf-core/tools v4.1.0
 - [#150](https://github.com/nf-core/references/pull/150) - Replace `branch` with `filter` + `map` in datasheet_to_channel
+- [#151](https://github.com/nf-core/references/pull/151) - Enable static typing and replace `collectFile` with `WRITE_FILE`
 
 ### Removed
 

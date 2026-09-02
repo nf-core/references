@@ -17,6 +17,7 @@
 
 include { ARCHIVE_EXTRACT          } from './subworkflows/nf-core/archive_extract'
 include { NCBIDATASETSCLI_DATASETS } from './modules/local/ncbidatasetscli/datasets'
+include { WRITE_FILE               } from './modules/local/writefile'
 include { DATASHEET_TO_CHANNEL     } from './subworkflows/local/datasheet_to_channel'
 include { defineToolsList          } from './subworkflows/local/utils_nfcore_references_pipeline'
 include { PIPELINE_COMPLETION      } from './subworkflows/local/utils_nfcore_references_pipeline'
@@ -293,29 +294,31 @@ workflow {
     NFCORE_REFERENCES(PIPELINE_INITIALISATION.out.references, tools)
 
     // VERSIONS
-    def collated_versions = softwareVersionsToYAML(
-        softwareVersions: channel.topic("versions"),
-        nextflowVersion: workflow.nextflow.version,
-    ).collectFile(
-        storeDir: "${params.outdir}/pipeline_info",
-        name: 'nf_core_' + 'references_software_' + 'mqc_' + 'versions.yml',
-        sort: true,
-        newLine: true,
-    )
+    collated_versions = softwareVersionsToYAML(channel.topic('versions'))
+        .collect()
+        .map { items ->
+            record(name: 'nf_core_references_software_mqc_versions.yml', items: items.toSorted(), newLine: true)
+        }
 
     // MULTIQC
-    def multiqc_files = channel.empty()
-    def multiqc_report = channel.empty()
+    multiqc_files = channel.empty()
+    multiqc_report = channel.empty()
 
-    multiqc_files = multiqc_files.mix(collated_versions)
+    summary_params = paramsSummaryMap(workflow, parameters_schema: "nextflow_schema.json")
+    workflow_summary = record(
+        name: 'workflow_summary_mqc.yaml',
+        items: [paramsSummaryMultiqc(summary_params)],
+    )
 
-    def summary_params = paramsSummaryMap(workflow, parameters_schema: "nextflow_schema.json")
-    def workflow_summary = channel.value(paramsSummaryMultiqc(summary_params))
-    def multiqc_custom_methods_description = params.multiqc_methods_description ? file(params.multiqc_methods_description, checkIfExists: true) : file("${projectDir}/assets/methods_description_template.yml", checkIfExists: true)
-    def methods_description = channel.value(methodsDescriptionText(multiqc_custom_methods_description))
+    multiqc_custom_methods_description = params.multiqc_methods_description ? file(params.multiqc_methods_description, checkIfExists: true) : file("${projectDir}/assets/methods_description_template.yml", checkIfExists: true)
+    methods_description = record(
+        name: 'methods_description_mqc.yaml',
+        items: [methodsDescriptionText(multiqc_custom_methods_description)],
+    )
 
-    multiqc_files = multiqc_files.mix(workflow_summary.collectFile(name: 'workflow_summary_mqc.yaml'))
-    multiqc_files = multiqc_files.mix(methods_description.collectFile(name: 'methods_description_mqc.yaml', sort: true))
+    ch_collected_files = WRITE_FILE(channel.of(workflow_summary, methods_description).mix(collated_versions))
+
+    multiqc_files = multiqc_files.mix(ch_collected_files)
 
     MULTIQC(
         multiqc_files.flatten().collect().map { files ->
@@ -345,6 +348,7 @@ workflow {
 
     publish:
     multiqc           = MULTIQC.out.data.mix(MULTIQC.out.plots, MULTIQC.out.report)
+    versions          = ch_collected_files.filter { file -> file.name.contains('versions') }
     ascat_alleles     = NFCORE_REFERENCES.out.ascat_alleles
     ascat_loci        = NFCORE_REFERENCES.out.ascat_loci
     ascat_loci_gc     = NFCORE_REFERENCES.out.ascat_loci_gc
@@ -377,6 +381,9 @@ workflow {
 output {
     multiqc {
         path "multiqc"
+    }
+    versions {
+        path "pipeline_info"
     }
     ascat_alleles {
         path { meta, file ->
