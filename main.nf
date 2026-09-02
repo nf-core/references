@@ -297,11 +297,12 @@ workflow {
     def collated_versions = softwareVersionsToYAML(
         softwareVersions: channel.topic("versions"),
         nextflowVersion: workflow.nextflow.version,
-    ).collect().map { versions ->
-        def file = file("${params.outdir}/pipeline_info/nf_core_references_software_mqc_versions.yml")
-        file.text = versions.join('\n')
-        file
-    }
+    ).collectFile(
+        storeDir: "${params.outdir}/pipeline_info",
+        name: 'nf_core_' + 'references_software_' + 'mqc_' + 'versions.yml',
+        sort: true,
+        newLine: true,
+    )
 
     // MULTIQC
     def multiqc_files = channel.empty()
@@ -314,16 +315,8 @@ workflow {
     def multiqc_custom_methods_description = params.multiqc_methods_description ? file(params.multiqc_methods_description, checkIfExists: true) : file("${projectDir}/assets/methods_description_template.yml", checkIfExists: true)
     def methods_description = channel.value(methodsDescriptionText(multiqc_custom_methods_description))
 
-    multiqc_files = multiqc_files.mix(workflow_summary.collect().map { summary ->
-        def file = file("${params.outdir}/pipeline_info/workflow_summary_mqc.yaml")
-        file.text = summary.join('\n')
-        file
-    })
-    multiqc_files = multiqc_files.mix(methods_description.collect().map { methods ->
-        def file = file("${params.outdir}/pipeline_info/methods_description_mqc.yaml")
-        file.text = methods.join('\n')
-        file
-    })
+    multiqc_files = multiqc_files.mix(workflow_summary.collectFile(name: 'workflow_summary_mqc.yaml'))
+    multiqc_files = multiqc_files.mix(methods_description.collectFile(name: 'methods_description_mqc.yaml', sort: true))
 
     MULTIQC(
         multiqc_files.flatten().collect().map { files ->
