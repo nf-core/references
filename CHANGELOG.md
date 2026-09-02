@@ -63,6 +63,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - [#81](https://github.com/nf-core/references/pull/81) - Fix fasta_fai unnecessary regeneration
 - [#90](https://github.com/nf-core/references/pull/90) - Fixed link to GHA CI broken by [87](https://github.com/nf-core/references/pull/87)
 - [#141](https://github.com/nf-core/references/pull/141) - Fix snapaligner index generation when no alt liftover file is provided
+- [#149](https://github.com/nf-core/references/pull/149) - Fix params access
 
 ### Dependencies
 
