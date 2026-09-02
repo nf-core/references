@@ -182,4 +182,27 @@ If you update images or graphics, follow the nf-core [style guidelines](https://
 
 ## Pipeline specific contribution guidelines
 
-<!-- TODO nf-core: Add any pipeline specific contribution guidelines here, such as coding styles, procedures, checklists etc. -->
+### Record types
+
+This pipeline uses Nextflow record types instead of meta maps.
+
+- Use `record()` to create records with named fields
+- Access record fields by name (e.g. `meta.id`, `meta.fasta`)
+- Use `reduceMeta()` to create records from input datasheet rows
+- Do not use tuple syntax `[meta, file]` for new code
+
+For migration guidance, see the [Nextflow agent skill on migrating Nextflow code](https://github.com/nextflow-io/agent-skills/blob/master/skills/migrate-nextflow-code/SKILL.md).
+
+### Workflow outputs
+
+This pipeline uses the Nextflow `output {}` block in `main.nf` to publish files.
+Each output type has its own path declaration using the `file >>` syntax.
+
+Output paths follow this structure:
+
+```text
+${meta.species}/${meta.source}/${meta.genome}/Sequence/<tool>/<version>/
+${meta.species}/${meta.source}/${meta.genome}/Annotation/<type>/
+```
+
+When adding a new output, add a corresponding entry to the `output {}` block in `main.nf`.
