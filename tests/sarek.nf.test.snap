@@ -1,7 +1,7 @@
 {
     "-profile test --tools_bundle sarek --skip_tools snapaligner --input references-datasheets/latest/genomes/Homo_sapiens/GATK/GRCh38_chr22.yml": {
         "content": [
-            2,
+            5,
             {
                 "MSISENSORPRO_SCAN": {
                     "msisensor-pro": "1.3.0"
@@ -40,7 +40,7 @@
     },
     "-profile test --tools_bundle sarek --skip_tools snapaligner --input references-datasheets/latest/genomes_source/Homo_sapiens/GATK/GRCh38_chr22.yml": {
         "content": [
-            11,
+            14,
             {
                 "BUILD_INTERVALS": {
                     "gawk": "5.3.1"

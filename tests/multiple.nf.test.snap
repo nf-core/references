@@ -1,7 +1,7 @@
 {
     "-profile test --tools bwamem1,createsequencedictionary,faidx,intervals --input references-datasheets/latest/genomes_source/Homo_sapiens/nf-core/GRCh38_chr21_chr22.yml": {
         "content": [
-            9,
+            12,
             {
                 "BUILD_INTERVALS": {
                     "gawk": "5.3.1"
@@ -90,7 +90,7 @@
     },
     "-profile test --tools tabix --input references-datasheets/latest/genomes_source/Homo_sapiens/GATK/GRCh37_GRCh38_multiple_dbsnps_globs.yml": {
         "content": [
-            5,
+            8,
             {
                 "HTSLIB_BGZIPTABIX": {
                     "htslib": "1.24",

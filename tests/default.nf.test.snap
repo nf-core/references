@@ -1,7 +1,7 @@
 {
     "-profile test": {
         "content": [
-            6,
+            9,
             {
                 "BOWTIE1_BUILD": {
                     "bowtie": "1.3.1"

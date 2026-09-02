@@ -1,7 +1,7 @@
 {
     "-profile test --tools rsem,rsem_make_transcript_fasta --input references-datasheets/latest/genomes/Homo_sapiens/nf-core/GRCh38_chr21_MT.yml": {
         "content": [
-            2,
+            5,
             {
                 "RSEM_PREPAREREFERENCE_GENOME": {
                     "rsem": "1.3.1",
@@ -87,7 +87,7 @@
     },
     "-profile test --tools rsem,rsem_make_transcript_fasta": {
         "content": [
-            4,
+            7,
             {
                 "GFFREAD": {
                     "gffread": "0.12.7"

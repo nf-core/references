@@ -1,7 +1,7 @@
 {
     "-profile test --tools snapaligner": {
         "content": [
-            2,
+            5,
             {
                 "SNAPALIGNER_INDEX": {
                     "snap-aligner": "2.0.5"

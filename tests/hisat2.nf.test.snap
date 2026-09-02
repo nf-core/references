@@ -1,7 +1,7 @@
 {
     "-profile test --tools hisat2,hisat2_extractsplicesites --input references-datasheets/latest/genomes/Homo_sapiens/nf-core/GRCh38_chr21_MT.yml": {
         "content": [
-            2,
+            5,
             {
                 "HISAT2_BUILD": {
                     "hisat2": "2.2.3"
@@ -56,7 +56,7 @@
     },
     "-profile test --tools hisat2,hisat2_extractsplicesites": {
         "content": [
-            4,
+            7,
             {
                 "GFFREAD": {
                     "gffread": "0.12.7"
