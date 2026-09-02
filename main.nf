@@ -1,4 +1,5 @@
 #!/usr/bin/env nextflow
+nextflow.enable.types = true
 /*
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     nf-core/references
@@ -17,6 +18,7 @@
 
 include { ARCHIVE_EXTRACT          } from './subworkflows/nf-core/archive_extract'
 include { NCBIDATASETSCLI_DATASETS } from './modules/local/ncbidatasetscli/datasets'
+include { WRITE_FILE               } from './modules/local/writefile'
 include { DATASHEET_TO_CHANNEL     } from './subworkflows/local/datasheet_to_channel'
 include { defineToolsList          } from './subworkflows/local/utils_nfcore_references_pipeline'
 include { PIPELINE_COMPLETION      } from './subworkflows/local/utils_nfcore_references_pipeline'
@@ -38,8 +40,8 @@ include { paramsSummaryMap         } from 'plugin/nf-schema'
 // WORKFLOW: Build references depending on type of reference and the tools specified
 workflow NFCORE_REFERENCES {
     take:
-    references
-    tools // list of tools to use to build references
+    references: Channel
+    tools: List
 
     main:
 
@@ -293,29 +295,37 @@ workflow {
     NFCORE_REFERENCES(PIPELINE_INITIALISATION.out.references, tools)
 
     // VERSIONS
-    def collated_versions = softwareVersionsToYAML(
-        softwareVersions: channel.topic("versions"),
-        nextflowVersion: workflow.nextflow.version,
-    ).collectFile(
-        storeDir: "${params.outdir}/pipeline_info",
-        name: 'nf_core_' + 'references_software_' + 'mqc_' + 'versions.yml',
-        sort: true,
-        newLine: true,
-    )
+    val_versions = channel.of(
+            softwareVersionsToYAML(
+                softwareVersions: channel.topic("versions"),
+                nextflowVersion: workflow.nextflow.version,
+            )
+        )
+        .collect()
+        .map { items ->
+            record(name: 'nf_core_references_software_mqc_versions.yml', items: items.toSorted(), newLine: true)
+        }
 
     // MULTIQC
-    def multiqc_files = channel.empty()
-    def multiqc_report = channel.empty()
+    multiqc_files = channel.empty()
+    multiqc_report = channel.empty()
 
-    multiqc_files = multiqc_files.mix(collated_versions)
+    summary_params = paramsSummaryMap(workflow, parameters_schema: "nextflow_schema.json")
+    workflow_summary = record(
+        name: 'workflow_summary_mqc.yaml',
+        items: [paramsSummaryMultiqc(summary_params)],
+    )
 
-    def summary_params = paramsSummaryMap(workflow, parameters_schema: "nextflow_schema.json")
-    def workflow_summary = channel.value(paramsSummaryMultiqc(summary_params))
-    def multiqc_custom_methods_description = params.multiqc_methods_description ? file(params.multiqc_methods_description, checkIfExists: true) : file("${projectDir}/assets/methods_description_template.yml", checkIfExists: true)
-    def methods_description = channel.value(methodsDescriptionText(multiqc_custom_methods_description))
+    multiqc_custom_methods_description = params.multiqc_methods_description ? file(params.multiqc_methods_description, checkIfExists: true) : file("${projectDir}/assets/methods_description_template.yml", checkIfExists: true)
+    methods_description = record(
+        name: 'methods_description_mqc.yaml',
+        items: [methodsDescriptionText(multiqc_custom_methods_description)],
+    )
 
-    multiqc_files = multiqc_files.mix(workflow_summary.collectFile(name: 'workflow_summary_mqc.yaml'))
-    multiqc_files = multiqc_files.mix(methods_description.collectFile(name: 'methods_description_mqc.yaml', sort: true))
+    ch_collected_files = WRITE_FILE(
+        channel.of(workflow_summary, methods_description).mix(val_versions)
+    )
+    multiqc_files = multiqc_files.mix(ch_collected_files)
 
     MULTIQC(
         multiqc_files.flatten().collect().map { files ->
@@ -524,7 +534,7 @@ output {
 //
 // Get workflow summary for MultiQC
 //
-def paramsSummaryMultiqc(summary_params) {
+def paramsSummaryMultiqc(summary_params) -> String {
     def summary_section = ''
     summary_params
         .keySet()
@@ -558,7 +568,7 @@ def paramsSummaryMultiqc(summary_params) {
 // Helper function to check if a reference needs to be extracted
 // Add the reference type to the meta
 // Depending on the extension, return the appropriate channel
-def need_extract(channel, type) {
+def need_extract(channel, type) -> Map<String, ?> {
     def with_reference = channel.map { meta, reference_ -> [meta + record(reference: type), reference_] }
     return [
         to_extract: with_reference.filter { _meta, reference_ -> reference_.toString().endsWith('.gz') || reference_.toString().endsWith('.zip') },
@@ -569,7 +579,7 @@ def need_extract(channel, type) {
 // Helper function to check if a reference needs to be downloaded from ncbi
 // Add the reference type to the meta
 // Depending on the extension, return the appropriate channel
-def need_ncbi_download(channel, type) {
+def need_ncbi_download(channel, type) -> Map<String, ?> {
     def with_reference = channel.map { meta, reference_ -> [meta + record(reference: type), reference_] }
     return [
         to_download: with_reference.filter { _meta, reference_ -> reference_.toString().contains('ncbi.nlm.nih.gov') },
