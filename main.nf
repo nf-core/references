@@ -39,7 +39,7 @@ include { paramsSummaryMap         } from 'plugin/nf-schema'
 workflow NFCORE_REFERENCES {
     take:
     references
-    tools
+    tools // list of tools to use to build references
 
     main:
 
