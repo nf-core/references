@@ -144,7 +144,7 @@
                 "type": "string",
                 "pattern": "^\\S+\\.gtf(\\.gz)?$",
                 "exists": true,
-                "errorMessage": "GTF file, required when no GFF3 is provided and wanting to build a reference needing such genes annotation. This file needs to exist, needs to end in '.gff', cannot contain spaces and can be gzipped."
+                "errorMessage": "GTF file, required when no GFF3 is provided and wanting to build a reference needing such genes annotation. This file needs to exist, needs to end in '.gtf', cannot contain spaces and can be gzipped."
             },
             "hisat2_index": {
                 "meta": ["hisat2_index"],
@@ -231,7 +231,7 @@
             "transcript_fasta": {
                 "meta": ["transcript_fasta"],
                 "type": "string",
-                "exist": true,
+                "exists": true,
                 "pattern": "^\\S+\\.f(ast|n)?a(\\.gz)?$",
                 "errorMessage": "Transcript fasta [can be generated with RSEM] must be an existing file ending in '.fa', '.fasta' or '.fna' that does contain spaces. This file can be gzipped"
             },

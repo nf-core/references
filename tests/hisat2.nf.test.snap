@@ -4,7 +4,7 @@
             2,
             {
                 "HISAT2_BUILD": {
-                    "hisat2": "2.2.2"
+                    "hisat2": "2.2.3"
                 }
             },
             [
@@ -14,16 +14,15 @@
                 "Homo_sapiens/nf-core/GRCh38_chr21/Sequence",
                 "Homo_sapiens/nf-core/GRCh38_chr21/Sequence/Hisat2Index",
                 "Homo_sapiens/nf-core/GRCh38_chr21/Sequence/Hisat2Index/CUSTOM",
-                "Homo_sapiens/nf-core/GRCh38_chr21/Sequence/Hisat2Index/CUSTOM/2.2.1",
-                "Homo_sapiens/nf-core/GRCh38_chr21/Sequence/Hisat2Index/CUSTOM/2.2.1/GRCh38_chr21.1.ht2",
-                "Homo_sapiens/nf-core/GRCh38_chr21/Sequence/Hisat2Index/CUSTOM/2.2.1/GRCh38_chr21.2.ht2",
-                "Homo_sapiens/nf-core/GRCh38_chr21/Sequence/Hisat2Index/CUSTOM/2.2.1/GRCh38_chr21.3.ht2",
-                "Homo_sapiens/nf-core/GRCh38_chr21/Sequence/Hisat2Index/CUSTOM/2.2.1/GRCh38_chr21.4.ht2",
-                "Homo_sapiens/nf-core/GRCh38_chr21/Sequence/Hisat2Index/CUSTOM/2.2.1/GRCh38_chr21.5.ht2",
-                "Homo_sapiens/nf-core/GRCh38_chr21/Sequence/Hisat2Index/CUSTOM/2.2.1/GRCh38_chr21.6.ht2",
-                "Homo_sapiens/nf-core/GRCh38_chr21/Sequence/Hisat2Index/CUSTOM/2.2.1/GRCh38_chr21.7.ht2",
-                "Homo_sapiens/nf-core/GRCh38_chr21/Sequence/Hisat2Index/CUSTOM/2.2.1/GRCh38_chr21.8.ht2",
-                "index.json",
+                "Homo_sapiens/nf-core/GRCh38_chr21/Sequence/Hisat2Index/CUSTOM/2.2.3",
+                "Homo_sapiens/nf-core/GRCh38_chr21/Sequence/Hisat2Index/CUSTOM/2.2.3/GRCh38_chr21.1.ht2",
+                "Homo_sapiens/nf-core/GRCh38_chr21/Sequence/Hisat2Index/CUSTOM/2.2.3/GRCh38_chr21.2.ht2",
+                "Homo_sapiens/nf-core/GRCh38_chr21/Sequence/Hisat2Index/CUSTOM/2.2.3/GRCh38_chr21.3.ht2",
+                "Homo_sapiens/nf-core/GRCh38_chr21/Sequence/Hisat2Index/CUSTOM/2.2.3/GRCh38_chr21.4.ht2",
+                "Homo_sapiens/nf-core/GRCh38_chr21/Sequence/Hisat2Index/CUSTOM/2.2.3/GRCh38_chr21.5.ht2",
+                "Homo_sapiens/nf-core/GRCh38_chr21/Sequence/Hisat2Index/CUSTOM/2.2.3/GRCh38_chr21.6.ht2",
+                "Homo_sapiens/nf-core/GRCh38_chr21/Sequence/Hisat2Index/CUSTOM/2.2.3/GRCh38_chr21.7.ht2",
+                "Homo_sapiens/nf-core/GRCh38_chr21/Sequence/Hisat2Index/CUSTOM/2.2.3/GRCh38_chr21.8.ht2",
                 "multiqc",
                 "multiqc/multiqc_data",
                 "multiqc/multiqc_data/llms-full.txt",
@@ -38,7 +37,7 @@
                 "pipeline_info/nf_core_references_software_mqc_versions.yml"
             ],
             [
-                "GRCh38_chr21.1.ht2:md5,4a19b03fdaa4e9c222cbd110517b2772",
+                "GRCh38_chr21.1.ht2:md5,f3f658c53041be1ed05f6317349ca81c",
                 "GRCh38_chr21.2.ht2:md5,46be3356d4c236ebd5d1e52e9eaf4e12",
                 "GRCh38_chr21.3.ht2:md5,dbf5af96efd98d6b03f1e5d2baed848a",
                 "GRCh38_chr21.4.ht2:md5,bd952f748321c4c230671e8fce7b1650",
@@ -49,10 +48,10 @@
                 "multiqc_citations.txt:md5,4c806e63a283ec1b7e78cdae3a923d4f"
             ]
         ],
-        "timestamp": "2026-06-09T11:55:28.651184433",
+        "timestamp": "2026-08-31T18:29:00.3068845",
         "meta": {
             "nf-test": "0.9.5",
-            "nextflow": "26.04.3"
+            "nextflow": "26.08.0"
         }
     },
     "-profile test --tools hisat2,hisat2_extractsplicesites": {
@@ -63,10 +62,11 @@
                     "gffread": "0.12.7"
                 },
                 "HISAT2_BUILD": {
-                    "hisat2": "2.2.2"
+                    "hisat2": "2.2.3"
                 },
                 "HISAT2_EXTRACTSPLICESITES": {
-                    "hisat2": "2.2.1"
+                    "hisat2": "2.2.3",
+                    "samtools": "1.24"
                 }
             },
             [
@@ -78,18 +78,17 @@
                 "Homo_sapiens/nf-core/GRCh38_chr21/Annotation/Genes/GRCh38_chr21.gtf",
                 "Homo_sapiens/nf-core/GRCh38_chr21/Sequence",
                 "Homo_sapiens/nf-core/GRCh38_chr21/Sequence/Hisat2Index",
-                "Homo_sapiens/nf-core/GRCh38_chr21/Sequence/Hisat2Index/2.2.1",
-                "Homo_sapiens/nf-core/GRCh38_chr21/Sequence/Hisat2Index/2.2.1/GRCh38_chr21.1.ht2",
-                "Homo_sapiens/nf-core/GRCh38_chr21/Sequence/Hisat2Index/2.2.1/GRCh38_chr21.2.ht2",
-                "Homo_sapiens/nf-core/GRCh38_chr21/Sequence/Hisat2Index/2.2.1/GRCh38_chr21.3.ht2",
-                "Homo_sapiens/nf-core/GRCh38_chr21/Sequence/Hisat2Index/2.2.1/GRCh38_chr21.4.ht2",
-                "Homo_sapiens/nf-core/GRCh38_chr21/Sequence/Hisat2Index/2.2.1/GRCh38_chr21.5.ht2",
-                "Homo_sapiens/nf-core/GRCh38_chr21/Sequence/Hisat2Index/2.2.1/GRCh38_chr21.6.ht2",
-                "Homo_sapiens/nf-core/GRCh38_chr21/Sequence/Hisat2Index/2.2.1/GRCh38_chr21.7.ht2",
-                "Homo_sapiens/nf-core/GRCh38_chr21/Sequence/Hisat2Index/2.2.1/GRCh38_chr21.8.ht2",
+                "Homo_sapiens/nf-core/GRCh38_chr21/Sequence/Hisat2Index/2.2.3",
+                "Homo_sapiens/nf-core/GRCh38_chr21/Sequence/Hisat2Index/2.2.3/GRCh38_chr21.1.ht2",
+                "Homo_sapiens/nf-core/GRCh38_chr21/Sequence/Hisat2Index/2.2.3/GRCh38_chr21.2.ht2",
+                "Homo_sapiens/nf-core/GRCh38_chr21/Sequence/Hisat2Index/2.2.3/GRCh38_chr21.3.ht2",
+                "Homo_sapiens/nf-core/GRCh38_chr21/Sequence/Hisat2Index/2.2.3/GRCh38_chr21.4.ht2",
+                "Homo_sapiens/nf-core/GRCh38_chr21/Sequence/Hisat2Index/2.2.3/GRCh38_chr21.5.ht2",
+                "Homo_sapiens/nf-core/GRCh38_chr21/Sequence/Hisat2Index/2.2.3/GRCh38_chr21.6.ht2",
+                "Homo_sapiens/nf-core/GRCh38_chr21/Sequence/Hisat2Index/2.2.3/GRCh38_chr21.7.ht2",
+                "Homo_sapiens/nf-core/GRCh38_chr21/Sequence/Hisat2Index/2.2.3/GRCh38_chr21.8.ht2",
                 "Homo_sapiens/nf-core/GRCh38_chr21/Sequence/SpliceSites",
                 "Homo_sapiens/nf-core/GRCh38_chr21/Sequence/SpliceSites/GRCh38_chr21.splice_sites.txt",
-                "index.json",
                 "multiqc",
                 "multiqc/multiqc_data",
                 "multiqc/multiqc_data/llms-full.txt",
@@ -105,7 +104,7 @@
             ],
             [
                 "GRCh38_chr21.gtf:md5,c552c0aee5f1becb1d3991d21e63a5c1",
-                "GRCh38_chr21.1.ht2:md5,4a19b03fdaa4e9c222cbd110517b2772",
+                "GRCh38_chr21.1.ht2:md5,f3f658c53041be1ed05f6317349ca81c",
                 "GRCh38_chr21.2.ht2:md5,46be3356d4c236ebd5d1e52e9eaf4e12",
                 "GRCh38_chr21.3.ht2:md5,dbf5af96efd98d6b03f1e5d2baed848a",
                 "GRCh38_chr21.4.ht2:md5,bd952f748321c4c230671e8fce7b1650",
@@ -117,10 +116,10 @@
                 "multiqc_citations.txt:md5,4c806e63a283ec1b7e78cdae3a923d4f"
             ]
         ],
-        "timestamp": "2026-06-09T11:57:16.146784434",
+        "timestamp": "2026-09-01T16:38:31.084446326",
         "meta": {
             "nf-test": "0.9.5",
-            "nextflow": "26.04.3"
+            "nextflow": "26.08.0"
         }
     }
 }

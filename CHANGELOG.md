@@ -50,7 +50,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - [#139](https://github.com/nf-core/references/pull/139) - Replace `ext.when` in config with `filter` operator in subworkflows and centralise module configs
 - [#143](https://github.com/nf-core/references/pull/143) - Template update for nf-core/tools v4.0.3
 - [#143](https://github.com/nf-core/references/pull/143) - Update modules
+- [#146](https://github.com/nf-core/references/pull/146) - Convert meta maps to Nextflow record types
 - [#147](https://github.com/nf-core/references/pull/147) - Template update for nf-core/tools v4.1.0
+
+### Removed
+
+- [#146](https://github.com/nf-core/references/pull/146) - Removed `index.json` output in favor of Nextflow lineage tracking
 
 ### Fixed
 
@@ -78,10 +83,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 | --htslib          |             | 1.22.1      |
 | --samtools        |             | 1.22.1      |
 | dragmap           | 1.3.0       | 1.2.1       |
-| gatk4             | 4.6.1.0     | 4.6.2.0     |
+| gatk4             | 4.6.1.0     | 4.7.0.0     |
 | gawk              | 5.3.0       | 5.3.1       |
-| hisat2            | 2.2.1       | 2.2.2       |
-| --samtools        |             | 1.20        |
+| hisat2            | 2.2.1       | 2.2.3       |
+| --samtools        |             | 1.24        |
 | htslib/bgziptabix | 1.23.1      | 1.24        |
 | multiqc           | 1.25.1      | 1.35        |
 | msisensorpro/scan | 1.2.0       | 1.3.0       |

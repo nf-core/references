@@ -67,22 +67,22 @@ workflow DATASHEET_TO_CHANNEL {
     fasta_branch = datasheet.branch { meta, _readme ->
         file: meta.fasta
         // If any of the reference exists, then adding run_tools to false and skip the reference creation from the fasta file
-        def meta_extra = [run_bowtie1: meta.bowtie1_index ? false : true]
-        meta_extra += [run_bowtie2: meta.bowtie2_index ? false : true]
-        meta_extra += [run_bwamem1: meta.bwamem1_index ? false : true]
-        meta_extra += [run_bwamem2: meta.bwamem2_index ? false : true]
-        meta_extra += [run_createsequencedictionary: meta.fasta_dict ? false : true]
-        meta_extra += [run_dragmap: meta.dragmap_hashtable ? false : true]
-        meta_extra += [run_faidx: meta.fasta_fai && (meta.fasta_sizes || !('sizes' in tools)) ? false : true]
-        meta_extra += [run_hisat2: meta.hisat2_index ? false : true]
-        meta_extra += [run_intervals: meta.intervals_bed ? false : true]
-        meta_extra += [run_kallisto: meta.kallisto_index ? false : true]
-        meta_extra += [run_msisensorpro: meta.msisensorpro_list ? false : true]
-        meta_extra += [run_rsem: meta.rsem_index ? false : true]
-        meta_extra += [run_rsem_make_transcript_fasta: meta.transcript_fasta ? false : true]
-        meta_extra += [run_salmon: meta.salmon_index ? false : true]
-        meta_extra += [run_star: meta.star_index ? false : true]
-        meta_extra += [run_snapaligner: meta.snapaligner_index ? false : true]
+        def meta_extra = record(run_bowtie1: meta.bowtie1_index ? false : true)
+        meta_extra += record(run_bowtie2: meta.bowtie2_index ? false : true)
+        meta_extra += record(run_bwamem1: meta.bwamem1_index ? false : true)
+        meta_extra += record(run_bwamem2: meta.bwamem2_index ? false : true)
+        meta_extra += record(run_createsequencedictionary: meta.fasta_dict ? false : true)
+        meta_extra += record(run_dragmap: meta.dragmap_hashtable ? false : true)
+        meta_extra += record(run_faidx: meta.fasta_fai && (meta.fasta_sizes || !('sizes' in tools)) ? false : true)
+        meta_extra += record(run_hisat2: meta.hisat2_index ? false : true)
+        meta_extra += record(run_intervals: meta.intervals_bed ? false : true)
+        meta_extra += record(run_kallisto: meta.kallisto_index ? false : true)
+        meta_extra += record(run_msisensorpro: meta.msisensorpro_list ? false : true)
+        meta_extra += record(run_rsem: meta.rsem_index ? false : true)
+        meta_extra += record(run_rsem_make_transcript_fasta: meta.transcript_fasta ? false : true)
+        meta_extra += record(run_salmon: meta.salmon_index ? false : true)
+        meta_extra += record(run_star: meta.star_index ? false : true)
+        meta_extra += record(run_snapaligner: meta.snapaligner_index ? false : true)
         return [reduceMeta(meta) + meta_extra, meta.fasta.contains('ncbi.nlm.nih.gov') ? meta.fasta : file(meta.fasta, checkIfExists: true)]
         other: true
         // If the reference doesn't exist, then we return nothing
@@ -103,7 +103,7 @@ workflow DATASHEET_TO_CHANNEL {
     fasta_fai_branch = datasheet.branch { meta, _readme ->
         file: meta.fasta_fai
         // If we have intervals_bed, then we don't need to run faidx
-        def meta_extra = [run_intervals: meta.intervals_bed ? false : true]
+        def meta_extra = record(run_intervals: meta.intervals_bed ? false : true)
         return [reduceMeta(meta) + meta_extra, file(meta.fasta_fai, checkIfExists: true)]
         other: true
         // If the reference doesn't exist, then we return nothing
@@ -124,9 +124,9 @@ workflow DATASHEET_TO_CHANNEL {
         file: meta.gff
         // If any of the reference exists, then adding run_tools to false and skip the reference creation from the annotation derived file
         // (gff, gtf or transcript_fasta)
-        def meta_extra = [run_gffread: meta.fasta && !meta.gtf ?: false]
-        meta_extra += [run_hisat2: meta.splice_sites ? false : true]
-        return [reduceMeta(meta) + meta_extra, meta.gtf.contains('ncbi.nlm.nih.gov') ? meta.gff : file(meta.gff, checkIfExists: true)]
+        def meta_extra = record(run_gffread: meta.fasta && !meta.gtf ?: false)
+        meta_extra += record(run_hisat2: meta.splice_sites ? false : true)
+        return [reduceMeta(meta) + meta_extra, meta.gff.contains('ncbi.nlm.nih.gov') ? meta.gff : file(meta.gff, checkIfExists: true)]
         other: true
         // If the reference doesn't exist, then we return nothing
         return null
@@ -137,7 +137,7 @@ workflow DATASHEET_TO_CHANNEL {
         file: meta.gtf
         // If any of the reference exists, then adding run_tools to false and skip the reference creation from the annotation derived file
         // (gff, gtf or transcript_fasta)
-        def meta_extra = [run_hisat2: meta.splice_sites ? false : true]
+        def meta_extra = record(run_hisat2: meta.splice_sites ? false : true)
         return [reduceMeta(meta) + meta_extra, meta.gtf.contains('ncbi.nlm.nih.gov') ? meta.gtf : file(meta.gtf, checkIfExists: true)]
         other: true
         // If the reference doesn't exist, then we return nothing
@@ -158,11 +158,11 @@ workflow DATASHEET_TO_CHANNEL {
         file: meta.transcript_fasta
         // If any of the reference exists, then adding run_tools to false and skip the reference creation from the annotation derived file
         // (gff, gtf or transcript_fasta)
-        def meta_extra = [run_hisat2: meta.hisat2_index ? false : true]
-        meta_extra += [run_kallisto: meta.kallisto_index ? false : true]
-        meta_extra += [run_rsem: meta.rsem_index ? false : true]
-        meta_extra += [run_salmon: meta.salmon_index ? false : true]
-        meta_extra += [run_star: meta.star_index ? false : true]
+        def meta_extra = record(run_hisat2: meta.hisat2_index ? false : true)
+        meta_extra += record(run_kallisto: meta.kallisto_index ? false : true)
+        meta_extra += record(run_rsem: meta.rsem_index ? false : true)
+        meta_extra += record(run_salmon: meta.salmon_index ? false : true)
+        meta_extra += record(run_star: meta.star_index ? false : true)
         return [reduceMeta(meta) + meta_extra, file(meta.transcript_fasta, checkIfExists: true)]
         other: true
         // If the reference doesn't exist, then we return nothing
@@ -176,8 +176,8 @@ workflow DATASHEET_TO_CHANNEL {
         file: meta.vcf_dbsnp_vcf
 
         // If we already have the vcf_tbi, then we don't need to index the vcf
-        def meta_extra = [run_tabix: !meta.vcf_dbsnp_vcf_tbi]
-        meta_extra += [type: 'dbsnp', source_vcf: meta.vcf_dbsnp_vcf_source]
+        def meta_extra = record(run_tabix: !meta.vcf_dbsnp_vcf_tbi)
+        meta_extra += record(type: 'dbsnp', source_vcf: meta.vcf_dbsnp_vcf_source)
         return [reduceMeta(meta) + meta_extra, files(meta.vcf_dbsnp_vcf, checkIfExists: true)]
         other: true
         // If the reference doesn't exist, then we return nothing
@@ -187,8 +187,8 @@ workflow DATASHEET_TO_CHANNEL {
     germline_resource_branch = datasheet.branch { meta, _readme ->
         file: meta.vcf_germline_resource_vcf
         // If we already have the vcf_tbi, then we don't need to index the vcf
-        def meta_extra = [run_tabix: !meta.vcf_germline_resource_vcf_tbi]
-        meta_extra += [type: 'germline_resource', source_vcf: meta.vcf_germline_resource_vcf_source]
+        def meta_extra = record(run_tabix: !meta.vcf_germline_resource_vcf_tbi)
+        meta_extra += record(type: 'germline_resource', source_vcf: meta.vcf_germline_resource_vcf_source)
         return [reduceMeta(meta) + meta_extra, file(meta.vcf_germline_resource_vcf, checkIfExists: true)]
         other: true
         // If the reference doesn't exist, then we return nothing
@@ -198,8 +198,8 @@ workflow DATASHEET_TO_CHANNEL {
     known_indels_branch = datasheet.branch { meta, _readme ->
         file: meta.vcf_known_indels_vcf
         // If we already have the vcf_tbi, then we don't need to index the vcf
-        def meta_extra = [run_tabix: !meta.vcf_known_indels_vcf_tbi]
-        meta_extra += [type: 'known_indels', source_vcf: meta.vcf_known_indels_vcf_source]
+        def meta_extra = record(run_tabix: !meta.vcf_known_indels_vcf_tbi)
+        meta_extra += record(type: 'known_indels', source_vcf: meta.vcf_known_indels_vcf_source)
         return [reduceMeta(meta) + meta_extra, file(meta.vcf_known_indels_vcf, checkIfExists: true)]
         other: true
         // If the reference doesn't exist, then we return nothing
@@ -209,8 +209,8 @@ workflow DATASHEET_TO_CHANNEL {
     known_snps_branch = datasheet.branch { meta, _readme ->
         file: meta.vcf_known_snps_vcf
         // If we already have the vcf_tbi, then we don't need to index the vcf
-        def meta_extra = [run_tabix: !meta.vcf_known_snps_vcf_tbi]
-        meta_extra += [type: 'known_snps', source_vcf: meta.vcf_known_snps_vcf_source]
+        def meta_extra = record(run_tabix: !meta.vcf_known_snps_vcf_tbi)
+        meta_extra += record(type: 'known_snps', source_vcf: meta.vcf_known_snps_vcf_source)
         return [reduceMeta(meta) + meta_extra, file(meta.vcf_known_snps_vcf, checkIfExists: true)]
         other: true
         // If the reference doesn't exist, then we return nothing
@@ -220,8 +220,8 @@ workflow DATASHEET_TO_CHANNEL {
     pon_branch = datasheet.branch { meta, _readme ->
         file: meta.vcf_pon_vcf
         // If we already have the vcf_tbi, then we don't need to index the vcf
-        def meta_extra = [run_tabix: !meta.vcf_pon_vcf_tbi]
-        meta_extra += [type: 'pon', source_vcf: meta.vcf_pon_vcf_source]
+        def meta_extra = record(run_tabix: !meta.vcf_pon_vcf_tbi)
+        meta_extra += record(type: 'pon', source_vcf: meta.vcf_pon_vcf_source)
         return [reduceMeta(meta) + meta_extra, file(meta.vcf_pon_vcf, checkIfExists: true)]
         other: true
         // If the reference doesn't exist, then we return nothing
@@ -265,5 +265,11 @@ workflow DATASHEET_TO_CHANNEL {
 // Only keep the actual meta data in the meta map
 // Add a field here if it is a relevant meta data
 def reduceMeta(meta_) {
-    meta_.subMap(['genome', 'id', 'source', 'source_version', 'species'])
+    record(
+        id: meta_.id,
+        genome: meta_.genome,
+        source: meta_.source,
+        source_version: meta_.source_version,
+        species: meta_.species,
+    )
 }

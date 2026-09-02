@@ -14,7 +14,6 @@
                 "Homo_sapiens/nf-core/GRCh38_chr22/Annotation",
                 "Homo_sapiens/nf-core/GRCh38_chr22/Annotation/msisensorpro",
                 "Homo_sapiens/nf-core/GRCh38_chr22/Annotation/msisensorpro/GRCh38_chr22.msisensor_scan.list",
-                "index.json",
                 "multiqc",
                 "multiqc/multiqc_data",
                 "multiqc/multiqc_data/llms-full.txt",
@@ -56,7 +55,7 @@
                     "dragmap": "1.2.1"
                 },
                 "GATK4_CREATESEQUENCEDICTIONARY": {
-                    "gatk4": "4.6.2.0"
+                    "gatk4": "4.7.0.0"
                 },
                 "HTSLIB_BGZIPTABIX": {
                     "htslib": "1.24",
@@ -108,7 +107,6 @@
                 "Homo_sapiens/nf-core/GRCh38_chr22/Sequence/dragmap/1.2.1/reference.bin",
                 "Homo_sapiens/nf-core/GRCh38_chr22/Sequence/dragmap/1.2.1/repeat_mask.bin",
                 "Homo_sapiens/nf-core/GRCh38_chr22/Sequence/dragmap/1.2.1/str_table.bin",
-                "index.json",
                 "multiqc",
                 "multiqc/multiqc_data",
                 "multiqc/multiqc_data/llms-full.txt",

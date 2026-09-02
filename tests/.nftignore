@@ -1,3 +1,4 @@
+.DS_Store
 **/*.vcf.gz.tbi
 **/RSEMIndex/{,*/,**/}Log.out
 **/RSEMIndex/{,*/,**/}genomeParameters.txt
@@ -14,8 +15,6 @@
 **/kallisto
 **/snap/GenomeIndexHash
 **/snap/OverflowTable
-.DS_Store
-index.json
 multiqc/multiqc_data/llms-full.txt
 multiqc/multiqc_data/multiqc.log
 multiqc/multiqc_data/multiqc.parquet

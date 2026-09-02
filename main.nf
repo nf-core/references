@@ -99,25 +99,16 @@ workflow NFCORE_REFERENCES {
         )
 
     // Extract references from any archive format
-    ARCHIVE_EXTRACT(
-        archive_to_extract
-    )
+    ARCHIVE_EXTRACT(archive_to_extract)
 
     // return to the appropriate channels
-    extracted_reference = ARCHIVE_EXTRACT.out.extracted.branch { meta_, _extracted_reference ->
-        ascat_alleles: meta_.reference == 'ascat_alleles'
-        ascat_loci: meta_.reference == 'ascat_loci'
-        ascat_loci_gc: meta_.reference == 'ascat_loci_gc'
-        ascat_loci_rt: meta_.reference == 'ascat_loci_rt'
-        chr_dir: meta_.reference == 'chr_dir'
-        fasta: meta_.reference == 'fasta'
-        gff: meta_.reference == 'gff'
-        gtf: meta_.reference == 'gtf'
-        non_assigned: true
-    }
+    extracted_fasta = ARCHIVE_EXTRACT.out.extracted.filter { meta, _ref -> meta.reference == 'fasta' }
+    extracted_gff = ARCHIVE_EXTRACT.out.extracted.filter { meta, _ref -> meta.reference == 'gff' }
+    extracted_gtf = ARCHIVE_EXTRACT.out.extracted.filter { meta, _ref -> meta.reference == 'gtf' }
 
     // This is a confidence check
-    extracted_reference.non_assigned.view { reference -> log.warn("Non assigned extracted reference: " + reference) }
+    def assigned_references = ['ascat_alleles', 'ascat_loci', 'ascat_loci_gc', 'ascat_loci_rt', 'chr_dir', 'fasta', 'gff', 'gtf'] as Set
+    ARCHIVE_EXTRACT.out.extracted.filter { meta, _ref -> !(meta.reference in assigned_references) }.view { reference -> log.warn("Non assigned extracted reference: " + reference) }
 
     // WORKFLOW: Run pipeline
     // Mix the references that were extracted with the references that did not need to be extracted
@@ -125,28 +116,51 @@ workflow NFCORE_REFERENCES {
     // TODO: check if more references need to be extracted
     altliftoverfile = false
 
+    fasta = fasta_input.not_extracted.mix(extracted_fasta, NCBIDATASETSCLI_DATASETS.out.fna.map { meta, file -> [meta + record(reference: 'fasta', file: 'fasta'), file] })
+    gff = gff_input.not_extracted.mix(extracted_gff, NCBIDATASETSCLI_DATASETS.out.gff.map { meta, file -> [meta + record(reference: 'gff', file: 'gff'), file] })
+    gtf = gtf_input.not_extracted.mix(extracted_gtf, NCBIDATASETSCLI_DATASETS.out.gtf.map { meta, file -> [meta + record(reference: 'gtf', file: 'gtf'), file] })
+
     REFERENCES(
         altliftoverfile,
-        ascat_alleles_input.not_extracted.mix(extracted_reference.ascat_alleles),
-        ascat_loci_input.not_extracted.mix(extracted_reference.ascat_loci),
-        ascat_loci_gc_input.not_extracted.mix(extracted_reference.ascat_loci_gc),
-        ascat_loci_rt_input.not_extracted.mix(extracted_reference.ascat_loci_rt),
-        chr_dir_input.not_extracted.mix(extracted_reference.chr_dir),
-        fasta_input.not_extracted.mix(extracted_reference.fasta, NCBIDATASETSCLI_DATASETS.out.fna.map { meta, file -> [meta + [reference: 'fasta', file: 'fasta'], file] }),
-        DATASHEET_TO_CHANNEL.out.fasta_dict,
+        fasta,
         DATASHEET_TO_CHANNEL.out.fasta_fai,
-        DATASHEET_TO_CHANNEL.out.fasta_sizes,
-        gff_input.not_extracted.mix(extracted_reference.gff, NCBIDATASETSCLI_DATASETS.out.gff.map { meta, file -> [meta + [reference: 'gff', file: 'gff'], file] }),
-        gtf_input.not_extracted.mix(extracted_reference.gtf, NCBIDATASETSCLI_DATASETS.out.gtf.map { meta, file -> [meta + [reference: 'gtf', file: 'gtf'], file] }),
-        DATASHEET_TO_CHANNEL.out.intervals_bed,
+        gff,
+        gtf,
         DATASHEET_TO_CHANNEL.out.splice_sites,
         DATASHEET_TO_CHANNEL.out.transcript_fasta,
         DATASHEET_TO_CHANNEL.out.vcf,
         tools,
+        params.hisat2_build_memory,
     )
 
     emit:
-    references = REFERENCES.out.references
+    ascat_alleles     = ARCHIVE_EXTRACT.out.extracted.filter { meta, _ref -> meta.reference == 'ascat_alleles' }
+    ascat_loci        = ARCHIVE_EXTRACT.out.extracted.filter { meta, _ref -> meta.reference == 'ascat_loci' }
+    ascat_loci_gc     = ARCHIVE_EXTRACT.out.extracted.filter { meta, _ref -> meta.reference == 'ascat_loci_gc' }
+    ascat_loci_rt     = ARCHIVE_EXTRACT.out.extracted.filter { meta, _ref -> meta.reference == 'ascat_loci_rt' }
+    bowtie1_index     = REFERENCES.out.bowtie1_index
+    bowtie2_index     = REFERENCES.out.bowtie2_index
+    bwamem1_index     = REFERENCES.out.bwamem1_index
+    bwamem2_index     = REFERENCES.out.bwamem2_index
+    chr_dir           = ARCHIVE_EXTRACT.out.extracted.filter { meta, _ref -> meta.reference == 'chr_dir' }
+    dragmap_hashmap   = REFERENCES.out.dragmap_hashmap
+    fasta             = extracted_fasta.mix(NCBIDATASETSCLI_DATASETS.out.fna.map { meta, file -> [meta + record(reference: 'fasta', file: 'fasta'), file] })
+    fasta_dict        = REFERENCES.out.fasta_dict
+    fasta_fai         = REFERENCES.out.fasta_fai
+    fasta_sizes       = REFERENCES.out.fasta_sizes
+    gff               = extracted_gff.mix(NCBIDATASETSCLI_DATASETS.out.gff.map { meta, file -> [meta + record(reference: 'gff', file: 'gff'), file] })
+    gtf               = REFERENCES.out.gtf
+    hisat2_index      = REFERENCES.out.hisat2_index
+    intervals_bed     = REFERENCES.out.intervals_bed
+    kallisto_index    = REFERENCES.out.kallisto_index
+    msisensorpro_list = REFERENCES.out.msisensorpro_list
+    rsem_index        = REFERENCES.out.rsem_index
+    salmon_index      = REFERENCES.out.salmon_index
+    snapaligner_index = REFERENCES.out.snapaligner_index
+    splice_sites      = REFERENCES.out.splice_sites
+    star_index        = REFERENCES.out.star_index
+    transcript_fasta  = REFERENCES.out.transcript_fasta
+    vcf_tbi           = REFERENCES.out.vcf_tbi
 }
 
 /*
@@ -154,6 +168,105 @@ workflow NFCORE_REFERENCES {
     RUN MAIN WORKFLOW
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 */
+
+params {
+
+    // Path to yaml file containing information about the genome(s) and files to use for building references.
+    input: String?
+
+    // The output directory where the results will be saved. You have to use absolute paths to storage on Cloud infrastructure.
+    outdir: String?
+
+    // Select a predefined bundle of tools to build references for.
+    tools_bundle: String?
+
+    // Specify which tools to build references for.
+    tools: String?
+
+    // Specify which tools to skip building references for.
+    skip_tools: String?
+
+    // The base path to the reference files
+    references_base_path: String?
+
+    // Email address for completion summary.
+    email: String?
+
+    // MultiQC report title. Printed as page header, used for filename if not otherwise specified.
+    multiqc_title: String?
+
+    // Make --make-unique flag for kallisto index
+    kallisto_make_unique: Boolean = false
+
+    // Memory threshold for HISAT2 index building. When available process memory meets or exceeds this value, splice sites and exons are used to build a splice-aware index.
+    hisat2_build_memory: String = '200.GB'
+
+    // Git commit id for Institutional configs.
+    custom_config_version: String = 'master'
+
+    // Base directory for Institutional configs.
+    custom_config_base: String = 'https://raw.githubusercontent.com/nf-core/configs/master'
+
+    // Institutional config name.
+    config_profile_name: String?
+
+    // Institutional config description.
+    config_profile_description: String?
+
+    // Institutional config contact information.
+    config_profile_contact: String?
+
+    // Institutional config URL link.
+    config_profile_url: String?
+
+    // Display version and exit.
+    version: Boolean = false
+
+    // Method used to save pipeline results to output directory.
+    publish_dir_mode: String = 'copy'
+
+    // Email address for completion summary, only when pipeline fails.
+    email_on_fail: String?
+
+    // Send plain-text email instead of HTML.
+    plaintext_email: Boolean = false
+
+    // File size limit when attaching MultiQC reports to summary emails.
+    max_multiqc_email_size: String = '25.MB'
+
+    // Do not use coloured log outputs.
+    monochrome_logs: Boolean = false
+
+    // Custom config file to supply to MultiQC.
+    multiqc_config: Path?
+
+    // Custom logo file to supply to MultiQC. File name must also be set in the MultiQC config file
+    multiqc_logo: Path?
+
+    // Custom MultiQC yaml file containing HTML including a methods description.
+    multiqc_methods_description: Path?
+
+    // Boolean whether to validate parameters against the schema at runtime
+    validate_params: Boolean = true
+
+    // Base URL or local path to location of pipeline test dataset files
+    modules_testdata_base_path: String = 'https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/'
+
+    // Base URL or local path to location of pipeline test dataset files
+    pipelines_testdata_base_path: String = 'https://raw.githubusercontent.com/nf-core/test-datasets/'
+
+    // Suffix to add to the trace report filename. Default is the date and time in the format yyyy-MM-dd_HH-mm-ss.
+    trace_report_suffix: String
+
+    // Display the help message.
+    help: Boolean = false
+
+    // Display the full detailed help message.
+    help_full: Boolean = false
+
+    // Display hidden parameters in the help message (only works when --help or --help_full are provided).
+    show_hidden: Boolean = false
+}
 
 workflow {
 
@@ -231,90 +344,173 @@ workflow {
     )
 
     publish:
-    multiqc    = MULTIQC.out.data.mix(MULTIQC.out.plots, MULTIQC.out.report)
-    references = NFCORE_REFERENCES.out.references.filter { _meta, file -> !(file instanceof String) }.filter { _meta, file -> !(file.toString().startsWith('/nf-core')) }.map { meta, file ->
-        // Filter out the run_ keys from the meta for a clearer index file
-        def invalid_keys = meta.keySet().findAll { key -> key.startsWith('run_') }
-
-        def path = ""
-
-        if (meta.file == "bowtie1_index") {
-            path = "Sequence/BowtieIndex/1.3.1"
-        }
-        else if (meta.file == "bowtie2_index") {
-            path = "Sequence/Bowtie2Index/2.5.2"
-        }
-        else if (meta.file == "bwamem1_index") {
-            path = "Sequence/BWAIndex/0.7.18"
-        }
-        else if (meta.file == "bwamem2_index") {
-            path = "Sequence/BWAmem2Index/2.2.1"
-        }
-        else if (meta.file == "dragmap_hashmap") {
-            path = "Sequence/dragmap/1.2.1"
-        }
-        else if (meta.file == "fasta" || meta.file == "fasta_dict" || meta.file == "fasta_fai" || meta.file == "fasta_sizes") {
-            path = "Sequence/WholeGenomeFasta/${file.fileName}"
-        }
-        else if (meta.file == "gff" || meta.file == "gtf") {
-            path = "Annotation/Genes/${file.fileName}"
-        }
-        else if (meta.file == "hisat2_index") {
-            path = meta.source_version == "unknown"
-                ? "Sequence/Hisat2Index/2.2.1"
-                : "Sequence/Hisat2Index/${meta.source_version}/2.2.1"
-        }
-        else if (meta.file == "intervals_bed") {
-            path = "Annotation/intervals/${file.fileName}"
-        }
-        else if (meta.file == "kallisto_index") {
-            path = meta.source_version == "unknown"
-                ? "Sequence/KallistoIndex/0.51.1/${file.fileName}"
-                : "Sequence/KallistoIndex/${meta.source_version}/0.51.1/${file.fileName}"
-        }
-        else if (meta.file == "msisensorpro_list") {
-            path = "Annotation/msisensorpro/${file.fileName}"
-        }
-        else if (meta.file == "rsem_index") {
-            path = meta.source_version == "unknown"
-                ? "Sequence/RSEMIndex/1.3.1"
-                : "Sequence/RSEMIndex/${meta.source_version}/1.3.1"
-        }
-        else if (meta.file == "salmon_index") {
-            path = meta.source_version == "unknown"
-                ? "Sequence/SalmonIndex/1.10.3"
-                : "Sequence/SalmonIndex/${meta.source_version}/1.10.3"
-        }
-        else if (meta.file == "splice_sites") {
-            path = "Sequence/SpliceSites/${file.fileName}"
-        }
-        else if (meta.file == "star_index") {
-            path = meta.source_version == "unknown"
-                ? "Sequence/STARIndex/2.7.11b"
-                : "Sequence/STARIndex/${meta.source_version}/2.7.11b"
-        }
-        else if (meta.file == "transcript_fasta") {
-            path = "Sequence/TranscriptFasta/${file.fileName}"
-        }
-        else if (meta.file == "${meta.type}_vcf" || meta.file == "${meta.type}_vcf_tbi") {
-            path = "Annotation/${meta.source_vcf}/${file.fileName}"
-        }
-
-        [meta + [path: path] - meta.subMap(invalid_keys), file]
-    }
+    multiqc           = MULTIQC.out.data.mix(MULTIQC.out.plots, MULTIQC.out.report)
+    ascat_alleles     = NFCORE_REFERENCES.out.ascat_alleles
+    ascat_loci        = NFCORE_REFERENCES.out.ascat_loci
+    ascat_loci_gc     = NFCORE_REFERENCES.out.ascat_loci_gc
+    ascat_loci_rt     = NFCORE_REFERENCES.out.ascat_loci_rt
+    bowtie1_index     = NFCORE_REFERENCES.out.bowtie1_index
+    bowtie2_index     = NFCORE_REFERENCES.out.bowtie2_index
+    bwamem1_index     = NFCORE_REFERENCES.out.bwamem1_index
+    bwamem2_index     = NFCORE_REFERENCES.out.bwamem2_index
+    chr_dir           = NFCORE_REFERENCES.out.chr_dir
+    dragmap_hashmap   = NFCORE_REFERENCES.out.dragmap_hashmap
+    fasta             = NFCORE_REFERENCES.out.fasta
+    fasta_dict        = NFCORE_REFERENCES.out.fasta_dict
+    fasta_fai         = NFCORE_REFERENCES.out.fasta_fai
+    fasta_sizes       = NFCORE_REFERENCES.out.fasta_sizes
+    gff               = NFCORE_REFERENCES.out.gff
+    gtf               = NFCORE_REFERENCES.out.gtf
+    hisat2_index      = NFCORE_REFERENCES.out.hisat2_index
+    intervals_bed     = NFCORE_REFERENCES.out.intervals_bed
+    kallisto_index    = NFCORE_REFERENCES.out.kallisto_index
+    msisensorpro_list = NFCORE_REFERENCES.out.msisensorpro_list
+    rsem_index        = NFCORE_REFERENCES.out.rsem_index
+    salmon_index      = NFCORE_REFERENCES.out.salmon_index
+    snapaligner_index = NFCORE_REFERENCES.out.snapaligner_index
+    splice_sites      = NFCORE_REFERENCES.out.splice_sites
+    star_index        = NFCORE_REFERENCES.out.star_index
+    transcript_fasta  = NFCORE_REFERENCES.out.transcript_fasta
+    vcf_tbi           = NFCORE_REFERENCES.out.vcf_tbi
 }
 
 output {
     multiqc {
         path "multiqc"
     }
-    references {
-        index {
-            path "index.json"
-            sep ":"
+    ascat_alleles {
+        path { meta, file ->
+            file >> "${meta.species}/${meta.source}/${meta.genome}/ascat/"
         }
-        path { meta, path ->
-            path >> "${meta.species}/${meta.source}/${meta.genome}/${meta.path}"
+    }
+    ascat_loci {
+        path { meta, file ->
+            file >> "${meta.species}/${meta.source}/${meta.genome}/ascat/"
+        }
+    }
+    ascat_loci_gc {
+        path { meta, file ->
+            file >> "${meta.species}/${meta.source}/${meta.genome}/ascat/"
+        }
+    }
+    ascat_loci_rt {
+        path { meta, file ->
+            file >> "${meta.species}/${meta.source}/${meta.genome}/ascat/"
+        }
+    }
+    bowtie1_index {
+        path { meta, file ->
+            file >> "${meta.species}/${meta.source}/${meta.genome}/Sequence/BowtieIndex/1.3.1"
+        }
+    }
+    bowtie2_index {
+        path { meta, file ->
+            file >> "${meta.species}/${meta.source}/${meta.genome}/Sequence/Bowtie2Index/2.5.2"
+        }
+    }
+    bwamem1_index {
+        path { meta, file ->
+            file >> "${meta.species}/${meta.source}/${meta.genome}/Sequence/BWAIndex/0.7.18"
+        }
+    }
+    bwamem2_index {
+        path { meta, file ->
+            file >> "${meta.species}/${meta.source}/${meta.genome}/Sequence/BWAmem2Index/2.2.1"
+        }
+    }
+    chr_dir {
+        path { meta, file ->
+            file >> "${meta.species}/${meta.source}/${meta.genome}/Sequence/chr"
+        }
+    }
+    dragmap_hashmap {
+        path { meta, file ->
+            file >> "${meta.species}/${meta.source}/${meta.genome}/Sequence/dragmap/1.2.1"
+        }
+    }
+    fasta {
+        path { meta, file ->
+            file >> "${meta.species}/${meta.source}/${meta.genome}/Sequence/WholeGenomeFasta/${file.fileName}"
+        }
+    }
+    fasta_dict {
+        path { meta, file ->
+            file >> "${meta.species}/${meta.source}/${meta.genome}/Sequence/WholeGenomeFasta/${file.fileName}"
+        }
+    }
+    fasta_fai {
+        path { meta, file ->
+            file >> "${meta.species}/${meta.source}/${meta.genome}/Sequence/WholeGenomeFasta/${file.fileName}"
+        }
+    }
+    fasta_sizes {
+        path { meta, file ->
+            file >> "${meta.species}/${meta.source}/${meta.genome}/Sequence/WholeGenomeFasta/${file.fileName}"
+        }
+    }
+    gtf {
+        path { meta, file ->
+            file >> "${meta.species}/${meta.source}/${meta.genome}/Annotation/Genes/${file.fileName}"
+        }
+    }
+    gff {
+        path { meta, file ->
+            file >> "${meta.species}/${meta.source}/${meta.genome}/Annotation/Genes/${file.fileName}"
+        }
+    }
+    hisat2_index {
+        path { meta, file ->
+            file >> "${meta.species}/${meta.source}/${meta.genome}/Sequence/Hisat2Index/" + (meta.source_version == 'unknown' ? '' : meta.source_version) + "/2.2.3"
+        }
+    }
+    intervals_bed {
+        path { meta, file ->
+            file >> "${meta.species}/${meta.source}/${meta.genome}/Annotation/intervals/${file.fileName}"
+        }
+    }
+    kallisto_index {
+        path { meta, file ->
+            file >> "${meta.species}/${meta.source}/${meta.genome}/Sequence/KallistoIndex/" + (meta.source_version == 'unknown' ? '' : meta.source_version) + "/0.51.1/${file.fileName}"
+        }
+    }
+    msisensorpro_list {
+        path { meta, file ->
+            file >> "${meta.species}/${meta.source}/${meta.genome}/Annotation/msisensorpro/${file.fileName}"
+        }
+    }
+    rsem_index {
+        path { meta, file ->
+            file >> "${meta.species}/${meta.source}/${meta.genome}/Sequence/RSEMIndex/" + (meta.source_version == 'unknown' ? '' : meta.source_version) + "/1.3.1"
+        }
+    }
+    salmon_index {
+        path { meta, file ->
+            file >> "${meta.species}/${meta.source}/${meta.genome}/Sequence/SalmonIndex/" + (meta.source_version == 'unknown' ? '' : meta.source_version) + "/1.10.3"
+        }
+    }
+    snapaligner_index {
+        path { meta, file ->
+            file >> "${meta.species}/${meta.source}/${meta.genome}/Sequence/snap"
+        }
+    }
+    splice_sites {
+        path { meta, file ->
+            file >> "${meta.species}/${meta.source}/${meta.genome}/Sequence/SpliceSites/${file.fileName}"
+        }
+    }
+    star_index {
+        path { meta, file ->
+            file >> "${meta.species}/${meta.source}/${meta.genome}/Sequence/STARIndex/" + (meta.source_version == 'unknown' ? '' : meta.source_version) + "/2.7.11b"
+        }
+    }
+    transcript_fasta {
+        path { meta, file ->
+            file >> "${meta.species}/${meta.source}/${meta.genome}/Sequence/TranscriptFasta/${file.fileName}"
+        }
+    }
+    vcf_tbi {
+        path { meta, file ->
+            file >> "${meta.species}/${meta.source}/${meta.genome}/Annotation/${meta.source_vcf}/${file.fileName}"
         }
     }
 }
@@ -363,22 +559,20 @@ def paramsSummaryMultiqc(summary_params) {
 // Add the reference type to the meta
 // Depending on the extension, return the appropriate channel
 def need_extract(channel, type) {
-    return channel
-        .map { meta, reference_ -> [meta + [reference: type], reference_] }
-        .branch { _meta, reference_ ->
-            to_extract: reference_.toString().endsWith('.gz') || reference_.toString().endsWith('.zip')
-            not_extracted: true
-        }
+    def with_reference = channel.map { meta, reference_ -> [meta + record(reference: type), reference_] }
+    return [
+        to_extract: with_reference.filter { _meta, reference_ -> reference_.toString().endsWith('.gz') || reference_.toString().endsWith('.zip') },
+        not_extracted: with_reference.filter { _meta, reference_ -> !(reference_.toString().endsWith('.gz') || reference_.toString().endsWith('.zip')) },
+    ]
 }
 
 // Helper function to check if a reference needs to be downloaded from ncbi
 // Add the reference type to the meta
 // Depending on the extension, return the appropriate channel
 def need_ncbi_download(channel, type) {
-    return channel
-        .map { meta, reference_ -> [meta + [reference: type], reference_] }
-        .branch { _meta, reference_ ->
-            to_download: reference_.toString().contains('ncbi.nlm.nih.gov')
-            not_downloaded: true
-        }
+    def with_reference = channel.map { meta, reference_ -> [meta + record(reference: type), reference_] }
+    return [
+        to_download: with_reference.filter { _meta, reference_ -> reference_.toString().contains('ncbi.nlm.nih.gov') },
+        not_downloaded: with_reference.filter { _meta, reference_ -> !reference_.toString().contains('ncbi.nlm.nih.gov') },
+    ]
 }

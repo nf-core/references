@@ -10,7 +10,7 @@
                     "bwa": "0.7.19-r1273"
                 },
                 "GATK4_CREATESEQUENCEDICTIONARY": {
-                    "gatk4": "4.6.2.0"
+                    "gatk4": "4.7.0.0"
                 },
                 "NCBIDATASETSCLI_DATASETS": {
                     "gunzip": "1.12",
@@ -97,7 +97,6 @@
                 "Caenorhabditis_elegans/NCBI/WBcel235/Sequence/WholeGenomeFasta/GCF_000002985.6_WBcel235_genomic.dict",
                 "Caenorhabditis_elegans/NCBI/WBcel235/Sequence/WholeGenomeFasta/GCF_000002985.6_WBcel235_genomic.fna",
                 "Caenorhabditis_elegans/NCBI/WBcel235/Sequence/WholeGenomeFasta/GCF_000002985.6_WBcel235_genomic.fna.fai",
-                "index.json",
                 "multiqc",
                 "multiqc/multiqc_data",
                 "multiqc/multiqc_data/llms-full.txt",
@@ -162,10 +161,10 @@
                 "multiqc_citations.txt:md5,4c806e63a283ec1b7e78cdae3a923d4f"
             ]
         ],
-        "timestamp": "2026-08-14T15:51:08.803512249",
+        "timestamp": "2026-09-01T17:20:49.63495261",
         "meta": {
             "nf-test": "0.9.5",
-            "nextflow": "26.04.6"
+            "nextflow": "26.08.0"
         }
     }
 }

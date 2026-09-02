@@ -3,6 +3,7 @@ lint:
   files_exist:
     - conf/igenomes.config
     - conf/igenomes_ignored.config
+    - conf/test_full.config
   files_unchanged:
     - .github/PULL_REQUEST_TEMPLATE.md
     - .github/workflows/branch.yml
@@ -10,6 +11,8 @@ lint:
     - assets/nf-core-references_logo_light.png
     - docs/images/nf-core-references_logo_dark.png
     - docs/images/nf-core-references_logo_light.png
+  nextflow_config: false
+  schema_params: false
 nf_core_version: 4.1.0
 repository_type: pipeline
 template:

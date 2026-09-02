@@ -6,7 +6,6 @@
                 
             },
             [
-                "index.json",
                 "multiqc",
                 "multiqc/multiqc_data",
                 "multiqc/multiqc_data/llms-full.txt",
@@ -50,7 +49,6 @@
                 "Homo_sapiens/nf-core/GRCh38_chr21/Annotation",
                 "Homo_sapiens/nf-core/GRCh38_chr21/Annotation/GATK_BUNDLE",
                 "Homo_sapiens/nf-core/GRCh38_chr21/Annotation/GATK_BUNDLE/GRCh38_chr21.vcf.gz.tbi",
-                "index.json",
                 "multiqc",
                 "multiqc/multiqc_data",
                 "multiqc/multiqc_data/llms-full.txt",
