@@ -1,4 +1,5 @@
 #!/usr/bin/env nextflow
+nextflow.enable.types = true
 /*
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     nf-core/references
@@ -38,8 +39,8 @@ include { paramsSummaryMap         } from 'plugin/nf-schema'
 // WORKFLOW: Build references depending on type of reference and the tools specified
 workflow NFCORE_REFERENCES {
     take:
-    references
-    tools // list of tools to use to build references
+    references: Channel
+    tools: List
 
     main:
 
