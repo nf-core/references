@@ -70,7 +70,7 @@
     },
     "-profile test --tools faidx,intervals,sizes": {
         "content": [
-            7,
+            6,
             {
                 "BUILD_INTERVALS": {
                     "gawk": "5.3.1"
