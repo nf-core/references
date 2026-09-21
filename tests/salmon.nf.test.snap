@@ -41,20 +41,15 @@
             ],
             [
                 "duplicate_clusters.tsv:md5,29ecd2cb393abb4051f1e6b2d37a3853",
-                "index.ctab:md5,3c2b066d46033481ff29485656bc3f3e",
-                "index.ectab:md5,a9bf3291468bd5daf174645ba3c9be94",
                 "index.refinfo:md5,537539e4d967d428757b549b07150bd2",
-                "index.ssi:md5,a31be569921641864bacc86a7ed01bb1",
                 "index.ssi.mphf:md5,df2e2d3f22ddb85f036fa17d991aec69",
-                "index.tct:md5,9093fb62ae4e8e41739eb5f27a2f6103",
-                "index.tdct:md5,b0f1b53ecdcd381c7d5b85c118ad88d1",
                 "info.json:md5,3235e55cbf552d2504a11ee1f197d8a4",
                 "refseq.bin:md5,f78e2ba26f517c875c56896a8b5426e8",
                 "refseq_offsets.json:md5,996e506ae8eb4e3c535e9a9f4af0107f",
                 "multiqc_citations.txt:md5,4c806e63a283ec1b7e78cdae3a923d4f"
             ]
         ],
-        "timestamp": "2026-09-21T13:22:05.749116598",
+        "timestamp": "2026-09-21T13:57:24.471200761",
         "meta": {
             "nf-test": "0.9.5",
             "nextflow": "26.08.0"
@@ -114,13 +109,8 @@
             [
                 "GRCh38_chr21.gtf:md5,c552c0aee5f1becb1d3991d21e63a5c1",
                 "duplicate_clusters.tsv:md5,29ecd2cb393abb4051f1e6b2d37a3853",
-                "index.ctab:md5,33daa4c96201afa6e8023fd53531107c",
-                "index.ectab:md5,adaa5593afc0c3c44b2d647476386023",
                 "index.refinfo:md5,537539e4d967d428757b549b07150bd2",
-                "index.ssi:md5,7568b3af4be8f2549ea7ddec9edb48af",
                 "index.ssi.mphf:md5,df2e2d3f22ddb85f036fa17d991aec69",
-                "index.tct:md5,ae04ae1bef817f5eb328b8bc4ccab8cf",
-                "index.tdct:md5,d13ec68fab01d520243e88bfa8b7afaa",
                 "info.json:md5,3235e55cbf552d2504a11ee1f197d8a4",
                 "refseq.bin:md5,f78e2ba26f517c875c56896a8b5426e8",
                 "refseq_offsets.json:md5,996e506ae8eb4e3c535e9a9f4af0107f",
@@ -128,7 +118,7 @@
                 "multiqc_citations.txt:md5,4c806e63a283ec1b7e78cdae3a923d4f"
             ]
         ],
-        "timestamp": "2026-09-21T13:23:07.278681539",
+        "timestamp": "2026-09-21T13:58:07.313908118",
         "meta": {
             "nf-test": "0.9.5",
             "nextflow": "26.08.0"
