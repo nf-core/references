@@ -1,10 +1,14 @@
-.DS_Store
 **/*.vcf.gz.tbi
 **/RSEMIndex/{,*/,**/}Log.out
 **/RSEMIndex/{,*/,**/}genomeParameters.txt
 **/STARIndex/{,*/,**/}Log.out
 **/STARIndex/{,*/,**/}genomeParameters.txt
 **/SalmonIndex/{,*/,**/}ctable.bin
+**/SalmonIndex/{,*/,**/}index.ctab
+**/SalmonIndex/{,*/,**/}index.ectab
+**/SalmonIndex/{,*/,**/}index.ssi
+**/SalmonIndex/{,*/,**/}index.tct
+**/SalmonIndex/{,*/,**/}index.tdct
 **/SalmonIndex/{,*/,**/}pos.bin
 **/SalmonIndex/{,*/,**/}pre_indexing.log
 **/SalmonIndex/{,*/,**/}ref_indexing.log
@@ -15,6 +19,7 @@
 **/kallisto
 **/snap/GenomeIndexHash
 **/snap/OverflowTable
+.DS_Store
 multiqc/multiqc_data/llms-full.txt
 multiqc/multiqc_data/multiqc.log
 multiqc/multiqc_data/multiqc.parquet

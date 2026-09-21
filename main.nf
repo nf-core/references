@@ -477,7 +477,7 @@ output {
     }
     kallisto_index {
         path { meta, file ->
-            file >> "${meta.species}/${meta.source}/${meta.genome}/Sequence/KallistoIndex/" + (meta.source_version == 'unknown' ? '' : meta.source_version) + "/0.51.1/${file.fileName}"
+            file >> "${meta.species}/${meta.source}/${meta.genome}/Sequence/KallistoIndex/" + (meta.source_version == 'unknown' ? '' : meta.source_version) + "/0.52.0/${file.fileName}"
         }
     }
     msisensorpro_list {
@@ -492,7 +492,7 @@ output {
     }
     salmon_index {
         path { meta, file ->
-            file >> "${meta.species}/${meta.source}/${meta.genome}/Sequence/SalmonIndex/" + (meta.source_version == 'unknown' ? '' : meta.source_version) + "/1.10.3"
+            file >> "${meta.species}/${meta.source}/${meta.genome}/Sequence/SalmonIndex/" + (meta.source_version == 'unknown' ? '' : meta.source_version) + "/2.7.0"
         }
     }
     snapaligner_index {
