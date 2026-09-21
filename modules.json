@@ -22,7 +22,7 @@
                     },
                     "bwamem2/index": {
                         "branch": "master",
-                        "git_sha": "62ce917fd775aaef732eb82019de069c765adfd3",
+                        "git_sha": "8327445b5266b0df32212e5c27407546d100429f",
                         "installed_by": ["modules"]
                     },
                     "dragmap/hashtable": {
@@ -69,7 +69,7 @@
                     },
                     "kallisto/index": {
                         "branch": "master",
-                        "git_sha": "6d46786420b4d7bc88eba026eb389c0c5535d120",
+                        "git_sha": "53daf6285b9fbf1164b4dcab41da6e70e1f2f721",
                         "installed_by": ["modules"]
                     },
                     "msisensorpro/scan": {
@@ -90,7 +90,7 @@
                     },
                     "salmon/index": {
                         "branch": "master",
-                        "git_sha": "6d46786420b4d7bc88eba026eb389c0c5535d120",
+                        "git_sha": "53daf6285b9fbf1164b4dcab41da6e70e1f2f721",
                         "installed_by": ["modules"],
                         "patch": "modules/nf-core/salmon/index/salmon-index.diff"
                     },

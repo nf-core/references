@@ -55,6 +55,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - [#147](https://github.com/nf-core/references/pull/147) - Template update for nf-core/tools v4.1.0
 - [#150](https://github.com/nf-core/references/pull/150) - Replace `branch` with `filter` + `map` in datasheet_to_channel
 - [#151](https://github.com/nf-core/references/pull/151) - Enable static typing and replace `collectFile` with `WRITE_FILE`
+- [#153](https://github.com/nf-core/references/pull/153) - Update modules
 
 ### Removed
 
@@ -87,6 +88,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 | --htslib          |             | 1.22.1      |
 | --samtools        |             | 1.22.1      |
 | dragmap           | 1.3.0       | 1.2.1       |
+| kallisto          | 0.51.1      | 0.52.0      |
 | gatk4             | 4.6.1.0     | 4.7.0.0     |
 | gawk              | 5.3.0       | 5.3.1       |
 | hisat2            | 2.2.1       | 2.2.3       |
@@ -96,6 +98,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 | msisensorpro/scan | 1.2.0       | 1.3.0       |
 | samtools          | 1.21        | 1.24        |
 | --htslib          | 1.21        | 1.24        |
+| salmon            | 1.10.3      | 2.7.0       |
 | snapaligner       |             | 2.0.5       |
 | star              |             |             |
 | --htslib          | 1.20        | 1.21        |

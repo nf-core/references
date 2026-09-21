@@ -53,7 +53,7 @@ workflow PREPARE_GENOME_RNASEQ {
 
     KALLISTO_INDEX(transcript_fasta.filter { meta, _transcript_fasta -> 'kallisto' in tools && meta.run_kallisto })
 
-    SALMON_INDEX(join_by_meta_id(fasta, transcript_fasta.filter { meta, _transcript_fasta -> 'salmon' in tools && meta.run_salmon }))
+    SALMON_INDEX(join_by_meta_id(transcript_fasta, fasta.filter { meta, _fasta -> 'salmon' in tools && meta.run_salmon }))
 
     RSEM_PREPAREREFERENCE_GENOME(join_by_meta_id(fasta.filter { meta, _fasta -> 'rsem' in tools && meta.run_rsem }, gtf))
 
