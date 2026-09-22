@@ -61,6 +61,28 @@ Remove specific tools from the final selection (overrides bundles and `--tools`)
 --tools_bundle all --skip_tools dragmap,tabix
 ```
 
+## HISAT2 index options
+
+### `--hisat2_skip_splice_sites`
+
+HISAT2 normally includes splice sites and exons in the index for eukaryotic genomes. Use this flag to skip splice site extraction for prokaryotic genomes like _E. coli_:
+
+```bash
+--tools hisat2 --hisat2_skip_splice_sites
+```
+
+Without this flag, the pipeline tries to extract splice sites from the GTF and pass them to `hisat2-build`. For prokaryotic genomes with no introns, this produces an empty splice sites file and HISAT2 fails. This flag skips that step.
+
+### `--hisat2_build_memory`
+
+Set the memory threshold for splice-aware indexing:
+
+```bash
+--hisat2_build_memory '100.GB'
+```
+
+When process memory is at least this threshold, HISAT2 uses splice sites and exons. Below it, HISAT2 builds the index without splice information.
+
 ## Asset input
 
 You will need to create an asset yaml file with information about the genome(s) and files to use for building references before running the pipeline.

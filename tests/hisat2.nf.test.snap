@@ -48,7 +48,87 @@
                 "multiqc_citations.txt:md5,4c806e63a283ec1b7e78cdae3a923d4f"
             ]
         ],
-        "timestamp": "2026-08-31T18:29:00.3068845",
+        "timestamp": "2026-09-22T16:42:48.268974979",
+        "meta": {
+            "nf-test": "0.9.5",
+            "nextflow": "26.08.0"
+        }
+    },
+    "-profile test --tools hisat2 --hisat2_skip_splice_sites - E.Coli": {
+        "content": [
+            6,
+            {
+                "GFFREAD": {
+                    "gffread": "0.12.7"
+                },
+                "NCBIDATASETSCLI_DATASETS": {
+                    "gunzip": "1.12",
+                    "ncbidatasetscli": "18.25.0"
+                }
+            },
+            [
+                "Escherichia_coli",
+                "Escherichia_coli/NCBI",
+                "Escherichia_coli/NCBI/K12_MG1655",
+                "Escherichia_coli/NCBI/K12_MG1655/Annotation",
+                "Escherichia_coli/NCBI/K12_MG1655/Annotation/Genes",
+                "Escherichia_coli/NCBI/K12_MG1655/Annotation/Genes/K12_MG1655.gtf",
+                "Escherichia_coli/NCBI/K12_MG1655/Annotation/Genes/genomic.gff",
+                "Escherichia_coli/NCBI/K12_MG1655/Sequence",
+                "Escherichia_coli/NCBI/K12_MG1655/Sequence/WholeGenomeFasta",
+                "Escherichia_coli/NCBI/K12_MG1655/Sequence/WholeGenomeFasta/GCF_000005845.2_ASM584v2_genomic.fna",
+                "multiqc",
+                "multiqc/multiqc_data",
+                "multiqc/multiqc_data/llms-full.txt",
+                "multiqc/multiqc_data/multiqc.log",
+                "multiqc/multiqc_data/multiqc.parquet",
+                "multiqc/multiqc_data/multiqc_citations.txt",
+                "multiqc/multiqc_data/multiqc_data.json",
+                "multiqc/multiqc_data/multiqc_software_versions.txt",
+                "multiqc/multiqc_data/multiqc_sources.txt",
+                "multiqc/multiqc_report.html",
+                "pipeline_info",
+                "pipeline_info/nf_core_references_software_mqc_versions.yml"
+            ],
+            [
+                "K12_MG1655.gtf:md5,828fb8b76da39099e24dd49c11c37026",
+                "genomic.gff:md5,837628601d3bbf74c218716d7ea2df86",
+                "GCF_000005845.2_ASM584v2_genomic.fna:md5,92c997bcd88e983ffdb21b2712ed3736",
+                "multiqc_citations.txt:md5,4c806e63a283ec1b7e78cdae3a923d4f"
+            ]
+        ],
+        "timestamp": "2026-09-22T16:29:02.083049203",
+        "meta": {
+            "nf-test": "0.9.5",
+            "nextflow": "26.08.0"
+        }
+    },
+    "-profile test --tools hisat2 - E.Coli no hisat2_skip_splice_sites - fails": {
+        "content": [
+            5,
+            [
+                "Escherichia_coli",
+                "Escherichia_coli/NCBI",
+                "Escherichia_coli/NCBI/K12_MG1655",
+                "Escherichia_coli/NCBI/K12_MG1655/Annotation",
+                "Escherichia_coli/NCBI/K12_MG1655/Annotation/Genes",
+                "Escherichia_coli/NCBI/K12_MG1655/Annotation/Genes/K12_MG1655.gtf",
+                "Escherichia_coli/NCBI/K12_MG1655/Annotation/Genes/genomic.gff",
+                "Escherichia_coli/NCBI/K12_MG1655/Sequence",
+                "Escherichia_coli/NCBI/K12_MG1655/Sequence/SpliceSites",
+                "Escherichia_coli/NCBI/K12_MG1655/Sequence/SpliceSites/K12_MG1655.splice_sites.txt",
+                "Escherichia_coli/NCBI/K12_MG1655/Sequence/WholeGenomeFasta",
+                "Escherichia_coli/NCBI/K12_MG1655/Sequence/WholeGenomeFasta/GCF_000005845.2_ASM584v2_genomic.fna",
+                "pipeline_info"
+            ],
+            [
+                "K12_MG1655.gtf:md5,828fb8b76da39099e24dd49c11c37026",
+                "genomic.gff:md5,837628601d3bbf74c218716d7ea2df86",
+                "K12_MG1655.splice_sites.txt:md5,d41d8cd98f00b204e9800998ecf8427e",
+                "GCF_000005845.2_ASM584v2_genomic.fna:md5,92c997bcd88e983ffdb21b2712ed3736"
+            ]
+        ],
+        "timestamp": "2026-09-22T16:49:19.341152538",
         "meta": {
             "nf-test": "0.9.5",
             "nextflow": "26.08.0"
@@ -116,7 +196,7 @@
                 "multiqc_citations.txt:md5,4c806e63a283ec1b7e78cdae3a923d4f"
             ]
         ],
-        "timestamp": "2026-09-01T16:38:31.084446326",
+        "timestamp": "2026-09-22T16:44:02.471513343",
         "meta": {
             "nf-test": "0.9.5",
             "nextflow": "26.08.0"
