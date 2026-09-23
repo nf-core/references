@@ -14,8 +14,6 @@ workflow REFERENCES {
     tools // List: Can contain any combination of tools
     hisat2_build_memory
     hisat2_skip_splice_sites
-    star_sjdbOverhang
-    star_genomeSAindexNbases
 
     main:
     // Create references for rnaseq based pipelines such as nf-core/riboseq, nf-core/rnaseq, nf-core/rnavar
@@ -29,8 +27,6 @@ workflow REFERENCES {
         tools,
         hisat2_build_memory,
         hisat2_skip_splice_sites,
-        star_sjdbOverhang,
-        star_genomeSAindexNbases,
     )
 
     // Create references for dnaseq based pipelines such as nf-core/sarek

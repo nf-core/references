@@ -133,8 +133,6 @@ workflow NFCORE_REFERENCES {
         tools,
         params.hisat2_build_memory,
         params.hisat2_skip_splice_sites,
-        params.star_sjdbOverhang,
-        params.star_genomeSAindexNbases,
     )
 
     emit:
