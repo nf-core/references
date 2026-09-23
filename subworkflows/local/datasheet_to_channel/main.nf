@@ -53,6 +53,10 @@ workflow DATASHEET_TO_CHANNEL {
             meta_extra += record(run_salmon: meta.salmon_index ? false : true)
             meta_extra += record(run_star: meta.star_index ? false : true)
             meta_extra += record(run_snapaligner: meta.snapaligner_index ? false : true)
+            // Add species-specific parameters if present
+            if (meta.params) {
+                meta_extra += record(params: meta.params)
+            }
             [reduceMeta(meta) + meta_extra, meta.fasta.contains('ncbi.nlm.nih.gov') ? meta.fasta : file(meta.fasta, checkIfExists: true)]
         }
 

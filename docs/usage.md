@@ -83,6 +83,91 @@ Set the memory threshold for splice-aware indexing:
 
 When process memory is at least this threshold, HISAT2 uses splice sites and exons. Below it, HISAT2 builds the index without splice information.
 
+## STAR index options
+
+### Species-specific STAR parameters
+
+STAR splice-aware alignment requires parameters tuned to genome architecture. This pipeline allows both global command-line specification and per-genome configuration in the asset file.
+
+#### Supported parameters
+
+- **`sjdbOverhang`**: Length of donor and acceptor splice site anchors; typically 1 bp less than read length
+- **`genomeSAindexNbases`**: Length of suffix array pre-indexing string
+
+#### Parameter precedence
+
+Parameters are applied in order of priority (highest to lowest):
+
+1. Command-line parameters (`--star_sjdbOverhang`, `--star_genomeSAindexNbases`)
+2. Per-genome parameters in the asset file (under `params.star`)
+3. Pipeline defaults (auto-calculated for `genomeSAindexNbases`, no default for `sjdbOverhang`)
+
+#### Using command-line parameters
+
+Apply parameters to all genomes globally:
+
+```bash
+nextflow run nf-core/references \
+  --input ./asset.yml \
+  --outdir ./results \
+  --tools star \
+  --star_sjdbOverhang 99 \
+  --star_genomeSAindexNbases 14 \
+  -profile docker
+```
+
+#### Using per-genome parameters in asset file
+
+Specify different parameters for different species in a single asset YAML:
+
+```yaml
+genomes:
+  - id: Homo_sapiens.GRCh38
+    fasta: /path/to/genome.fa
+    gtf: /path/to/annotation.gtf
+    params:
+      star:
+        sjdbOverhang: 99
+        genomeSAindexNbases: 14
+      notes:
+        avg_exon_length: 170
+        description: "Human genome; mammals have longer exons"
+
+  - id: Drosophila_melanogaster.BDGP6
+    fasta: /path/to/genome.fa
+    gtf: /path/to/annotation.gtf
+    params:
+      star:
+        sjdbOverhang: 74
+        genomeSAindexNbases: 11
+      notes:
+        avg_exon_length: 280
+        description: "Fruit fly; compact genome with shorter exons"
+
+  - id: Arabidopsis_thaliana.TAIR10
+    fasta: /path/to/genome.fa
+    gtf: /path/to/annotation.gtf
+    params:
+      star:
+        sjdbOverhang: 75
+        genomeSAindexNbases: 12
+      notes:
+        avg_exon_length: 240
+        description: "Plant genome; variable exon structure"
+```
+
+#### Recommended parameters by organism
+
+| Organism    | Example             | sjdbOverhang | genomeSAindexNbases | Notes                                         |
+| ----------- | ------------------- | ------------ | ------------------- | --------------------------------------------- |
+| Mammals     | Human, mouse        | 99           | 14                  | Large genomes, long exons                     |
+| Insects     | Fruit fly, mosquito | 74           | 11                  | Compact genomes, shorter exons                |
+| Plants      | Arabidopsis, rice   | 50-100       | 12                  | Variable exon structure                       |
+| Fungi       | Yeast, Aspergillus  | 60-75        | 12                  | Compact genomes                               |
+| Prokaryotes | E. coli, Bacillus   | 50           | 10                  | Very compact, few introns; use HISAT2 instead |
+
+The `sjdbOverhang` value should match or be 1 bp less than your read length (99 for 100 bp reads). When `genomeSAindexNbases` is not specified, the pipeline calculates it as log2(genome_size)/2-1, capped at 14. For very large genomes (>1 billion bp), use 14; for small genomes (<300 Mb), use 10-12.
+
 ## Asset input
 
 You will need to create an asset yaml file with information about the genome(s) and files to use for building references before running the pipeline.
