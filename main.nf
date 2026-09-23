@@ -206,6 +206,12 @@ params {
     // Skip splice site extraction and usage for HISAT2 index building. Useful for prokaryotic genomes where splice sites are not applicable.
     hisat2_skip_splice_sites: Boolean = false
 
+    // Length of donor and acceptor splice site anchors for the STAR splice junction database; typically 1 bp less than read length.
+    star_sjdbOverhang: Integer?
+
+    // Length of suffix array pre-indexing string for STAR genome indexing.
+    star_genomeSAindexNbases: Integer?
+
     // Git commit id for Institutional configs.
     custom_config_version: String = 'master'
 

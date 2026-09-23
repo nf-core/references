@@ -53,6 +53,13 @@ workflow DATASHEET_TO_CHANNEL {
             meta_extra += record(run_salmon: meta.salmon_index ? false : true)
             meta_extra += record(run_star: meta.star_index ? false : true)
             meta_extra += record(run_snapaligner: meta.snapaligner_index ? false : true)
+            // Add species-specific STAR parameters if present
+            if (meta.star_sjdbOverhang) {
+                meta_extra += record(star_sjdbOverhang: meta.star_sjdbOverhang)
+            }
+            if (meta.star_genomeSAindexNbases) {
+                meta_extra += record(star_genomeSAindexNbases: meta.star_genomeSAindexNbases)
+            }
             [reduceMeta(meta) + meta_extra, meta.fasta.contains('ncbi.nlm.nih.gov') ? meta.fasta : file(meta.fasta, checkIfExists: true)]
         }
 

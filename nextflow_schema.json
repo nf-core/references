@@ -82,6 +82,21 @@
                     "fa_icon": "fas fa-toolbox",
                     "default": false
                 },
+                "star_sjdbOverhang": {
+                    "type": "integer",
+                    "description": "Length of donor and acceptor splice site anchors for the STAR splice junction database; typically 1 bp less than read length.",
+                    "fa_icon": "fas fa-dna",
+                    "help_text": "Typical values: 99 for mammals (100 bp reads), 74 for insects, 50-100 for plants. Overrides per-genome values from the input datasheet; falls back to STAR defaults when neither is set.",
+                    "minimum": 1
+                },
+                "star_genomeSAindexNbases": {
+                    "type": "integer",
+                    "description": "Length of suffix array pre-indexing string for STAR genome indexing.",
+                    "fa_icon": "fas fa-dna",
+                    "help_text": "Typical values: 14 for large genomes (>500M bp), 11 for compact genomes (<300M bp). If not specified, calculated as log2(genome_size)/2-1, capped at 14. Overrides per-genome values from the input datasheet; falls back to STAR defaults when neither is set.",
+                    "minimum": 1,
+                    "maximum": 14
+                },
                 "hisat2_build_memory": {
                     "type": "string",
                     "description": "Memory threshold for HISAT2 index building. When available process memory meets or exceeds this value, splice sites and exons are used to build a splice-aware index.",

@@ -358,6 +358,19 @@
                 "type": "string",
                 "pattern": "^\\S+$",
                 "errorMessage": "Source of pon must be a string value that does not contain spaces"
+            },
+            "star_sjdbOverhang": {
+                "meta": ["star_sjdbOverhang"],
+                "type": "integer",
+                "minimum": 1,
+                "errorMessage": "STAR sjdbOverhang must be a positive integer"
+            },
+            "star_genomeSAindexNbases": {
+                "meta": ["star_genomeSAindexNbases"],
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 14,
+                "errorMessage": "STAR genomeSAindexNbases must be an integer between 1 and 14"
             }
         },
         "required": ["genome"]
