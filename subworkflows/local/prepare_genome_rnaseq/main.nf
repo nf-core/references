@@ -21,6 +21,8 @@ workflow PREPARE_GENOME_RNASEQ {
     tools // List: tools to build references for
     hisat2_build_memory
     hisat2_skip_splice_sites
+    star_sjdbOverhang
+    star_genomeSAindexNbases
 
     main:
 

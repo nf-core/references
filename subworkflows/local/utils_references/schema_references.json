@@ -359,42 +359,18 @@
                 "pattern": "^\\S+$",
                 "errorMessage": "Source of pon must be a string value that does not contain spaces"
             },
-            "params": {
-                "type": "object",
-                "description": "Species-specific parameters for reference generation",
-                "properties": {
-                    "star": {
-                        "type": "object",
-                        "description": "STAR aligner parameters",
-                        "properties": {
-                            "sjdbOverhang": {
-                                "type": "integer",
-                                "description": "Length of donor and acceptor splice site anchors; typically 99 for mammals, 74 for insects, 50-100 for plants",
-                                "minimum": 1
-                            },
-                            "genomeSAindexNbases": {
-                                "type": "integer",
-                                "description": "Length of suffix array pre-indexing string; typically 14 for large genomes, 11 for compact genomes",
-                                "minimum": 1,
-                                "maximum": 14
-                            }
-                        }
-                    },
-                    "notes": {
-                        "type": "object",
-                        "description": "Informational notes about the genome (not used for index building)",
-                        "properties": {
-                            "avg_exon_length": {
-                                "type": "number",
-                                "description": "Average exon length in base pairs"
-                            },
-                            "description": {
-                                "type": "string",
-                                "description": "Genome characteristics"
-                            }
-                        }
-                    }
-                }
+            "star_sjdbOverhang": {
+                "meta": ["star_sjdbOverhang"],
+                "type": "integer",
+                "minimum": 1,
+                "errorMessage": "STAR sjdbOverhang must be a positive integer"
+            },
+            "star_genomeSAindexNbases": {
+                "meta": ["star_genomeSAindexNbases"],
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 14,
+                "errorMessage": "STAR genomeSAindexNbases must be an integer between 1 and 14"
             }
         },
         "required": ["genome"]

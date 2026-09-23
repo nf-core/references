@@ -85,88 +85,60 @@ When process memory is at least this threshold, HISAT2 uses splice sites and exo
 
 ## STAR index options
 
-### Species-specific STAR parameters
+### `--star_sjdbOverhang`
 
-STAR splice-aware alignment requires parameters tuned to genome architecture. This pipeline allows both global command-line specification and per-genome configuration in the asset file.
+Length of donor and acceptor splice site anchors for the STAR splice junction database.
 
-#### Supported parameters
+Default behaviour: STAR auto-calculates this from read length.
 
-- **`sjdbOverhang`**: Length of donor and acceptor splice site anchors; typically 1 bp less than read length
-- **`genomeSAindexNbases`**: Length of suffix array pre-indexing string
+Typical values:
 
-#### Parameter precedence
+- 99 bp for mammals with 100 bp reads
+- 74 bp for insects
+- 50–100 bp for plants
+- 1 bp less than read length (general rule)
 
-Parameters are applied in order of priority (highest to lowest):
-
-1. Command-line parameters (`--star_sjdbOverhang`, `--star_genomeSAindexNbases`)
-2. Per-genome parameters in the asset file (under `params.star`)
-3. Pipeline defaults (auto-calculated for `genomeSAindexNbases`, no default for `sjdbOverhang`)
-
-#### Using command-line parameters
-
-Apply parameters to all genomes globally:
+Set a fixed value with:
 
 ```bash
-nextflow run nf-core/references \
-  --input ./asset.yml \
-  --outdir ./results \
-  --tools star \
-  --star_sjdbOverhang 99 \
-  --star_genomeSAindexNbases 14 \
-  -profile docker
+--tools star --star_sjdbOverhang 99
 ```
 
-#### Using per-genome parameters in asset file
+### `--star_genomeSAindexNbases`
 
-Specify different parameters for different species in a single asset YAML:
+Length of the suffix array pre-indexing string. Larger values use more memory during indexing but produce smaller indices.
+
+Default behaviour: STAR calculates this as `log2(genome_size)/2 - 1`, capped at 14.
+
+Typical values:
+
+- 14 for large genomes (>500 Mb)
+- 11 for compact genomes (<300 Mb)
+
+Set a specific value with:
+
+```bash
+--tools star --star_genomeSAindexNbases 14
+```
+
+### Per-genome STAR parameters
+
+Specify `star_sjdbOverhang` and `star_genomeSAindexNbases` per genome in your YAML asset file:
 
 ```yaml
-genomes:
-  - id: Homo_sapiens.GRCh38
-    fasta: /path/to/genome.fa
-    gtf: /path/to/annotation.gtf
-    params:
-      star:
-        sjdbOverhang: 99
-        genomeSAindexNbases: 14
-      notes:
-        avg_exon_length: 170
-        description: "Human genome; mammals have longer exons"
-
-  - id: Drosophila_melanogaster.BDGP6
-    fasta: /path/to/genome.fa
-    gtf: /path/to/annotation.gtf
-    params:
-      star:
-        sjdbOverhang: 74
-        genomeSAindexNbases: 11
-      notes:
-        avg_exon_length: 280
-        description: "Fruit fly; compact genome with shorter exons"
-
-  - id: Arabidopsis_thaliana.TAIR10
-    fasta: /path/to/genome.fa
-    gtf: /path/to/annotation.gtf
-    params:
-      star:
-        sjdbOverhang: 75
-        genomeSAindexNbases: 12
-      notes:
-        avg_exon_length: 240
-        description: "Plant genome; variable exon structure"
+- genome: GRCh38
+  species: Homo_sapiens
+  fasta: https://example.com/GRCh38.fa
+  gtf: https://example.com/GRCh38.gtf
+  star_sjdbOverhang: 99
+  star_genomeSAindexNbases: 14
 ```
 
-#### Recommended parameters by organism
+Parameter precedence (highest to lowest):
 
-| Organism    | Example             | sjdbOverhang | genomeSAindexNbases | Notes                                         |
-| ----------- | ------------------- | ------------ | ------------------- | --------------------------------------------- |
-| Mammals     | Human, mouse        | 99           | 14                  | Large genomes, long exons                     |
-| Insects     | Fruit fly, mosquito | 74           | 11                  | Compact genomes, shorter exons                |
-| Plants      | Arabidopsis, rice   | 50-100       | 12                  | Variable exon structure                       |
-| Fungi       | Yeast, Aspergillus  | 60-75        | 12                  | Compact genomes                               |
-| Prokaryotes | E. coli, Bacillus   | 50           | 10                  | Very compact, few introns; use HISAT2 instead |
-
-The `sjdbOverhang` value should match or be 1 bp less than your read length (99 for 100 bp reads). When `genomeSAindexNbases` is not specified, the pipeline calculates it as log2(genome_size)/2-1, capped at 14. For very large genomes (>1 billion bp), use 14; for small genomes (<300 Mb), use 10-12.
+1. CLI parameters (`--star_sjdbOverhang`, `--star_genomeSAindexNbases`)
+2. Per-genome parameters in YAML
+3. STAR defaults (auto-calculated)
 
 ## Asset input
 
