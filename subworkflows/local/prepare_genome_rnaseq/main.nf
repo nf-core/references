@@ -20,6 +20,7 @@ workflow PREPARE_GENOME_RNASEQ {
     transcript_fasta // channel: [meta, transcript_fasta]
     tools // List: tools to build references for
     hisat2_build_memory
+    hisat2_skip_splice_sites
 
     main:
 
@@ -41,7 +42,7 @@ workflow PREPARE_GENOME_RNASEQ {
         .groupTuple()
         .map { meta, gtf_ -> gtf_[1] ? [meta, gtf_[1]] : [meta, gtf_[0]] }
 
-    HISAT2_EXTRACTSPLICESITES(gtf.filter { meta, _gtf -> ('hisat2' in tools || 'hisat2_extractsplicesites' in tools) && meta.run_hisat2 })
+    HISAT2_EXTRACTSPLICESITES(gtf.filter { meta, _gtf -> ('hisat2' in tools || 'hisat2_extractsplicesites' in tools) && meta.run_hisat2 && !hisat2_skip_splice_sites })
 
     splice_sites = splice_sites.mix(HISAT2_EXTRACTSPLICESITES.out.txt)
 

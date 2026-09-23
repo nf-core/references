@@ -132,6 +132,7 @@ workflow NFCORE_REFERENCES {
         DATASHEET_TO_CHANNEL.out.vcf,
         tools,
         params.hisat2_build_memory,
+        params.hisat2_skip_splice_sites,
     )
 
     emit:
@@ -201,6 +202,9 @@ params {
 
     // Memory threshold for HISAT2 index building. When available process memory meets or exceeds this value, splice sites and exons are used to build a splice-aware index.
     hisat2_build_memory: String = '200.GB'
+
+    // Skip splice site extraction and usage for HISAT2 index building. Useful for prokaryotic genomes where splice sites are not applicable.
+    hisat2_skip_splice_sites: Boolean = false
 
     // Git commit id for Institutional configs.
     custom_config_version: String = 'master'

@@ -88,6 +88,12 @@
                     "fa_icon": "fas fa-memory",
                     "default": "200.GB",
                     "pattern": "^[0-9]+\\.?[0-9]*\\.?[GMK]B$"
+                },
+                "hisat2_skip_splice_sites": {
+                    "type": "boolean",
+                    "description": "Skip splice site extraction and usage for HISAT2 index building. Useful for prokaryotic genomes where splice sites are not applicable.",
+                    "fa_icon": "fas fa-ban",
+                    "default": false
                 }
             }
         },
