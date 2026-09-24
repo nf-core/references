@@ -158,7 +158,7 @@ workflow DATASHEET_TO_CHANNEL {
             known_snps,
             pon,
         )
-        .transpose()
+        .flatMap { meta, vcfs -> vcfs instanceof Path ? [[meta, vcfs]] : vcfs.toList().collect { vcf_ -> [meta, vcf_] } }
 
     emit:
     ascat_alleles    = ascat_alleles // channel: [meta, *.ascat_alleles.txt]
