@@ -60,11 +60,11 @@ workflow NFCORE_REFERENCES {
 
     ncbi_download_input = fasta_download_input.to_download
         .mix(gff_download_input.to_download, gtf_download_input.to_download)
-        .map { meta, _file ->
-            [meta.source_version, meta.reference, meta]
-        }
-        .groupTuple()
-        .map { acc, ref_types, metas ->
+        .map { meta, _file -> [meta.source_version, [meta.reference, meta]] }
+        .groupBy()
+        .map { acc, entries ->
+            def ref_types = entries.collect { entry -> entry[0] }
+            def metas = entries.collect { entry -> entry[1] }
             def includes = ref_types
                 .collect { reference_ ->
                     reference_ == 'fasta'

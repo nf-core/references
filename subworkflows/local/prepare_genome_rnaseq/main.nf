@@ -39,7 +39,7 @@ workflow PREPARE_GENOME_RNASEQ {
 
     gtf = gtf
         .mix(GFFREAD.out.gtf)
-        .groupTuple()
+        .groupBy()
         .map { meta, gtf_ -> gtf_[1] ? [meta, gtf_[1]] : [meta, gtf_[0]] }
 
     HISAT2_EXTRACTSPLICESITES(gtf.filter { meta, _gtf -> ('hisat2' in tools || 'hisat2_extractsplicesites' in tools) && meta.run_hisat2 && !hisat2_skip_splice_sites })

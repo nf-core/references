@@ -57,6 +57,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - [#150](https://github.com/nf-core/references/pull/150) - Replace `branch` with `filter` + `map` in datasheet_to_channel
 - [#151](https://github.com/nf-core/references/pull/151) - Enable static typing and replace `collectFile` with `WRITE_FILE`
 - [#153](https://github.com/nf-core/references/pull/153) - Update modules
+- [#155](https://github.com/nf-core/references/pull/155) - Replace legacy `groupTuple` and `transpose` operators with `groupBy` and `flatMap`
 
 ### Removed
 
