@@ -27,51 +27,51 @@ workflow PREPARE_GENOME_RNASEQ {
     run_faidx = 'faidx' in tools
     run_sizes = 'sizes' in tools
 
-    BOWTIE1_BUILD(fasta.filter { meta, _fasta -> 'bowtie1' in tools && meta.run_bowtie1 })
+    ch_bowtie1_build = BOWTIE1_BUILD(fasta.filter { meta, _fasta -> 'bowtie1' in tools && meta.run_bowtie1 })
 
-    BOWTIE2_BUILD(fasta.filter { meta, _fasta -> 'bowtie2' in tools && meta.run_bowtie2 })
+    ch_bowtie2_build = BOWTIE2_BUILD(fasta.filter { meta, _fasta -> 'bowtie2' in tools && meta.run_bowtie2 })
 
-    SAMTOOLS_FAIDX(fasta.filter { meta, _fasta -> (run_faidx || run_sizes) && meta.run_faidx }.map { meta, fasta_ -> [meta, fasta_, []] }, run_sizes)
+    ch_samtools_faidx = SAMTOOLS_FAIDX(fasta.filter { meta, _fasta -> (run_faidx || run_sizes) && meta.run_faidx }.map { meta, fasta_ -> [meta, fasta_, []] }, run_sizes)
 
-    fasta_fai = fasta_fai.mix(SAMTOOLS_FAIDX.out.fai)
+    fasta_fai = fasta_fai.mix(ch_samtools_faidx.fai)
 
-    GFFREAD(join_by_meta_id(fasta, gff.filter { meta, _gff -> ('hisat2' in tools || 'kallisto' in tools || 'rsem' in tools || 'rsem_make_transcript_fasta' in tools || 'salmon' in tools || 'star' in tools) && meta.run_gffread }))
+    ch_gffread = GFFREAD(join_by_meta_id(fasta, gff.filter { meta, _gff -> ('hisat2' in tools || 'kallisto' in tools || 'rsem' in tools || 'rsem_make_transcript_fasta' in tools || 'salmon' in tools || 'star' in tools) && meta.run_gffread }))
 
     gtf = gtf
-        .mix(GFFREAD.out.gtf)
+        .mix(ch_gffread.gtf)
         .groupBy()
         .map { meta, gtf_ -> gtf_[1] ? [meta, gtf_[1]] : [meta, gtf_[0]] }
 
-    HISAT2_EXTRACTSPLICESITES(gtf.filter { meta, _gtf -> ('hisat2' in tools || 'hisat2_extractsplicesites' in tools) && meta.run_hisat2 && !hisat2_skip_splice_sites })
+    ch_hisat2_extractsplicesites = HISAT2_EXTRACTSPLICESITES(gtf.filter { meta, _gtf -> ('hisat2' in tools || 'hisat2_extractsplicesites' in tools) && meta.run_hisat2 && !hisat2_skip_splice_sites })
 
-    splice_sites = splice_sites.mix(HISAT2_EXTRACTSPLICESITES.out.txt)
+    splice_sites = splice_sites.mix(ch_hisat2_extractsplicesites.txt)
 
-    HISAT2_BUILD(join_by_meta_id(fasta.filter { meta, _fasta -> 'hisat2' in tools && meta.run_hisat2 }, gtf, splice_sites), hisat2_build_memory)
+    ch_hisat2_build = HISAT2_BUILD(join_by_meta_id(fasta.filter { meta, _fasta -> 'hisat2' in tools && meta.run_hisat2 }, gtf, splice_sites), hisat2_build_memory)
 
-    MAKE_TRANSCRIPTS_FASTA(join_by_meta_id(fasta.filter { meta, _fasta -> 'rsem_make_transcript_fasta' in tools && meta.run_rsem_make_transcript_fasta }, gtf))
+    ch_make_transcripts_fasta = MAKE_TRANSCRIPTS_FASTA(join_by_meta_id(fasta.filter { meta, _fasta -> 'rsem_make_transcript_fasta' in tools && meta.run_rsem_make_transcript_fasta }, gtf))
 
-    transcript_fasta = transcript_fasta.mix(MAKE_TRANSCRIPTS_FASTA.out.transcript_fasta)
+    transcript_fasta = transcript_fasta.mix(ch_make_transcripts_fasta.transcript_fasta)
 
-    KALLISTO_INDEX(transcript_fasta.filter { meta, _transcript_fasta -> 'kallisto' in tools && meta.run_kallisto })
+    ch_kallisto_index = KALLISTO_INDEX(transcript_fasta.filter { meta, _transcript_fasta -> 'kallisto' in tools && meta.run_kallisto })
 
-    SALMON_INDEX(join_by_meta_id(transcript_fasta, fasta.filter { meta, _fasta -> 'salmon' in tools && meta.run_salmon }))
+    ch_salmon_index = SALMON_INDEX(join_by_meta_id(transcript_fasta, fasta.filter { meta, _fasta -> 'salmon' in tools && meta.run_salmon }))
 
-    RSEM_PREPAREREFERENCE_GENOME(join_by_meta_id(fasta.filter { meta, _fasta -> 'rsem' in tools && meta.run_rsem }, gtf))
+    ch_rsem_preparereference_genome = RSEM_PREPAREREFERENCE_GENOME(join_by_meta_id(fasta.filter { meta, _fasta -> 'rsem' in tools && meta.run_rsem }, gtf))
 
-    STAR_GENOMEGENERATE(join_by_meta_id(fasta.filter { meta, _fasta -> 'star' in tools && meta.run_star }, gtf))
+    ch_star_genomegenerate = STAR_GENOMEGENERATE(join_by_meta_id(fasta.filter { meta, _fasta -> 'star' in tools && meta.run_star }, gtf))
 
     emit:
-    bowtie1_index    = BOWTIE1_BUILD.out.index // channel: [meta, BowtieIndex/]
-    bowtie2_index    = BOWTIE2_BUILD.out.index // channel: [meta, Bowtie2Index/]
+    bowtie1_index    = ch_bowtie1_build.index // channel: [meta, BowtieIndex/]
+    bowtie2_index    = ch_bowtie2_build.index // channel: [meta, Bowtie2Index/]
     fasta_fai // channel: [meta, *.fa(sta).fai]
-    fasta_sizes      = SAMTOOLS_FAIDX.out.sizes // channel: [meta, *.fa(sta).sizes]
+    fasta_sizes      = ch_samtools_faidx.sizes // channel: [meta, *.fa(sta).sizes]
     gtf // channel: [meta, gtf]
-    hisat2_index     = HISAT2_BUILD.out.index // channel: [meta, Hisat2Index/]
-    kallisto_index   = KALLISTO_INDEX.out.index // channel: [meta, KallistoIndex]
-    rsem_index       = RSEM_PREPAREREFERENCE_GENOME.out.index // channel: [meta, RSEMIndex/]
-    salmon_index     = SALMON_INDEX.out.index // channel: [meta, SalmonIndex/]
+    hisat2_index     = ch_hisat2_build.index // channel: [meta, Hisat2Index/]
+    kallisto_index   = ch_kallisto_index.index // channel: [meta, KallistoIndex]
+    rsem_index       = ch_rsem_preparereference_genome.index // channel: [meta, RSEMIndex/]
+    salmon_index     = ch_salmon_index.index // channel: [meta, SalmonIndex/]
     splice_sites // channel: [meta, *.splice_sites.txt]
-    star_index       = STAR_GENOMEGENERATE.out.index // channel: [meta, STARIndex/]
+    star_index       = ch_star_genomegenerate.index // channel: [meta, STARIndex/]
     transcript_fasta // channel: [meta, *.transcripts.fasta]
 }
 

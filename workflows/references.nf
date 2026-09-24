@@ -17,7 +17,7 @@ workflow REFERENCES {
 
     main:
     // Create references for rnaseq based pipelines such as nf-core/riboseq, nf-core/rnaseq, nf-core/rnavar
-    PREPARE_GENOME_RNASEQ(
+    ch_prepare_genome_rnaseq = PREPARE_GENOME_RNASEQ(
         fasta,
         fasta_fai,
         gff,
@@ -30,35 +30,35 @@ workflow REFERENCES {
     )
 
     // Create references for dnaseq based pipelines such as nf-core/sarek
-    PREPARE_GENOME_DNASEQ(
+    ch_prepare_genome_dnaseq = PREPARE_GENOME_DNASEQ(
         fasta,
-        fasta_fai.mix(PREPARE_GENOME_RNASEQ.out.fasta_fai).unique(),
+        fasta_fai.mix(ch_prepare_genome_rnaseq.fasta_fai).unique(),
         vcf,
         altliftoverfile,
         tools,
     )
 
     emit:
-    bowtie1_index     = PREPARE_GENOME_RNASEQ.out.bowtie1_index
-    bowtie2_index     = PREPARE_GENOME_RNASEQ.out.bowtie2_index
-    bwamem1_index     = PREPARE_GENOME_DNASEQ.out.bwamem1_index
-    bwamem2_index     = PREPARE_GENOME_DNASEQ.out.bwamem2_index
-    dragmap_hashmap   = PREPARE_GENOME_DNASEQ.out.dragmap_hashmap
+    bowtie1_index     = ch_prepare_genome_rnaseq.bowtie1_index
+    bowtie2_index     = ch_prepare_genome_rnaseq.bowtie2_index
+    bwamem1_index     = ch_prepare_genome_dnaseq.bwamem1_index
+    bwamem2_index     = ch_prepare_genome_dnaseq.bwamem2_index
+    dragmap_hashmap   = ch_prepare_genome_dnaseq.dragmap_hashmap
     fasta
-    fasta_dict        = PREPARE_GENOME_DNASEQ.out.fasta_dict
-    fasta_fai         = PREPARE_GENOME_DNASEQ.out.fasta_fai
-    fasta_sizes       = PREPARE_GENOME_RNASEQ.out.fasta_sizes
+    fasta_dict        = ch_prepare_genome_dnaseq.fasta_dict
+    fasta_fai         = ch_prepare_genome_dnaseq.fasta_fai
+    fasta_sizes       = ch_prepare_genome_rnaseq.fasta_sizes
     gff
-    gtf               = PREPARE_GENOME_RNASEQ.out.gtf
-    hisat2_index      = PREPARE_GENOME_RNASEQ.out.hisat2_index
-    intervals_bed     = PREPARE_GENOME_DNASEQ.out.intervals_bed
-    kallisto_index    = PREPARE_GENOME_RNASEQ.out.kallisto_index
-    msisensorpro_list = PREPARE_GENOME_DNASEQ.out.msisensorpro_list
-    rsem_index        = PREPARE_GENOME_RNASEQ.out.rsem_index
-    salmon_index      = PREPARE_GENOME_RNASEQ.out.salmon_index
-    snapaligner_index = PREPARE_GENOME_DNASEQ.out.snapaligner_index
-    splice_sites      = PREPARE_GENOME_RNASEQ.out.splice_sites
-    star_index        = PREPARE_GENOME_RNASEQ.out.star_index
-    transcript_fasta  = PREPARE_GENOME_RNASEQ.out.transcript_fasta
-    vcf_tbi           = PREPARE_GENOME_DNASEQ.out.vcf_tbi
+    gtf               = ch_prepare_genome_rnaseq.gtf
+    hisat2_index      = ch_prepare_genome_rnaseq.hisat2_index
+    intervals_bed     = ch_prepare_genome_dnaseq.intervals_bed
+    kallisto_index    = ch_prepare_genome_rnaseq.kallisto_index
+    msisensorpro_list = ch_prepare_genome_dnaseq.msisensorpro_list
+    rsem_index        = ch_prepare_genome_rnaseq.rsem_index
+    salmon_index      = ch_prepare_genome_rnaseq.salmon_index
+    snapaligner_index = ch_prepare_genome_dnaseq.snapaligner_index
+    splice_sites      = ch_prepare_genome_rnaseq.splice_sites
+    star_index        = ch_prepare_genome_rnaseq.star_index
+    transcript_fasta  = ch_prepare_genome_rnaseq.transcript_fasta
+    vcf_tbi           = ch_prepare_genome_dnaseq.vcf_tbi
 }
