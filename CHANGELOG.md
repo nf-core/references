@@ -59,6 +59,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - [#151](https://github.com/nf-core/references/pull/151) - Enable static typing and replace `collectFile` with `WRITE_FILE`
 - [#153](https://github.com/nf-core/references/pull/153) - Update modules
 - [#156](https://github.com/nf-core/references/pull/156) - Replace legacy `groupTuple` and `transpose` operators with `groupBy` and `flatMap`
+- [#157](https://github.com/nf-core/references/pull/157) - Replace `.out` channel access with typed workflow return assignment
 
 ### Removed
 

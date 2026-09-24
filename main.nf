@@ -44,19 +44,19 @@ workflow NFCORE_REFERENCES {
 
     main:
 
-    DATASHEET_TO_CHANNEL(references, tools)
+    ch_datasheet = DATASHEET_TO_CHANNEL(references, tools)
 
     // References that need to be extracted
     // (VCFs are not extracted)
-    ascat_alleles_input = need_extract(DATASHEET_TO_CHANNEL.out.ascat_alleles, 'ascat_alleles')
-    ascat_loci_input = need_extract(DATASHEET_TO_CHANNEL.out.ascat_loci, 'ascat_loci')
-    ascat_loci_gc_input = need_extract(DATASHEET_TO_CHANNEL.out.ascat_loci_gc, 'ascat_loci_gc')
-    ascat_loci_rt_input = need_extract(DATASHEET_TO_CHANNEL.out.ascat_loci_rt, 'ascat_loci_rt')
-    chr_dir_input = need_extract(DATASHEET_TO_CHANNEL.out.chr_dir, 'chr_dir')
+    ascat_alleles_input = need_extract(ch_datasheet.ascat_alleles, 'ascat_alleles')
+    ascat_loci_input = need_extract(ch_datasheet.ascat_loci, 'ascat_loci')
+    ascat_loci_gc_input = need_extract(ch_datasheet.ascat_loci_gc, 'ascat_loci_gc')
+    ascat_loci_rt_input = need_extract(ch_datasheet.ascat_loci_rt, 'ascat_loci_rt')
+    chr_dir_input = need_extract(ch_datasheet.chr_dir, 'chr_dir')
 
-    fasta_download_input = need_ncbi_download(DATASHEET_TO_CHANNEL.out.fasta, 'fasta')
-    gff_download_input = need_ncbi_download(DATASHEET_TO_CHANNEL.out.gff, 'gff')
-    gtf_download_input = need_ncbi_download(DATASHEET_TO_CHANNEL.out.gtf, 'gtf')
+    fasta_download_input = need_ncbi_download(ch_datasheet.fasta, 'fasta')
+    gff_download_input = need_ncbi_download(ch_datasheet.gff, 'gff')
+    gtf_download_input = need_ncbi_download(ch_datasheet.gtf, 'gtf')
 
     ncbi_download_input = fasta_download_input.to_download
         .mix(gff_download_input.to_download, gtf_download_input.to_download)
@@ -80,7 +80,7 @@ workflow NFCORE_REFERENCES {
             [merged_meta, includes]
         }
 
-    NCBIDATASETSCLI_DATASETS(ncbi_download_input)
+    ch_ncbidatasetscli_datasets = NCBIDATASETSCLI_DATASETS(ncbi_download_input)
 
     fasta_input = need_extract(fasta_download_input.not_downloaded, 'fasta')
     gff_input = need_extract(gff_download_input.not_downloaded, 'gff')
@@ -100,16 +100,16 @@ workflow NFCORE_REFERENCES {
         )
 
     // Extract references from any archive format
-    ARCHIVE_EXTRACT(archive_to_extract)
+    ch_archive_extract = ARCHIVE_EXTRACT(archive_to_extract)
 
     // return to the appropriate channels
-    extracted_fasta = ARCHIVE_EXTRACT.out.extracted.filter { meta, _ref -> meta.reference == 'fasta' }
-    extracted_gff = ARCHIVE_EXTRACT.out.extracted.filter { meta, _ref -> meta.reference == 'gff' }
-    extracted_gtf = ARCHIVE_EXTRACT.out.extracted.filter { meta, _ref -> meta.reference == 'gtf' }
+    extracted_fasta = ch_archive_extract.extracted.filter { meta, _ref -> meta.reference == 'fasta' }
+    extracted_gff = ch_archive_extract.extracted.filter { meta, _ref -> meta.reference == 'gff' }
+    extracted_gtf = ch_archive_extract.extracted.filter { meta, _ref -> meta.reference == 'gtf' }
 
     // This is a confidence check
     def assigned_references = ['ascat_alleles', 'ascat_loci', 'ascat_loci_gc', 'ascat_loci_rt', 'chr_dir', 'fasta', 'gff', 'gtf'] as Set
-    ARCHIVE_EXTRACT.out.extracted.filter { meta, _ref -> !(meta.reference in assigned_references) }.view { reference -> log.warn("Non assigned extracted reference: " + reference) }
+    ch_archive_extract.extracted.filter { meta, _ref -> !(meta.reference in assigned_references) }.view { reference -> log.warn("Non assigned extracted reference: " + reference) }
 
     // WORKFLOW: Run pipeline
     // Mix the references that were extracted with the references that did not need to be extracted
@@ -117,52 +117,52 @@ workflow NFCORE_REFERENCES {
     // TODO: check if more references need to be extracted
     altliftoverfile = false
 
-    fasta = fasta_input.not_extracted.mix(extracted_fasta, NCBIDATASETSCLI_DATASETS.out.fna.map { meta, file -> [meta + record(reference: 'fasta', file: 'fasta'), file] })
-    gff = gff_input.not_extracted.mix(extracted_gff, NCBIDATASETSCLI_DATASETS.out.gff.map { meta, file -> [meta + record(reference: 'gff', file: 'gff'), file] })
-    gtf = gtf_input.not_extracted.mix(extracted_gtf, NCBIDATASETSCLI_DATASETS.out.gtf.map { meta, file -> [meta + record(reference: 'gtf', file: 'gtf'), file] })
+    fasta = fasta_input.not_extracted.mix(extracted_fasta, ch_ncbidatasetscli_datasets.fna.map { meta, file -> [meta + record(reference: 'fasta', file: 'fasta'), file] })
+    gff = gff_input.not_extracted.mix(extracted_gff, ch_ncbidatasetscli_datasets.gff.map { meta, file -> [meta + record(reference: 'gff', file: 'gff'), file] })
+    gtf = gtf_input.not_extracted.mix(extracted_gtf, ch_ncbidatasetscli_datasets.gtf.map { meta, file -> [meta + record(reference: 'gtf', file: 'gtf'), file] })
 
-    REFERENCES(
+    ch_references = REFERENCES(
         altliftoverfile,
         fasta,
-        DATASHEET_TO_CHANNEL.out.fasta_fai,
+        ch_datasheet.fasta_fai,
         gff,
         gtf,
-        DATASHEET_TO_CHANNEL.out.splice_sites,
-        DATASHEET_TO_CHANNEL.out.transcript_fasta,
-        DATASHEET_TO_CHANNEL.out.vcf,
+        ch_datasheet.splice_sites,
+        ch_datasheet.transcript_fasta,
+        ch_datasheet.vcf,
         tools,
         params.hisat2_build_memory,
         params.hisat2_skip_splice_sites,
     )
 
     emit:
-    ascat_alleles     = ARCHIVE_EXTRACT.out.extracted.filter { meta, _ref -> meta.reference == 'ascat_alleles' }
-    ascat_loci        = ARCHIVE_EXTRACT.out.extracted.filter { meta, _ref -> meta.reference == 'ascat_loci' }
-    ascat_loci_gc     = ARCHIVE_EXTRACT.out.extracted.filter { meta, _ref -> meta.reference == 'ascat_loci_gc' }
-    ascat_loci_rt     = ARCHIVE_EXTRACT.out.extracted.filter { meta, _ref -> meta.reference == 'ascat_loci_rt' }
-    bowtie1_index     = REFERENCES.out.bowtie1_index
-    bowtie2_index     = REFERENCES.out.bowtie2_index
-    bwamem1_index     = REFERENCES.out.bwamem1_index
-    bwamem2_index     = REFERENCES.out.bwamem2_index
-    chr_dir           = ARCHIVE_EXTRACT.out.extracted.filter { meta, _ref -> meta.reference == 'chr_dir' }
-    dragmap_hashmap   = REFERENCES.out.dragmap_hashmap
-    fasta             = extracted_fasta.mix(NCBIDATASETSCLI_DATASETS.out.fna.map { meta, file -> [meta + record(reference: 'fasta', file: 'fasta'), file] })
-    fasta_dict        = REFERENCES.out.fasta_dict
-    fasta_fai         = REFERENCES.out.fasta_fai
-    fasta_sizes       = REFERENCES.out.fasta_sizes
-    gff               = extracted_gff.mix(NCBIDATASETSCLI_DATASETS.out.gff.map { meta, file -> [meta + record(reference: 'gff', file: 'gff'), file] })
-    gtf               = REFERENCES.out.gtf
-    hisat2_index      = REFERENCES.out.hisat2_index
-    intervals_bed     = REFERENCES.out.intervals_bed
-    kallisto_index    = REFERENCES.out.kallisto_index
-    msisensorpro_list = REFERENCES.out.msisensorpro_list
-    rsem_index        = REFERENCES.out.rsem_index
-    salmon_index      = REFERENCES.out.salmon_index
-    snapaligner_index = REFERENCES.out.snapaligner_index
-    splice_sites      = REFERENCES.out.splice_sites
-    star_index        = REFERENCES.out.star_index
-    transcript_fasta  = REFERENCES.out.transcript_fasta
-    vcf_tbi           = REFERENCES.out.vcf_tbi
+    ascat_alleles     = ch_archive_extract.extracted.filter { meta, _ref -> meta.reference == 'ascat_alleles' }
+    ascat_loci        = ch_archive_extract.extracted.filter { meta, _ref -> meta.reference == 'ascat_loci' }
+    ascat_loci_gc     = ch_archive_extract.extracted.filter { meta, _ref -> meta.reference == 'ascat_loci_gc' }
+    ascat_loci_rt     = ch_archive_extract.extracted.filter { meta, _ref -> meta.reference == 'ascat_loci_rt' }
+    bowtie1_index     = ch_references.bowtie1_index
+    bowtie2_index     = ch_references.bowtie2_index
+    bwamem1_index     = ch_references.bwamem1_index
+    bwamem2_index     = ch_references.bwamem2_index
+    chr_dir           = ch_archive_extract.extracted.filter { meta, _ref -> meta.reference == 'chr_dir' }
+    dragmap_hashmap   = ch_references.dragmap_hashmap
+    fasta             = extracted_fasta.mix(ch_ncbidatasetscli_datasets.fna.map { meta, file -> [meta + record(reference: 'fasta', file: 'fasta'), file] })
+    fasta_dict        = ch_references.fasta_dict
+    fasta_fai         = ch_references.fasta_fai
+    fasta_sizes       = ch_references.fasta_sizes
+    gff               = extracted_gff.mix(ch_ncbidatasetscli_datasets.gff.map { meta, file -> [meta + record(reference: 'gff', file: 'gff'), file] })
+    gtf               = ch_references.gtf
+    hisat2_index      = ch_references.hisat2_index
+    intervals_bed     = ch_references.intervals_bed
+    kallisto_index    = ch_references.kallisto_index
+    msisensorpro_list = ch_references.msisensorpro_list
+    rsem_index        = ch_references.rsem_index
+    salmon_index      = ch_references.salmon_index
+    snapaligner_index = ch_references.snapaligner_index
+    splice_sites      = ch_references.splice_sites
+    star_index        = ch_references.star_index
+    transcript_fasta  = ch_references.transcript_fasta
+    vcf_tbi           = ch_references.vcf_tbi
 }
 
 /*
@@ -285,7 +285,7 @@ workflow {
     def tools = defineToolsList(params.tools_bundle, params.tools, params.skip_tools)
 
     // SUBWORKFLOW: Run initialisation tasks
-    PIPELINE_INITIALISATION(
+    ch_pipeline_initialisation = PIPELINE_INITIALISATION(
         params.version,
         params.validate_params,
         params.monochrome_logs,
@@ -301,7 +301,7 @@ workflow {
     )
 
     // WORKFLOW: Run main workflow
-    NFCORE_REFERENCES(PIPELINE_INITIALISATION.out.references, tools)
+    ch_nfcore_references = NFCORE_REFERENCES(ch_pipeline_initialisation.references, tools)
 
     // VERSIONS
     collated_versions = softwareVersionsToYAML(channel.topic('versions'))
@@ -330,7 +330,7 @@ workflow {
 
     multiqc_files = multiqc_files.mix(ch_collected_files)
 
-    MULTIQC(
+    ch_multiqc = MULTIQC(
         multiqc_files.flatten().collect().map { files ->
             [
                 [id: 'references'],
@@ -344,7 +344,7 @@ workflow {
             ]
         }
     )
-    multiqc_report = MULTIQC.out.report.map { _meta, report -> [report] }.toList()
+    multiqc_report = ch_multiqc.report.map { _meta, report -> [report] }.toList()
 
     // SUBWORKFLOW: Run completion tasks
     PIPELINE_COMPLETION(
@@ -353,39 +353,39 @@ workflow {
         params.plaintext_email,
         params.outdir,
         params.monochrome_logs,
-        MULTIQC.out.report.toList(),
+        ch_multiqc.report.toList(),
     )
 
     publish:
-    multiqc           = MULTIQC.out.data.mix(MULTIQC.out.plots, MULTIQC.out.report)
+    multiqc           = ch_multiqc.data.mix(ch_multiqc.plots, ch_multiqc.report)
     versions          = ch_collected_files.filter { file -> file.name.contains('versions') }
-    ascat_alleles     = NFCORE_REFERENCES.out.ascat_alleles
-    ascat_loci        = NFCORE_REFERENCES.out.ascat_loci
-    ascat_loci_gc     = NFCORE_REFERENCES.out.ascat_loci_gc
-    ascat_loci_rt     = NFCORE_REFERENCES.out.ascat_loci_rt
-    bowtie1_index     = NFCORE_REFERENCES.out.bowtie1_index
-    bowtie2_index     = NFCORE_REFERENCES.out.bowtie2_index
-    bwamem1_index     = NFCORE_REFERENCES.out.bwamem1_index
-    bwamem2_index     = NFCORE_REFERENCES.out.bwamem2_index
-    chr_dir           = NFCORE_REFERENCES.out.chr_dir
-    dragmap_hashmap   = NFCORE_REFERENCES.out.dragmap_hashmap
-    fasta             = NFCORE_REFERENCES.out.fasta
-    fasta_dict        = NFCORE_REFERENCES.out.fasta_dict
-    fasta_fai         = NFCORE_REFERENCES.out.fasta_fai
-    fasta_sizes       = NFCORE_REFERENCES.out.fasta_sizes
-    gff               = NFCORE_REFERENCES.out.gff
-    gtf               = NFCORE_REFERENCES.out.gtf
-    hisat2_index      = NFCORE_REFERENCES.out.hisat2_index
-    intervals_bed     = NFCORE_REFERENCES.out.intervals_bed
-    kallisto_index    = NFCORE_REFERENCES.out.kallisto_index
-    msisensorpro_list = NFCORE_REFERENCES.out.msisensorpro_list
-    rsem_index        = NFCORE_REFERENCES.out.rsem_index
-    salmon_index      = NFCORE_REFERENCES.out.salmon_index
-    snapaligner_index = NFCORE_REFERENCES.out.snapaligner_index
-    splice_sites      = NFCORE_REFERENCES.out.splice_sites
-    star_index        = NFCORE_REFERENCES.out.star_index
-    transcript_fasta  = NFCORE_REFERENCES.out.transcript_fasta
-    vcf_tbi           = NFCORE_REFERENCES.out.vcf_tbi
+    ascat_alleles     = ch_nfcore_references.ascat_alleles
+    ascat_loci        = ch_nfcore_references.ascat_loci
+    ascat_loci_gc     = ch_nfcore_references.ascat_loci_gc
+    ascat_loci_rt     = ch_nfcore_references.ascat_loci_rt
+    bowtie1_index     = ch_nfcore_references.bowtie1_index
+    bowtie2_index     = ch_nfcore_references.bowtie2_index
+    bwamem1_index     = ch_nfcore_references.bwamem1_index
+    bwamem2_index     = ch_nfcore_references.bwamem2_index
+    chr_dir           = ch_nfcore_references.chr_dir
+    dragmap_hashmap   = ch_nfcore_references.dragmap_hashmap
+    fasta             = ch_nfcore_references.fasta
+    fasta_dict        = ch_nfcore_references.fasta_dict
+    fasta_fai         = ch_nfcore_references.fasta_fai
+    fasta_sizes       = ch_nfcore_references.fasta_sizes
+    gff               = ch_nfcore_references.gff
+    gtf               = ch_nfcore_references.gtf
+    hisat2_index      = ch_nfcore_references.hisat2_index
+    intervals_bed     = ch_nfcore_references.intervals_bed
+    kallisto_index    = ch_nfcore_references.kallisto_index
+    msisensorpro_list = ch_nfcore_references.msisensorpro_list
+    rsem_index        = ch_nfcore_references.rsem_index
+    salmon_index      = ch_nfcore_references.salmon_index
+    snapaligner_index = ch_nfcore_references.snapaligner_index
+    splice_sites      = ch_nfcore_references.splice_sites
+    star_index        = ch_nfcore_references.star_index
+    transcript_fasta  = ch_nfcore_references.transcript_fasta
+    vcf_tbi           = ch_nfcore_references.vcf_tbi
 }
 
 output {
