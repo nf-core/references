@@ -23,7 +23,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - [#154](https://github.com/nf-core/references/pull/154) - Added `--hisat2_skip_splice_sites` parameter to skip splice site extraction for prokaryotic genomes
 - [#155](https://github.com/nf-core/references/pull/155) - Added species-specific STAR index parameters (`--star_sjdbOverhang`, `--star_genomeSAindexNbases`) with per-genome asset file configuration
 - [#159](https://github.com/nf-core/references/pull/159) - Add release roadmap for rnaseq and sarek consumability
-- [#XXX](https://github.com/nf-core/references/pull/XXX) - Support list-valued VCF fields in datasheets, with positional TBI pairing (null entries trigger index building) and missing `ascat_loci_rt` schema entry
+- [#160](https://github.com/nf-core/references/pull/160) - Support list-valued VCF fields in datasheets, with positional TBI pairing (null entries trigger index building) and missing `ascat_loci_rt` schema entry
 
 ### Changed
 
