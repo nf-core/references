@@ -22,6 +22,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - [#152](https://github.com/nf-core/references/pull/152) - Add `manifest.diagram` to `nextflow.config`
 - [#154](https://github.com/nf-core/references/pull/154) - Added `--hisat2_skip_splice_sites` parameter to skip splice site extraction for prokaryotic genomes
 - [#155](https://github.com/nf-core/references/pull/155) - Added species-specific STAR index parameters (`--star_sjdbOverhang`, `--star_genomeSAindexNbases`) with per-genome asset file configuration
+- [#XXX](https://github.com/nf-core/references/pull/XXX) - Add release roadmap for rnaseq and sarek consumability
 
 ### Changed
 
