@@ -24,7 +24,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - [#155](https://github.com/nf-core/references/pull/155) - Added species-specific STAR index parameters (`--star_sjdbOverhang`, `--star_genomeSAindexNbases`) with per-genome asset file configuration
 - [#159](https://github.com/nf-core/references/pull/159) - Add release roadmap for rnaseq and sarek consumability
 - [#160](https://github.com/nf-core/references/pull/160) - Support list-valued VCF fields in datasheets, with positional TBI pairing (null entries trigger index building) and missing `ascat_loci_rt` schema entry
-- [#XXX](https://github.com/nf-core/references/pull/XXX) - Add `errorMessage` validation messages to `nextflow_schema.json` parameters
+- [#XXX](https://github.com/nf-core/references/pull/161) - Add `errorMessage` validation messages to `nextflow_schema.json` parameters
 
 ### Changed
 
@@ -63,8 +63,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - [#153](https://github.com/nf-core/references/pull/153) - Update modules
 - [#156](https://github.com/nf-core/references/pull/156) - Replace legacy `groupTuple` and `transpose` operators with `groupBy` and `flatMap`
 - [#157](https://github.com/nf-core/references/pull/157) - Replace `.out` channel access with typed workflow return assignment
-- [#XXX](https://github.com/nf-core/references/pull/XXX) - Document `references_base_path` description and igenomes prefix-rewriting behaviour
-- [#XXX](https://github.com/nf-core/references/pull/XXX) - Replace placeholder `TODO` error messages in `schema_references.json`
+- [#XXX](https://github.com/nf-core/references/pull/161) - Document `references_base_path` description and igenomes prefix-rewriting behaviour
+- [#XXX](https://github.com/nf-core/references/pull/161) - Replace placeholder `TODO` error messages in `schema_references.json`
 
 ### Removed
 
@@ -77,7 +77,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - [#90](https://github.com/nf-core/references/pull/90) - Fixed link to GHA CI broken by [87](https://github.com/nf-core/references/pull/87)
 - [#141](https://github.com/nf-core/references/pull/141) - Fix snapaligner index generation when no alt liftover file is provided
 - [#149](https://github.com/nf-core/references/pull/149) - Fix params access
-- [#XXX](https://github.com/nf-core/references/pull/XXX) - Fix `input` mimetype from `text/csv` to `text/yaml`
+- [#XXX](https://github.com/nf-core/references/pull/161) - Fix `input` mimetype from `text/csv` to `text/yaml`
 
 ### Dependencies
 
