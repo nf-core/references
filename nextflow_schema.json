@@ -36,23 +36,23 @@
                     "description": "Select a predefined bundle of tools to build references for.",
                     "help_text": "Available bundles: 'all' (all available tools), 'rnaseq' (bowtie1, bowtie2, faidx, gffread, hisat2, hisat2_extractsplicesites, kallisto, rsem, rsem_make_transcript_fasta, salmon, sizes, star), 'sarek' (bwamem1, bwamem2, createsequencedictionary, dragmap, faidx, intervals, msisensorpro, snapaligner, tabix), 'null' (no tools). Can be combined with --tools and --skip_tools.",
                     "pattern": "^((all|null|rnaseq|sarek)?,?)*(?<!,)$",
-                    "errorMessage": "Tool bundle must be a comma-separated list of: all, rnaseq, sarek or null"
+                    "errorMessage": "Tool bundle must be a comma-separated list of bundle names without spaces (e.g. rnaseq or rnaseq,sarek); available: all, rnaseq, sarek, null"
                 },
                 "tools": {
                     "type": "string",
                     "fa_icon": "fas fa-toolbox",
                     "description": "Specify which tools to build references for.",
-                    "help_text": "Multiple tools separated with commas.",
+                    "help_text": "Multiple tools separated with commas, without spaces (e.g. bwamem1,faidx).",
                     "pattern": "^((bowtie1|bowtie2|bwamem1|bwamem2|createsequencedictionary|dragmap|faidx|gffread|hisat2|hisat2_extractsplicesites|intervals|kallisto|msisensorpro|rsem|rsem_make_transcript_fasta|salmon|sizes|snapaligner|star|tabix)?,?)*(?<!,)$",
-                    "errorMessage": "Tools must be a comma-separated list of valid tool names (e.g. bwamem1, faidx, star, tabix); see --help_full for the full list"
+                    "errorMessage": "Tools must be a comma-separated list of valid tool names without spaces (e.g. bwamem1,faidx,star,tabix); see --help_full for the full list"
                 },
                 "skip_tools": {
                     "type": "string",
                     "fa_icon": "fas fa-toolbox",
                     "description": "Specify which tools to skip building references for.",
-                    "help_text": "Multiple tools separated with commas.",
+                    "help_text": "Multiple tools separated with commas, without spaces (e.g. hisat2,kallisto).",
                     "pattern": "^((bowtie1|bowtie2|bwamem1|bwamem2|createsequencedictionary|dragmap|faidx|gffread|hisat2|hisat2_extractsplicesites|intervals|kallisto|msisensorpro|rsem|rsem_make_transcript_fasta|salmon|sizes|snapaligner|star|tabix)?,?)*(?<!,)$",
-                    "errorMessage": "Skipped tools must be a comma-separated list of valid tool names (e.g. hisat2, kallisto); see --help_full for the full list"
+                    "errorMessage": "Skipped tools must be a comma-separated list of valid tool names without spaces (e.g. hisat2,kallisto); see --help_full for the full list"
                 },
                 "references_base_path": {
                     "type": "string",
