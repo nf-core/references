@@ -57,6 +57,12 @@
                 "pattern": "^\\S+$",
                 "errorMessage": "TODO"
             },
+            "ascat_loci_rt": {
+                "meta": ["ascat_loci_rt"],
+                "type": "string",
+                "pattern": "^\\S+$",
+                "errorMessage": "TODO"
+            },
             "bed12": {
                 "meta": ["bed12"],
                 "type": "string",
@@ -255,17 +261,48 @@
             },
             "vcf_dbsnp_vcf": {
                 "meta": ["vcf_dbsnp_vcf"],
-                "type": "string",
-                "exists": true,
-                "pattern": "^\\S+\\.vcf(\\.gz)?$",
-                "errorMessage": "DBSNP VCF must be an existing file ending in '.vcf' that does not contain spaces. This file can be bgzipped"
+                "anyOf": [
+                    {
+                        "type": "string",
+                        "exists": true,
+                        "pattern": "^\\S+\\.vcf(\\.gz)?$"
+                    },
+                    {
+                        "type": "array",
+                        "items": {
+                            "type": "string",
+                            "exists": true,
+                            "pattern": "^\\S+\\.vcf(\\.gz)?$"
+                        }
+                    }
+                ],
+                "errorMessage": "DBSNP VCF must be an existing file (or list of existing files) ending in '.vcf' that does not contain spaces. This file can be bgzipped"
             },
             "vcf_dbsnp_vcf_tbi": {
                 "meta": ["vcf_dbsnp_vcf_tbi"],
-                "type": "string",
-                "pattern": "^\\S+\\.vcf\\.gz\\.tbi?$",
-                "exists": true,
-                "errorMessage": "DBSNP VCF index must be an existing file ending in '.vcf.gz.tbi' that does not contain spaces"
+                "anyOf": [
+                    {
+                        "type": "string",
+                        "pattern": "^\\S+\\.vcf\\.gz\\.tbi?$",
+                        "exists": true
+                    },
+                    {
+                        "type": "array",
+                        "items": {
+                            "anyOf": [
+                                {
+                                    "type": "string",
+                                    "pattern": "^\\S+\\.vcf\\.gz\\.tbi?$",
+                                    "exists": true
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
+                        }
+                    }
+                ],
+                "errorMessage": "DBSNP VCF index must be an existing file (or list of existing files, null entries allowed) ending in '.vcf.gz.tbi' that does not contain spaces"
             },
             "vcf_dbsnp_vcf_vqsr": {
                 "meta": ["vcf_dbsnp_vcf_vqsr"],
@@ -281,17 +318,48 @@
             },
             "vcf_germline_resource_vcf": {
                 "meta": ["vcf_germline_resource_vcf"],
-                "type": "string",
-                "exists": true,
-                "pattern": "^\\S+\\.vcf(\\.gz)?$",
-                "errorMessage": "Germline Resource VCF must be an existing file ending in '.vcf' that does not contain spaces. This file can be bgzipped"
+                "anyOf": [
+                    {
+                        "type": "string",
+                        "exists": true,
+                        "pattern": "^\\S+\\.vcf(\\.gz)?$"
+                    },
+                    {
+                        "type": "array",
+                        "items": {
+                            "type": "string",
+                            "exists": true,
+                            "pattern": "^\\S+\\.vcf(\\.gz)?$"
+                        }
+                    }
+                ],
+                "errorMessage": "Germline Resource VCF must be an existing file (or list of existing files) ending in '.vcf' that does not contain spaces. This file can be bgzipped"
             },
             "vcf_germline_resource_vcf_tbi": {
                 "meta": ["vcf_germline_resource_vcf_tbi"],
-                "type": "string",
-                "pattern": "^\\S+\\.vcf\\.gz\\.tbi?$",
-                "exists": true,
-                "errorMessage": "Germline Resource VCF index must be an existing file ending in '.vcf.gz.tbi' that does not contain spaces"
+                "anyOf": [
+                    {
+                        "type": "string",
+                        "pattern": "^\\S+\\.vcf\\.gz\\.tbi?$",
+                        "exists": true
+                    },
+                    {
+                        "type": "array",
+                        "items": {
+                            "anyOf": [
+                                {
+                                    "type": "string",
+                                    "pattern": "^\\S+\\.vcf\\.gz\\.tbi?$",
+                                    "exists": true
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
+                        }
+                    }
+                ],
+                "errorMessage": "Germline Resource VCF index must be an existing file (or list of existing files, null entries allowed) ending in '.vcf.gz.tbi' that does not contain spaces"
             },
             "vcf_germline_resource_vcf_source": {
                 "meta": ["vcf_germline_resource_vcf_source"],
@@ -301,17 +369,48 @@
             },
             "vcf_known_indels_vcf": {
                 "meta": ["vcf_known_indels_vcf"],
-                "type": "string",
-                "exists": true,
-                "pattern": "^\\S+\\.vcf(\\.gz)?$",
-                "errorMessage": "Known indels VCF must be an existing file ending in '.vcf' that does not contain spaces. This file can be bgzipped"
+                "anyOf": [
+                    {
+                        "type": "string",
+                        "exists": true,
+                        "pattern": "^\\S+\\.vcf(\\.gz)?$"
+                    },
+                    {
+                        "type": "array",
+                        "items": {
+                            "type": "string",
+                            "exists": true,
+                            "pattern": "^\\S+\\.vcf(\\.gz)?$"
+                        }
+                    }
+                ],
+                "errorMessage": "Known indels VCF must be an existing file (or list of existing files) ending in '.vcf' that does not contain spaces. This file can be bgzipped"
             },
             "vcf_known_indels_vcf_tbi": {
                 "meta": ["vcf_known_indels_vcf_tbi"],
-                "type": "string",
-                "pattern": "^\\S+\\.vcf\\.gz\\.tbi?$",
-                "exists": true,
-                "errorMessage": "Known indels VCF index must be an existing file ending in '.vcf.gz.tbi' that does not contain spaces"
+                "anyOf": [
+                    {
+                        "type": "string",
+                        "pattern": "^\\S+\\.vcf\\.gz\\.tbi?$",
+                        "exists": true
+                    },
+                    {
+                        "type": "array",
+                        "items": {
+                            "anyOf": [
+                                {
+                                    "type": "string",
+                                    "pattern": "^\\S+\\.vcf\\.gz\\.tbi?$",
+                                    "exists": true
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
+                        }
+                    }
+                ],
+                "errorMessage": "Known indels VCF index must be an existing file (or list of existing files, null entries allowed) ending in '.vcf.gz.tbi' that does not contain spaces"
             },
             "vcf_known_indels_vcf_source": {
                 "meta": ["vcf_known_indels_vcf_source"],
@@ -321,17 +420,48 @@
             },
             "vcf_known_snps_vcf": {
                 "meta": ["vcf_known_snps_vcf"],
-                "type": "string",
-                "exists": true,
-                "pattern": "^\\S+\\.vcf(\\.gz)?$",
-                "errorMessage": "Known snps VCF must be an existing file ending in '.vcf' that does not contain spaces. This file can be bgzipped"
+                "anyOf": [
+                    {
+                        "type": "string",
+                        "exists": true,
+                        "pattern": "^\\S+\\.vcf(\\.gz)?$"
+                    },
+                    {
+                        "type": "array",
+                        "items": {
+                            "type": "string",
+                            "exists": true,
+                            "pattern": "^\\S+\\.vcf(\\.gz)?$"
+                        }
+                    }
+                ],
+                "errorMessage": "Known snps VCF must be an existing file (or list of existing files) ending in '.vcf' that does not contain spaces. This file can be bgzipped"
             },
             "vcf_known_snps_vcf_tbi": {
                 "meta": ["vcf_known_snps_vcf_tbi"],
-                "type": "string",
-                "pattern": "^\\S+\\.vcf\\.gz\\.tbi?$",
-                "exists": true,
-                "errorMessage": "Known snps VCF index must be an existing file ending in '.vcf.gz.tbi' that does not contain spaces"
+                "anyOf": [
+                    {
+                        "type": "string",
+                        "pattern": "^\\S+\\.vcf\\.gz\\.tbi?$",
+                        "exists": true
+                    },
+                    {
+                        "type": "array",
+                        "items": {
+                            "anyOf": [
+                                {
+                                    "type": "string",
+                                    "pattern": "^\\S+\\.vcf\\.gz\\.tbi?$",
+                                    "exists": true
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
+                        }
+                    }
+                ],
+                "errorMessage": "Known snps VCF index must be an existing file (or list of existing files, null entries allowed) ending in '.vcf.gz.tbi' that does not contain spaces"
             },
             "vcf_known_snps_vcf_source": {
                 "meta": ["vcf_known_snps_vcf_source"],
@@ -341,17 +471,48 @@
             },
             "vcf_pon_vcf": {
                 "meta": ["vcf_pon_vcf"],
-                "type": "string",
-                "exists": true,
-                "pattern": "^\\S+\\.vcf(\\.gz)?$",
-                "errorMessage": "PON VCF must be an existing file ending in '.vcf' that does not contain spaces. This file can be bgzipped"
+                "anyOf": [
+                    {
+                        "type": "string",
+                        "exists": true,
+                        "pattern": "^\\S+\\.vcf(\\.gz)?$"
+                    },
+                    {
+                        "type": "array",
+                        "items": {
+                            "type": "string",
+                            "exists": true,
+                            "pattern": "^\\S+\\.vcf(\\.gz)?$"
+                        }
+                    }
+                ],
+                "errorMessage": "PON VCF must be an existing file (or list of existing files) ending in '.vcf' that does not contain spaces. This file can be bgzipped"
             },
             "vcf_pon_vcf_tbi": {
                 "meta": ["vcf_pon_vcf_tbi"],
-                "type": "string",
-                "pattern": "^\\S+\\.vcf\\.gz\\.tbi?$",
-                "exists": true,
-                "errorMessage": "PON VCF index must be an existing file ending in '.vcf.gz.tbi' that does not contain spaces"
+                "anyOf": [
+                    {
+                        "type": "string",
+                        "pattern": "^\\S+\\.vcf\\.gz\\.tbi?$",
+                        "exists": true
+                    },
+                    {
+                        "type": "array",
+                        "items": {
+                            "anyOf": [
+                                {
+                                    "type": "string",
+                                    "pattern": "^\\S+\\.vcf\\.gz\\.tbi?$",
+                                    "exists": true
+                                },
+                                {
+                                    "type": "null"
+                                }
+                            ]
+                        }
+                    }
+                ],
+                "errorMessage": "PON VCF index must be an existing file (or list of existing files, null entries allowed) ending in '.vcf.gz.tbi' that does not contain spaces"
             },
             "vcf_pon_vcf_source": {
                 "meta": ["vcf_pon_vcf_source"],
