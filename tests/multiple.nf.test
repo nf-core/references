@@ -39,13 +39,13 @@ nextflow_pipeline {
         }
     }
 
-    test("-profile test --tools tabix --input references-datasheets/latest/genomes_source/Homo_sapiens/GATK/GRCh37_GRCh38_multiple_dbsnps_globs.yml") {
+    test("-profile test --tools tabix --input references-datasheets/latest/igenomes/GATK/GRCh37decoy.yml") {
 
         options "-output-dir $outputDir"
 
         when {
             params {
-                input        = "https://raw.githubusercontent.com/nf-core/references-datasheets/latest/genomes_source/Homo_sapiens/GATK/GRCh37_GRCh38_multiple_dbsnps_globs.yml"
+                input        = "https://raw.githubusercontent.com/nf-core/references-datasheets/latest/igenomes/GATK/GRCh37decoy.yml"
                 outdir       = "$outputDir"
                 tools        = 'tabix'
                 tools_bundle = null

@@ -109,46 +109,18 @@ workflow DATASHEET_TO_CHANNEL {
         }
 
     // HANDLING OF VCF
+    // VCF fields can be a single path or a list of paths, with an optional
+    // parallel list of indexes (null entries mean the index needs to be built)
 
-    dbsnp = datasheet
-        .filter { meta, _readme -> meta.vcf_dbsnp_vcf }
-        .map { meta, _readme ->
-            def meta_extra = record(run_tabix: !meta.vcf_dbsnp_vcf_tbi)
-            meta_extra += record(type: 'dbsnp', source_vcf: meta.vcf_dbsnp_vcf_source)
-            [reduceMeta(meta) + meta_extra, files(meta.vcf_dbsnp_vcf, checkIfExists: true)]
-        }
+    dbsnp = toVcfChannel(datasheet, 'dbsnp')
 
-    germline_resource = datasheet
-        .filter { meta, _readme -> meta.vcf_germline_resource_vcf }
-        .map { meta, _readme ->
-            def meta_extra = record(run_tabix: !meta.vcf_germline_resource_vcf_tbi)
-            meta_extra += record(type: 'germline_resource', source_vcf: meta.vcf_germline_resource_vcf_source)
-            [reduceMeta(meta) + meta_extra, file(meta.vcf_germline_resource_vcf, checkIfExists: true)]
-        }
+    germline_resource = toVcfChannel(datasheet, 'germline_resource')
 
-    known_indels = datasheet
-        .filter { meta, _readme -> meta.vcf_known_indels_vcf }
-        .map { meta, _readme ->
-            def meta_extra = record(run_tabix: !meta.vcf_known_indels_vcf_tbi)
-            meta_extra += record(type: 'known_indels', source_vcf: meta.vcf_known_indels_vcf_source)
-            [reduceMeta(meta) + meta_extra, file(meta.vcf_known_indels_vcf, checkIfExists: true)]
-        }
+    known_indels = toVcfChannel(datasheet, 'known_indels')
 
-    known_snps = datasheet
-        .filter { meta, _readme -> meta.vcf_known_snps_vcf }
-        .map { meta, _readme ->
-            def meta_extra = record(run_tabix: !meta.vcf_known_snps_vcf_tbi)
-            meta_extra += record(type: 'known_snps', source_vcf: meta.vcf_known_snps_vcf_source)
-            [reduceMeta(meta) + meta_extra, file(meta.vcf_known_snps_vcf, checkIfExists: true)]
-        }
+    known_snps = toVcfChannel(datasheet, 'known_snps')
 
-    pon = datasheet
-        .filter { meta, _readme -> meta.vcf_pon_vcf }
-        .map { meta, _readme ->
-            def meta_extra = record(run_tabix: !meta.vcf_pon_vcf_tbi)
-            meta_extra += record(type: 'pon', source_vcf: meta.vcf_pon_vcf_source)
-            [reduceMeta(meta) + meta_extra, file(meta.vcf_pon_vcf, checkIfExists: true)]
-        }
+    pon = toVcfChannel(datasheet, 'pon')
 
     vcf = channel.empty()
         .mix(
@@ -158,7 +130,6 @@ workflow DATASHEET_TO_CHANNEL {
             known_snps,
             pon,
         )
-        .flatMap { meta, vcfs -> vcfs instanceof Path ? [[meta, vcfs]] : vcfs.toList().collect { vcf_ -> [meta, vcf_] } }
 
     emit:
     ascat_alleles    = ascat_alleles // channel: [meta, *.ascat_alleles.txt]
@@ -194,4 +165,24 @@ def reduceMeta(meta_) {
         source_version: meta_.source_version,
         species: meta_.species,
     )
+}
+
+// Build a [meta, vcf] channel for one VCF type
+// The datasheet field can hold a single path or a list of paths
+// Indexes are paired positionally, a null or missing entry means the index has to be built
+def toVcfChannel(datasheet, type) {
+    def vcf_key = "vcf_${type}_vcf"
+    def tbi_key = "vcf_${type}_vcf_tbi"
+    def source_key = "vcf_${type}_vcf_source"
+    datasheet
+        .filter { meta, _readme -> meta[vcf_key] }
+        .flatMap { meta, _readme ->
+            def vcfs = meta[vcf_key] instanceof List ? meta[vcf_key] : [meta[vcf_key]]
+            def tbis = !meta[tbi_key] ? [] : meta[tbi_key] instanceof List ? meta[tbi_key] : [meta[tbi_key]]
+            vcfs.withIndex().collect { vcf_, i ->
+                def meta_extra = record(run_tabix: i >= tbis.size() || !tbis[i])
+                meta_extra += record(type: type, source_vcf: meta[source_key])
+                [reduceMeta(meta) + meta_extra, file(vcf_, checkIfExists: true)]
+            }
+        }
 }
