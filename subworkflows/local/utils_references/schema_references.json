@@ -43,31 +43,31 @@
                 "meta": ["ascat_alleles"],
                 "type": "string",
                 "pattern": "^\\S+$",
-                "errorMessage": "TODO"
+                "errorMessage": "ASCAT alleles file must be a path that does not contain spaces"
             },
             "ascat_loci": {
                 "meta": ["ascat_loci"],
                 "type": "string",
                 "pattern": "^\\S+$",
-                "errorMessage": "TODO"
+                "errorMessage": "ASCAT loci file must be a path that does not contain spaces"
             },
             "ascat_loci_gc": {
                 "meta": ["ascat_loci_gc"],
                 "type": "string",
                 "pattern": "^\\S+$",
-                "errorMessage": "TODO"
+                "errorMessage": "ASCAT GC loci file must be a path that does not contain spaces"
             },
             "ascat_loci_rt": {
                 "meta": ["ascat_loci_rt"],
                 "type": "string",
                 "pattern": "^\\S+$",
-                "errorMessage": "TODO"
+                "errorMessage": "ASCAT RT loci file must be a path that does not contain spaces"
             },
             "bed12": {
                 "meta": ["bed12"],
                 "type": "string",
                 "pattern": "^\\S+$",
-                "errorMessage": "TODO"
+                "errorMessage": "BED12 file must be a path that does not contain spaces"
             },
             "bowtie1_index": {
                 "meta": ["bowtie1_index"],
@@ -108,7 +108,7 @@
                 "meta": ["chr_dir"],
                 "type": "string",
                 "pattern": "^\\S+$",
-                "errorMessage": "TODO"
+                "errorMessage": "Chromosome directory must be a path that does not contain spaces"
             },
             "fasta": {
                 "meta": ["fasta"],
@@ -175,13 +175,13 @@
             "macs_gsize": {
                 "meta": ["macs_gsize"],
                 "type": "number",
-                "errorMessage": "TODO"
+                "errorMessage": "MACS genome size must be a number (for example 1.2e7)"
             },
             "mito_name": {
                 "meta": ["mito_name"],
                 "type": "string",
                 "pattern": "^\\S+$",
-                "errorMessage": "TODO"
+                "errorMessage": "Mitochondrial chromosome name must be a string value that does not contain spaces"
             },
             "msisensorpro_list": {
                 "meta": ["msisensorpro_list"],

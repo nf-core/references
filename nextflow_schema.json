@@ -17,8 +17,9 @@
                     "format": "file-path",
                     "exists": true,
                     "schema": "subworkflows/local/utils_references/schema_references.json",
-                    "mimetype": "text/csv",
+                    "mimetype": "text/yaml",
                     "pattern": "^\\S+\\.(yaml|yml)$",
+                    "errorMessage": "Input datasheet must be an existing file ending in '.yaml' or '.yml' that does not contain spaces",
                     "description": "Path to yaml file containing information about the genome(s) and files to use for building references.",
                     "help_text": "You will need to create a datasheet with information about the genome(s) before running the pipeline. Use this parameter to specify its location. It has to be a yaml file. See [usage docs](https://nf-co.re/references/usage#datasheet).",
                     "fa_icon": "fas fa-file-csv"
@@ -34,26 +35,30 @@
                     "fa_icon": "fas fa-window-restore",
                     "description": "Select a predefined bundle of tools to build references for.",
                     "help_text": "Available bundles: 'all' (all available tools), 'rnaseq' (bowtie1, bowtie2, faidx, gffread, hisat2, hisat2_extractsplicesites, kallisto, rsem, rsem_make_transcript_fasta, salmon, sizes, star), 'sarek' (bwamem1, bwamem2, createsequencedictionary, dragmap, faidx, intervals, msisensorpro, snapaligner, tabix), 'null' (no tools). Can be combined with --tools and --skip_tools.",
-                    "pattern": "^((all|null|rnaseq|sarek)?,?)*(?<!,)$"
+                    "pattern": "^((all|null|rnaseq|sarek)?,?)*(?<!,)$",
+                    "errorMessage": "Tool bundle must be a comma-separated list of: all, rnaseq, sarek or null"
                 },
                 "tools": {
                     "type": "string",
                     "fa_icon": "fas fa-toolbox",
                     "description": "Specify which tools to build references for.",
                     "help_text": "Multiple tools separated with commas.",
-                    "pattern": "^((bowtie1|bowtie2|bwamem1|bwamem2|createsequencedictionary|dragmap|faidx|gffread|hisat2|hisat2_extractsplicesites|intervals|kallisto|msisensorpro|rsem|rsem_make_transcript_fasta|salmon|sizes|snapaligner|star|tabix)?,?)*(?<!,)$"
+                    "pattern": "^((bowtie1|bowtie2|bwamem1|bwamem2|createsequencedictionary|dragmap|faidx|gffread|hisat2|hisat2_extractsplicesites|intervals|kallisto|msisensorpro|rsem|rsem_make_transcript_fasta|salmon|sizes|snapaligner|star|tabix)?,?)*(?<!,)$",
+                    "errorMessage": "Tools must be a comma-separated list of valid tool names (e.g. bwamem1, faidx, star, tabix); see --help_full for the full list"
                 },
                 "skip_tools": {
                     "type": "string",
                     "fa_icon": "fas fa-toolbox",
                     "description": "Specify which tools to skip building references for.",
                     "help_text": "Multiple tools separated with commas.",
-                    "pattern": "^((bowtie1|bowtie2|bwamem1|bwamem2|createsequencedictionary|dragmap|faidx|gffread|hisat2|hisat2_extractsplicesites|intervals|kallisto|msisensorpro|rsem|rsem_make_transcript_fasta|salmon|sizes|snapaligner|star|tabix)?,?)*(?<!,)$"
+                    "pattern": "^((bowtie1|bowtie2|bwamem1|bwamem2|createsequencedictionary|dragmap|faidx|gffread|hisat2|hisat2_extractsplicesites|intervals|kallisto|msisensorpro|rsem|rsem_make_transcript_fasta|salmon|sizes|snapaligner|star|tabix)?,?)*(?<!,)$",
+                    "errorMessage": "Skipped tools must be a comma-separated list of valid tool names (e.g. hisat2, kallisto); see --help_full for the full list"
                 },
                 "references_base_path": {
                     "type": "string",
                     "format": "directory-path",
-                    "description": "The base path to the reference files",
+                    "description": "Base path used to resolve reference file paths in the datasheet, replacing the default 's3://ngi-igenomes/igenomes/' prefix.",
+                    "help_text": "Datasheets may carry igenomes-style 's3://ngi-igenomes/igenomes/...' paths. When this parameter is set, that prefix is rewritten to this base path before files are resolved, so you can point at a local or institutional mirror of igenomes without editing the datasheet.",
                     "fa_icon": "fas fa-ban"
                 },
                 "email": {
@@ -73,8 +78,7 @@
         "building_index_options": {
             "title": "Building index options",
             "type": "object",
-            "description": "",
-            "default": "",
+            "description": "Parameters controlling how reference indexes are built.",
             "properties": {
                 "kallisto_make_unique": {
                     "type": "boolean",
@@ -87,7 +91,8 @@
                     "description": "Length of donor and acceptor splice site anchors for the STAR splice junction database; typically 1 bp less than read length.",
                     "fa_icon": "fas fa-dna",
                     "help_text": "Typical values: 99 for mammals (100 bp reads), 74 for insects, 50-100 for plants. Overrides per-genome values from the input datasheet; falls back to STAR defaults when neither is set.",
-                    "minimum": 1
+                    "minimum": 1,
+                    "errorMessage": "STAR sjdbOverhang must be a positive integer"
                 },
                 "star_genomeSAindexNbases": {
                     "type": "integer",
@@ -95,14 +100,16 @@
                     "fa_icon": "fas fa-dna",
                     "help_text": "Typical values: 14 for large genomes (>500M bp), 11 for compact genomes (<300M bp). If not specified, calculated as log2(genome_size)/2-1, capped at 14. Overrides per-genome values from the input datasheet; falls back to STAR defaults when neither is set.",
                     "minimum": 1,
-                    "maximum": 14
+                    "maximum": 14,
+                    "errorMessage": "STAR genomeSAindexNbases must be an integer between 1 and 14"
                 },
                 "hisat2_build_memory": {
                     "type": "string",
                     "description": "Memory threshold for HISAT2 index building. When available process memory meets or exceeds this value, splice sites and exons are used to build a splice-aware index.",
                     "fa_icon": "fas fa-memory",
                     "default": "200.GB",
-                    "pattern": "^[0-9]+\\.?[0-9]*\\.?[GMK]B$"
+                    "pattern": "^[0-9]+\\.?[0-9]*\\.?[GMK]B$",
+                    "errorMessage": "HISAT2 build memory must be a memory value such as '200.GB', '3.GB' or '512MB'"
                 },
                 "hisat2_skip_splice_sites": {
                     "type": "boolean",
