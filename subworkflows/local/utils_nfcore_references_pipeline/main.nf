@@ -104,8 +104,7 @@ workflow PIPELINE_INITIALISATION {
         }
         log.info(
             paramsHelp(
-                help_options,
-                help instanceof String ? help : "",
+                help_options + [parameter: help instanceof String ? help : ""],
             )
         )
         exit(0)
@@ -121,7 +120,7 @@ workflow PIPELINE_INITIALISATION {
         summary_options << [parametersSchema: null]
     }
     log.info(before_text)
-    log.info(paramsSummaryLog(summary_options, workflow))
+    log.info(paramsSummaryLog(summary_options))
     log.info(after_text)
 
     extra_text = """
@@ -184,7 +183,7 @@ workflow PIPELINE_COMPLETION {
     multiqc_report //  string: Path to MultiQC report
 
     main:
-    summary_params = paramsSummaryMap(workflow, parameters_schema: "nextflow_schema.json")
+    summary_params = paramsSummaryMap(parameters_schema: "nextflow_schema.json")
     def multiqc_reports = multiqc_report.toList()
 
     //

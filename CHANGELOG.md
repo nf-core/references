@@ -66,6 +66,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - [#161](https://github.com/nf-core/references/pull/161) - Document `references_base_path` description and igenomes prefix-rewriting behaviour
 - [#161](https://github.com/nf-core/references/pull/161) - Replace placeholder `TODO` error messages in `schema_references.json`
 - [#162](https://github.com/nf-core/references/pull/162) - Resolve datasheet `splice_sites` paths to files so publishing works on Nextflow 26.10
+- [#163](https://github.com/nf-core/references/pull/163) - Update nf-schema to 3.0.0 and migrate `paramsHelp`, `paramsSummaryLog`, and `paramsSummaryMap` to their single-options-map signatures
 - [#162](https://github.com/nf-core/references/pull/162) - Merge `prepare_genome_dnaseq` and `prepare_genome_rnaseq` into a single `prepare_genome` subworkflow
 
 ### Removed
