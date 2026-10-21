@@ -65,8 +65,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - [#157](https://github.com/nf-core/references/pull/157) - Replace `.out` channel access with typed workflow return assignment
 - [#161](https://github.com/nf-core/references/pull/161) - Document `references_base_path` description and igenomes prefix-rewriting behaviour
 - [#161](https://github.com/nf-core/references/pull/161) - Replace placeholder `TODO` error messages in `schema_references.json`
+- [#162](https://github.com/nf-core/references/pull/162) - Merge `prepare_genome_dnaseq` and `prepare_genome_rnaseq` into a single `prepare_genome` subworkflow
 
 ### Removed
+
+- [#162](https://github.com/nf-core/references/pull/162) - Removed the separate `prepare_genome_dnaseq` and `prepare_genome_rnaseq` subworkflows in favour of `prepare_genome`
 
 - [#146](https://github.com/nf-core/references/pull/146) - Removed `index.json` output in favor of Nextflow lineage tracking
 
