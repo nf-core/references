@@ -95,7 +95,7 @@ workflow DATASHEET_TO_CHANNEL {
 
     splice_sites = datasheet
         .filter { meta, _readme -> meta.splice_sites }
-        .map { meta, _readme -> [reduceMeta(meta), meta.splice_sites] }
+        .map { meta, _readme -> [reduceMeta(meta), file(meta.splice_sites, checkIfExists: true)] }
 
     transcript_fasta = datasheet
         .filter { meta, _readme -> meta.transcript_fasta }
