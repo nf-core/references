@@ -314,7 +314,7 @@ workflow {
     multiqc_files = channel.empty()
     multiqc_report = channel.empty()
 
-    summary_params = paramsSummaryMap(workflow, parameters_schema: "nextflow_schema.json")
+    summary_params = paramsSummaryMap(parameters_schema: "nextflow_schema.json")
     workflow_summary = record(
         name: 'workflow_summary_mqc.yaml',
         items: [paramsSummaryMultiqc(summary_params)],
