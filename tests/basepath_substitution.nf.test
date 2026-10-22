@@ -15,7 +15,7 @@ nextflow_pipeline {
 
         when {
             params {
-                input                = "${new File('tests/assets/GRCh38_chr21_placeholder.yml').absolutePath}"
+                input                = "${projectDir}/tests/assets/GRCh38_chr21_placeholder.yml"
                 outdir               = "$outputDir"
                 tools                = 'faidx'
                 tools_bundle         = null
