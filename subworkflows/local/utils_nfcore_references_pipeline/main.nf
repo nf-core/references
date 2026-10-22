@@ -8,8 +8,6 @@
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 */
 
-include { update_references_file } from '../../local/utils_references'
-
 include { checkCondaChannels     } from 'plugin/nf-core-utils'
 include { checkConfigProvided    } from 'plugin/nf-core-utils'
 include { checkProfileProvided   } from 'plugin/nf-core-utils'
@@ -38,8 +36,6 @@ workflow PIPELINE_INITIALISATION {
     nextflow_cli_args //   array: List of positional nextflow CLI args
     outdir //  string: The output directory where the results will be saved
     asset //  string: Path to asset yaml file
-    basepath_final //  string: The final basepath to replace in the asset yaml file
-    basepath_to_replace //  array: The basepath to replace in the asset yaml file
     help // boolean: Display help message and exit
     help_full // boolean: Show the full help message
     show_hidden // boolean: Show hidden parameters in the help message
@@ -158,7 +154,7 @@ workflow PIPELINE_INITIALISATION {
     // Create channel from asset file provided through params.asset
     references = channel.fromList(
         samplesheetToList(
-            update_references_file(asset, basepath_final, basepath_to_replace),
+            asset,
             "${projectDir}/subworkflows/local/utils_references/schema_references.json",
         )
     )

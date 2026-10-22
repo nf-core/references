@@ -1,0 +1,8 @@
+# Test fixture for ${params.references_base_path} substitution (nf-schema
+# validation.allowParamsSubstitution). Placeholder carries no trailing slash;
+# the base path carries it.
+- genome: GRCh38_chr21
+  fasta: ${params.references_base_path}GRCh38_chr21/GRCh38_chr21.fa
+  mito_name: MT
+  source: nf-core
+  species: Homo_sapiens

@@ -1,0 +1,34 @@
+nextflow_pipeline {
+
+    name "Reference base path substitution"
+    script "../main.nf"
+    tag "pipeline"
+
+    // Datasheets may carry ${params.references_base_path} placeholders instead of
+    // hardcoded roots. nf-schema substitutes them at load time
+    // (validation.allowParamsSubstitution). If substitution stops working the
+    // literal placeholder reaches file(checkIfExists: true) and this run fails,
+    // so workflow.success is a real assertion rather than a smoke test.
+    test('--tools faidx with a datasheet carrying placeholders') {
+
+        options "-output-dir $outputDir"
+
+        when {
+            params {
+                input                = "${new File('tests/assets/GRCh38_chr21_placeholder.yml').absolutePath}"
+                outdir               = "$outputDir"
+                tools                = 'faidx'
+                tools_bundle         = null
+                skip_tools           = null
+                references_base_path = 'https://raw.githubusercontent.com/nf-core/test-datasets/references/references/'
+            }
+        }
+
+        then {
+            assert workflow.success
+            // The placeholder resolved to a real FAI, not a literal path segment
+            def fai = getAllFilesFromDir(params.outdir, relative: true, ignore: ['pipeline_info/*'])
+            assert fai.any { it.endsWith('.fa.fai') }
+        }
+    }
+}

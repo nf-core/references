@@ -16,7 +16,6 @@
                     "type": "string",
                     "format": "file-path",
                     "exists": true,
-                    "schema": "subworkflows/local/utils_references/schema_references.json",
                     "mimetype": "text/yaml",
                     "pattern": "^\\S+\\.(yaml|yml)$",
                     "errorMessage": "Input datasheet must be an existing file ending in '.yaml' or '.yml' that does not contain spaces",
