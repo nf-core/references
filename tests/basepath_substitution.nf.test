@@ -4,11 +4,6 @@ nextflow_pipeline {
     script "../main.nf"
     tag "pipeline"
 
-    // Datasheets may carry ${params.references_base_path} placeholders instead of
-    // hardcoded roots. nf-schema substitutes them at load time
-    // (validation.allowParamsSubstitution). If substitution stops working the
-    // literal placeholder reaches file(checkIfExists: true) and this run fails,
-    // so workflow.success is a real assertion rather than a smoke test.
     test('--tools faidx with a datasheet carrying placeholders') {
 
         options "-output-dir $outputDir"
@@ -20,15 +15,28 @@ nextflow_pipeline {
                 tools                = 'faidx'
                 tools_bundle         = null
                 skip_tools           = null
-                references_base_path = 'https://raw.githubusercontent.com/nf-core/test-datasets/references/references/'
+                references_base_path = 'https://raw.githubusercontent.com/nf-core/test-datasets/references/references'
             }
         }
 
         then {
+            // stable_path: All files + folders in ${params.outdir}/ with a stable path (including file name)
+            def stable_path = getAllFilesFromDir(params.outdir, relative: true, includeDir: true, ignore: ['pipeline_info/*.{html,json,txt}'])
+            // stable_content: All files in ${params.outdir}/ with stable content
+            def stable_content = getAllFilesFromDir(params.outdir, ignoreFile: 'tests/.nftignore')
             assert workflow.success
-            // The placeholder resolved to a real FAI, not a literal path segment
-            def fai = getAllFilesFromDir(params.outdir, relative: true, ignore: ['pipeline_info/*'])
-            assert fai.any { it.endsWith('.fa.fai') }
+            assertAll(
+                { assert snapshot(
+                    // Number of successful tasks
+                    workflow.trace.succeeded().size(),
+                    // pipeline versions.yml file for multiqc from which Nextflow and pipeline versions are removed (all from the workflow key)
+                    removeFromYamlMap("${outputDir}/pipeline_info/nf_core_references_software_mqc_versions.yml", 'Workflow'),
+                    // All stable path name, with a relative path
+                    stable_path,
+                    // All files with stable contents
+                    stable_content
+                ).match() }
+            )
         }
     }
 }

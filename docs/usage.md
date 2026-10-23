@@ -158,7 +158,28 @@ TODO
 
 TODO
 
-An [example asset](../assets/asset.yml) has been provided with the pipeline.
+Example asset files are published in the [nf-core/references-datasheets](https://github.com/nf-core/references-datasheets) repository.
+
+### `--references_base_path`
+
+A datasheet path may carry a `${params.references_base_path}` placeholder instead of a hardcoded root:
+
+```yaml
+- genome: GRCh38_chr21
+  fasta: ${params.references_base_path}/GRCh38_chr21/GRCh38_chr21.fa
+```
+
+The pipeline substitutes the parameter into the path as the datasheet loads, so one datasheet can be used against any mirror of the reference files:
+
+```bash
+--references_base_path '/data/mirror/igenomes'
+```
+
+The default is `s3://ngi-igenomes/igenomes`, the root that published datasheets are written against. With that default the example above resolves to `s3://ngi-igenomes/igenomes/GRCh38_chr21/GRCh38_chr21.fa`.
+
+The placeholder carries the leading slash, so the value must not end with one. A trailing slash produces a doubled slash in the path.
+
+Datasheets without placeholders are unchanged and need no edit. This parameter only rewrites paths inside the datasheet; the location of the datasheet itself is set with `--input`.
 
 ## Running the pipeline
 
