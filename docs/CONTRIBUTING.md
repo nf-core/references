@@ -201,8 +201,8 @@ Each output type has its own path declaration using the `file >>` syntax.
 Output paths follow this structure:
 
 ```text
-${meta.species}/${meta.source}/${meta.genome}/Sequence/<tool>/<version>/
-${meta.species}/${meta.source}/${meta.genome}/Annotation/<type>/
+${meta.species}/${meta.reference_source}/${meta.genome}/Sequence/<tool>/<version>/
+${meta.species}/${meta.reference_source}/${meta.genome}/Annotation/<type>/
 ```
 
 When adding a new output, add a corresponding entry to the `output {}` block in `main.nf`.

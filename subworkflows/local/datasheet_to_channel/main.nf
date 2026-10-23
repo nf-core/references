@@ -161,8 +161,8 @@ def reduceMeta(meta_) {
     record(
         id: meta_.id,
         genome: meta_.genome,
-        source: meta_.source,
-        source_version: meta_.source_version,
+        reference_source: meta_.reference_source,
+        annotation_version: meta_.annotation_version,
         species: meta_.species,
     )
 }
@@ -181,7 +181,7 @@ def toVcfChannel(datasheet, type) {
             def tbis = !meta[tbi_key] ? [] : meta[tbi_key] instanceof List ? meta[tbi_key] : [meta[tbi_key]]
             vcfs.withIndex().collect { vcf_, i ->
                 def meta_extra = record(run_tabix: i >= tbis.size() || !tbis[i])
-                meta_extra += record(type: type, source_vcf: meta[source_key])
+                meta_extra += record(type: type, annotation_source: meta[source_key])
                 [reduceMeta(meta) + meta_extra, file(vcf_, checkIfExists: true)]
             }
         }
