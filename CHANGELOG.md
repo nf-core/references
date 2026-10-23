@@ -69,6 +69,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - [#162](https://github.com/nf-core/references/pull/162) - Resolve datasheet `splice_sites` paths to files so publishing works on Nextflow 26.10
 - [#163](https://github.com/nf-core/references/pull/163) - Update nf-schema to 3.0.0 and migrate `paramsHelp`, `paramsSummaryLog`, and `paramsSummaryMap` to their single-options-map signatures
 - [#164](https://github.com/nf-core/references/pull/164) - Replace `update_references_file` string rewriting with nf-schema `allowParamsSubstitution`, so datasheets can carry `${params.references_base_path}` placeholders
+- [#165](https://github.com/nf-core/references/pull/165) - Document `--references_base_path`, multiple genomes, and the asset file format in `docs/usage.md`
 
 ### Removed
 
