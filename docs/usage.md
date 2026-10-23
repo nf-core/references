@@ -21,7 +21,7 @@ Select a predefined bundle of tools. Available bundles:
 | `all`    | All available tools                                                                                                                  |
 | `rnaseq` | bowtie1, bowtie2, faidx, gffread, hisat2, hisat2_extractsplicesites, kallisto, rsem, rsem_make_transcript_fasta, salmon, sizes, star |
 | `sarek`  | bwamem1, bwamem2, createsequencedictionary, dragmap, faidx, intervals, msisensorpro, snapaligner, tabix                              |
-| `null`   | None — no tool indices will be built. Useful when you only need the genome and annotation files without building any indices.        |
+| `null`   | None. No tool indices will be built. Useful when you only need the genome and annotation files without building any indices.         |
 
 ```bash
 # Build all RNA-seq references
@@ -95,7 +95,7 @@ Typical values:
 
 - 99 bp for mammals with 100 bp reads
 - 74 bp for insects
-- 50–100 bp for plants
+- 50-100 bp for plants
 - 1 bp less than read length (general rule)
 
 Set a fixed value with:
@@ -152,11 +152,59 @@ It has to be a yaml file.
 
 ### Multiple genomes
 
-TODO
+A datasheet is a YAML list with one entry per genome. `genome` is the only required field, and every other field applies to the entry it sits in:
+
+```yaml
+- genome: GRCh38_chr21
+  species: Homo_sapiens
+  source: nf-core
+  fasta: https://raw.githubusercontent.com/nf-core/test-datasets/references/references/GRCh38_chr21/GRCh38_chr21.fa
+
+- genome: GRCh38_chr22
+  species: Homo_sapiens
+  source: nf-core
+  fasta: https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/genomics/homo_sapiens/genome/genome.fasta
+```
+
+Set `species` and `source` on every entry. The pipeline builds the published path from `species/source/genome`, so each entry writes into its own tree and one run can build several genomes without collisions:
+
+```text
+Homo_sapiens/nf-core/GRCh38_chr21/Sequence/WholeGenomeFasta/
+Homo_sapiens/nf-core/GRCh38_chr22/Sequence/WholeGenomeFasta/
+```
+
+The pipeline computes run flags per entry, so genomes build independently. It skips annotation-dependent tools for an entry that has neither `gtf` nor `gff`.
 
 ### Full asset file
 
-TODO
+An entry lists what a genome already provides. Only `genome` is required; the pipeline builds the rest from `fasta` and `gff` or `gtf`:
+
+```yaml
+- genome: GRCh37
+  species: Homo_sapiens
+  source: GATK
+
+  # Genome and annotation
+  fasta: s3://ngi-igenomes/igenomes/Homo_sapiens/GATK/GRCh37/Sequence/WholeGenomeFasta/human_g1k_v37_decoy.fasta
+  fasta_fai: s3://ngi-igenomes/igenomes/Homo_sapiens/GATK/GRCh37/Sequence/WholeGenomeFasta/human_g1k_v37_decoy.fasta.fai
+  fasta_dict: s3://ngi-igenomes/igenomes/Homo_sapiens/GATK/GRCh37/Sequence/WholeGenomeFasta/human_g1k_v37_decoy.dict
+
+  # A prebuilt index, used exactly as supplied
+  bwamem1_index: s3://ngi-igenomes/igenomes/Homo_sapiens/GATK/GRCh37/Sequence/BWAIndex/
+
+  # A GATK resource VCF, with its tabix index and its provenance
+  vcf_dbsnp_vcf: s3://ngi-igenomes/igenomes/Homo_sapiens/GATK/GRCh37/Annotation/GATKBundle/dbsnp_138.b37.vcf.gz
+  vcf_dbsnp_vcf_tbi: s3://ngi-igenomes/igenomes/Homo_sapiens/GATK/GRCh37/Annotation/GATKBundle/dbsnp_138.b37.vcf.gz.tbi
+  vcf_dbsnp_vcf_source: GATKBundle
+```
+
+Format rules:
+
+- Supply an artefact and the pipeline skips building it. `fasta_fai`, `fasta_dict`, `bwamem1_index`, `star_index`, `hisat2_index`, and the other index fields work this way, so one entry can mix built and provided assets.
+- The `vcf_*_vcf` fields accept a single path or a list. A matching `vcf_*_vcf_tbi` list pairs by position, and a `null` entry means the pipeline builds that index.
+- The `*_source` fields record provenance and become the `Annotation/<source>` segment of the published path.
+- Any path may carry a `${params.references_base_path}` placeholder (see `--references_base_path`).
+- A field that is not in `subworkflows/local/utils_references/schema_references.json` is ignored with a warning, so check that file for the complete list.
 
 Example asset files are published in the [nf-core/references-datasheets](https://github.com/nf-core/references-datasheets) repository.
 
