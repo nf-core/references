@@ -295,8 +295,6 @@ workflow {
         params.help,
         params.help_full,
         params.show_hidden,
-        params.references_base_path,
-        ['s3://ngi-igenomes/igenomes/'],
         tools,
     )
 

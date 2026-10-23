@@ -16,7 +16,6 @@
                     "type": "string",
                     "format": "file-path",
                     "exists": true,
-                    "schema": "subworkflows/local/utils_references/schema_references.json",
                     "mimetype": "text/yaml",
                     "pattern": "^\\S+\\.(yaml|yml)$",
                     "errorMessage": "Input datasheet must be an existing file ending in '.yaml' or '.yml' that does not contain spaces",
@@ -57,8 +56,8 @@
                 "references_base_path": {
                     "type": "string",
                     "format": "directory-path",
-                    "description": "Base path used to resolve reference file paths in the datasheet, replacing the default 's3://ngi-igenomes/igenomes/' prefix.",
-                    "help_text": "Datasheets may carry igenomes-style 's3://ngi-igenomes/igenomes/...' paths. When this parameter is set, that prefix is rewritten to this base path before files are resolved, so you can point at a local or institutional mirror of igenomes without editing the datasheet.",
+                    "description": "Base path substituted for ${params.references_base_path} placeholders in datasheet paths.",
+                    "help_text": "Datasheet file paths may contain a ${params.references_base_path} placeholder instead of a hardcoded root, for example ${params.references_base_path}/GRCh38_chr21/GRCh38_chr21.fa. The placeholder is replaced by this parameter when the datasheet loads, so one datasheet can be used against any mirror of the reference files. The default is s3://ngi-igenomes/igenomes, the root that published datasheets are written against. The placeholder carries the leading slash, so the value must not end with one. Datasheets with no placeholder are unaffected. This parameter only rewrites paths inside the datasheet; the location of the datasheet itself is set with --input.",
                     "fa_icon": "fas fa-ban"
                 },
                 "email": {
