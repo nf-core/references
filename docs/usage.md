@@ -229,6 +229,18 @@ The placeholder carries the leading slash, so the value must not end with one. A
 
 Datasheets without placeholders are unchanged and need no edit. This parameter only rewrites paths inside the datasheet; the location of the datasheet itself is set with `--input`.
 
+### Reference selection in consuming pipelines
+
+A pipeline that consumes references resolves them from the first source that supplies a usable record. Any source may contribute any subset of keys, such as `fasta`, `fasta_fai`, `genome`, or `species`:
+
+- Explicit parameters, for example `--fasta` and `--fasta_fai`.
+- A references datasheet, passed as a file, or located from a base URL plus a genome key.
+- An iGenomes catalogue entry for the selected `--genome`.
+
+Each source runs only when the previous ones did not supply `fasta`, so an explicit parameter prevents an unnecessary datasheet fetch. Selecting a datasheet and selecting a catalogue entry at the same time is an error: the sources are mutually exclusive, and pipelines reject the combination rather than guess an order.
+
+Parameter names for these sources belong to each consuming pipeline and are documented in its own usage pages. nf-core/bamtofastq, for example, selects the datasheet with `--references` and the catalogue with `--genome` plus `--igenomes_ignore`, and points back here for this shared resolution order.
+
 ## Running the pipeline
 
 The typical command for running the pipeline is as follows:
