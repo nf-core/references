@@ -82,10 +82,10 @@ Datasheets are stored in [references-datasheets](https://github.com/nf-core/refe
 - genome: GRCh38_chr21
   fasta: "https://raw.githubusercontent.com/nf-core/test-datasets/references/references/GRCh38_chr21/GRCh38_chr21.fa"
   gtf: "https://raw.githubusercontent.com/nf-core/test-datasets/references/references/GRCh38_chr21/GRCh38_chr21.gtf"
-  source_version: "CUSTOM"
+  annotation_version: "CUSTOM"
   readme: "https://raw.githubusercontent.com/nf-core/test-datasets/references/references/GRCh38_chr21/README.md"
-  source: "nf-core/references"
-  source_vcf: "GATK_BUNDLE"
+  reference_source: "nf-core/references"
+  annotation_source: "GATK_BUNDLE"
   species: "Homo_sapiens"
   vcf: "https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/genomics/homo_sapiens/genome/vcf/dbsnp_146.hg38.vcf.gz"
 ```

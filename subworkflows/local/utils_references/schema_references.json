@@ -20,18 +20,18 @@
                 "default": "unknown",
                 "errorMessage": "Website of origin of the reference must be a valid URL or 'unknown'"
             },
-            "source": {
-                "meta": ["source"],
+            "reference_source": {
+                "meta": ["reference_source"],
                 "type": "string",
                 "pattern": "^\\S+$",
-                "errorMessage": "Source of genome cannot contain spaces"
+                "errorMessage": "Reference source of the genome cannot contain spaces"
             },
-            "source_version": {
-                "meta": ["source_version"],
+            "annotation_version": {
+                "meta": ["annotation_version"],
                 "type": "string",
                 "pattern": "^\\S+$",
                 "default": "unknown",
-                "errorMessage": "Source version used to create annotation files (gff/gtf related files) cannot contain spaces"
+                "errorMessage": "Annotation version used to create annotation files (gff/gtf related files) cannot contain spaces"
             },
             "species": {
                 "meta": ["species"],

@@ -157,12 +157,12 @@ A datasheet is a YAML list with one entry per genome. `genome` is the only requi
 ```yaml
 - genome: GRCh38_chr21
   species: Homo_sapiens
-  source: nf-core
+  reference_source: nf-core
   fasta: https://raw.githubusercontent.com/nf-core/test-datasets/references/references/GRCh38_chr21/GRCh38_chr21.fa
 
 - genome: GRCh38_chr22
   species: Homo_sapiens
-  source: nf-core
+  reference_source: nf-core
   fasta: https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/genomics/homo_sapiens/genome/genome.fasta
 ```
 
@@ -182,7 +182,7 @@ An entry lists what a genome already provides. Only `genome` is required; the pi
 ```yaml
 - genome: GRCh37
   species: Homo_sapiens
-  source: GATK
+  reference_source: GATK
 
   # Genome and annotation
   fasta: s3://ngi-igenomes/igenomes/Homo_sapiens/GATK/GRCh37/Sequence/WholeGenomeFasta/human_g1k_v37_decoy.fasta
