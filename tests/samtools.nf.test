@@ -1,0 +1,111 @@
+nextflow_pipeline {
+
+    name "Build samtools references"
+    script "../main.nf"
+    tag "pipeline"
+
+    test("-profile test --tools faidx,intervals,sizes") {
+
+        options "-output-dir ${outputDir}"
+
+        when {
+            params {
+                outdir       = "${outputDir}"
+                tools        = 'faidx,intervals,sizes'
+                tools_bundle = null
+                skip_tools   = null
+            }
+        }
+
+        then {
+            // stable_path: All files + folders in ${params.outdir}/ with a stable path (including file name)
+            def stable_path = getAllFilesFromDir(params.outdir, relative: true, includeDir: true, ignore: ['pipeline_info/*.{html,json,txt}'])
+            // stable_content: All files in ${params.outdir}/ with stable content
+            def stable_content = getAllFilesFromDir(params.outdir, ignoreFile: 'tests/.nftignore')
+            assert workflow.success
+            assertAll(
+                { assert snapshot(
+                    // Number of successful tasks
+                    workflow.trace.succeeded().size(),
+                    // pipeline versions.yml file for multiqc from which Nextflow and pipeline versions are removed (all from the workflow key)
+                    removeFromYamlMap("${outputDir}/pipeline_info/nf_core_references_software_mqc_versions.yml", 'Workflow'),
+                    // All stable path name, with a relative path
+                    stable_path,
+                    // All files with stable contents
+                    stable_content
+                ).match() }
+            )
+        }
+    }
+
+    test("-profile test --tools faidx,intervals,sizes --input references-datasheets/latest/genomes/Homo_sapiens/nf-core/GRCh38_chr21_MT.yml") {
+
+        options "-output-dir $outputDir"
+
+        when {
+            params {
+                input        = "https://raw.githubusercontent.com/nf-core/references-datasheets/latest/genomes/Homo_sapiens/nf-core/GRCh38_chr21_MT.yml"
+                outdir       = "$outputDir"
+                tools        = 'faidx,intervals,sizes'
+                tools_bundle = null
+                skip_tools   = null
+            }
+        }
+
+        then {
+            // stable_path: All files + folders in ${params.outdir}/ with a stable path (including file name)
+            def stable_path = getAllFilesFromDir(params.outdir, relative: true, includeDir: true, ignore: ['pipeline_info/*.{html,json,txt}'])
+            // stable_content: All files in ${params.outdir}/ with stable content
+            def stable_content = getAllFilesFromDir(params.outdir, ignoreFile: 'tests/.nftignore')
+            assert workflow.success
+            assertAll(
+                { assert snapshot(
+                    // Number of successful tasks
+                    workflow.trace.succeeded().size(),
+                    // pipeline versions.yml file for multiqc from which Nextflow and pipeline versions are removed (all from the workflow key)
+                    removeFromYamlMap("${outputDir}/pipeline_info/nf_core_references_software_mqc_versions.yml", 'Workflow'),
+                    // All stable path name, with a relative path
+                    stable_path,
+                    // All files with stable contents
+                    stable_content
+                ).match() }
+            )
+        }
+    }
+
+    test("-profile test --tools faidx,intervals,sizes --input references-datasheets/latest/genomes/Homo_sapiens/nf-core/GRCh38_chr21.yml") {
+
+        options "-output-dir $outputDir"
+
+        when {
+            params {
+                input        = "https://raw.githubusercontent.com/nf-core/references-datasheets/latest/genomes/Homo_sapiens/nf-core/GRCh38_chr21.yml"
+                outdir       = "$outputDir"
+                tools        = 'faidx,intervals,sizes'
+                tools_bundle = null
+                skip_tools   = null
+            }
+        }
+
+        then {
+            // stable_path: All files + folders in ${params.outdir}/ with a stable path (including file name)
+            def stable_path = getAllFilesFromDir(params.outdir, relative: true, includeDir: true, ignore: ['pipeline_info/*.{html,json,txt}'])
+            // stable_content: All files in ${params.outdir}/ with stable content
+            def stable_content = getAllFilesFromDir(params.outdir, ignoreFile: 'tests/.nftignore')
+            assert workflow.success
+            assertAll(
+                { assert snapshot(
+                    // Number of successful tasks
+                    workflow.trace.succeeded().size(),
+                    // pipeline versions.yml file for multiqc from which Nextflow and pipeline versions are removed (all from the workflow key)
+                    removeFromYamlMap("${outputDir}/pipeline_info/nf_core_references_software_mqc_versions.yml", 'Workflow'),
+                    // All stable path name, with a relative path
+                    stable_path,
+                    // All files with stable contents
+                    stable_content
+                ).match() }
+            )
+        }
+    }
+
+}

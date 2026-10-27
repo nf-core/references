@@ -1,0 +1,30 @@
+name: write-file
+description: Writes collected items to a file.
+keywords:
+  - file
+  - write
+  - collect
+tools:
+  - write-file:
+      description: |
+        A simple process that writes a list of items to a file.
+      documentation: ""
+      licence: ["MIT"]
+      identifier: ""
+input:
+  - - record:
+        type: record
+        description: |
+          Record containing name, items, and optional newLine flag
+          e.g. record(name: 'output.yml', items: ['line1', 'line2'], newLine: true)
+output:
+  file:
+    - - ${name}:
+          type: file
+          description: The output file written from the collected items
+          pattern: "*.*"
+          ontologies: []
+authors:
+  - "@maxulysse"
+maintainers:
+  - "@maxulysse"

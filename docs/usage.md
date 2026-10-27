@@ -8,56 +8,233 @@
 
 <!-- TODO nf-core: Add documentation about anything specific to running your pipeline. For general topics, please point to (and add to) the main nf-core website. -->
 
-## Samplesheet input
+## Tools selection
 
-You will need to create a samplesheet with information about the samples you would like to analyse before running the pipeline. Use this parameter to specify its location. It has to be a comma-separated file with 3 columns, and a header row as shown in the examples below.
+The pipeline supports a flexible tools selection system with three parameters that work together:
+
+### `--tools_bundle`
+
+Select a predefined bundle of tools. Available bundles:
+
+| Bundle   | Tools                                                                                                                                |
+| -------- | ------------------------------------------------------------------------------------------------------------------------------------ |
+| `all`    | All available tools                                                                                                                  |
+| `rnaseq` | bowtie1, bowtie2, faidx, gffread, hisat2, hisat2_extractsplicesites, kallisto, rsem, rsem_make_transcript_fasta, salmon, sizes, star |
+| `sarek`  | bwamem1, bwamem2, createsequencedictionary, dragmap, faidx, intervals, msisensorpro, snapaligner, tabix                              |
+| `null`   | None. No tool indices will be built. Useful when you only need the genome and annotation files without building any indices.         |
 
 ```bash
---input '[path to samplesheet file]'
+# Build all RNA-seq references
+--tools_bundle rnaseq
+
+# Build all Sarek references
+--tools_bundle sarek
+
+# Build everything
+--tools_bundle all
+
+# Download genome/annotation only, no tool indices
+--tools_bundle null
 ```
 
-### Multiple runs of the same sample
+### `--tools`
 
-The `sample` identifiers have to be the same when you have re-sequenced the same sample more than once e.g. to increase sequencing depth. The pipeline will concatenate the raw reads before performing any downstream analysis. Below is an example for the same sample sequenced across 3 lanes:
+Add individual tools on top of a bundle (or use standalone without a bundle):
 
-```csv title="samplesheet.csv"
-sample,fastq_1,fastq_2
-CONTROL_REP1,AEG588A1_S1_L002_R1_001.fastq.gz,AEG588A1_S1_L002_R2_001.fastq.gz
-CONTROL_REP1,AEG588A1_S1_L003_R1_001.fastq.gz,AEG588A1_S1_L003_R2_001.fastq.gz
-CONTROL_REP1,AEG588A1_S1_L004_R1_001.fastq.gz,AEG588A1_S1_L004_R2_001.fastq.gz
+```bash
+# Add extra tools on top of a bundle
+--tools_bundle rnaseq --tools star,salmon
+
+# Use standalone without a bundle
+--tools star,salmon,bwamem2
 ```
 
-### Full samplesheet
+### `--skip_tools`
 
-The pipeline will auto-detect whether a sample is single- or paired-end using the information provided in the samplesheet. The samplesheet can have as many columns as you desire, however, there is a strict requirement for the first 3 columns to match those defined in the table below.
+Remove specific tools from the final selection (overrides bundles and `--tools`):
 
-A final samplesheet file consisting of both single- and paired-end data may look something like the one below. This is for 6 samples, where `TREATMENT_REP3` has been sequenced twice.
+```bash
+# Build all RNA-seq references except hisat2 and kallisto
+--tools_bundle rnaseq --skip_tools hisat2,kallisto
 
-```csv title="samplesheet.csv"
-sample,fastq_1,fastq_2
-CONTROL_REP1,AEG588A1_S1_L002_R1_001.fastq.gz,AEG588A1_S1_L002_R2_001.fastq.gz
-CONTROL_REP2,AEG588A2_S2_L002_R1_001.fastq.gz,AEG588A2_S2_L002_R2_001.fastq.gz
-CONTROL_REP3,AEG588A3_S3_L002_R1_001.fastq.gz,AEG588A3_S3_L002_R2_001.fastq.gz
-TREATMENT_REP1,AEG588A4_S4_L003_R1_001.fastq.gz,
-TREATMENT_REP2,AEG588A5_S5_L003_R1_001.fastq.gz,
-TREATMENT_REP3,AEG588A6_S6_L003_R1_001.fastq.gz,
-TREATMENT_REP3,AEG588A6_S6_L004_R1_001.fastq.gz,
+# Build everything except dragmap and tabix
+--tools_bundle all --skip_tools dragmap,tabix
 ```
 
-| Column    | Description                                                                                                                                                                            |
-| --------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `sample`  | Custom sample name. This entry will be identical for multiple sequencing libraries/runs from the same sample. Spaces in sample names are automatically converted to underscores (`_`). |
-| `fastq_1` | Full path to FastQ file for Illumina short reads 1. File has to be gzipped and have the extension ".fastq.gz" or ".fq.gz".                                                             |
-| `fastq_2` | Full path to FastQ file for Illumina short reads 2. File has to be gzipped and have the extension ".fastq.gz" or ".fq.gz".                                                             |
+## HISAT2 index options
 
-An [example samplesheet](../assets/samplesheet.csv) has been provided with the pipeline.
+### `--hisat2_skip_splice_sites`
+
+HISAT2 normally includes splice sites and exons in the index for eukaryotic genomes. Use this flag to skip splice site extraction for prokaryotic genomes like _E. coli_:
+
+```bash
+--tools hisat2 --hisat2_skip_splice_sites
+```
+
+Without this flag, the pipeline tries to extract splice sites from the GTF and pass them to `hisat2-build`. For prokaryotic genomes with no introns, this produces an empty splice sites file and HISAT2 fails. This flag skips that step.
+
+### `--hisat2_build_memory`
+
+Set the memory threshold for splice-aware indexing:
+
+```bash
+--hisat2_build_memory '100.GB'
+```
+
+When process memory is at least this threshold, HISAT2 uses splice sites and exons. Below it, HISAT2 builds the index without splice information.
+
+## STAR index options
+
+### `--star_sjdbOverhang`
+
+Length of donor and acceptor splice site anchors for the STAR splice junction database.
+
+Default behaviour: STAR auto-calculates this from read length.
+
+Typical values:
+
+- 99 bp for mammals with 100 bp reads
+- 74 bp for insects
+- 50-100 bp for plants
+- 1 bp less than read length (general rule)
+
+Set a fixed value with:
+
+```bash
+--tools star --star_sjdbOverhang 99
+```
+
+### `--star_genomeSAindexNbases`
+
+Length of the suffix array pre-indexing string. Larger values use more memory during indexing but produce smaller indices.
+
+Default behaviour: STAR calculates this as `log2(genome_size)/2 - 1`, capped at 14.
+
+Typical values:
+
+- 14 for large genomes (>500 Mb)
+- 11 for compact genomes (<300 Mb)
+
+Set a specific value with:
+
+```bash
+--tools star --star_genomeSAindexNbases 14
+```
+
+### Per-genome STAR parameters
+
+Specify `star_sjdbOverhang` and `star_genomeSAindexNbases` per genome in your YAML asset file:
+
+```yaml
+- genome: GRCh38
+  species: Homo_sapiens
+  fasta: https://example.com/GRCh38.fa
+  gtf: https://example.com/GRCh38.gtf
+  star_sjdbOverhang: 99
+  star_genomeSAindexNbases: 14
+```
+
+Parameter precedence (highest to lowest):
+
+1. CLI parameters (`--star_sjdbOverhang`, `--star_genomeSAindexNbases`)
+2. Per-genome parameters in YAML
+3. STAR defaults (auto-calculated)
+
+## Asset input
+
+You will need to create an asset yaml file with information about the genome(s) and files to use for building references before running the pipeline.
+Use this parameter to specify its location.
+It has to be a yaml file.
+
+```bash
+--input '[path to asset file]'
+```
+
+### Multiple genomes
+
+A datasheet is a YAML list with one entry per genome. `genome` is the only required field, and every other field applies to the entry it sits in:
+
+```yaml
+- genome: GRCh38_chr21
+  species: Homo_sapiens
+  reference_source: nf-core
+  fasta: https://raw.githubusercontent.com/nf-core/test-datasets/references/references/GRCh38_chr21/GRCh38_chr21.fa
+
+- genome: GRCh38_chr22
+  species: Homo_sapiens
+  reference_source: nf-core
+  fasta: https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/genomics/homo_sapiens/genome/genome.fasta
+```
+
+Set `species` and `source` on every entry. The pipeline builds the published path from `species/source/genome`, so each entry writes into its own tree and one run can build several genomes without collisions:
+
+```text
+Homo_sapiens/nf-core/GRCh38_chr21/Sequence/WholeGenomeFasta/
+Homo_sapiens/nf-core/GRCh38_chr22/Sequence/WholeGenomeFasta/
+```
+
+The pipeline computes run flags per entry, so genomes build independently. It skips annotation-dependent tools for an entry that has neither `gtf` nor `gff`.
+
+### Full asset file
+
+An entry lists what a genome already provides. Only `genome` is required; the pipeline builds the rest from `fasta` and `gff` or `gtf`:
+
+```yaml
+- genome: GRCh37
+  species: Homo_sapiens
+  reference_source: GATK
+
+  # Genome and annotation
+  fasta: s3://ngi-igenomes/igenomes/Homo_sapiens/GATK/GRCh37/Sequence/WholeGenomeFasta/human_g1k_v37_decoy.fasta
+  fasta_fai: s3://ngi-igenomes/igenomes/Homo_sapiens/GATK/GRCh37/Sequence/WholeGenomeFasta/human_g1k_v37_decoy.fasta.fai
+  fasta_dict: s3://ngi-igenomes/igenomes/Homo_sapiens/GATK/GRCh37/Sequence/WholeGenomeFasta/human_g1k_v37_decoy.dict
+
+  # A prebuilt index, used exactly as supplied
+  bwamem1_index: s3://ngi-igenomes/igenomes/Homo_sapiens/GATK/GRCh37/Sequence/BWAIndex/
+
+  # A GATK resource VCF, with its tabix index and its provenance
+  vcf_dbsnp_vcf: s3://ngi-igenomes/igenomes/Homo_sapiens/GATK/GRCh37/Annotation/GATKBundle/dbsnp_138.b37.vcf.gz
+  vcf_dbsnp_vcf_tbi: s3://ngi-igenomes/igenomes/Homo_sapiens/GATK/GRCh37/Annotation/GATKBundle/dbsnp_138.b37.vcf.gz.tbi
+  vcf_dbsnp_vcf_source: GATKBundle
+```
+
+Format rules:
+
+- Supply an artefact and the pipeline skips building it. `fasta_fai`, `fasta_dict`, `bwamem1_index`, `star_index`, `hisat2_index`, and the other index fields work this way, so one entry can mix built and provided assets.
+- The `vcf_*_vcf` fields accept a single path or a list. A matching `vcf_*_vcf_tbi` list pairs by position, and a `null` entry means the pipeline builds that index.
+- The `*_source` fields record provenance and become the `Annotation/<source>` segment of the published path.
+- Any path may carry a `${params.references_base_path}` placeholder (see `--references_base_path`).
+- A field that is not in `subworkflows/local/utils_references/schema_references.json` is ignored with a warning, so check that file for the complete list.
+
+Example asset files are published in the [nf-core/references-datasheets](https://github.com/nf-core/references-datasheets) repository.
+
+### `--references_base_path`
+
+A datasheet path may carry a `${params.references_base_path}` placeholder instead of a hardcoded root:
+
+```yaml
+- genome: GRCh38_chr21
+  fasta: ${params.references_base_path}/GRCh38_chr21/GRCh38_chr21.fa
+```
+
+The pipeline substitutes the parameter into the path as the datasheet loads, so one datasheet can be used against any mirror of the reference files:
+
+```bash
+--references_base_path '/data/mirror/igenomes'
+```
+
+The default is `s3://ngi-igenomes/igenomes`, the root that published datasheets are written against. With that default the example above resolves to `s3://ngi-igenomes/igenomes/GRCh38_chr21/GRCh38_chr21.fa`.
+
+The placeholder carries the leading slash, so the value must not end with one. A trailing slash produces a doubled slash in the path.
+
+Datasheets without placeholders are unchanged and need no edit. This parameter only rewrites paths inside the datasheet; the location of the datasheet itself is set with `--input`.
 
 ## Running the pipeline
 
 The typical command for running the pipeline is as follows:
 
 ```bash
-nextflow run nf-core/references --input ./samplesheet.csv --outdir ./results  -profile docker
+nextflow run nf-core/references --input ./asset.yml --outdir ./results  -profile docker
 ```
 
 This will launch the pipeline with the `docker` configuration profile. See below for more information about profiles.

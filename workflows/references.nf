@@ -1,95 +1,55 @@
-/*
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    IMPORT MODULES / SUBWORKFLOWS / FUNCTIONS
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-*/
-include { MULTIQC                } from '../modules/nf-core/multiqc/main'
-include { paramsSummaryMap       } from 'plugin/nf-schema'
-include { paramsSummaryMultiqc   } from '../subworkflows/nf-core/utils_nfcore_pipeline'
-include { softwareVersionsToYAML } from '../subworkflows/nf-core/utils_nfcore_pipeline'
-include { methodsDescriptionText } from '../subworkflows/local/utils_nfcore_references_pipeline'
-
-/*
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    RUN MAIN WORKFLOW
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-*/
+include { PREPARE_GENOME } from '../subworkflows/local/prepare_genome'
 
 workflow REFERENCES {
-
     take:
-    ch_samplesheet // channel: samplesheet read in from --input
-    multiqc_config
-    multiqc_logo
-    multiqc_methods_description
-    outdir
+    altliftoverfile
+    fasta
+    fasta_fai
+    gff
+    gtf
+    splice_sites
+    transcript_fasta
+    vcf
+    tools // List: Can contain any combination of tools
+    hisat2_build_memory
+    hisat2_skip_splice_sites
 
     main:
-
-    def ch_versions = channel.empty()
-    def ch_multiqc_files = channel.empty()
-
-    //
-    // Collate and save software versions
-    //
-    def topic_versions = channel.topic("versions")
-        .distinct()
-        .branch { entry ->
-            versions_file: entry instanceof Path
-            versions_tuple: true
-        }
-
-    def topic_versions_string = topic_versions.versions_tuple
-        .map { process, tool, version ->
-            [ process[process.lastIndexOf(':')+1..-1], "  ${tool}: ${version}" ]
-        }
-        .groupTuple(by:0)
-        .map { process, tool_versions ->
-            tool_versions.unique().sort()
-            "${process}:\n${tool_versions.join('\n')}"
-        }
-
-    def ch_collated_versions = softwareVersionsToYAML(ch_versions.mix(topic_versions.versions_file))
-        .mix(topic_versions_string)
-        .collectFile(
-            storeDir: "${outdir}/pipeline_info",
-            name: 'nf_core_'  +  'references_software_'  + 'mqc_'  + 'versions.yml',
-            sort: true,
-            newLine: true
-        )
-
-    //
-    // MODULE: MultiQC
-    //
-    ch_multiqc_files = ch_multiqc_files.mix(ch_collated_versions)
-    def ch_summary_params = paramsSummaryMap(workflow, parameters_schema: "nextflow_schema.json")
-    def ch_workflow_summary = channel.value(paramsSummaryMultiqc(ch_summary_params))
-    ch_multiqc_files = ch_multiqc_files.mix(ch_workflow_summary.collectFile(name: 'workflow_summary_mqc.yaml'))
-    def ch_multiqc_custom_methods_description = multiqc_methods_description
-        ? file(multiqc_methods_description, checkIfExists: true)
-        : file("${projectDir}/assets/methods_description_template.yml", checkIfExists: true)
-    def ch_methods_description = channel.value(methodsDescriptionText(ch_multiqc_custom_methods_description))
-    ch_multiqc_files = ch_multiqc_files.mix(ch_methods_description.collectFile(name: 'methods_description_mqc.yaml', sort: true))
-    MULTIQC(
-        ch_multiqc_files.flatten().collect().map { files ->
-            [
-                [id: 'references'],
-                files,
-                multiqc_config
-                    ? file(multiqc_config, checkIfExists: true)
-                    : file("${projectDir}/assets/multiqc_config.yml", checkIfExists: true),
-                multiqc_logo ? file(multiqc_logo, checkIfExists: true) : [],
-                [],
-                [],
-            ]
-        }
+    ch_prepare_genome = PREPARE_GENOME(
+        fasta,
+        fasta_fai,
+        gff,
+        gtf,
+        splice_sites,
+        transcript_fasta,
+        vcf,
+        altliftoverfile,
+        tools,
+        hisat2_build_memory,
+        hisat2_skip_splice_sites,
     )
-    emit:multiqc_report = MULTIQC.out.report.map { _meta, report -> [report] }.toList() // channel: /path/to/multiqc_report.html
-    versions       = ch_versions                 // channel: [ path(versions.yml) ]
-}
 
-/*
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    THE END
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-*/
+    emit:
+    bowtie1_index     = ch_prepare_genome.bowtie1_index
+    bowtie2_index     = ch_prepare_genome.bowtie2_index
+    bwamem1_index     = ch_prepare_genome.bwamem1_index
+    bwamem2_index     = ch_prepare_genome.bwamem2_index
+    dragmap_hashmap   = ch_prepare_genome.dragmap_hashmap
+    fasta
+    fasta_dict        = ch_prepare_genome.fasta_dict
+    fasta_fai         = ch_prepare_genome.fasta_fai
+    fasta_sizes       = ch_prepare_genome.fasta_sizes
+    gff
+    gtf               = ch_prepare_genome.gtf
+    hisat2_index      = ch_prepare_genome.hisat2_index
+    intervals_bed     = ch_prepare_genome.intervals_bed
+    kallisto_index    = ch_prepare_genome.kallisto_index
+    msisensorpro_list = ch_prepare_genome.msisensorpro_list
+    rsem_index        = ch_prepare_genome.rsem_index
+    salmon_index      = ch_prepare_genome.salmon_index
+    snapaligner_index = ch_prepare_genome.snapaligner_index
+    splice_sites      = ch_prepare_genome.splice_sites
+    star_index        = ch_prepare_genome.star_index
+    transcript_fasta  = ch_prepare_genome.transcript_fasta
+    vcf_tbi           = ch_prepare_genome.vcf_tbi
+}

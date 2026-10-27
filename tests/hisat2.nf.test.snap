@@ -1,0 +1,205 @@
+{
+    "-profile test --tools hisat2,hisat2_extractsplicesites --input references-datasheets/latest/genomes/Homo_sapiens/nf-core/GRCh38_chr21_MT.yml": {
+        "content": [
+            5,
+            {
+                "HISAT2_BUILD": {
+                    "hisat2": "2.2.3"
+                }
+            },
+            [
+                "Homo_sapiens",
+                "Homo_sapiens/nf-core",
+                "Homo_sapiens/nf-core/GRCh38_chr21",
+                "Homo_sapiens/nf-core/GRCh38_chr21/Sequence",
+                "Homo_sapiens/nf-core/GRCh38_chr21/Sequence/Hisat2Index",
+                "Homo_sapiens/nf-core/GRCh38_chr21/Sequence/Hisat2Index/CUSTOM",
+                "Homo_sapiens/nf-core/GRCh38_chr21/Sequence/Hisat2Index/CUSTOM/2.2.3",
+                "Homo_sapiens/nf-core/GRCh38_chr21/Sequence/Hisat2Index/CUSTOM/2.2.3/GRCh38_chr21.1.ht2",
+                "Homo_sapiens/nf-core/GRCh38_chr21/Sequence/Hisat2Index/CUSTOM/2.2.3/GRCh38_chr21.2.ht2",
+                "Homo_sapiens/nf-core/GRCh38_chr21/Sequence/Hisat2Index/CUSTOM/2.2.3/GRCh38_chr21.3.ht2",
+                "Homo_sapiens/nf-core/GRCh38_chr21/Sequence/Hisat2Index/CUSTOM/2.2.3/GRCh38_chr21.4.ht2",
+                "Homo_sapiens/nf-core/GRCh38_chr21/Sequence/Hisat2Index/CUSTOM/2.2.3/GRCh38_chr21.5.ht2",
+                "Homo_sapiens/nf-core/GRCh38_chr21/Sequence/Hisat2Index/CUSTOM/2.2.3/GRCh38_chr21.6.ht2",
+                "Homo_sapiens/nf-core/GRCh38_chr21/Sequence/Hisat2Index/CUSTOM/2.2.3/GRCh38_chr21.7.ht2",
+                "Homo_sapiens/nf-core/GRCh38_chr21/Sequence/Hisat2Index/CUSTOM/2.2.3/GRCh38_chr21.8.ht2",
+                "multiqc",
+                "multiqc/multiqc_data",
+                "multiqc/multiqc_data/llms-full.txt",
+                "multiqc/multiqc_data/multiqc.log",
+                "multiqc/multiqc_data/multiqc.parquet",
+                "multiqc/multiqc_data/multiqc_citations.txt",
+                "multiqc/multiqc_data/multiqc_data.json",
+                "multiqc/multiqc_data/multiqc_software_versions.txt",
+                "multiqc/multiqc_data/multiqc_sources.txt",
+                "multiqc/multiqc_report.html",
+                "pipeline_info",
+                "pipeline_info/nf_core_references_software_mqc_versions.yml"
+            ],
+            [
+                "GRCh38_chr21.1.ht2:md5,f3f658c53041be1ed05f6317349ca81c",
+                "GRCh38_chr21.2.ht2:md5,46be3356d4c236ebd5d1e52e9eaf4e12",
+                "GRCh38_chr21.3.ht2:md5,dbf5af96efd98d6b03f1e5d2baed848a",
+                "GRCh38_chr21.4.ht2:md5,bd952f748321c4c230671e8fce7b1650",
+                "GRCh38_chr21.5.ht2:md5,103032edf695164b32cc9e6781e8f08b",
+                "GRCh38_chr21.6.ht2:md5,242e36d01cd1719b6bd05f157c644eed",
+                "GRCh38_chr21.7.ht2:md5,24e7d0673a77e07fbe40400f9a6b3db6",
+                "GRCh38_chr21.8.ht2:md5,5e0626bdb7f7a267990f72ae45c3e44a",
+                "multiqc_citations.txt:md5,4c806e63a283ec1b7e78cdae3a923d4f"
+            ]
+        ],
+        "timestamp": "2026-09-22T16:42:48.268974979",
+        "meta": {
+            "nf-test": "0.9.5",
+            "nextflow": "26.08.0"
+        }
+    },
+    "-profile test --tools hisat2 --hisat2_skip_splice_sites - E.Coli": {
+        "content": [
+            6,
+            {
+                "GFFREAD": {
+                    "gffread": "0.12.7"
+                },
+                "NCBIDATASETSCLI_DATASETS": {
+                    "gunzip": "1.12",
+                    "ncbidatasetscli": "18.25.0"
+                }
+            },
+            [
+                "Escherichia_coli",
+                "Escherichia_coli/NCBI",
+                "Escherichia_coli/NCBI/K12_MG1655",
+                "Escherichia_coli/NCBI/K12_MG1655/Annotation",
+                "Escherichia_coli/NCBI/K12_MG1655/Annotation/Genes",
+                "Escherichia_coli/NCBI/K12_MG1655/Annotation/Genes/K12_MG1655.gtf",
+                "Escherichia_coli/NCBI/K12_MG1655/Annotation/Genes/genomic.gff",
+                "Escherichia_coli/NCBI/K12_MG1655/Sequence",
+                "Escherichia_coli/NCBI/K12_MG1655/Sequence/WholeGenomeFasta",
+                "Escherichia_coli/NCBI/K12_MG1655/Sequence/WholeGenomeFasta/GCF_000005845.2_ASM584v2_genomic.fna",
+                "multiqc",
+                "multiqc/multiqc_data",
+                "multiqc/multiqc_data/llms-full.txt",
+                "multiqc/multiqc_data/multiqc.log",
+                "multiqc/multiqc_data/multiqc.parquet",
+                "multiqc/multiqc_data/multiqc_citations.txt",
+                "multiqc/multiqc_data/multiqc_data.json",
+                "multiqc/multiqc_data/multiqc_software_versions.txt",
+                "multiqc/multiqc_data/multiqc_sources.txt",
+                "multiqc/multiqc_report.html",
+                "pipeline_info",
+                "pipeline_info/nf_core_references_software_mqc_versions.yml"
+            ],
+            [
+                "K12_MG1655.gtf:md5,828fb8b76da39099e24dd49c11c37026",
+                "genomic.gff:md5,837628601d3bbf74c218716d7ea2df86",
+                "GCF_000005845.2_ASM584v2_genomic.fna:md5,92c997bcd88e983ffdb21b2712ed3736",
+                "multiqc_citations.txt:md5,4c806e63a283ec1b7e78cdae3a923d4f"
+            ]
+        ],
+        "timestamp": "2026-09-22T16:29:02.083049203",
+        "meta": {
+            "nf-test": "0.9.5",
+            "nextflow": "26.08.0"
+        }
+    },
+    "-profile test --tools hisat2 - E.Coli no hisat2_skip_splice_sites - fails": {
+        "content": [
+            5,
+            [
+                "Escherichia_coli",
+                "Escherichia_coli/NCBI",
+                "Escherichia_coli/NCBI/K12_MG1655",
+                "Escherichia_coli/NCBI/K12_MG1655/Annotation",
+                "Escherichia_coli/NCBI/K12_MG1655/Annotation/Genes",
+                "Escherichia_coli/NCBI/K12_MG1655/Annotation/Genes/K12_MG1655.gtf",
+                "Escherichia_coli/NCBI/K12_MG1655/Annotation/Genes/genomic.gff",
+                "Escherichia_coli/NCBI/K12_MG1655/Sequence",
+                "Escherichia_coli/NCBI/K12_MG1655/Sequence/SpliceSites",
+                "Escherichia_coli/NCBI/K12_MG1655/Sequence/SpliceSites/K12_MG1655.splice_sites.txt",
+                "Escherichia_coli/NCBI/K12_MG1655/Sequence/WholeGenomeFasta",
+                "Escherichia_coli/NCBI/K12_MG1655/Sequence/WholeGenomeFasta/GCF_000005845.2_ASM584v2_genomic.fna",
+                "pipeline_info"
+            ],
+            [
+                "K12_MG1655.gtf:md5,828fb8b76da39099e24dd49c11c37026",
+                "genomic.gff:md5,837628601d3bbf74c218716d7ea2df86",
+                "K12_MG1655.splice_sites.txt:md5,d41d8cd98f00b204e9800998ecf8427e",
+                "GCF_000005845.2_ASM584v2_genomic.fna:md5,92c997bcd88e983ffdb21b2712ed3736"
+            ]
+        ],
+        "timestamp": "2026-09-22T16:49:19.341152538",
+        "meta": {
+            "nf-test": "0.9.5",
+            "nextflow": "26.08.0"
+        }
+    },
+    "-profile test --tools hisat2,hisat2_extractsplicesites": {
+        "content": [
+            7,
+            {
+                "GFFREAD": {
+                    "gffread": "0.12.7"
+                },
+                "HISAT2_BUILD": {
+                    "hisat2": "2.2.3"
+                },
+                "HISAT2_EXTRACTSPLICESITES": {
+                    "hisat2": "2.2.3",
+                    "samtools": "1.24"
+                }
+            },
+            [
+                "Homo_sapiens",
+                "Homo_sapiens/nf-core",
+                "Homo_sapiens/nf-core/GRCh38_chr21",
+                "Homo_sapiens/nf-core/GRCh38_chr21/Annotation",
+                "Homo_sapiens/nf-core/GRCh38_chr21/Annotation/Genes",
+                "Homo_sapiens/nf-core/GRCh38_chr21/Annotation/Genes/GRCh38_chr21.gtf",
+                "Homo_sapiens/nf-core/GRCh38_chr21/Sequence",
+                "Homo_sapiens/nf-core/GRCh38_chr21/Sequence/Hisat2Index",
+                "Homo_sapiens/nf-core/GRCh38_chr21/Sequence/Hisat2Index/2.2.3",
+                "Homo_sapiens/nf-core/GRCh38_chr21/Sequence/Hisat2Index/2.2.3/GRCh38_chr21.1.ht2",
+                "Homo_sapiens/nf-core/GRCh38_chr21/Sequence/Hisat2Index/2.2.3/GRCh38_chr21.2.ht2",
+                "Homo_sapiens/nf-core/GRCh38_chr21/Sequence/Hisat2Index/2.2.3/GRCh38_chr21.3.ht2",
+                "Homo_sapiens/nf-core/GRCh38_chr21/Sequence/Hisat2Index/2.2.3/GRCh38_chr21.4.ht2",
+                "Homo_sapiens/nf-core/GRCh38_chr21/Sequence/Hisat2Index/2.2.3/GRCh38_chr21.5.ht2",
+                "Homo_sapiens/nf-core/GRCh38_chr21/Sequence/Hisat2Index/2.2.3/GRCh38_chr21.6.ht2",
+                "Homo_sapiens/nf-core/GRCh38_chr21/Sequence/Hisat2Index/2.2.3/GRCh38_chr21.7.ht2",
+                "Homo_sapiens/nf-core/GRCh38_chr21/Sequence/Hisat2Index/2.2.3/GRCh38_chr21.8.ht2",
+                "Homo_sapiens/nf-core/GRCh38_chr21/Sequence/SpliceSites",
+                "Homo_sapiens/nf-core/GRCh38_chr21/Sequence/SpliceSites/GRCh38_chr21.splice_sites.txt",
+                "multiqc",
+                "multiqc/multiqc_data",
+                "multiqc/multiqc_data/llms-full.txt",
+                "multiqc/multiqc_data/multiqc.log",
+                "multiqc/multiqc_data/multiqc.parquet",
+                "multiqc/multiqc_data/multiqc_citations.txt",
+                "multiqc/multiqc_data/multiqc_data.json",
+                "multiqc/multiqc_data/multiqc_software_versions.txt",
+                "multiqc/multiqc_data/multiqc_sources.txt",
+                "multiqc/multiqc_report.html",
+                "pipeline_info",
+                "pipeline_info/nf_core_references_software_mqc_versions.yml"
+            ],
+            [
+                "GRCh38_chr21.gtf:md5,c552c0aee5f1becb1d3991d21e63a5c1",
+                "GRCh38_chr21.1.ht2:md5,f3f658c53041be1ed05f6317349ca81c",
+                "GRCh38_chr21.2.ht2:md5,46be3356d4c236ebd5d1e52e9eaf4e12",
+                "GRCh38_chr21.3.ht2:md5,dbf5af96efd98d6b03f1e5d2baed848a",
+                "GRCh38_chr21.4.ht2:md5,bd952f748321c4c230671e8fce7b1650",
+                "GRCh38_chr21.5.ht2:md5,103032edf695164b32cc9e6781e8f08b",
+                "GRCh38_chr21.6.ht2:md5,242e36d01cd1719b6bd05f157c644eed",
+                "GRCh38_chr21.7.ht2:md5,24e7d0673a77e07fbe40400f9a6b3db6",
+                "GRCh38_chr21.8.ht2:md5,5e0626bdb7f7a267990f72ae45c3e44a",
+                "GRCh38_chr21.splice_sites.txt:md5,291af43cd5b00eeb15277f90a76e77f8",
+                "multiqc_citations.txt:md5,4c806e63a283ec1b7e78cdae3a923d4f"
+            ]
+        ],
+        "timestamp": "2026-09-22T16:44:02.471513343",
+        "meta": {
+            "nf-test": "0.9.5",
+            "nextflow": "26.08.0"
+        }
+    }
+}

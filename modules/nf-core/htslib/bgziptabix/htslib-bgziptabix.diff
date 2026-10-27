@@ -1,0 +1,19 @@
+Changes in component 'nf-core/htslib/bgziptabix'
+'modules/nf-core/htslib/bgziptabix/meta.yml' is unchanged
+'modules/nf-core/htslib/bgziptabix/environment.yml' is unchanged
+Changes in 'htslib/bgziptabix/main.nf':
+--- modules/nf-core/htslib/bgziptabix/main.nf
++++ modules/nf-core/htslib/bgziptabix/main.nf
+@@ -8,7 +8,7 @@
+         : 'community.wave.seqera.io/library/htslib_xz:32f2772a564b3cd2'}"
+ 
+     input:
+-    tuple val(meta), path(infile), path(infile_tbi), path(regions)
++    tuple val(meta), path(infile), val(infile_tbi), val(regions)
+     val action
+     val make_index
+     val out_ext
+
+'modules/nf-core/htslib/bgziptabix/tests/main.nf.test' is unchanged
+'modules/nf-core/htslib/bgziptabix/tests/main.nf.test.snap' is unchanged
+************************************************************
