@@ -72,6 +72,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - [#165](https://github.com/nf-core/references/pull/165) - Document `--references_base_path`, multiple genomes, and the asset file format in `docs/usage.md`
 - [#166](https://github.com/nf-core/references/pull/166) - Rename the datasheet `source`, `source_version`, and derived `source_vcf` meta fields to `reference_source`, `annotation_version`, and `annotation_source` (#65)
 - [#168](https://github.com/nf-core/references/pull/168) - Template update for nf-core/tools v4.2.1
+- [#172](https://github.com/nf-core/references/pull/172) - Template update for nf-core/tools v4.2.2
 
 ### Removed
 

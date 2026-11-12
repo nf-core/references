@@ -44,10 +44,11 @@ nextflow_pipeline {
 
         when {
             params {
-                input        = "https://raw.githubusercontent.com/nf-core/references-datasheets/latest/genomes/Homo_sapiens/GATK/GRCh38_chr22.yml"
-                outdir       = "$outputDir"
-                tools_bundle = 'sarek'
-                skip_tools   = 'snapaligner'
+                input                = "https://raw.githubusercontent.com/nf-core/references-datasheets/latest/genomes/Homo_sapiens/GATK/GRCh38_chr22.yml"
+                outdir               = "$outputDir"
+                references_base_path = 's3://nf-core-references'
+                tools_bundle         = 'sarek'
+                skip_tools           = 'snapaligner'
             }
         }
 
