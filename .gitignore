@@ -10,3 +10,11 @@ null/
 .lineage/
 .nf-test/
 .nf-test.log
+.idea
+*.log
+tmp/
+.nf-test
+.vscode
+modules/nf-*/**/tests/
+subworkflows/nf-*/**/tests/
+ROADMAP.md

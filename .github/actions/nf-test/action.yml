@@ -60,6 +60,7 @@ runs:
       shell: bash
       env:
         NFT_WORKDIR: ${{ env.NFT_WORKDIR }}
+        NCBI_API_KEY: ${{ env.NCBI_API_KEY }}
       run: |
         nf-test test \
           --profile=+${{ inputs.profile }} \

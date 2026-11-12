@@ -16,11 +16,11 @@
                     "type": "string",
                     "format": "file-path",
                     "exists": true,
-                    "schema": "assets/schema_input.json",
-                    "mimetype": "text/csv",
-                    "pattern": "^\\S+\\.csv$",
-                    "description": "Path to comma-separated file containing information about the samples in the experiment.",
-                    "help_text": "You will need to create a design file with information about the samples in your experiment before running the pipeline. Use this parameter to specify its location. It has to be a comma-separated file with 3 columns, and a header row. See [usage docs](https://nf-co.re/references/usage#samplesheet-input).",
+                    "mimetype": "text/yaml",
+                    "pattern": "^\\S+\\.(yaml|yml)$",
+                    "errorMessage": "Input datasheet must be an existing file ending in '.yaml' or '.yml' that does not contain spaces",
+                    "description": "Path to yaml file containing information about the genome(s) and files to use for building references.",
+                    "help_text": "You will need to create a datasheet with information about the genome(s) before running the pipeline. Use this parameter to specify its location. It has to be a yaml file. See [usage docs](https://nf-co.re/references/usage#datasheet).",
                     "fa_icon": "fas fa-file-csv"
                 },
                 "outdir": {
@@ -28,6 +28,37 @@
                     "format": "directory-path",
                     "description": "The output directory where the results will be saved. You have to use absolute paths to storage on Cloud infrastructure.",
                     "fa_icon": "fas fa-folder-open"
+                },
+                "tools_bundle": {
+                    "type": "string",
+                    "fa_icon": "fas fa-window-restore",
+                    "description": "Select a predefined bundle of tools to build references for.",
+                    "help_text": "Available bundles: 'all' (all available tools), 'rnaseq' (bowtie1, bowtie2, faidx, gffread, hisat2, hisat2_extractsplicesites, kallisto, rsem, rsem_make_transcript_fasta, salmon, sizes, star), 'sarek' (bwamem1, bwamem2, createsequencedictionary, dragmap, faidx, intervals, msisensorpro, snapaligner, tabix), 'null' (no tools). Can be combined with --tools and --skip_tools.",
+                    "pattern": "^((all|null|rnaseq|sarek)?,?)*(?<!,)$",
+                    "errorMessage": "Tool bundle must be a comma-separated list of bundle names without spaces (e.g. rnaseq or rnaseq,sarek); available: all, rnaseq, sarek, null"
+                },
+                "tools": {
+                    "type": "string",
+                    "fa_icon": "fas fa-toolbox",
+                    "description": "Specify which tools to build references for.",
+                    "help_text": "Multiple tools separated with commas, without spaces (e.g. bwamem1,faidx).",
+                    "pattern": "^((bowtie1|bowtie2|bwamem1|bwamem2|createsequencedictionary|dragmap|faidx|gffread|hisat2|hisat2_extractsplicesites|intervals|kallisto|msisensorpro|rsem|rsem_make_transcript_fasta|salmon|sizes|snapaligner|star|tabix)?,?)*(?<!,)$",
+                    "errorMessage": "Tools must be a comma-separated list of valid tool names without spaces (e.g. bwamem1,faidx,star,tabix); see --help_full for the full list"
+                },
+                "skip_tools": {
+                    "type": "string",
+                    "fa_icon": "fas fa-toolbox",
+                    "description": "Specify which tools to skip building references for.",
+                    "help_text": "Multiple tools separated with commas, without spaces (e.g. hisat2,kallisto).",
+                    "pattern": "^((bowtie1|bowtie2|bwamem1|bwamem2|createsequencedictionary|dragmap|faidx|gffread|hisat2|hisat2_extractsplicesites|intervals|kallisto|msisensorpro|rsem|rsem_make_transcript_fasta|salmon|sizes|snapaligner|star|tabix)?,?)*(?<!,)$",
+                    "errorMessage": "Skipped tools must be a comma-separated list of valid tool names without spaces (e.g. hisat2,kallisto); see --help_full for the full list"
+                },
+                "references_base_path": {
+                    "type": "string",
+                    "format": "directory-path",
+                    "description": "Base path substituted for ${params.references_base_path} placeholders in datasheet paths.",
+                    "help_text": "Datasheet file paths may contain a ${params.references_base_path} placeholder instead of a hardcoded root, for example ${params.references_base_path}/GRCh38_chr21/GRCh38_chr21.fa. The placeholder is replaced by this parameter when the datasheet loads, so one datasheet can be used against any mirror of the reference files. The default is s3://ngi-igenomes/igenomes, the root that published datasheets are written against. The placeholder carries the leading slash, so the value must not end with one. Datasheets with no placeholder are unaffected. This parameter only rewrites paths inside the datasheet; the location of the datasheet itself is set with --input.",
+                    "fa_icon": "fas fa-ban"
                 },
                 "email": {
                     "type": "string",
@@ -40,6 +71,50 @@
                     "type": "string",
                     "description": "MultiQC report title. Printed as page header, used for filename if not otherwise specified.",
                     "fa_icon": "fas fa-file-signature"
+                }
+            }
+        },
+        "building_index_options": {
+            "title": "Building index options",
+            "type": "object",
+            "description": "Parameters controlling how reference indexes are built.",
+            "properties": {
+                "kallisto_make_unique": {
+                    "type": "boolean",
+                    "description": "Make --make-unique flag for kallisto index",
+                    "fa_icon": "fas fa-toolbox",
+                    "default": false
+                },
+                "star_sjdbOverhang": {
+                    "type": "integer",
+                    "description": "Length of donor and acceptor splice site anchors for the STAR splice junction database; typically 1 bp less than read length.",
+                    "fa_icon": "fas fa-dna",
+                    "help_text": "Typical values: 99 for mammals (100 bp reads), 74 for insects, 50-100 for plants. Overrides per-genome values from the input datasheet; falls back to STAR defaults when neither is set.",
+                    "minimum": 1,
+                    "errorMessage": "STAR sjdbOverhang must be a positive integer"
+                },
+                "star_genomeSAindexNbases": {
+                    "type": "integer",
+                    "description": "Length of suffix array pre-indexing string for STAR genome indexing.",
+                    "fa_icon": "fas fa-dna",
+                    "help_text": "Typical values: 14 for large genomes (>500M bp), 11 for compact genomes (<300M bp). If not specified, calculated as log2(genome_size)/2-1, capped at 14. Overrides per-genome values from the input datasheet; falls back to STAR defaults when neither is set.",
+                    "minimum": 1,
+                    "maximum": 14,
+                    "errorMessage": "STAR genomeSAindexNbases must be an integer between 1 and 14"
+                },
+                "hisat2_build_memory": {
+                    "type": "string",
+                    "description": "Memory threshold for HISAT2 index building. When available process memory meets or exceeds this value, splice sites and exons are used to build a splice-aware index.",
+                    "fa_icon": "fas fa-memory",
+                    "default": "200.GB",
+                    "pattern": "^[0-9]+\\.?[0-9]*\\.?[GMK]B$",
+                    "errorMessage": "HISAT2 build memory must be a memory value such as '200.GB', '3.GB' or '512MB'"
+                },
+                "hisat2_skip_splice_sites": {
+                    "type": "boolean",
+                    "description": "Skip splice site extraction and usage for HISAT2 index building. Useful for prokaryotic genomes where splice sites are not applicable.",
+                    "fa_icon": "fas fa-ban",
+                    "default": false
                 }
             }
         },
@@ -166,6 +241,13 @@
                     "fa_icon": "fas fa-check-square",
                     "hidden": true
                 },
+                "modules_testdata_base_path": {
+                    "type": "string",
+                    "fa_icon": "far fa-check-circle",
+                    "description": "Base URL or local path to location of pipeline test dataset files",
+                    "default": "https://raw.githubusercontent.com/nf-core/test-datasets/modules/data/",
+                    "hidden": true
+                },
                 "pipelines_testdata_base_path": {
                     "type": "string",
                     "fa_icon": "far fa-check-circle",
@@ -197,6 +279,9 @@
     "allOf": [
         {
             "$ref": "#/$defs/input_output_options"
+        },
+        {
+            "$ref": "#/$defs/building_index_options"
         },
         {
             "$ref": "#/$defs/institutional_config_options"
