@@ -34,6 +34,7 @@ For DNASEQ pipelines (ie [nf-core/sarek](https://nf-co.re/sarek)), needing only 
 
 - [BWA-MEM](https://arxiv.org/abs/1303.3997v2) index
 - [BWA-MEM2](https://ieeexplore.ieee.org/document/8820962) index
+- [bwa-mem3](https://github.com/fg-labs/bwa-mem3) index, plain and methylation (`--meth`)
 - [DragMap](https://github.com/Illumina/DRAGMAP) hashtable
 - Fasta dictionary (with [GATK4](https://pubmed.ncbi.nlm.nih.gov/20644199/))
 - Fasta fai (with [SAMtools](https://pubmed.ncbi.nlm.nih.gov/19505943/))

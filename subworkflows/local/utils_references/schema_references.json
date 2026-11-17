@@ -97,6 +97,20 @@
                 "exists": true,
                 "errorMessage": "BWA-MEM2 index must be an existing directory or an existing file ending in '.tar.gz' and cannot contain spaces"
             },
+            "bwamem3_index": {
+                "meta": ["bwamem3_index"],
+                "type": "string",
+                "pattern": "^\\S+(\\.tar\\.gz)?$",
+                "exists": true,
+                "errorMessage": "BWA-MEM3 index must be an existing directory or an existing file ending in '.tar.gz' and cannot contain spaces"
+            },
+            "bwamem3meth_index": {
+                "meta": ["bwamem3meth_index"],
+                "type": "string",
+                "pattern": "^\\S+(\\.tar\\.gz)?$",
+                "exists": true,
+                "errorMessage": "BWA-MEM3 methylation (--meth) index must be an existing directory or an existing file ending in '.tar.gz' and cannot contain spaces"
+            },
             "dragmap_hashtable": {
                 "meta": ["dragmap_hashtable"],
                 "type": "string",

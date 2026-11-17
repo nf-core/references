@@ -248,6 +248,8 @@ def defineToolsList(input_tools_bundle, input_tools, input_skip) {
             'bowtie2',
             'bwamem1',
             'bwamem2',
+            'bwamem3',
+            'bwamem3meth',
             'createsequencedictionary',
             'dragmap',
             'faidx',
@@ -264,6 +266,12 @@ def defineToolsList(input_tools_bundle, input_tools, input_skip) {
             'snapaligner',
             'star',
             'tabix',
+        ],
+        'methylseq': [
+            'bwamem1',
+            'bwamem3meth',
+            'createsequencedictionary',
+            'faidx',
         ],
         'rnaseq': [
             'bowtie1',

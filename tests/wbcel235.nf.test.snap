@@ -1,13 +1,16 @@
 {
     "-profile test --tools_bundle all --skip_tools bowtie1,bowtie2,bwamem2,dragmap,gffread,hisat2,hisat2_extractsplicesites,kallisto,msisensorpro,rsem_make_transcript_fasta,salmon,sizes,snapaligner,tabix --input Caenorhabditis_elegans/NCBI/WBcel235.yml": {
         "content": [
-            11,
+            13,
             {
                 "BUILD_INTERVALS": {
                     "gawk": "5.3.1"
                 },
                 "BWAMEM1_INDEX": {
                     "bwa": "0.7.19-r1273"
+                },
+                "BWAMEM3_INDEX": {
+                    "bwamem3": "0.17.0"
                 },
                 "GATK4_CREATESEQUENCEDICTIONARY": {
                     "gatk4": "4.7.0.0"
@@ -47,6 +50,21 @@
                 "Caenorhabditis_elegans/NCBI/WBcel235/Sequence/BWAIndex/0.7.18/GCF_000002985.6_WBcel235_genomic.bwt",
                 "Caenorhabditis_elegans/NCBI/WBcel235/Sequence/BWAIndex/0.7.18/GCF_000002985.6_WBcel235_genomic.pac",
                 "Caenorhabditis_elegans/NCBI/WBcel235/Sequence/BWAIndex/0.7.18/GCF_000002985.6_WBcel235_genomic.sa",
+                "Caenorhabditis_elegans/NCBI/WBcel235/Sequence/BWAmem3Index",
+                "Caenorhabditis_elegans/NCBI/WBcel235/Sequence/BWAmem3Index/0.17.0",
+                "Caenorhabditis_elegans/NCBI/WBcel235/Sequence/BWAmem3Index/0.17.0/GCF_000002985.6_WBcel235_genomic.fna.amb",
+                "Caenorhabditis_elegans/NCBI/WBcel235/Sequence/BWAmem3Index/0.17.0/GCF_000002985.6_WBcel235_genomic.fna.ann",
+                "Caenorhabditis_elegans/NCBI/WBcel235/Sequence/BWAmem3Index/0.17.0/GCF_000002985.6_WBcel235_genomic.fna.bwt.2bit.64",
+                "Caenorhabditis_elegans/NCBI/WBcel235/Sequence/BWAmem3Index/0.17.0/GCF_000002985.6_WBcel235_genomic.fna.pac",
+                "Caenorhabditis_elegans/NCBI/WBcel235/Sequence/BWAmem3MethIndex",
+                "Caenorhabditis_elegans/NCBI/WBcel235/Sequence/BWAmem3MethIndex/0.17.0",
+                "Caenorhabditis_elegans/NCBI/WBcel235/Sequence/BWAmem3MethIndex/0.17.0/GCF_000002985.6_WBcel235_genomic.fna.amb",
+                "Caenorhabditis_elegans/NCBI/WBcel235/Sequence/BWAmem3MethIndex/0.17.0/GCF_000002985.6_WBcel235_genomic.fna.ann",
+                "Caenorhabditis_elegans/NCBI/WBcel235/Sequence/BWAmem3MethIndex/0.17.0/GCF_000002985.6_WBcel235_genomic.fna.meth.amb",
+                "Caenorhabditis_elegans/NCBI/WBcel235/Sequence/BWAmem3MethIndex/0.17.0/GCF_000002985.6_WBcel235_genomic.fna.meth.ann",
+                "Caenorhabditis_elegans/NCBI/WBcel235/Sequence/BWAmem3MethIndex/0.17.0/GCF_000002985.6_WBcel235_genomic.fna.meth.bwt.2bit.64",
+                "Caenorhabditis_elegans/NCBI/WBcel235/Sequence/BWAmem3MethIndex/0.17.0/GCF_000002985.6_WBcel235_genomic.fna.meth.pac",
+                "Caenorhabditis_elegans/NCBI/WBcel235/Sequence/BWAmem3MethIndex/0.17.0/GCF_000002985.6_WBcel235_genomic.fna.pac",
                 "Caenorhabditis_elegans/NCBI/WBcel235/Sequence/RSEMIndex",
                 "Caenorhabditis_elegans/NCBI/WBcel235/Sequence/RSEMIndex/GCF_000002985.6",
                 "Caenorhabditis_elegans/NCBI/WBcel235/Sequence/RSEMIndex/GCF_000002985.6/1.3.1",
@@ -119,6 +137,17 @@
                 "GCF_000002985.6_WBcel235_genomic.bwt:md5,5ac3d4632e767b1083e542b48a56983f",
                 "GCF_000002985.6_WBcel235_genomic.pac:md5,1f0196045942ef7b2d94fb80b43e9c2a",
                 "GCF_000002985.6_WBcel235_genomic.sa:md5,9bd628829e7f38cce39a4fd82f6634b2",
+                "GCF_000002985.6_WBcel235_genomic.fna.amb:md5,a0741fa25fb4e5a52ac61ecc5b679ac2",
+                "GCF_000002985.6_WBcel235_genomic.fna.ann:md5,7e46a49f983e0ca1fb6ee14be12251d3",
+                "GCF_000002985.6_WBcel235_genomic.fna.bwt.2bit.64:md5,c7ca5a7cfcc5405a63c6d6c21b246982",
+                "GCF_000002985.6_WBcel235_genomic.fna.pac:md5,1f0196045942ef7b2d94fb80b43e9c2a",
+                "GCF_000002985.6_WBcel235_genomic.fna.amb:md5,a0741fa25fb4e5a52ac61ecc5b679ac2",
+                "GCF_000002985.6_WBcel235_genomic.fna.ann:md5,7e46a49f983e0ca1fb6ee14be12251d3",
+                "GCF_000002985.6_WBcel235_genomic.fna.meth.amb:md5,a877ee9996882da917376e7530c28801",
+                "GCF_000002985.6_WBcel235_genomic.fna.meth.ann:md5,48352b51177e078baf5d026ec8a67e02",
+                "GCF_000002985.6_WBcel235_genomic.fna.meth.bwt.2bit.64:md5,72b6aa5b508a5700181b72341672ba6c",
+                "GCF_000002985.6_WBcel235_genomic.fna.meth.pac:md5,5db0987fa777538a543d9e37eca7c83d",
+                "GCF_000002985.6_WBcel235_genomic.fna.pac:md5,1f0196045942ef7b2d94fb80b43e9c2a",
                 "GCF_000002985.6_WBcel235_genomic.fna:md5,2fa2b1575d9e722f076bafcf3b755fed",
                 "Genome:md5,6115a100a80c3cf6ad4115ec2ae14125",
                 "SA:md5,1993838b1e84c6b3d37928a98c9e435b",
@@ -161,10 +190,10 @@
                 "multiqc_citations.txt:md5,4c806e63a283ec1b7e78cdae3a923d4f"
             ]
         ],
-        "timestamp": "2026-09-01T17:20:49.63495261",
+        "timestamp": "2026-11-17T17:53:44.872239691",
         "meta": {
             "nf-test": "0.9.5",
-            "nextflow": "26.08.0"
+            "nextflow": "26.04.0"
         }
     }
 }

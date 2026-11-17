@@ -16,12 +16,13 @@ The pipeline supports a flexible tools selection system with three parameters th
 
 Select a predefined bundle of tools. Available bundles:
 
-| Bundle   | Tools                                                                                                                                |
-| -------- | ------------------------------------------------------------------------------------------------------------------------------------ |
-| `all`    | All available tools                                                                                                                  |
-| `rnaseq` | bowtie1, bowtie2, faidx, gffread, hisat2, hisat2_extractsplicesites, kallisto, rsem, rsem_make_transcript_fasta, salmon, sizes, star |
-| `sarek`  | bwamem1, bwamem2, createsequencedictionary, dragmap, faidx, intervals, msisensorpro, snapaligner, tabix                              |
-| `null`   | None. No tool indices will be built. Useful when you only need the genome and annotation files without building any indices.         |
+| Bundle      | Tools                                                                                                                                |
+| ----------- | ------------------------------------------------------------------------------------------------------------------------------------ |
+| `all`       | All available tools                                                                                                                  |
+| `methylseq` | bwamem1, bwamem3meth, createsequencedictionary, faidx                                                                                |
+| `rnaseq`    | bowtie1, bowtie2, faidx, gffread, hisat2, hisat2_extractsplicesites, kallisto, rsem, rsem_make_transcript_fasta, salmon, sizes, star |
+| `sarek`     | bwamem1, bwamem2, createsequencedictionary, dragmap, faidx, intervals, msisensorpro, snapaligner, tabix                              |
+| `null`      | None. No tool indices will be built. Useful when you only need the genome and annotation files without building any indices.         |
 
 ```bash
 # Build all RNA-seq references
