@@ -25,6 +25,11 @@
                         "git_sha": "8327445b5266b0df32212e5c27407546d100429f",
                         "installed_by": ["modules"]
                     },
+                    "bwamem3/index": {
+                        "branch": "master",
+                        "git_sha": "2d590fdee3e25a93d4757ca14159a42e1406970b",
+                        "installed_by": ["modules"]
+                    },
                     "dragmap/hashtable": {
                         "branch": "master",
                         "git_sha": "6d46786420b4d7bc88eba026eb389c0c5535d120",
