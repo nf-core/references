@@ -41,7 +41,6 @@ workflow DATASHEET_TO_CHANNEL {
             meta_extra += record(run_bowtie2: meta.bowtie2_index ? false : true)
             meta_extra += record(run_bwamem1: meta.bwamem1_index ? false : true)
             meta_extra += record(run_bwamem2: meta.bwamem2_index ? false : true)
-            meta_extra += record(run_bwamem3: meta.bwamem3_index ? false : true)
             meta_extra += record(run_bwamem3meth: meta.bwamem3meth_index ? false : true)
             meta_extra += record(run_createsequencedictionary: meta.fasta_dict ? false : true)
             meta_extra += record(run_dragmap: meta.dragmap_hashtable ? false : true)

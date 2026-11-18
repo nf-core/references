@@ -27,7 +27,7 @@
                     },
                     "bwamem3/index": {
                         "branch": "master",
-                        "git_sha": "2d590fdee3e25a93d4757ca14159a42e1406970b",
+                        "git_sha": "64bdd71c1abea970aef80149f99a6f58e79bc0ea",
                         "installed_by": ["modules"]
                     },
                     "dragmap/hashtable": {

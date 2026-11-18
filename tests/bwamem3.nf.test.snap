@@ -1,16 +1,13 @@
 {
     "-profile test --tools_bundle methylseq": {
         "content": [
-            8,
+            7,
             {
                 "BWAMEM1_INDEX": {
                     "bwa": "0.7.19-r1273"
                 },
-                "BWAMEM3_INDEX": {
+                "BWAMEM3METH_INDEX": {
                     "bwamem3": "0.17.0"
-                },
-                "GATK4_CREATESEQUENCEDICTIONARY": {
-                    "gatk4": "4.7.0.0"
                 },
                 "SAMTOOLS_FAIDX": {
                     "samtools": "1.24"
@@ -38,7 +35,6 @@
                 "Homo_sapiens/nf-core/GRCh38_chr21/Sequence/BWAmem3MethIndex/0.17.0/GRCh38_chr21.fa.meth.pac",
                 "Homo_sapiens/nf-core/GRCh38_chr21/Sequence/BWAmem3MethIndex/0.17.0/GRCh38_chr21.fa.pac",
                 "Homo_sapiens/nf-core/GRCh38_chr21/Sequence/WholeGenomeFasta",
-                "Homo_sapiens/nf-core/GRCh38_chr21/Sequence/WholeGenomeFasta/GRCh38_chr21.dict",
                 "Homo_sapiens/nf-core/GRCh38_chr21/Sequence/WholeGenomeFasta/GRCh38_chr21.fa.fai",
                 "multiqc",
                 "multiqc/multiqc_data",
@@ -66,22 +62,21 @@
                 "GRCh38_chr21.fa.meth.bwt.2bit.64:md5,3b344d3c444551557a45d6873e2faebe",
                 "GRCh38_chr21.fa.meth.pac:md5,d3ed737c4c2882669b5cefda41bf39fc",
                 "GRCh38_chr21.fa.pac:md5,8c08bed90eb472d0d35451e378e399f3",
-                "GRCh38_chr21.dict:md5,40482944b1a51af140a397e2544b6ed4",
                 "GRCh38_chr21.fa.fai:md5,6ea51e1c1231da5e49212ea9f493d703",
                 "multiqc_citations.txt:md5,4c806e63a283ec1b7e78cdae3a923d4f"
             ]
         ],
-        "timestamp": "2026-11-17T17:47:09.07061222",
+        "timestamp": "2026-11-18T09:47:32.061494",
         "meta": {
             "nf-test": "0.9.5",
-            "nextflow": "26.04.0"
+            "nextflow": "26.10.5"
         }
     },
-    "-profile test --tools bwamem3,bwamem3meth": {
+    "-profile test --tools bwamem3meth": {
         "content": [
-            6,
+            5,
             {
-                "BWAMEM3_INDEX": {
+                "BWAMEM3METH_INDEX": {
                     "bwamem3": "0.17.0"
                 }
             },
@@ -90,12 +85,6 @@
                 "Homo_sapiens/nf-core",
                 "Homo_sapiens/nf-core/GRCh38_chr21",
                 "Homo_sapiens/nf-core/GRCh38_chr21/Sequence",
-                "Homo_sapiens/nf-core/GRCh38_chr21/Sequence/BWAmem3Index",
-                "Homo_sapiens/nf-core/GRCh38_chr21/Sequence/BWAmem3Index/0.17.0",
-                "Homo_sapiens/nf-core/GRCh38_chr21/Sequence/BWAmem3Index/0.17.0/GRCh38_chr21.fa.amb",
-                "Homo_sapiens/nf-core/GRCh38_chr21/Sequence/BWAmem3Index/0.17.0/GRCh38_chr21.fa.ann",
-                "Homo_sapiens/nf-core/GRCh38_chr21/Sequence/BWAmem3Index/0.17.0/GRCh38_chr21.fa.bwt.2bit.64",
-                "Homo_sapiens/nf-core/GRCh38_chr21/Sequence/BWAmem3Index/0.17.0/GRCh38_chr21.fa.pac",
                 "Homo_sapiens/nf-core/GRCh38_chr21/Sequence/BWAmem3MethIndex",
                 "Homo_sapiens/nf-core/GRCh38_chr21/Sequence/BWAmem3MethIndex/0.17.0",
                 "Homo_sapiens/nf-core/GRCh38_chr21/Sequence/BWAmem3MethIndex/0.17.0/GRCh38_chr21.fa.amb",
@@ -121,10 +110,6 @@
             [
                 "GRCh38_chr21.fa.amb:md5,e59d7ca1d4e9593989a13925bfc15c07",
                 "GRCh38_chr21.fa.ann:md5,4d42ab1762829012e9139cacbeea7615",
-                "GRCh38_chr21.fa.bwt.2bit.64:md5,d9eae2d762dc31f89bcdd2178c91fe93",
-                "GRCh38_chr21.fa.pac:md5,8c08bed90eb472d0d35451e378e399f3",
-                "GRCh38_chr21.fa.amb:md5,e59d7ca1d4e9593989a13925bfc15c07",
-                "GRCh38_chr21.fa.ann:md5,4d42ab1762829012e9139cacbeea7615",
                 "GRCh38_chr21.fa.meth.amb:md5,902e7918dacfa083ccc73742e8616c4e",
                 "GRCh38_chr21.fa.meth.ann:md5,1e4d33c871333de2add40e004b53a73e",
                 "GRCh38_chr21.fa.meth.bwt.2bit.64:md5,3b344d3c444551557a45d6873e2faebe",
@@ -133,10 +118,10 @@
                 "multiqc_citations.txt:md5,4c806e63a283ec1b7e78cdae3a923d4f"
             ]
         ],
-        "timestamp": "2026-11-17T17:45:26.224218949",
+        "timestamp": "2026-11-18T09:46:31.160699",
         "meta": {
             "nf-test": "0.9.5",
-            "nextflow": "26.04.0"
+            "nextflow": "26.10.5"
         }
     }
 }

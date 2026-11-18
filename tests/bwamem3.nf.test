@@ -4,14 +4,14 @@ nextflow_pipeline {
     script "../main.nf"
     tag "pipeline"
 
-    test("-profile test --tools bwamem3,bwamem3meth") {
+    test("-profile test --tools bwamem3meth") {
 
         options "-output-dir ${outputDir}"
 
         when {
             params {
                 outdir       = "${outputDir}"
-                tools        = 'bwamem3,bwamem3meth'
+                tools        = 'bwamem3meth'
                 tools_bundle = null
                 skip_tools   = null
             }
@@ -24,9 +24,8 @@ nextflow_pipeline {
             def stable_content = getAllFilesFromDir(params.outdir, ignoreFile: 'tests/.nftignore')
             assert workflow.success
             assertAll(
-                // The --meth index keeps only its own seed index, not the plain .bwt.2bit.64
-                { assert stable_path.any { file -> file.contains('/BWAmem3Index/0.17.0/') && file.endsWith('.bwt.2bit.64') && !file.endsWith('.meth.bwt.2bit.64') } },
                 { assert stable_path.any { file -> file.contains('/BWAmem3MethIndex/0.17.0/') && file.endsWith('.meth.bwt.2bit.64') } },
+                // The --meth index keeps only its own seed index, not the plain .bwt.2bit.64
                 { assert stable_path.findAll { file -> file.contains('/BWAmem3MethIndex/0.17.0/') && file.endsWith('.bwt.2bit.64') }.every { file -> file.endsWith('.meth.bwt.2bit.64') } },
                 { assert snapshot(
                     // Number of successful tasks

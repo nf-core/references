@@ -144,7 +144,6 @@ workflow NFCORE_REFERENCES {
     bowtie2_index     = ch_references.bowtie2_index
     bwamem1_index     = ch_references.bwamem1_index
     bwamem2_index     = ch_references.bwamem2_index
-    bwamem3_index     = ch_references.bwamem3_index
     bwamem3meth_index = ch_references.bwamem3meth_index
     chr_dir           = ch_archive_extract.extracted.filter { meta, _ref -> meta.reference == 'chr_dir' }
     dragmap_hashmap   = ch_references.dragmap_hashmap
@@ -367,7 +366,6 @@ workflow {
     bowtie2_index     = ch_nfcore_references.bowtie2_index
     bwamem1_index     = ch_nfcore_references.bwamem1_index
     bwamem2_index     = ch_nfcore_references.bwamem2_index
-    bwamem3_index     = ch_nfcore_references.bwamem3_index
     bwamem3meth_index = ch_nfcore_references.bwamem3meth_index
     chr_dir           = ch_nfcore_references.chr_dir
     dragmap_hashmap   = ch_nfcore_references.dragmap_hashmap
@@ -435,11 +433,6 @@ output {
     bwamem2_index {
         path { meta, file ->
             file >> "${meta.species}/${meta.reference_source}/${meta.genome}/Sequence/BWAmem2Index/2.2.1"
-        }
-    }
-    bwamem3_index {
-        path { meta, file ->
-            file >> "${meta.species}/${meta.reference_source}/${meta.genome}/Sequence/BWAmem3Index/0.17.0"
         }
     }
     bwamem3meth_index {
