@@ -108,7 +108,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 | bwamem2           | 2.2.1       | 2.3         |
 | --htslib          |             | 1.22.1      |
 | --samtools        |             | 1.22.1      |
-| bwamem3           |             | 0.17.0      |
+| bwamem3           |             | 0.18.0      |
 | dragmap           | 1.3.0       | 1.2.1       |
 | kallisto          | 0.51.1      | 0.52.0      |
 | gatk4             | 4.6.1.0     | 4.7.0.0     |

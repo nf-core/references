@@ -437,7 +437,7 @@ output {
     }
     bwamem3meth_index {
         path { meta, file ->
-            file >> "${meta.species}/${meta.reference_source}/${meta.genome}/Sequence/BWAmem3MethIndex/0.17.0"
+            file >> "${meta.species}/${meta.reference_source}/${meta.genome}/Sequence/BWAmem3MethIndex/0.18.0"
         }
     }
     chr_dir {

@@ -10,7 +10,7 @@ environments:
     packages:
       linux-64:
       - conda: https://conda.anaconda.org/conda-forge/linux-64/_openmp_mutex-4.5-8_kmp_llvm.conda
-      - conda: https://conda.anaconda.org/bioconda/linux-64/bwa-mem3-0.17.0-h8d53bd0_0.conda
+      - conda: https://conda.anaconda.org/bioconda/linux-64/bwa-mem3-0.18.0-h8d53bd0_0.conda
       - conda: https://conda.anaconda.org/conda-forge/linux-64/bzip2-1.0.8-hda65f42_10.conda
       - conda: https://conda.anaconda.org/conda-forge/linux-64/c-ares-1.34.9-hebe6cf0_0.conda
       - conda: https://conda.anaconda.org/conda-forge/noarch/ca-certificates-2026.10.23-hbd8a1cb_0.conda
@@ -26,11 +26,11 @@ environments:
       - conda: https://conda.anaconda.org/conda-forge/linux-64/liblzma-5.8.3-hb03c661_1.conda
       - conda: https://conda.anaconda.org/conda-forge/linux-64/libnghttp2-1.71.0-hc5e5977_0.conda
       - conda: https://conda.anaconda.org/conda-forge/linux-64/libpsl-0.23.1-h7fe8442_2.conda
-      - conda: https://conda.anaconda.org/conda-forge/linux-64/libsais-2.12.0-hebe6cf0_0.conda
+      - conda: https://conda.anaconda.org/conda-forge/linux-64/libsais-2.12.2-hebe6cf0_0.conda
       - conda: https://conda.anaconda.org/conda-forge/linux-64/libssh2-1.11.1-h6154650_1.conda
       - conda: https://conda.anaconda.org/conda-forge/linux-64/libstdcxx-16.2.0-h934c35e_7.conda
       - conda: https://conda.anaconda.org/conda-forge/linux-64/libzlib-1.3.2-h25fd6f3_3.conda
-      - conda: https://conda.anaconda.org/conda-forge/linux-64/llvm-openmp-23.1.5-h7148c6a_0.conda
+      - conda: https://conda.anaconda.org/conda-forge/linux-64/llvm-openmp-23.1.6-h7148c6a_0.conda
       - conda: https://conda.anaconda.org/conda-forge/linux-64/ncurses-6.6-hdb14827_1.conda
       - conda: https://conda.anaconda.org/conda-forge/linux-64/openssl-3.6.5-h781a0a9_0.conda
       - conda: https://conda.anaconda.org/conda-forge/linux-64/procps-ng-4.0.6-h3cf9a74_1.conda
@@ -47,9 +47,9 @@ packages:
   license_family: BSD
   size: 8050
   timestamp: 1788046427177
-- conda: https://conda.anaconda.org/bioconda/linux-64/bwa-mem3-0.17.0-h8d53bd0_0.conda
-  sha256: 94c5456e96d44d24b1940a94d72fd39790bfc7a6903c42c2b7d1f1b51fdf072f
-  md5: d3c2a5b8b4485b96987146d26f05e162
+- conda: https://conda.anaconda.org/bioconda/linux-64/bwa-mem3-0.18.0-h8d53bd0_0.conda
+  sha256: 2dc903d056b2bda65210891dfee4888278b6e48562e02d22e1ccb37aeab6aea6
+  md5: 33350bd79cd7f30cd42da904ba66a6b4
   depends:
   - __glibc >=2.17,<3.0.a0
   - _openmp_mutex * *_llvm
@@ -64,8 +64,8 @@ packages:
   - llvm-openmp >=23.1.5
   license: MIT AND Apache-2.0 AND Zlib
   license_family: MIT
-  size: 2403678
-  timestamp: 1794194551017
+  size: 2583998
+  timestamp: 1794887204934
 - conda: https://conda.anaconda.org/conda-forge/linux-64/bzip2-1.0.8-hda65f42_10.conda
   sha256: 1a0d382c515ebf55f8ee1f38c8b81bc95af5c2acc42ad53b66bc5df932032f96
   md5: e675fabcf81499adc7edf58124fb1e01
@@ -246,17 +246,17 @@ packages:
   license_family: MIT
   size: 72612
   timestamp: 1793221942214
-- conda: https://conda.anaconda.org/conda-forge/linux-64/libsais-2.12.0-hebe6cf0_0.conda
-  sha256: 77a261220dd593501fc57561129e2b7c82ce87b3eff1c485ba63105e930c7cc7
-  md5: a59fcba11130448cad4a471af4ab471e
+- conda: https://conda.anaconda.org/conda-forge/linux-64/libsais-2.12.2-hebe6cf0_0.conda
+  sha256: 8afdf075043d208e61415508dd708123c972ef27ae1355d9a3268a5bb6c5e1b4
+  md5: 0a5c3262d730d96cacf202cff9a9572b
   depends:
-  - libgcc >=15
   - __glibc >=2.17,<3.0.a0
+  - libgcc >=15
   - _openmp_mutex >=4.5
-  license: Apache-2.0
+  license: Apache-2.0 WITH LLVM-exception
   license_family: Apache
-  size: 309052
-  timestamp: 1792472313273
+  size: 327706
+  timestamp: 1795003443250
 - conda: https://conda.anaconda.org/conda-forge/linux-64/libssh2-1.11.1-h6154650_1.conda
   sha256: 7e463000fa1cba3f3a6597b776f6ab301d425a96e3bc20d0d9d76a3b9f237aa3
   md5: 5c526561e1d2a2e071941174eae84557
@@ -292,18 +292,17 @@ packages:
   license_family: Other
   size: 63713
   timestamp: 1785362952714
-- conda: https://conda.anaconda.org/conda-forge/linux-64/llvm-openmp-23.1.5-h7148c6a_0.conda
-  sha256: f4b1e7295d81a34f604cc2a16d620cc39b3e190618f0df50a1c654bd59764dc8
-  md5: 9cce0e7f4ded5b077718d11f9ccb5fa3
+- conda: https://conda.anaconda.org/conda-forge/linux-64/llvm-openmp-23.1.6-h7148c6a_0.conda
+  sha256: 5fc94ed497a20960338062443deb22bff9b5a653b4d0650dfc53944de56692a8
+  md5: 877df5737d112b7e276884b5f333a925
   depends:
   - __glibc >=2.17,<3.0.a0
   constrains:
   - intel-openmp <0.0a0
-  - openmp 23.1.5|23.1.5.*
+  - openmp 23.1.6|23.1.6.*
   license: Apache-2.0 WITH LLVM-exception
-  license_family: APACHE
-  size: 6118953
-  timestamp: 1793827614239
+  size: 6113259
+  timestamp: 1795041839949
 - conda: https://conda.anaconda.org/conda-forge/linux-64/ncurses-6.6-hdb14827_1.conda
   sha256: 5d46557214ed184381dafe835b7c94a474a1c3b307a08a250b1ea4779b44ffb3
   md5: ee6c0cd80a60961a1f48aa3e0b91f986
