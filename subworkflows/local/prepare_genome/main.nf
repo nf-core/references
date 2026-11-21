@@ -1,6 +1,7 @@
 include { BOWTIE2_BUILD                                         } from '../../../modules/nf-core/bowtie2/build'
 include { BOWTIE_BUILD as BOWTIE1_BUILD                         } from '../../../modules/nf-core/bowtie/build'
 include { BWAMEM2_INDEX                                         } from '../../../modules/nf-core/bwamem2/index'
+include { BWAMEM3_INDEX as BWAMEM3METH_INDEX                    } from '../../../modules/nf-core/bwamem3/index'
 include { BWA_INDEX as BWAMEM1_INDEX                            } from '../../../modules/nf-core/bwa/index'
 include { DRAGMAP_HASHTABLE                                     } from '../../../modules/nf-core/dragmap/hashtable'
 include { GATK4_CREATESEQUENCEDICTIONARY                        } from '../../../modules/nf-core/gatk4/createsequencedictionary'
@@ -44,6 +45,15 @@ workflow PREPARE_GENOME {
     ch_bwamem1_index = BWAMEM1_INDEX(fasta.filter { meta, _fasta -> 'bwamem1' in tools && meta.run_bwamem1 })
 
     ch_bwamem2_index = BWAMEM2_INDEX(fasta.filter { meta, _fasta -> 'bwamem2' in tools && meta.run_bwamem2 })
+
+    // Plain bwa-mem3 alignment uses the bwa-mem2 index, so only the methylation (--meth) index is built here.
+    // `--meth` comes from ext.args in conf/modules.config: a user ext.args override could drop it, so check the output.
+    ch_bwamem3meth_index = BWAMEM3METH_INDEX(fasta.filter { meta, _fasta -> 'bwamem3meth' in tools && meta.run_bwamem3meth }).index.map { meta, index ->
+        if (!files("${index}/*.meth.bwt.2bit.64")) {
+            error("BWAMEM3METH_INDEX output for ${meta.id} has no *.meth.bwt.2bit.64: check that ext.args for BWAMEM3METH_INDEX includes --meth")
+        }
+        [meta, index]
+    }
 
     ch_dragmap_hashtable = DRAGMAP_HASHTABLE(fasta.filter { meta, _fasta -> 'dragmap' in tools && meta.run_dragmap })
 
@@ -99,6 +109,7 @@ workflow PREPARE_GENOME {
     bowtie2_index     = ch_bowtie2_build.index // channel: [meta, Bowtie2Index/]
     bwamem1_index     = ch_bwamem1_index.index // channel: [meta, BWAmemIndex/]
     bwamem2_index     = ch_bwamem2_index.index // channel: [meta, BWAmem2memIndex/]
+    bwamem3meth_index = ch_bwamem3meth_index // channel: [meta, bwamem3/] (--meth)
     dragmap_hashmap   = ch_dragmap_hashtable.hashmap // channel: [meta, DragmapHashtable/]
     fasta_dict        = ch_gatk4_dict.dict // channel: [meta, *.fa(sta).dict]
     fasta_fai // channel: [meta, *.fa(sta).fai]

@@ -25,6 +25,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - [#159](https://github.com/nf-core/references/pull/159) - Add release roadmap for rnaseq and sarek consumability
 - [#160](https://github.com/nf-core/references/pull/160) - Support list-valued VCF fields in datasheets, with positional TBI pairing (null entries trigger index building) and missing `ascat_loci_rt` schema entry
 - [#161](https://github.com/nf-core/references/pull/161) - Add `errorMessage` validation messages to `nextflow_schema.json` parameters
+- [#173](https://github.com/nf-core/references/pull/173) - Add `bwamem3meth` tool (bwa-mem3 `--meth` index, datasheet key `bwamem3meth_index`; it requests about 175 GB of memory for a human genome) and a `methylseq` tool bundle. Plain bwa-mem3 alignment uses the `bwamem2` index
 
 ### Changed
 
@@ -107,6 +108,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 | bwamem2           | 2.2.1       | 2.3         |
 | --htslib          |             | 1.22.1      |
 | --samtools        |             | 1.22.1      |
+| bwamem3           |             | 0.18.0      |
 | dragmap           | 1.3.0       | 1.2.1       |
 | kallisto          | 0.51.1      | 0.52.0      |
 | gatk4             | 4.6.1.0     | 4.7.0.0     |

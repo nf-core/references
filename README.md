@@ -67,6 +67,16 @@ For RNASEQ pipelines (ie [nf-core/rnaseq](https://nf-co.re/rnaseq) or [nf-core/r
 - Splice sites (with [HISAT2](https://pubmed.ncbi.nlm.nih.gov/31375807/))
 - Transcript fasta (with [RSEM](https://pubmed.ncbi.nlm.nih.gov/21816040/))
 
+## METHYLSEQ
+
+For [nf-core/methylseq](https://nf-co.re/methylseq) with `--aligner bwamem3` (or `--aligner bwamem` for TAPS), needing only a fasta file, it will be able to build the following references:
+
+- [BWA-MEM](https://arxiv.org/abs/1303.3997v2) index
+- [bwa-mem3](https://github.com/fg-labs/bwa-mem3) methylation (`--meth`) index
+- Fasta fai (with [SAMtools](https://pubmed.ncbi.nlm.nih.gov/19505943/))
+
+Plain bwa-mem3 alignment can use the BWA-MEM2 index.
+
 ## Datasheets
 
 Datasheets are stored in [references-datasheets](https://github.com/nf-core/references-datasheets).

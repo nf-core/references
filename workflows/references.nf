@@ -34,6 +34,7 @@ workflow REFERENCES {
     bowtie2_index     = ch_prepare_genome.bowtie2_index
     bwamem1_index     = ch_prepare_genome.bwamem1_index
     bwamem2_index     = ch_prepare_genome.bwamem2_index
+    bwamem3meth_index = ch_prepare_genome.bwamem3meth_index
     dragmap_hashmap   = ch_prepare_genome.dragmap_hashmap
     fasta
     fasta_dict        = ch_prepare_genome.fasta_dict

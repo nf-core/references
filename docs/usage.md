@@ -16,12 +16,15 @@ The pipeline supports a flexible tools selection system with three parameters th
 
 Select a predefined bundle of tools. Available bundles:
 
-| Bundle   | Tools                                                                                                                                |
-| -------- | ------------------------------------------------------------------------------------------------------------------------------------ |
-| `all`    | All available tools                                                                                                                  |
-| `rnaseq` | bowtie1, bowtie2, faidx, gffread, hisat2, hisat2_extractsplicesites, kallisto, rsem, rsem_make_transcript_fasta, salmon, sizes, star |
-| `sarek`  | bwamem1, bwamem2, createsequencedictionary, dragmap, faidx, intervals, msisensorpro, snapaligner, tabix                              |
-| `null`   | None. No tool indices will be built. Useful when you only need the genome and annotation files without building any indices.         |
+| Bundle      | Tools                                                                                                                                |
+| ----------- | ------------------------------------------------------------------------------------------------------------------------------------ |
+| `all`       | All available tools                                                                                                                  |
+| `methylseq` | bwamem1, bwamem3meth, faidx                                                                                                          |
+| `rnaseq`    | bowtie1, bowtie2, faidx, gffread, hisat2, hisat2_extractsplicesites, kallisto, rsem, rsem_make_transcript_fasta, salmon, sizes, star |
+| `sarek`     | bwamem1, bwamem2, createsequencedictionary, dragmap, faidx, intervals, msisensorpro, snapaligner, tabix                              |
+| `null`      | None. No tool indices will be built. Useful when you only need the genome and annotation files without building any indices.         |
+
+The `methylseq` bundle covers nf-core/methylseq with `--aligner bwamem3` (and `--aligner bwamem` for TAPS) only: it doesn't build Bismark or bwa-meth indexes. Pass its `bwamem3meth_index` to methylseq's `--bwamem3_index`. The bwa-mem3 methylation (`--meth`) index can't be used for plain alignment, as it has no `.bwt.2bit.64`. For plain bwa-mem3 alignment, use the `bwamem2` index: bwa-mem3 reads it as is. For a human genome, `bwamem3meth` requests about 175 GB of memory, including when built as part of `all`.
 
 ```bash
 # Build all RNA-seq references

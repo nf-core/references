@@ -28,6 +28,8 @@
 
   > M. Vasimuddin, S. Misra, H. Li and S. Aluru, "Efficient Architecture-Aware Acceleration of BWA-MEM for Multicore Systems," 2019 IEEE International Parallel and Distributed Processing Symposium (IPDPS), 2019, pp. 314-324. doi: 10.1109/IPDPS.2019.00041.
 
+- [bwa-mem3](https://github.com/fg-labs/bwa-mem3)
+
 - [DragMap](https://github.com/Illumina/DRAGMAP)
 
 - [EnsemblVEP](https://pubmed.ncbi.nlm.nih.gov/27268795/)
